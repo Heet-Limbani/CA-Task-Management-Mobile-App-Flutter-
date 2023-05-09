@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final deviceWidth = MediaQuery.of(context).size.width;
     final screens = [
+      // Client Login Screen
       SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -63,13 +64,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(
                                     top: 30, left: 25, right: 25, bottom: 8),
+                                // Email Text Field for Client
                                 child: buildEmailFormFieldClient(),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 25, right: 25, bottom: 25, top: 8),
+                                // Password Text Field for Client
                                 child: buildPasswordFormFieldClient(),
                               ),
+                              // Login Button for Client
                               loginButtonClient(deviceHeight)
                             ],
                           ))
@@ -79,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )
         ],
       )),
+      // Employee Login Screen
       SafeArea(
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -122,13 +127,16 @@ class _LoginScreenState extends State<LoginScreen> {
                               Padding(
                                 padding: const EdgeInsets.only(
                                     top: 30, left: 25, right: 25, bottom: 8),
+                                // Email Text Field for Employee
                                 child: buildEmailFormFieldEmployee(),
                               ),
                               Padding(
                                 padding: const EdgeInsets.only(
                                     left: 25, right: 25, bottom: 25, top: 8),
+                                // Password Text Field for Employee
                                 child: buildPasswordFormFieldEmployee(),
                               ),
+                              // Login Button for Employee
                               loginButtonEmployee(deviceHeight)
                             ],
                           ))
@@ -140,6 +148,7 @@ class _LoginScreenState extends State<LoginScreen> {
       )),
     ];
     return Scaffold(
+      // Navigation Bar
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
             labelTextStyle: MaterialStateProperty.all(
@@ -160,6 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: screens[index],
     );
   }
+// Various methods for Client Login Screen
 
   GestureDetector loginButtonClient(double deviceHeight) {
     return GestureDetector(
@@ -228,6 +238,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+// Various methods for Employee Login Screen
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
       child: Padding(
