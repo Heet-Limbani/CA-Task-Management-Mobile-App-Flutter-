@@ -239,6 +239,12 @@ class _LoginScreenState extends State<LoginScreen> {
 
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
+      onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => HomeScreen()),
+  );
+},
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 25,
