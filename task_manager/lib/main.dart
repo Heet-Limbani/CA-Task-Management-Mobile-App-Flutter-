@@ -18,3 +18,21 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// main file of the ui branch 
+// class MyApp extends StatelessWidget {
+//   const MyApp({Key? key}) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Sizer(builder: (context, orientation, deviceType) {
+//       return MaterialApp(
+//         title: 'Task Management',
+//         debugShowCheckedModeBanner: false,
+//         theme: AppColors.getTheme,
+//         initialRoute: Routes.onBoarding,
+//         onGenerateRoute: RouterGenerator.generateRoutes,
+//       );
+//     });
+//   }
+// }
