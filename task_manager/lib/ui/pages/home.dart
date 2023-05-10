@@ -3,6 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:sizer/sizer.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/core/routes/routes.dart';
+import 'package:task_manager/ui/pages/sidebar.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 
@@ -19,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "09, May 2023",
+          "Task Manager",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -40,27 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           )
         ],
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Container(
-            width: 50,
-            height: 50,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-            ),
-            child: InkWell(
-              onTap: () {},
-              customBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(100),
-              ),
-              child: const Icon(
-                Icons.menu_rounded,
-              ),
-            ),
-          ),
-        ),
+        foregroundColor: Colors.grey,
+        backgroundColor: Colors.transparent,
       ),
+      drawer: const SideBar(),
       extendBody: true,
       body: _buildBody(),
     );
@@ -107,13 +91,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 _log(),
                 const SizedBox(
                   height: 50,
-                ), 
+                ),
                 _tableHeader(),
                 const SizedBox(
                   height: 10,
                 ),
                 _table(),
-                 const SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 _birthdayHeader(),
@@ -121,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 10,
                 ),
                 _birthdaylist(),
-                 const SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
                 _holidayHeader(),
@@ -450,7 +434,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-Row _tableHeader() {
+
+  Row _tableHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -477,57 +462,59 @@ Row _tableHeader() {
       ],
     );
   }
- Column _table() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr. No.'), numeric: true),
-                DataColumn(label: Text('Client Name')),
-                DataColumn(label: Text('Message')),
-                DataColumn(label: Text('Description')),
-                DataColumn(label: Text('Date')),
-                DataColumn(label: Text('Created On')),
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('John')),
-                  DataCell(Text('Hello')),
-                  DataCell(Text('Lorem ipsum dolor sit amet')),
-                  DataCell(Text('2023-05-10')),
-                  DataCell(Text('2023-05-10')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('Jane')),
-                  DataCell(Text('Hi')),
-                  DataCell(Text('Consectetur adipiscing elit')),
-                  DataCell(Text('2023-05-11')),
-                  DataCell(Text('2023-05-11')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('Bob')),
-                  DataCell(Text('Hey')),
-                  DataCell(Text('Sed do eiusmod tempor incididunt')),
-                  DataCell(Text('2023-05-12')),
-                  DataCell(Text('2023-05-12')),
-                ]),
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
+
+  Column _table() {
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr. No.'), numeric: true),
+                  DataColumn(label: Text('Client Name')),
+                  DataColumn(label: Text('Message')),
+                  DataColumn(label: Text('Description')),
+                  DataColumn(label: Text('Date')),
+                  DataColumn(label: Text('Created On')),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('John')),
+                    DataCell(Text('Hello')),
+                    DataCell(Text('Lorem ipsum dolor sit amet')),
+                    DataCell(Text('2023-05-10')),
+                    DataCell(Text('2023-05-10')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('2')),
+                    DataCell(Text('Jane')),
+                    DataCell(Text('Hi')),
+                    DataCell(Text('Consectetur adipiscing elit')),
+                    DataCell(Text('2023-05-11')),
+                    DataCell(Text('2023-05-11')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('Bob')),
+                    DataCell(Text('Hey')),
+                    DataCell(Text('Sed do eiusmod tempor incididunt')),
+                    DataCell(Text('2023-05-12')),
+                    DataCell(Text('2023-05-12')),
+                  ]),
+                ],
+                dataRowHeight: 32.0,
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-Row _birthdayHeader() {
+      ],
+    );
+  }
+
+  Row _birthdayHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -554,53 +541,51 @@ Row _birthdayHeader() {
       ],
     );
   }
-Column _birthdaylist() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr. No.'), numeric: true),
-                DataColumn(label: Text('User')),
-                DataColumn(label: Text('Name')),
-                DataColumn(label: Text('Birth Date')),
-               
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('John')),
-                  DataCell(Text('Hello')),
-                 
-                  DataCell(Text('2023-05-10')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('Jane')),
-                  DataCell(Text('Hi')),
-                 
-                  DataCell(Text('2023-05-11')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('Bob')),
-                  DataCell(Text('Hey')),
-                 
-                  DataCell(Text('2023-05-12')),
-                ]),
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
+
+  Column _birthdaylist() {
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr. No.'), numeric: true),
+                  DataColumn(label: Text('User')),
+                  DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Birth Date')),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('John')),
+                    DataCell(Text('Hello')),
+                    DataCell(Text('2023-05-10')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('2')),
+                    DataCell(Text('Jane')),
+                    DataCell(Text('Hi')),
+                    DataCell(Text('2023-05-11')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('Bob')),
+                    DataCell(Text('Hey')),
+                    DataCell(Text('2023-05-12')),
+                  ]),
+                ],
+                dataRowHeight: 32.0,
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-Row _holidayHeader() {
+      ],
+    );
+  }
+
+  Row _holidayHeader() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -627,53 +612,49 @@ Row _holidayHeader() {
       ],
     );
   }
-Column _holidaylist() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr. No.'), numeric: true),
-                DataColumn(label: Text('Title')),
-                DataColumn(label: Text('Description')),
-                DataColumn(label: Text('Date')),
-               
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('John')),
-                  DataCell(Text('Hello')),
-                 
-                  DataCell(Text('2023-05-10')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('Jane')),
-                  DataCell(Text('Hi')),
-                 
-                  DataCell(Text('2023-05-11')),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('Bob')),
-                  DataCell(Text('Hey')),
-                 
-                  DataCell(Text('2023-05-12')),
-                ]),
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
 
+  Column _holidaylist() {
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr. No.'), numeric: true),
+                  DataColumn(label: Text('Title')),
+                  DataColumn(label: Text('Description')),
+                  DataColumn(label: Text('Date')),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('John')),
+                    DataCell(Text('Hello')),
+                    DataCell(Text('2023-05-10')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('2')),
+                    DataCell(Text('Jane')),
+                    DataCell(Text('Hi')),
+                    DataCell(Text('2023-05-11')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('Bob')),
+                    DataCell(Text('Hey')),
+                    DataCell(Text('2023-05-12')),
+                  ]),
+                ],
+                dataRowHeight: 32.0,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class OnGoingTask extends StatelessWidget {
