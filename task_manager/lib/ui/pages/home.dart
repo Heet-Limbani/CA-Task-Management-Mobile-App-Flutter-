@@ -97,8 +97,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 const OnGoingTask(),
                 const SizedBox(
                   height: 40,
+                ),const SizedBox(
+                  height: 25,
                 ),
-                log(),
+                _logHeader(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _log(),
+                const SizedBox(
+                  height: 100,
+                ),
               ],
             ),
           ),
@@ -125,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Today's Task",
+          "Task List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -269,100 +278,158 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  StaggeredGrid log() {
-    return StaggeredGrid.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 15,
-      crossAxisSpacing: 15,
-      children: const [
-        StaggeredGridTile.count(
-          crossAxisCellCount: 2,
-          mainAxisCellCount: 1.1,
-          child: TaskGroupContainer(
-            color: Colors.purple,
-            icon: Icons.today_rounded,
-            taskCount: 5,
-            taskGroup: "Today's Task",
+  Row _logHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Add Client Log",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
           ),
         ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1.1,
-          child: TaskGroupContainer(
-            color: Colors.blue,
-            
-            icon: Icons.pending_actions,
-            taskCount: 5,
-            taskGroup: "Pending Task",
-          ),
-        ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 0.9,
-          child: TaskGroupContainer(
-            color: Colors.orange,
-            isSmall: true,
-            icon: Icons.attach_money,
-            taskCount: 10,
-            taskGroup: "Tax Payable",
-          ),
-        ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1.2,
-          child: TaskGroupContainer(
-            color: Colors.red,
-            icon: Icons.watch_later_outlined,
-            taskCount: 5,
-            taskGroup: "Overdue Task",
-          ),
-        ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
-          child: TaskGroupContainer(
-            color: Colors.green,
-             isSmall: true,
-            icon: Icons.live_help_rounded,
-            taskCount: 2,
-            taskGroup: "Query Raised",
-          ),
-        ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1.2,
-          child: TaskGroupContainer(
-            color: Colors.pink,
-            
-            icon: Icons.keyboard,
-            taskCount: 9,
-            taskGroup: "On Board Task",
-          ),
-        ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
-          child: TaskGroupContainer(
-            color: Colors.blue,
-             isSmall: true,
-            icon: Icons.punch_clock,
-            taskCount: 2,
-            taskGroup: "UnAssign Work",
-          ),
-        ),
-        StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
-          child: TaskGroupContainer(
-            color: Colors.orange,
-             isSmall: true,
-            icon: Icons.money_off_outlined,
-            taskCount: 2,
-            taskGroup: "UnPaid Tax",
-          ),
-        ),
+        const Spacer(),
+        // InkWell(
+        //   onTap: () {},
+        //   child: Text(
+        //     "See all",
+        //     style: TextStyle(
+        //       color: AppColors.primaryColor,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // )
       ],
     );
+  }
+  Column _log() {
+      final GlobalKey<FormState> _formKey = GlobalKey();
+      String client = "";
+      String message = "";
+      String description = "";
+      var measure;
+
+    return Column(
+        children: <Widget>[
+          
+            Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        labelText: 'Client',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.0),
+                        ),
+                        border: OutlineInputBorder()),
+                    onFieldSubmitted: (value) {
+                      setState(() {
+                        client = value;
+                        // firstNameList.add(firstName);
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        client = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value.length < 3) {
+                        return 'First Name must contain at least 3 characters';
+                      } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                        return 'First Name cannot contain special characters';
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        labelText: 'Message',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.0),
+                        ),
+                        border: OutlineInputBorder()),
+                    validator: (value) {
+                      if (value == null || value.isEmpty || value.length < 3) {
+                        return 'Last Name must contain at least 3 characters';
+                      } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                        return 'Last Name cannot contain special characters';
+                      }
+                    },
+                    onFieldSubmitted: (value) {
+                      setState(() {
+                        message = value;
+                        // lastNameList.add(lastName);
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        message = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        labelText: 'Description',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.0),
+                        ),
+                        border: OutlineInputBorder()),
+                    keyboardType: TextInputType.text,
+                     
+                    onFieldSubmitted: (value) {
+                      setState(() {
+                        message = value;
+                        // bodyTempList.add(bodyTemp);
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        message = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  InputDatePickerFormField(initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now()),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(60)),
+                    onPressed: () {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (_formKey.currentState!.validate()) {
+                        //_submit();
+                      }
+                    },
+                    child: const Text("Submit"),
+                  ),
+                ],
+              ),
+            ),
+          
+        ],
+    );
+    
   }
 }
 
