@@ -74,13 +74,13 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Container(
             margin: const EdgeInsets.symmetric(
               horizontal: 15,
-              vertical: 10,
+              vertical: 0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
                 _taskHeader(),
                 const SizedBox(
@@ -202,7 +202,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
-          mainAxisCellCount: 0.9,
+          mainAxisCellCount: 1,
           child: TaskGroupContainer(
             color: Colors.orange,
             isSmall: true,
@@ -245,7 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
+          mainAxisCellCount: 1.05,
           child: TaskGroupContainer(
             color: Colors.blue,
              isSmall: true,
