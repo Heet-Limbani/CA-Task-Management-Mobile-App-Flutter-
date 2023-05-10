@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:task_manager/Theme/app_theme.dart';
 import 'package:task_manager/screens/login_screen.dart';
 import 'package:task_manager/ui/pages/home.dart';
-import 'package:task_manager/ui/pages/homepagecopy.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -47,7 +46,7 @@ class SideBar extends StatelessWidget {
               leading: Icon(Icons.dashboard),
               title: Text('Dashboard'),
               onTap: () {
-                Get.offAll(HomeScreenCopy());
+                Get.offAll(HomeScreen());
               }),
           ListTile(
             leading: Icon(Icons.people),

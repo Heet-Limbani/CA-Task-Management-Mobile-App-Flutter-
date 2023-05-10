@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/pages/homepagecopy.dart';
+import 'package:task_manager/ui/pages/home.dart';
+
 import 'package:get/get.dart';
 import 'package:task_manager/Theme/app_theme.dart';
 
@@ -175,10 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonClient(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreenCopy()),
-        );
+        Get.off(HomeScreen());
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -249,10 +247,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomeScreenCopy()),
-        );
+        Get.off(HomeScreen());
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
