@@ -59,9 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           curve: Curves.easeInOut,
                         );
                         setState(() {});
-                      } else {
-                        Navigator.pushReplacementNamed(context, Routes.home);
-                      }
+                      } else {}
                     },
                     icon: Icons.arrow_right_alt_rounded,
                   ),
@@ -148,7 +146,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, Routes.home);
                     print('Text tapped!');
                   },
                   child: Text(

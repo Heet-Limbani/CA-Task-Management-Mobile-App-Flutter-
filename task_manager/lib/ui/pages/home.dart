@@ -31,9 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: CircleGradientIcon(
-              onTap: () {
-                Navigator.pushNamed(context, Routes.todaysTask);
-              },
+              onTap: () {},
               icon: Icons.calendar_month,
               color: Colors.purple,
               iconSize: 24,

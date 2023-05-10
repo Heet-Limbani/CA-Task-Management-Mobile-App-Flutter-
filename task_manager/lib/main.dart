@@ -23,11 +23,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
+import 'package:task_manager/screens/login_screen.dart';
 import 'package:task_manager/ui/core/res/color.dart';
-import 'package:task_manager/ui/core/routes/routes.dart';
 
 void main() {
-  runApp(const GetMaterialApp(home: MyApp()));
+  runApp(const GetMaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -40,8 +42,7 @@ class MyApp extends StatelessWidget {
         title: 'Task Management',
         debugShowCheckedModeBanner: false,
         theme: AppColors.getTheme,
-        initialRoute: Routes.loginScreen,
-        onGenerateRoute: RouterGenerator.generateRoutes,
+        home: const LoginScreen(),
       );
     });
   }

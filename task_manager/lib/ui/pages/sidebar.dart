@@ -17,8 +17,15 @@ class SideBar extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           UserAccountsDrawerHeader(
-            decoration:
-                BoxDecoration(color: Color.fromARGB(255, 150, 200, 252)),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Color.fromARGB(255, 154, 207, 250),
+                Color.fromARGB(255, 4, 77, 204),
+              ],
+            )),
             accountName: Text(
               "Admin",
               style: TextStyle(color: Colors.black),
