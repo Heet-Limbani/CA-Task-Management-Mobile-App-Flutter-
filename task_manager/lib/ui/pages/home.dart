@@ -114,6 +114,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 _table(),
                  const SizedBox(
+                  height: 50,
+                ),
+                _birthdayHeader(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _birthdaylist(),
+                 const SizedBox(
+                  height: 50,
+                ),
+                _holidayHeader(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _holidaylist(),
+                const SizedBox(
                   height: 100,
                 ),
               ],
@@ -511,8 +527,152 @@ Row _tableHeader() {
     ],
   );
 }
-
-
+Row _birthdayHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Birthday List",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
+        ),
+        const Spacer(),
+        // InkWell(
+        //   onTap: () {},
+        //   child: Text(
+        //     "See all",
+        //     style: TextStyle(
+        //       color: AppColors.primaryColor,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // )
+      ],
+    );
+  }
+Column _birthdaylist() {
+  return Column(
+    children: <Widget>[
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('Sr. No.'), numeric: true),
+                DataColumn(label: Text('User')),
+                DataColumn(label: Text('Name')),
+                DataColumn(label: Text('Birth Date')),
+               
+              ],
+              rows: const [
+                DataRow(cells: [
+                  DataCell(Text('1')),
+                  DataCell(Text('John')),
+                  DataCell(Text('Hello')),
+                 
+                  DataCell(Text('2023-05-10')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('2')),
+                  DataCell(Text('Jane')),
+                  DataCell(Text('Hi')),
+                 
+                  DataCell(Text('2023-05-11')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('3')),
+                  DataCell(Text('Bob')),
+                  DataCell(Text('Hey')),
+                 
+                  DataCell(Text('2023-05-12')),
+                ]),
+              ],
+              dataRowHeight: 32.0,
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+Row _holidayHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Holiday List",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
+        ),
+        const Spacer(),
+        // InkWell(
+        //   onTap: () {},
+        //   child: Text(
+        //     "See all",
+        //     style: TextStyle(
+        //       color: AppColors.primaryColor,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // )
+      ],
+    );
+  }
+Column _holidaylist() {
+  return Column(
+    children: <Widget>[
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('Sr. No.'), numeric: true),
+                DataColumn(label: Text('Title')),
+                DataColumn(label: Text('Description')),
+                DataColumn(label: Text('Date')),
+               
+              ],
+              rows: const [
+                DataRow(cells: [
+                  DataCell(Text('1')),
+                  DataCell(Text('John')),
+                  DataCell(Text('Hello')),
+                 
+                  DataCell(Text('2023-05-10')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('2')),
+                  DataCell(Text('Jane')),
+                  DataCell(Text('Hi')),
+                 
+                  DataCell(Text('2023-05-11')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('3')),
+                  DataCell(Text('Bob')),
+                  DataCell(Text('Hey')),
+                 
+                  DataCell(Text('2023-05-12')),
+                ]),
+              ],
+              dataRowHeight: 32.0,
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
 
 }
 
