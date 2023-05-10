@@ -99,6 +99,22 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      sha256: "2ba20a47c8f1f233bed775ba2dd0d3ac97b4cf32fc17731b3dfc672b06b0e92a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.6.5"
+  getx_baik:
+    dependency: "direct main"
+    description:
+      name: getx_baik
+      sha256: "794c7bf4a4f87f348a2cee02f6ec9ba67c3cb447481f7c84d43449c34542c14a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   intl:
     dependency: "direct main"
     description:

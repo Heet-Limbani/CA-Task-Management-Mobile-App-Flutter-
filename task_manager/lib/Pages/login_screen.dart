@@ -2,9 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/pages/home.dart';
-
+import 'package:get/get.dart';
 import 'package:task_manager/Theme/app_theme.dart';
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -176,11 +175,8 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonClient(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => HomeScreen()),
-  );
-},
+        Get.off(HomeScreen());
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 25,
@@ -193,7 +189,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           width: double.infinity,
           height: deviceHeight * 0.07,
-          
           child: Center(
             child: Text(
               "Login",
@@ -251,11 +246,11 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => HomeScreen()),
-  );
-},
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      },
       child: Padding(
         padding: EdgeInsets.symmetric(
           horizontal: 25,
