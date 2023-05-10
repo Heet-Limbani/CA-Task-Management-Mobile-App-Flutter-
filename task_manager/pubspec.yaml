@@ -36,6 +36,10 @@ dependencies:
   get: ^4.6.5
   intl: ^0.18.1
   sizer: ^2.0.15
+<<<<<<< HEAD
+
+=======
+>>>>>>> 9ceb58a2f75c6a424b5f17cf506dbe570ceaa599
 
 dev_dependencies:
   flutter_lints: ^2.0.0
