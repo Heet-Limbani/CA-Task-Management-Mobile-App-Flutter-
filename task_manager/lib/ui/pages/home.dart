@@ -87,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 buildGrid(),
                 const SizedBox(
-                  height: 25,
+                  height: 50,
                 ),
                 _onGoingHeader(),
                 const SizedBox(
