@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -79,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 _taskHeader(),
                 const SizedBox(
@@ -97,22 +98,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 40,
                 ),
+                log(),
               ],
             ),
           ),
         ),
-        Positioned(
-          bottom: 30,
-          // left: 100.w / 2 - (70 / 2),
-          right: 30,
-          child: CircleGradientIcon(
-            color: Colors.pink,
-            onTap: () {},
-            size: 60,
-            iconSize: 30,
-            icon: Icons.add,
-          ),
-        )
+        // Positioned(
+        //   bottom: 30,
+        //   // left: 100.w / 2 - (70 / 2),
+        //   right: 30,
+        //   child: CircleGradientIcon(
+        //     color: Colors.pink,
+        //     onTap: () {},
+        //     size: 60,
+        //     iconSize: 30,
+        //     icon: Icons.add,
+        //   ),
+        // )
       ],
     );
   }
@@ -123,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "On Going",
+          "Today's Task",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -150,7 +152,7 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SelectableText(
-          "My Task",
+          "Dashboard",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -178,34 +180,67 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisSpacing: 15,
       children: const [
         StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1.3,
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 1.1,
           child: TaskGroupContainer(
-            color: Colors.pink,
-            icon: Icons.menu_book_rounded,
-            taskCount: 10,
+            color: Colors.purple,
+            icon: Icons.today_rounded,
+            taskCount: 5,
+            taskGroup: "Today's Task",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1.1,
+          child: TaskGroupContainer(
+            color: Colors.blue,
+            
+            icon: Icons.pending_actions,
+            taskCount: 5,
             taskGroup: "Pending Task",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 0.9,
+          child: TaskGroupContainer(
+            color: Colors.orange,
+            isSmall: true,
+            icon: Icons.attach_money,
+            taskCount: 10,
+            taskGroup: "Tax Payable",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1.2,
+          child: TaskGroupContainer(
+            color: Colors.red,
+            icon: Icons.watch_later_outlined,
+            taskCount: 5,
+            taskGroup: "Overdue Task",
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
           mainAxisCellCount: 1,
           child: TaskGroupContainer(
-            color: Colors.orange,
-            isSmall: true,
-            icon: Icons.mobile_friendly,
-            taskCount: 5,
-            taskGroup: "Completed Task",
+            color: Colors.green,
+             isSmall: true,
+            icon: Icons.live_help_rounded,
+            taskCount: 2,
+            taskGroup: "Query Raised",
           ),
         ),
         StaggeredGridTile.count(
           crossAxisCellCount: 1,
-          mainAxisCellCount: 1.3,
+          mainAxisCellCount: 1.2,
           child: TaskGroupContainer(
-            color: Colors.green,
-            icon: Icons.article,
-            taskCount: 2,
-            taskGroup: "Today's Task",
+            color: Colors.pink,
+            
+            icon: Icons.keyboard,
+            taskCount: 9,
+            taskGroup: "On Board Task",
           ),
         ),
         StaggeredGridTile.count(
@@ -213,10 +248,117 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisCellCount: 1,
           child: TaskGroupContainer(
             color: Colors.blue,
+             isSmall: true,
+            icon: Icons.punch_clock,
+            taskCount: 2,
+            taskGroup: "UnAssign Work",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TaskGroupContainer(
+            color: Colors.orange,
+             isSmall: true,
+            icon: Icons.money_off_outlined,
+            taskCount: 2,
+            taskGroup: "UnPaid Tax",
+          ),
+        ),
+      ],
+    );
+  }
+
+  StaggeredGrid log() {
+    return StaggeredGrid.count(
+      crossAxisCount: 2,
+      mainAxisSpacing: 15,
+      crossAxisSpacing: 15,
+      children: const [
+        StaggeredGridTile.count(
+          crossAxisCellCount: 2,
+          mainAxisCellCount: 1.1,
+          child: TaskGroupContainer(
+            color: Colors.purple,
+            icon: Icons.today_rounded,
+            taskCount: 5,
+            taskGroup: "Today's Task",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1.1,
+          child: TaskGroupContainer(
+            color: Colors.blue,
+            
+            icon: Icons.pending_actions,
+            taskCount: 5,
+            taskGroup: "Pending Task",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 0.9,
+          child: TaskGroupContainer(
+            color: Colors.orange,
             isSmall: true,
-            icon: Icons.single_bed_sharp,
+            icon: Icons.attach_money,
+            taskCount: 10,
+            taskGroup: "Tax Payable",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1.2,
+          child: TaskGroupContainer(
+            color: Colors.red,
+            icon: Icons.watch_later_outlined,
+            taskCount: 5,
+            taskGroup: "Overdue Task",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TaskGroupContainer(
+            color: Colors.green,
+             isSmall: true,
+            icon: Icons.live_help_rounded,
+            taskCount: 2,
+            taskGroup: "Query Raised",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1.2,
+          child: TaskGroupContainer(
+            color: Colors.pink,
+            
+            icon: Icons.keyboard,
             taskCount: 9,
-            taskGroup: "On Board",
+            taskGroup: "On Board Task",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TaskGroupContainer(
+            color: Colors.blue,
+             isSmall: true,
+            icon: Icons.punch_clock,
+            taskCount: 2,
+            taskGroup: "UnAssign Work",
+          ),
+        ),
+        StaggeredGridTile.count(
+          crossAxisCellCount: 1,
+          mainAxisCellCount: 1,
+          child: TaskGroupContainer(
+            color: Colors.orange,
+             isSmall: true,
+            icon: Icons.money_off_outlined,
+            taskCount: 2,
+            taskGroup: "UnPaid Tax",
           ),
         ),
       ],
@@ -249,7 +391,7 @@ class OnGoingTask extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Startup Website Design with Responsive",
+                  "Development Of Task Management System",
                   style: TextStyle(
                     color: Colors.blueGrey[700],
                     fontWeight: FontWeight.bold,
@@ -271,7 +413,7 @@ class OnGoingTask extends StatelessWidget {
                       width: 10,
                     ),
                     Text(
-                      "10:00 AM - 12:30PM",
+                      "09:30 AM - 06:30PM",
                       style: TextStyle(
                         color: Colors.grey[600],
                         fontSize: 14,
@@ -292,7 +434,7 @@ class OnGoingTask extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: const Text(
-                    "Complete - 80%",
+                    "Complete - 10%",
                     style: TextStyle(
                       color: Colors.purple,
                     ),
