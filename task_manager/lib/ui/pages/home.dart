@@ -15,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -97,15 +96,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 const OnGoingTask(),
                 const SizedBox(
                   height: 40,
-                ),const SizedBox(
+                ),
+                const SizedBox(
                   height: 25,
                 ),
                 _logHeader(),
                 const SizedBox(
-                  height: 10,
+                  height: 25,
                 ),
                 _log(),
                 const SizedBox(
+                  height: 50,
+                ), 
+                _tableHeader(),
+                const SizedBox(
+                  height: 10,
+                ),
+                _table(),
+                 const SizedBox(
                   height: 100,
                 ),
               ],
@@ -203,7 +211,6 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisCellCount: 1.1,
           child: TaskGroupContainer(
             color: Colors.blue,
-            
             icon: Icons.pending_actions,
             taskCount: 5,
             taskGroup: "Pending Task",
@@ -235,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisCellCount: 1,
           child: TaskGroupContainer(
             color: Colors.green,
-             isSmall: true,
+            isSmall: true,
             icon: Icons.live_help_rounded,
             taskCount: 2,
             taskGroup: "Query Raised",
@@ -246,7 +253,6 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisCellCount: 1.2,
           child: TaskGroupContainer(
             color: Colors.pink,
-            
             icon: Icons.keyboard,
             taskCount: 9,
             taskGroup: "On Board Task",
@@ -257,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisCellCount: 1.05,
           child: TaskGroupContainer(
             color: Colors.blue,
-             isSmall: true,
+            isSmall: true,
             icon: Icons.punch_clock,
             taskCount: 2,
             taskGroup: "UnAssign Work",
@@ -268,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisCellCount: 1,
           child: TaskGroupContainer(
             color: Colors.orange,
-             isSmall: true,
+            isSmall: true,
             icon: Icons.money_off_outlined,
             taskCount: 2,
             taskGroup: "UnPaid Tax",
@@ -305,132 +311,209 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+
   Column _log() {
-      final GlobalKey<FormState> _formKey = GlobalKey();
-      String client = "";
-      String message = "";
-      String description = "";
-      var measure;
+    final GlobalKey<FormState> _formKey = GlobalKey();
+    String client = "";
+    String message = "";
+    String description = "";
+    var measure;
 
     return Column(
-        children: <Widget>[
-          
-            Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  TextFormField(
-                    decoration: const InputDecoration(
-                        labelText: 'Client',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 0.0),
-                        ),
-                        border: OutlineInputBorder()),
-                    onFieldSubmitted: (value) {
-                      setState(() {
-                        client = value;
-                        // firstNameList.add(firstName);
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        client = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 3) {
-                        return 'First Name must contain at least 3 characters';
-                      } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        return 'First Name cannot contain special characters';
-                      }
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                        labelText: 'Message',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 0.0),
-                        ),
-                        border: OutlineInputBorder()),
-                    validator: (value) {
-                      if (value == null || value.isEmpty || value.length < 3) {
-                        return 'Last Name must contain at least 3 characters';
-                      } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-                        return 'Last Name cannot contain special characters';
-                      }
-                    },
-                    onFieldSubmitted: (value) {
-                      setState(() {
-                        message = value;
-                        // lastNameList.add(lastName);
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        message = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    decoration: const InputDecoration(
-                        labelText: 'Description',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          borderSide:
-                              BorderSide(color: Colors.grey, width: 0.0),
-                        ),
-                        border: OutlineInputBorder()),
-                    keyboardType: TextInputType.text,
-                     
-                    onFieldSubmitted: (value) {
-                      setState(() {
-                        message = value;
-                        // bodyTempList.add(bodyTemp);
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        message = value;
-                      });
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  InputDatePickerFormField(initialDate: DateTime.now(), firstDate: DateTime(1900), lastDate: DateTime.now()),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(60)),
-                    onPressed: () {
-                      // Validate returns true if the form is valid, or false otherwise.
-                      if (_formKey.currentState!.validate()) {
-                        //_submit();
-                      }
-                    },
-                    child: const Text("Submit"),
-                  ),
-                ],
+      children: <Widget>[
+        Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              TextFormField(
+                decoration: const InputDecoration(
+                    labelText: 'Client',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                    ),
+                    border: OutlineInputBorder()),
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    client = value;
+                    // firstNameList.add(firstName);
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    client = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length < 3) {
+                    return 'First Name must contain at least 3 characters';
+                  } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                    return 'First Name cannot contain special characters';
+                  }
+                },
               ),
-            ),
-          
-        ],
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                    labelText: 'Message',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                    ),
+                    border: OutlineInputBorder()),
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length < 3) {
+                    return 'Last Name must contain at least 3 characters';
+                  } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                    return 'Last Name cannot contain special characters';
+                  }
+                },
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    message = value;
+                    // lastNameList.add(lastName);
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    message = value;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                decoration: const InputDecoration(
+                    labelText: 'Description',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                    ),
+                    border: OutlineInputBorder()),
+                keyboardType: TextInputType.text,
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    message = value;
+                    // bodyTempList.add(bodyTemp);
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    message = value;
+                  });
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              InputDatePickerFormField(
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(1900),
+                  lastDate: DateTime.now()),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(60)),
+                onPressed: () {
+                  // Validate returns true if the form is valid, or false otherwise.
+                  if (_formKey.currentState!.validate()) {
+                    //_submit();
+                  }
+                },
+                child: const Text("Submit"),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
-    
   }
+Row _tableHeader() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Client Log Data",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
+        ),
+        const Spacer(),
+        // InkWell(
+        //   onTap: () {},
+        //   child: Text(
+        //     "See all",
+        //     style: TextStyle(
+        //       color: AppColors.primaryColor,
+        //       fontWeight: FontWeight.w500,
+        //     ),
+        //   ),
+        // )
+      ],
+    );
+  }
+ Column _table() {
+  return Column(
+    children: <Widget>[
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('Sr. No.'), numeric: true),
+                DataColumn(label: Text('Client Name')),
+                DataColumn(label: Text('Message')),
+                DataColumn(label: Text('Description')),
+                DataColumn(label: Text('Date')),
+                DataColumn(label: Text('Created On')),
+              ],
+              rows: const [
+                DataRow(cells: [
+                  DataCell(Text('1')),
+                  DataCell(Text('John')),
+                  DataCell(Text('Hello')),
+                  DataCell(Text('Lorem ipsum dolor sit amet')),
+                  DataCell(Text('2023-05-10')),
+                  DataCell(Text('2023-05-10')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('2')),
+                  DataCell(Text('Jane')),
+                  DataCell(Text('Hi')),
+                  DataCell(Text('Consectetur adipiscing elit')),
+                  DataCell(Text('2023-05-11')),
+                  DataCell(Text('2023-05-11')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('3')),
+                  DataCell(Text('Bob')),
+                  DataCell(Text('Hey')),
+                  DataCell(Text('Sed do eiusmod tempor incididunt')),
+                  DataCell(Text('2023-05-12')),
+                  DataCell(Text('2023-05-12')),
+                ]),
+              ],
+              dataRowHeight: 32.0,
+            ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+
+
 }
 
 class OnGoingTask extends StatelessWidget {
@@ -511,12 +594,59 @@ class OnGoingTask extends StatelessWidget {
             ),
           ),
           const Icon(
-            Icons.rocket_rounded,
+            Icons.keyboard,
             size: 60,
-            color: Colors.orange,
+            color: Colors.purple,
           )
         ],
       ),
     );
   }
+}
+
+class BottomNavClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, 0);
+
+    final firstControlPoint = Offset(size.width * 0.6, 0);
+    final firstEndPoint = Offset(size.width * 0.58, 44);
+    path.quadraticBezierTo(
+      firstControlPoint.dx,
+      firstControlPoint.dy,
+      firstEndPoint.dx,
+      firstEndPoint.dy,
+    );
+
+    final secControlPoint = Offset(size.width * 0.55, 50);
+    final secEndPoint = Offset(size.width * 0.5, 50);
+    path.quadraticBezierTo(
+      secControlPoint.dx,
+      secControlPoint.dy,
+      secEndPoint.dx,
+      secEndPoint.dy,
+    );
+
+//     path.lineTo(size.width * 0.45, 30);
+
+//     final lastControlPoint = Offset(size.width * 0.45, 20);
+//     final lastEndPoint = Offset(size.width * 0.2, 30);
+//     path.quadraticBezierTo(
+//       lastControlPoint.dx,
+//       lastControlPoint.dy,
+//       lastEndPoint.dx,
+//       lastEndPoint.dy,
+//     );
+
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
