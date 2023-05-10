@@ -39,6 +39,7 @@ dependencies:
   sizer: ^2.0.15
   intl: ^0.18.1
   flutter_svg: ^2.0.5
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
