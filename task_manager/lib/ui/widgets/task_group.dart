@@ -24,27 +24,27 @@ class TaskGroupContainer extends StatelessWidget {
         color: color[400],
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.4),
+            color: color.withOpacity(0.2),
             blurRadius: 10,
             spreadRadius: 4,
             offset: const Offset(2, 6),
           )
         ],
         gradient: AppColors.getDarkLinearGradient(color),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(
-            height: 5,
+            height: 6,
           ),
           Align(
             alignment: isSmall! ? Alignment.centerLeft : Alignment.center,
             child: Icon(
               icon,
-              size: isSmall! ? 60 : 120,
+              size: isSmall! ? 60 : 80,
               color: Colors.white,
             ),
           ),
@@ -65,8 +65,8 @@ class TaskGroupContainer extends StatelessWidget {
           Text(
             "$taskCount Task",
             style: TextStyle(
-              color: Colors.white.withOpacity(0.7),
-              fontSize: 12,
+              color: Colors.white.withOpacity(1),
+              fontSize: 18,
             ),
           ),
           const SizedBox(
