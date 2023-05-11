@@ -1,9 +1,10 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/Theme/app_theme.dart';
 import 'package:task_manager/screens/login_screen.dart';
+import 'package:task_manager/ui/pages/employee.dart';
 import 'package:task_manager/ui/pages/home.dart';
 import 'package:task_manager/ui/pages/profile.dart';
 
@@ -49,9 +50,9 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
-            onTap:  () {
-                Get.off(Profile());
-              },
+            onTap: () {
+              Get.off(Profile());
+            },
           ),
           ListTile(
               leading: Icon(Icons.dashboard),
@@ -59,9 +60,21 @@ class SideBar extends StatelessWidget {
               onTap: () {
                 Get.offAll(HomeScreen());
               }),
-          ListTile(
-            leading: Icon(Icons.people),
+          ExpansionTile(
             title: Text('Users'),
+            leading: Icon(Icons.people),
+            childrenPadding: EdgeInsets.only(left: 60),
+            children: [
+              ListTile(
+                title: Text('Employee'),
+                onTap: () {
+                  Get.off(Employee());
+                },
+              ),
+              ListTile(
+                title: Text('Client'),
+              ),
+            ],
           ),
           ListTile(
             leading: Icon(Icons.settings),
