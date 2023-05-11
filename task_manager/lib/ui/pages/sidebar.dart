@@ -6,6 +6,7 @@ import 'package:task_manager/Theme/app_theme.dart';
 import 'package:task_manager/screens/login_screen.dart';
 import 'package:task_manager/ui/pages/home.dart';
 import 'package:task_manager/ui/pages/profile.dart';
+import 'package:task_manager/ui/pages/profile1/pages/profile_page.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -50,7 +51,7 @@ class SideBar extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap:  () {
-                Get.off(Profile());
+                Get.off(ProfilePage());
               },
           ),
           ListTile(
