@@ -446,16 +446,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const Spacer(),
-        // InkWell(
-        //   onTap: () {},
-        //   child: Text(
-        //     "See all",
-        //     style: TextStyle(
-        //       color: AppColors.primaryColor,
-        //       fontWeight: FontWeight.w500,
-        //     ),
-        //   ),
-        // )
       ],
     );
   }
