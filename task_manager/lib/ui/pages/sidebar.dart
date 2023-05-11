@@ -18,6 +18,7 @@ class SideBar extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
+          // User account details
           UserAccountsDrawerHeader(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
@@ -47,6 +48,7 @@ class SideBar extends StatelessWidget {
               )),
             ),
           ),
+          // Various options
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),

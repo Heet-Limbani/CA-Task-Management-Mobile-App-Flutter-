@@ -70,6 +70,7 @@ Stack _buildBody() {
   );
 }
 
+// Table heading
 Row _tableHeader() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -88,6 +89,7 @@ Row _tableHeader() {
   );
 }
 
+// Table contents
 Column _table() {
   return Column(
     children: <Widget>[
