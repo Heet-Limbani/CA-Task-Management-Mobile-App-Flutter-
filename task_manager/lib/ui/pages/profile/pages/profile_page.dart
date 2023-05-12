@@ -1,39 +1,40 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_manager/ui/pages/profile/pages/edit_description.dart';
 import 'package:task_manager/ui/pages/profile/pages/edit_email.dart';
 import 'package:task_manager/ui/pages/profile/pages/edit_image.dart';
 import 'package:task_manager/ui/pages/profile/pages/edit_name.dart';
 import 'package:task_manager/ui/pages/profile/pages/edit_phone.dart';
-import 'package:task_manager/ui/pages/profile/user/user.dart';
-import 'package:task_manager/ui/pages/profile/widgets/display_image_widget.dart';
-import 'package:task_manager/ui/pages/sidebar.dart';
+import '../../../widgets/circle_gradient_icon.dart';
+import '../../sidebar.dart';
+import '../user/user.dart';
+import '../widgets/display_image_widget.dart';
+import '../user/user_data.dart';
 
-import '../widgets/circle_gradient_icon.dart';
-
-class Profile extends StatefulWidget {
-  const Profile({super.key});
-
+// This class handles the Page to dispaly the user's info on the "Edit Profile" Screen
+class ProfilePage extends StatefulWidget {
   @override
-  State<Profile> createState() => _ProfileState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
+    final user = UserData.myUser;
+
     return Scaffold(
-      appBar: AppBar(
+      
+      body: Column(
+        children: [
+          AppBar(
         title: Text(
           "Profile",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
-        ),
+        ),        
         elevation: 0,
         actions: [
           Padding(
@@ -50,77 +51,7 @@ class _ProfileState extends State<Profile> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBar(),
-      extendBody: true,
-      body: _buildBody(),
-    );
-  }
-
-  Stack _buildBody() {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 0,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(
-                  height: 20,
-                ),
-                _settingHeader(),
-                const SizedBox(
-                  height: 35,
-                ),
-                _infoHeader(),
-                const SizedBox(
-                  height: 35,
-                ),
-                // _image(),
-                // const SizedBox(
-                //   height: 35,
-                // ),
-                _form(),
-                // buildGrid(),
-                // const SizedBox(
-                //   height: 50,
-                // ),
-                // _onGoingHeader(),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                // const OnGoingTask(),
-                // const SizedBox(
-                //   height: 40,
-                // ),
-                // const SizedBox(
-                //   height: 25,
-                // ),
-              ],
-            ),
-          ),
-        ),
-        // Positioned(
-        //   bottom: 30,
-        //   // left: 100.w / 2 - (70 / 2),
-        //   right: 30,
-        //   child: CircleGradientIcon(
-        //     color: Colors.pink,
-        //     onTap: () {},
-        //     size: 60,
-        //     iconSize: 30,
-        //     icon: Icons.add,
-        //   ),
-        // )
-      ],
-    );
-  }
-
-  Row _settingHeader() {
-    return Row(
+      Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const SizedBox(
@@ -160,111 +91,24 @@ class _ProfileState extends State<Profile> {
           // ))
         )
       ],
-    );
-  }
-
-  Row _infoHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      //crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        SizedBox(
-          width: 1,
-        ),
-        // const Icon(
-        //   Icons.settings,
-        //   size: 40,
-        // ),
-        SelectableText(
-          "Your Informaton",
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-          ),
-          // ignore: deprecated_member_use
-          toolbarOptions: ToolbarOptions(
-            copy: true,
-            selectAll: true,
-          ),
-        ),
-        // TextButton(
-        //   child: const Text(
-        //     "Change Password",
-        //     style: TextStyle(
-        //       color: Colors.blue,
-        //       fontWeight: FontWeight.w700,
-        //       fontSize: 14,
-        //     ),
-        //   ),
-        //   onPressed: () {},
-        //   // icon: Icon(
-        //   //   Icons.settings,
-        //   //   color: Colors.blue[400],
-        //   //   size: 50,
-        //   // ))
-        // )
-      ],
-    );
-  }
-
-  // Row _image() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     children: [
-  //       SizedBox(
-  //         height: 115,
-  //         width: 115,
-  //         child: Stack(
-  //           fit: StackFit.expand,
-  //           children: [
-  //             const CircleAvatar(
-  //               backgroundImage: AssetImage("assets/images/heet.png"),
-  //             ),
-  //             Positioned(
-  //               right: -1,
-  //               bottom: 0,
-  //               child: SizedBox(
-  //                 height: 46,
-  //                 width: 46,
-  //                 child: FloatingActionButton(
-  //                   onPressed: () {},
-  //                   backgroundColor: Color.fromARGB(255, 23, 49, 128),
-  //                   shape: RoundedRectangleBorder(
-  //                     borderRadius: BorderRadius.circular(50),
-  //                     side: const BorderSide(color: Colors.white),
-  //                   ),
-  //                   child: const Icon(Icons.edit),
-  //                   // child: SvgPicture.asset(
-  //                   //   "assets/images/heet.png",
-  //                   //   height: 20,
-  //                   //   width: 20,
-  //                   // ),
-  //                 ),
-  //               ),
-  //             )
-  //           ],
-  //         ),
-  //       )
-  //     ],
-  //   );
-  // }
-
-  Row _form() {
-    var user;
-    return Row(
-      //mainAxisAlignment: MainAxisAlignment.center,
-      children:  [
-      Center(
-              child: Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: Text(
-                    'Edit Profile',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      color: Color.fromRGBO(64, 105, 225, 1),
-                    ),
-                  ))),
+      ),
+      const SizedBox(
+        height: 40,
+      ),
+          // const Center(
+          //     child: Padding(
+          //         padding: EdgeInsets.only(bottom: 20),
+          //         child: Text(
+          //           'Edit Profile',
+          //           style: TextStyle(
+          //             fontSize: 30,
+          //             fontWeight: FontWeight.w700,
+          //             color: Color.fromRGBO(64, 105, 225, 1),
+          //           ),
+          //         )),
+                  
+          //         ),
+                   
           InkWell(
               onTap: () {
                 navigateSecondPage(EditImagePage());
@@ -273,17 +117,23 @@ class _ProfileState extends State<Profile> {
                 imagePath: user.image,
                 onPressed: () {},
               )),
-          buildUserInfoDisplay(user.name, 'Name', EditNameFormPage()),
-          buildUserInfoDisplay(user.phone, 'Phone', EditPhoneFormPage()),
-          buildUserInfoDisplay(user.email, 'Email', EditEmailFormPage()),
+          buildUserInfoDisplay(user.name, 'UserName', EditNameFormPage()),
+           buildUserInfoDisplay(user.email, 'Email', EditEmailFormPage()),
+          buildUserInfoDisplay(user.phone, 'Contact', EditPhoneFormPage()),
+         
           Expanded(
             child: buildAbout(user),
             flex: 4,
           )
-      ],
+        ],
+      ),
+      drawer: const SideBar(),
+      extendBody: true,
     );
   }
-   Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
+
+  // Widget builds the display item with the proper formatting to display the user's info
+  Widget buildUserInfoDisplay(String getValue, String title, Widget editPage) =>
       Padding(
           padding: EdgeInsets.only(bottom: 10),
           child: Column(
@@ -335,7 +185,7 @@ class _ProfileState extends State<Profile> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Tell Us About Yourself',
+            'About Me',
             style: TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w500,
@@ -389,6 +239,3 @@ class _ProfileState extends State<Profile> {
     Navigator.push(context, route).then(onGoBack);
   }
 }
-
-
-

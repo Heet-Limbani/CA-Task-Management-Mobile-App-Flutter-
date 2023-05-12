@@ -7,7 +7,7 @@ import 'package:task_manager/screens/login_screen.dart';
 import 'package:task_manager/ui/pages/employee.dart';
 import 'package:task_manager/ui/pages/home.dart';
 import 'package:task_manager/ui/pages/profile.dart';
-import 'package:task_manager/ui/pages/profile1/pages/profile_page.dart';
+import 'package:task_manager/ui/pages/profile/pages/profile_page.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
