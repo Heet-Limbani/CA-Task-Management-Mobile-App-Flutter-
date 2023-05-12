@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
-        ),
+        ),        
         elevation: 0,
         actions: [
           Padding(
