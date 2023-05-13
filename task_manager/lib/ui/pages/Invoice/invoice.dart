@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Receipt extends StatefulWidget {
-  const Receipt({super.key});
+class Invoice extends StatefulWidget {
+  const Invoice({super.key});
 
   @override
-  State<Receipt> createState() => _ReceiptState();
+  State<Invoice> createState() => _InvoiceState();
 }
 
-class _ReceiptState extends State<Receipt> {
+class _InvoiceState extends State<Invoice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Receipt",
+          "Invoice > Invoice List",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -56,7 +56,7 @@ class _ReceiptState extends State<Receipt> {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [ 
+              children: [
                 const SizedBox(
                   height: 40,
                 ),
@@ -67,11 +67,11 @@ class _ReceiptState extends State<Receipt> {
                 _search(),
                 const SizedBox(
                   height: 30,
-                ),  
-                //  _add(),
-                // const SizedBox(
-                //   height: 0,
-                // ),
+                ),
+                 _add(),
+                const SizedBox(
+                  height: 0,
+                ),
                 _table(),
 
                 const SizedBox(
@@ -103,32 +103,19 @@ class _ReceiptState extends State<Receipt> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Receipt List",
+          "Invoice List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
           ),
         ),
-        SizedBox(width: 10,),
-        TextButton(
-          child: const Text(
-            "Add Receipt",
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
-          ),
-          
-          onPressed: () {},
-        ),
-        SizedBox(width: 10,),
-        IconButton(onPressed: (){}, icon: Icon(Icons.calendar_month)),
+        SizedBox(width: 30,),
+       
         const Spacer(),
       ],
     );
-  }
+  } 
   Row _search() {
     return Row(
       children: [
@@ -147,34 +134,24 @@ class _ReceiptState extends State<Receipt> {
       ],
     );
   }
-  // Row _add() {
-  //   return Row(
-  //     children: [
-  //       TextButton(
-  //         child: const Text(
-  //           "Manage Group",
-  //           style: TextStyle(
-  //             color: Colors.blue,
-  //             fontWeight: FontWeight.w700,
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //         onPressed: () {},
-  //       ),
-  //       TextButton(
-  //         child: const Text(
-  //           "Manage Comments",
-  //           style: TextStyle(
-  //             color: Colors.blue,
-  //             fontWeight: FontWeight.w700,
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //         onPressed: () {},
-  //       ),
-  //     ],
-  //   );
-  // }
+  Row _add() {
+    return Row(
+      children: [
+         TextButton(
+          child: const Text(
+            "Add",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
+          onPressed: () {},
+        ),
+       
+      ],
+    );
+  }
   Column _table() {
   return Column(
     children: <Widget>[
@@ -184,51 +161,47 @@ class _ReceiptState extends State<Receipt> {
           children: [
             DataTable(
               columns: const [
-                DataColumn(label: Text('SR No.')),
-                DataColumn(label: Text('ID')),
+                DataColumn(label: Text('Sr.No.'), numeric: true),
+                DataColumn(label: Text(' Invoice No.')),
                 DataColumn(label: Text('Client Name')),
-                DataColumn(label: Text('Amount')), 
-                DataColumn(label: Text('Date')), 
-                DataColumn(label: Text('Description')),
-                DataColumn(label: Text('Reference No.')),
+                DataColumn(label: Text('Amount')),
+                DataColumn(label: Text('Details')), 
+                DataColumn(label: Text('Show')),
                 DataColumn(label: Text('View')),
-              
-               
+                DataColumn(label: Text('Message Invoice')),
               ],
               rows: const [
                 DataRow(cells: [
-                  
                   DataCell(Text('1')),
-                  DataCell(Text('123')),
-                  DataCell(Text('Roy')),
-                 DataCell(Text('1600')), 
-                  DataCell(Text('06/03/2023')),
-                  DataCell(Text('Completed')),
-                  DataCell(Text('1')),
+                  DataCell(Text('Invoic no. 1')),
+                  DataCell(Text('ABC')),
+                  DataCell(Text('4500')),
+                  DataCell(Text('Customer')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.view_list))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.mail))),
                 ]),
-                  DataRow(cells: [
-                  
-                  DataCell(Text('1')),
-                  DataCell(Text('123')),
-                  DataCell(Text('Roy')),
-                 DataCell(Text('1600')), 
-                  DataCell(Text('06/03/2023')),
-                  DataCell(Text('Completed')),
-                  DataCell(Text('1')),
+                DataRow(cells: [
+                  DataCell(Text('2')),
+                  DataCell(Text('Invoic no. 2')),
+                  DataCell(Text('ABC')),
+                  DataCell(Text('2200')),
+                  DataCell(Text('Customer 2')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.view_list))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.mail))),
                 ]),
-                 DataRow(cells: [
-                  
-                  DataCell(Text('1')),
-                  DataCell(Text('123')),
-                  DataCell(Text('Roy')),
-                 DataCell(Text('1600')), 
-                  DataCell(Text('06/03/2023')),
-                  DataCell(Text('Completed')),
-                  DataCell(Text('1')),
+                DataRow(cells: [
+                  DataCell(Text('3')),
+                  DataCell(Text('Invoic no. 3')),
+                  DataCell(Text('ABC')),
+                  DataCell(Text('5800')),
+                  DataCell(Text('Customer 3')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.view_list))),
-                ]),         ],
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.mail))),
+                ]),
+              ],
               dataRowHeight: 32.0,
             ),
           ],

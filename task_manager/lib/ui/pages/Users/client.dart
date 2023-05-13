@@ -6,20 +6,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../DashBoard/sidebar.dart';
 
-class Employee extends StatefulWidget {
-  const Employee({super.key});
+class Client extends StatefulWidget {
+  const Client({super.key});
 
   @override
-  State<Employee> createState() => _EmployeeState();
+  State<Client> createState() => _ClientState();
 }
 
-class _EmployeeState extends State<Employee> {
+class _ClientState extends State<Client> {
   @override
    Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "User > Employee",
+          "User > Client",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -100,7 +100,7 @@ Row _tableHeader() {
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Text(
-        "Employee List",
+        "Client List",
         style: TextStyle(
           color: Colors.blueGrey[900],
           fontWeight: FontWeight.w700,
@@ -131,7 +131,7 @@ Column _table() {
                 DataColumn(label: Text('Edit')),
                 DataColumn(label: Text('Delete')),
                 DataColumn(label: Text('Reset Password')),
-                DataColumn(label: Text('Permission')),
+                DataColumn(label: Text('View Client')),
                 DataColumn(label: Text('Chat')),
               ],
               rows: const [

@@ -6,6 +6,9 @@ import 'package:task_manager/Theme/app_theme.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
 import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
 import 'package:task_manager/ui/pages/File_Manager/file_manager.dart';
+import 'package:task_manager/ui/pages/Invoice/custom_Invoice.dart';
+import 'package:task_manager/ui/pages/Invoice/invoice.dart';
+import 'package:task_manager/ui/pages/Password/password_manager.dart';
 import 'package:task_manager/ui/pages/Receipt/receipt.dart';
 import 'package:task_manager/ui/pages/Setting/configuration.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
@@ -20,6 +23,7 @@ import '../Department/department.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';
 import '../Task/task_on_board.dart';
+import '../Users/client.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -88,6 +92,10 @@ class SideBar extends StatelessWidget {
               ),
               ListTile(
                 title: Text('Client'),
+                onTap: () {
+                  Get.off(Client());
+                },
+                
               ),
             ],
           ),
@@ -192,12 +200,15 @@ class SideBar extends StatelessWidget {
             children: [
               ListTile(
                 title: Text('Invoice List'),
+                 onTap: () {
+                  Get.off(Invoice());
+                },
                 
               ),
               ListTile(
                 title: Text('Custom Invoice List'),
                 onTap: () {
-                  Get.off(Task_On_Board());
+                  Get.off(custom_invoice());
                 },
               ),
             ],
@@ -205,6 +216,9 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.password),
             title: Text('Password Manager'),
+            onTap: () {
+                  Get.off(Password_Manager());
+                },
           ),
           ListTile(
             leading: Icon(Icons.local_activity),
