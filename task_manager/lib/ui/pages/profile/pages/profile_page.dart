@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_description.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_email.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_image.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_name.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_phone.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_description.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_email.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_image.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_name.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_phone.dart';
 import '../../../widgets/circle_gradient_icon.dart';
-import '../../sidebar.dart';
+import '../../DashBoard/sidebar.dart';
 import '../user/user.dart';
 import '../widgets/display_image_widget.dart';
 import '../user/user_data.dart';

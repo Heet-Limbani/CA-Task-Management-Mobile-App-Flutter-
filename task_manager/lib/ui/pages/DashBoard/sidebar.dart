@@ -3,11 +3,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/Theme/app_theme.dart';
-import 'package:task_manager/screens/login_screen.dart';
-import 'package:task_manager/ui/pages/employee.dart';
-import 'package:task_manager/ui/pages/home.dart';
-import 'package:task_manager/ui/pages/profile.dart';
-import 'package:task_manager/ui/pages/profile/pages/profile_page.dart';
+import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
+import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
+import 'package:task_manager/ui/pages/File_Manager/file_manager.dart';
+import 'package:task_manager/ui/pages/Receipt/receipt.dart';
+import 'package:task_manager/ui/pages/Setting/configuration.dart';
+import 'package:task_manager/ui/pages/Setting/expenses.dart';
+import 'package:task_manager/ui/pages/Setting/sent.dart';
+import 'package:task_manager/ui/pages/Task/task_report.dart';
+import 'package:task_manager/ui/pages/Users/employee.dart';
+import 'package:task_manager/ui/pages/DashBoard/home.dart';
+import 'package:task_manager/Extra/profile.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/profile_page.dart';
+
+import '../Department/department.dart';
+import '../Setting/payment_method.dart';
+import '../Company/company.dart';
+import '../Task/task_on_board.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -79,25 +91,81 @@ class SideBar extends StatelessWidget {
               ),
             ],
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
+         ExpansionTile(
             title: Text('Settings'),
+            leading: Icon(Icons.settings),
+            childrenPadding: EdgeInsets.only(left: 60),
+            children: [
+              ListTile(
+                title: Text('Payment Method'),
+                onTap: () {
+                  Get.off(Payment_Method());
+                },
+              ),
+              ListTile(
+                title: Text('Expensen'),
+                 onTap: () {
+                  Get.off(Expenses());
+                },
+              ),
+              ListTile(
+                title: Text('Configuration Notification'),
+                 onTap: () {
+                  Get.off(Configuration());
+                },
+              ),
+
+              ListTile(
+                title: Text('Send Notification'),
+                 onTap: () {
+                  Get.off(Sent());
+                },
+              ),
+            ],
           ),
           ListTile(
             leading: Icon(Icons.work_outline),
             title: Text('Company'),
+            onTap: () {
+                  Get.off(Company());
+            },
           ),
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Client Manual Payment'),
+            onTap: () {
+                  Get.off(Manual_Payment());
+            },
           ),
           ListTile(
             leading: Icon(Icons.workspaces),
             title: Text('Department'),
+            onTap: () {
+                  Get.off(Department());
+            },
           ),
-          ListTile(
-            leading: Icon(Icons.task),
+          ExpansionTile(
             title: Text('Task'),
+            leading: Icon(Icons.people),
+            childrenPadding: EdgeInsets.only(left: 60),
+            children: [
+              ListTile(
+                title: Text('Add Task'),
+                
+              ),
+              ListTile(
+                title: Text('Task On Board'),
+                onTap: () {
+                  Get.off(Task_On_Board());
+                },
+              ),
+              ListTile(
+                title: Text('Task Report'),
+                 onTap: () {
+                  Get.off(Task_Report());
+                },
+              ),
+            ],
           ),
           ListTile(
             leading: Icon(Icons.notifications),
@@ -106,14 +174,33 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.folder),
             title: Text('File Manager'),
+             onTap: () {
+                  Get.off(File_Manager());
+                },
           ),
           ListTile(
             leading: Icon(Icons.receipt),
             title: Text('Receipt'),
+             onTap: () {
+                  Get.off(Receipt());
+                },
           ),
-          ListTile(
-            leading: Icon(Icons.receipt_long_outlined),
+           ExpansionTile(
             title: Text('Invoice'),
+            leading: Icon(Icons.people),
+            childrenPadding: EdgeInsets.only(left: 60),
+            children: [
+              ListTile(
+                title: Text('Invoice List'),
+                
+              ),
+              ListTile(
+                title: Text('Custom Invoice List'),
+                onTap: () {
+                  Get.off(Task_On_Board());
+                },
+              ),
+            ],
           ),
           ListTile(
             leading: Icon(Icons.password),

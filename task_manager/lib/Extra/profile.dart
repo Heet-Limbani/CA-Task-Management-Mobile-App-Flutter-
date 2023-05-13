@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_description.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_email.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_image.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_name.dart';
-import 'package:task_manager/ui/pages/profile/pages/edit_phone.dart';
-import 'package:task_manager/ui/pages/profile/user/user.dart';
-import 'package:task_manager/ui/pages/profile/widgets/display_image_widget.dart';
-import 'package:task_manager/ui/pages/sidebar.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_description.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_email.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_image.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_name.dart';
+import 'package:task_manager/ui/pages/Profile/Pages/edit_phone.dart';
+import 'package:task_manager/ui/pages/Profile/user/user.dart';
+import 'package:task_manager/ui/pages/Profile/widgets/display_image_widget.dart';
+import 'package:task_manager/ui/pages/DashBoard/sidebar.dart';
 
-import '../widgets/circle_gradient_icon.dart';
+import '../ui/widgets/circle_gradient_icon.dart';
 
 class Profile extends StatefulWidget {
   const Profile({super.key});
