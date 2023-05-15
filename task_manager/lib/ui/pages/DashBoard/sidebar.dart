@@ -167,7 +167,7 @@ class SideBar extends StatelessWidget {
           ),
           ExpansionTile(
             title: Text('Task'),
-            leading: Icon(Icons.people),
+            leading: Icon(Icons.pending_actions),
             childrenPadding: EdgeInsets.only(left: 60),
             children: [
               ListTile(
@@ -208,7 +208,7 @@ class SideBar extends StatelessWidget {
           ),
            ExpansionTile(
             title: Text('Invoice'),
-            leading: Icon(Icons.people),
+            leading: Icon(Icons.inventory_outlined),
             childrenPadding: EdgeInsets.only(left: 60),
             children: [
               ListTile(
@@ -298,7 +298,7 @@ class SideBar extends StatelessWidget {
           ),
           ExpansionTile(
             title: Text('Reports'),
-            leading: Icon(Icons.people),
+            leading: Icon(Icons.receipt_long),
             childrenPadding: EdgeInsets.only(left: 60),
             children: [
               ListTile(
