@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Activity_Log extends StatefulWidget {
-  const Activity_Log({super.key});
+class Due_Report extends StatefulWidget {
+  const Due_Report({super.key});
 
   @override
-  State<Activity_Log> createState() => _Activity_LogState();
+  State<Due_Report> createState() => _Due_ReportState();
 }
 
-class _Activity_LogState extends State<Activity_Log> {
+class _Due_ReportState extends State<Due_Report> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Activity",
+          "Reports > Due Report",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -77,7 +77,6 @@ class _Activity_LogState extends State<Activity_Log> {
                 const SizedBox(
                   height: 100,
                 ),
-                
               ],
             ),
           ),
@@ -104,7 +103,7 @@ class _Activity_LogState extends State<Activity_Log> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Activity Log",
+          "Reports",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -140,7 +139,7 @@ class _Activity_LogState extends State<Activity_Log> {
   //     children: [
   //        TextButton(
   //         child: const Text(
-  //           "Add",
+  //           "Add New",
   //           style: TextStyle(
   //             color: Colors.blue,
   //             fontWeight: FontWeight.w700,
@@ -162,38 +161,41 @@ class _Activity_LogState extends State<Activity_Log> {
           children: [
             DataTable(
               columns: const [
-                DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text(' User Name')),
-                DataColumn(label: Text('Title')),
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('Date')), 
-              ],
+                DataColumn(label: Text('Sr.No'), numeric: true),
+                DataColumn(label: Text('Company Name')),
+                DataColumn(label: Text('Contact Number')),
+                DataColumn(label: Text('Total Ticket Amount')), 
+                DataColumn(label: Text('Total Invoice Amount')),
+                DataColumn(label: Text('Total')),
+                ],
+
               rows: const [
-                  DataRow(cells: [
+                DataRow(cells: [
                   DataCell(Text('1')),
-                  DataCell(Text('Roy')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('02/06/2020')),
-                 
-                ]),
-                  DataRow(cells: [
+                  DataCell(Text('2345678910')),
+                  DataCell(Text('2908')),
+                  DataCell(Text('1200')),
+                  DataCell(Text('4108')),
+                  ]),
+
+                DataRow(cells: [
                   DataCell(Text('2')),
-                  DataCell(Text('Roy')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('02/06/2020')),
-                 
-                ]),
-                  DataRow(cells: [
+                  DataCell(Text('2345678910')),
+                  DataCell(Text('2908')),
+                  DataCell(Text('1200')),
+                  DataCell(Text('4108')),
+                  ]),
+
+                DataRow(cells: [
                   DataCell(Text('3')),
-                  DataCell(Text('Roy')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('02/06/2020')),
-                 
-                ]),
-                
+                  DataCell(Text('2345678910')),
+                  DataCell(Text('2908')),
+                  DataCell(Text('1200')),
+                  DataCell(Text('4108')),
+                  ]),                
               ],
               dataRowHeight: 32.0,
             ),

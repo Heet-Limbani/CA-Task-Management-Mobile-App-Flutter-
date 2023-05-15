@@ -16,6 +16,8 @@ import 'package:task_manager/ui/pages/Invoice/custom_Invoice.dart';
 import 'package:task_manager/ui/pages/Invoice/invoice.dart';
 import 'package:task_manager/ui/pages/Password/password_manager.dart';
 import 'package:task_manager/ui/pages/Receipt/receipt.dart';
+import 'package:task_manager/ui/pages/Reports/due_report.dart';
+import 'package:task_manager/ui/pages/Reports/performance_report.dart';
 import 'package:task_manager/ui/pages/Setting/configuration.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
 import 'package:task_manager/ui/pages/Setting/sent.dart';
@@ -29,6 +31,8 @@ import '../Admin_Leave/admin_leave.dart';
 import '../Client_Login/client_login.dart';
 import '../Department/department.dart';
 import '../Employee_Login/employee_login.dart';
+import '../Reports/attendance_log.dart';
+import '../Reports/attendance_report.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';
 import '../Task/task_on_board.dart';
@@ -292,13 +296,50 @@ class SideBar extends StatelessWidget {
                   Get.off(Client_Login());
                 },
           ),
-          ListTile(
-            leading: Icon(Icons.file_present),
+          ExpansionTile(
             title: Text('Reports'),
+            leading: Icon(Icons.people),
+            childrenPadding: EdgeInsets.only(left: 60),
+            children: [
+              ListTile(
+                title: Text('Performance Report'),
+                 onTap: () {
+                  Get.off(Performance_Report());
+                },
+                
+              ),
+              ListTile(
+                title: Text('Due Report'),
+                onTap: () {
+                  Get.off(Due_Report());
+                },
+              ),
+              ListTile(
+                title: Text('Attendance Log'),
+                onTap: () {
+                  Get.off(Attendance_Log());
+                },
+              ),
+              ListTile(
+                title: Text('Attendance Report'),
+                onTap: () {
+                  Get.off(Attendance_Report());
+                },
+              ),
+              ListTile(
+                title: Text('GST Report'),
+                onTap: () {
+                  Get.off(custom_invoice());
+                },
+              ),
+            ],
           ),
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
+            onTap: () {
+                  Get.off(LoginScreen());
+                },
           ),
         ],
       ),

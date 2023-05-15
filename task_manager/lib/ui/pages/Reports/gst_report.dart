@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Activity_Log extends StatefulWidget {
-  const Activity_Log({super.key});
+class Gst_Report extends StatefulWidget {
+  const Gst_Report({super.key});
 
   @override
-  State<Activity_Log> createState() => _Activity_LogState();
+  State<Gst_Report> createState() => _Gst_ReportState();
 }
 
-class _Activity_LogState extends State<Activity_Log> {
+class _Gst_ReportState extends State<Gst_Report> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Activity",
+          "Report > Gst Report",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -77,7 +77,6 @@ class _Activity_LogState extends State<Activity_Log> {
                 const SizedBox(
                   height: 100,
                 ),
-                
               ],
             ),
           ),
@@ -104,7 +103,7 @@ class _Activity_LogState extends State<Activity_Log> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Activity Log",
+          "Group Wise Report List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -163,36 +162,34 @@ class _Activity_LogState extends State<Activity_Log> {
             DataTable(
               columns: const [
                 DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text(' User Name')),
-                DataColumn(label: Text('Title')),
-                DataColumn(label: Text('ID')),
-                DataColumn(label: Text('Date')), 
+                DataColumn(label: Text('Name')),
+                DataColumn(label: Text('Company')),
+                DataColumn(label: Text('Message')), 
+                DataColumn(label: Text('View')),
+                
               ],
               rows: const [
-                  DataRow(cells: [
+                DataRow(cells: [
                   DataCell(Text('1')),
-                  DataCell(Text('Roy')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('02/06/2020')),
-                 
-                ]),
-                  DataRow(cells: [
+                  DataCell(Text('1')),
+                  DataCell(Text('Test')),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                  ]),
+                DataRow(cells: [
                   DataCell(Text('2')),
-                  DataCell(Text('Roy')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('02/06/2020')),
-                 
-                ]),
+                  DataCell(Text('1')),
+                  DataCell(Text('Test')),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                  ]),
                   DataRow(cells: [
                   DataCell(Text('3')),
-                  DataCell(Text('Roy')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('02/06/2020')),
-                 
-                ]),
+                  DataCell(Text('1')),
+                  DataCell(Text('Test')),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                  ]),
                 
               ],
               dataRowHeight: 32.0,
