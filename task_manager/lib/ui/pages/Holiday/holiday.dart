@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Password_Manager extends StatefulWidget {
-  const Password_Manager({super.key});
+class Holiday extends StatefulWidget {
+  const Holiday({super.key});
 
   @override
-  State<Password_Manager> createState() => _Password_ManagerState();
+  State<Holiday> createState() => _HolidayState();
 }
 
-class _Password_ManagerState extends State<Password_Manager> {
+class _HolidayState extends State<Holiday> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Password Manager",
+          "Manage Holiday",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -103,7 +103,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Password Manager List",
+          "Holiday List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -139,7 +139,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       children: [
          TextButton(
           child: const Text(
-            "Add",
+            "Add New",
             style: TextStyle(
               color: Colors.blue,
               fontWeight: FontWeight.w700,
@@ -162,42 +162,41 @@ class _Password_ManagerState extends State<Password_Manager> {
             DataTable(
               columns: const [
                 DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text(' Company Name')),
-                DataColumn(label: Text('Name / Website')),
-                DataColumn(label: Text('User Name')),
-                DataColumn(label: Text('Email')), 
-                DataColumn(label: Text('Password')),
+                DataColumn(label: Text('Title')),
+                DataColumn(label: Text('Description')),
+                DataColumn(label: Text('Date')), 
+                DataColumn(label: Text('Show')),
                 DataColumn(label: Text('Edit')),
                 DataColumn(label: Text('Delete')),
+                
               ],
               rows: const [
                 DataRow(cells: [
                   DataCell(Text('1')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
+                  DataCell(Text('Test')),
+                  DataCell(Text('08/08/2022')),
+                  DataCell(Text('Yes')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                 
                 ]),
                 DataRow(cells: [
-                  DataCell(Text('2')),
+                  DataCell(Text('1')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
+                  DataCell(Text('Test')),
+                  DataCell(Text('08/08/2022')),
+                  DataCell(Text('Yes')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                 
                 ]),
                   DataRow(cells: [
-                  DataCell(Text('3')),
+                  DataCell(Text('1')),
                   DataCell(Text('ABC')),
-                  DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
+                  DataCell(Text('Test')),
+                  DataCell(Text('08/08/2022')),
+                  DataCell(Text('Yes')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
                 ]),

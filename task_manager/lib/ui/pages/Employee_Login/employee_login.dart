@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Password_Manager extends StatefulWidget {
-  const Password_Manager({super.key});
+class Employee_Login extends StatefulWidget {
+  const Employee_Login({super.key});
 
   @override
-  State<Password_Manager> createState() => _Password_ManagerState();
+  State<Employee_Login> createState() => _Employee_LoginState();
 }
 
-class _Password_ManagerState extends State<Password_Manager> {
+class _Employee_LoginState extends State<Employee_Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Password Manager",
+          "Employee Login",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -68,10 +68,10 @@ class _Password_ManagerState extends State<Password_Manager> {
                 const SizedBox(
                   height: 30,
                 ),
-                 _add(),
-                const SizedBox(
-                  height: 0,
-                ),
+                //  _add(),
+                // const SizedBox(
+                //   height: 0,
+                // ),
                 _table(),
 
                 const SizedBox(
@@ -103,7 +103,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Password Manager List",
+          "Employee List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -134,24 +134,24 @@ class _Password_ManagerState extends State<Password_Manager> {
       ],
     );
   }
-  Row _add() {
-    return Row(
-      children: [
-         TextButton(
-          child: const Text(
-            "Add",
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
-          ),
-          onPressed: () {},
-        ),
+  // Row _add() {
+  //   return Row(
+  //     children: [
+  //        TextButton(
+  //         child: const Text(
+  //           "Add",
+  //           style: TextStyle(
+  //             color: Colors.blue,
+  //             fontWeight: FontWeight.w700,
+  //             fontSize: 14,
+  //           ),
+  //         ),
+  //         onPressed: () {},
+  //       ),
        
-      ],
-    );
-  }
+  //     ],
+  //   );
+  // }
   Column _table() {
   return Column(
     children: <Widget>[
@@ -162,44 +162,33 @@ class _Password_ManagerState extends State<Password_Manager> {
             DataTable(
               columns: const [
                 DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text(' Company Name')),
-                DataColumn(label: Text('Name / Website')),
-                DataColumn(label: Text('User Name')),
-                DataColumn(label: Text('Email')), 
-                DataColumn(label: Text('Password')),
-                DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
+                DataColumn(label: Text(' User Name')),
+                DataColumn(label: Text('Login Time')),
+                DataColumn(label: Text('Logout Time')),
+                
               ],
               rows: const [
-                DataRow(cells: [
+                  DataRow(cells: [
                   DataCell(Text('1')),
-                  DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                  DataCell(Text('04/05/2022 14:39:22')),
+                  DataCell(Text('04/05/2022 14:55:22')),
+                 
                 ]),
                   DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('ABC')),
+                  DataCell(Text('2')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                  DataCell(Text('04/05/2022 14:39:22')),
+                  DataCell(Text('04/05/2022 14:55:22')),
+                 
+                ]),
+              
+                  DataRow(cells: [
+                  DataCell(Text('3')),
+                  DataCell(Text('Roy')),
+                  DataCell(Text('04/05/2022 14:39:22')),
+                  DataCell(Text('04/05/2022 14:55:22')),
+                 
                 ]),
                 
               ],

@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Password_Manager extends StatefulWidget {
-  const Password_Manager({super.key});
+class Client_Data extends StatefulWidget {
+  const Client_Data({super.key});
 
   @override
-  State<Password_Manager> createState() => _Password_ManagerState();
+  State<Client_Data> createState() => _Client_DataState();
 }
 
-class _Password_ManagerState extends State<Password_Manager> {
+class _Client_DataState extends State<Client_Data> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Password Manager",
+          "Client Data",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -103,7 +103,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Password Manager List",
+          "Client List Latest Data",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -139,7 +139,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       children: [
          TextButton(
           child: const Text(
-            "Add",
+            "Add New Client",
             style: TextStyle(
               color: Colors.blue,
               fontWeight: FontWeight.w700,
@@ -163,43 +163,43 @@ class _Password_ManagerState extends State<Password_Manager> {
               columns: const [
                 DataColumn(label: Text('Sr.No.'), numeric: true),
                 DataColumn(label: Text(' Company Name')),
-                DataColumn(label: Text('Name / Website')),
-                DataColumn(label: Text('User Name')),
-                DataColumn(label: Text('Email')), 
-                DataColumn(label: Text('Password')),
-                DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
+                DataColumn(label: Text('Client Name')),
+                DataColumn(label: Text('Proprietor Name')),
+                DataColumn(label: Text('Mobile')), 
+                DataColumn(label: Text('Email')),
+                DataColumn(label: Text('View Uploade')),
+               
               ],
               rows: const [
-                DataRow(cells: [
+                  DataRow(cells: [
                   DataCell(Text('1')),
                   DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
                   DataCell(Text('Roy12')),
+                  DataCell(Text('224466882682')),
                   DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.upload))),
+                  
                 ]),
-                DataRow(cells: [
+                  DataRow(cells: [
                   DataCell(Text('2')),
                   DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
                   DataCell(Text('Roy12')),
+                  DataCell(Text('224466882682')),
                   DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.upload))),
+                  
                 ]),
                   DataRow(cells: [
                   DataCell(Text('3')),
                   DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
                   DataCell(Text('Roy12')),
+                  DataCell(Text('224466882682')),
                   DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.upload))),
+                  
                 ]),
                 
               ],

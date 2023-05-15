@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Password_Manager extends StatefulWidget {
-  const Password_Manager({super.key});
+class Client_Password extends StatefulWidget {
+  const Client_Password({super.key});
 
   @override
-  State<Password_Manager> createState() => _Password_ManagerState();
+  State<Client_Password> createState() => _Client_PasswordState();
 }
 
-class _Password_ManagerState extends State<Password_Manager> {
+class _Client_PasswordState extends State<Client_Password> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Password Manager",
+          "Client Password",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -103,7 +103,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Password Manager List",
+          "Client Password List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -139,7 +139,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       children: [
          TextButton(
           child: const Text(
-            "Add",
+            "Add New",
             style: TextStyle(
               color: Colors.blue,
               fontWeight: FontWeight.w700,
@@ -163,44 +163,40 @@ class _Password_ManagerState extends State<Password_Manager> {
               columns: const [
                 DataColumn(label: Text('Sr.No.'), numeric: true),
                 DataColumn(label: Text(' Company Name')),
-                DataColumn(label: Text('Name / Website')),
-                DataColumn(label: Text('User Name')),
-                DataColumn(label: Text('Email')), 
-                DataColumn(label: Text('Password')),
+                DataColumn(label: Text('GST User Name')),
+                DataColumn(label: Text('GST Password')),
+                DataColumn(label: Text('Other Password')), 
                 DataColumn(label: Text('Edit')),
                 DataColumn(label: Text('Delete')),
               ],
               rows: const [
-                DataRow(cells: [
+                  DataRow(cells: [
                   DataCell(Text('1')),
                   DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
+                  DataCell(Text('******')),
+                  DataCell(Text('******')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                ]),
+                  ]),
                 DataRow(cells: [
                   DataCell(Text('2')),
                   DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
+                  DataCell(Text('******')),
+                  DataCell(Text('******')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                ]),
+                  ]),
                   DataRow(cells: [
                   DataCell(Text('3')),
                   DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
+                  DataCell(Text('******')),
+                  DataCell(Text('******')),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                ]),
+                  ]),
                 
               ],
               dataRowHeight: 32.0,

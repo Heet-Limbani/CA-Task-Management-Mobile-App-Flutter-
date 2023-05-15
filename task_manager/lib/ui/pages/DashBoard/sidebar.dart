@@ -3,9 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/Theme/app_theme.dart';
+import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
+import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
+import 'package:task_manager/ui/pages/Client_Data/client_data.dart';
+import 'package:task_manager/ui/pages/Client_Password/client_password.dart';
 import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
+import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
 import 'package:task_manager/ui/pages/File_Manager/file_manager.dart';
+import 'package:task_manager/ui/pages/Holiday/holiday.dart';
 import 'package:task_manager/ui/pages/Invoice/custom_Invoice.dart';
 import 'package:task_manager/ui/pages/Invoice/invoice.dart';
 import 'package:task_manager/ui/pages/Password/password_manager.dart';
@@ -19,7 +25,10 @@ import 'package:task_manager/ui/pages/DashBoard/home.dart';
 import 'package:task_manager/Extra/profile.dart';
 import 'package:task_manager/ui/pages/Profile/Pages/profile_page.dart';
 
+import '../Admin_Leave/admin_leave.dart';
+import '../Client_Login/client_login.dart';
 import '../Department/department.dart';
+import '../Employee_Login/employee_login.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';
 import '../Task/task_on_board.dart';
@@ -223,26 +232,65 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.local_activity),
             title: Text('Activity Log'),
+             onTap: () {
+                  Get.off(Activity_Log());
+                },
+          ),
+           ListTile(
+            leading: Icon(Icons.password),
+            title: Text('Client Password'),
+             onTap: () {
+                  Get.off(Client_Password());
+                },
+          ),
+           ListTile(
+            leading: Icon(Icons.data_usage),
+            title: Text('Client Data'),
+            onTap: () {
+                  Get.off(Client_Data());
+                },
           ),
           ListTile(
             leading: Icon(Icons.app_registration),
             title: Text('Appointment'),
+            onTap: () {
+                  Get.off(Appointment_List());
+                },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Employee Leave'),
+            onTap: () {
+                  Get.off(Employee_Leave());
+                },
+          ),
+           ListTile(
+            leading: Icon(Icons.note_alt_outlined),
+            title: Text('Admin Leave'),
+            onTap: () {
+                  Get.off(Admin_Leave());
+                },
           ),
           ListTile(
             leading: Icon(Icons.manage_accounts_sharp),
             title: Text('Manage Holiday'),
+             onTap: () {
+                  Get.off(Holiday());
+                },
           ),
           ListTile(
             leading: Icon(Icons.people_alt_outlined),
             title: Text('Employee Login'),
+             onTap: () {
+                  Get.off(Employee_Login());
+                },
           ),
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Client Login'),
+            onTap: () {
+                  Get.off(Client_Login());
+                },
           ),
           ListTile(
             leading: Icon(Icons.file_present),

@@ -5,20 +5,20 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
-class Password_Manager extends StatefulWidget {
-  const Password_Manager({super.key});
+class Employee_Leave extends StatefulWidget {
+  const Employee_Leave({super.key});
 
   @override
-  State<Password_Manager> createState() => _Password_ManagerState();
+  State<Employee_Leave> createState() => _Employee_LeaveState();
 }
 
-class _Password_ManagerState extends State<Password_Manager> {
+class _Employee_LeaveState extends State<Employee_Leave> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Password Manager",
+          "Employee Leave",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -68,7 +68,7 @@ class _Password_ManagerState extends State<Password_Manager> {
                 const SizedBox(
                   height: 30,
                 ),
-                 _add(),
+                 //_add(),
                 const SizedBox(
                   height: 0,
                 ),
@@ -103,7 +103,7 @@ class _Password_ManagerState extends State<Password_Manager> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Password Manager List",
+          "Employee Leave",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -134,24 +134,24 @@ class _Password_ManagerState extends State<Password_Manager> {
       ],
     );
   }
-  Row _add() {
-    return Row(
-      children: [
-         TextButton(
-          child: const Text(
-            "Add",
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
-          ),
-          onPressed: () {},
-        ),
+  // Row _add() {
+  //   return Row(
+  //     children: [
+  //        TextButton(
+  //         child: const Text(
+  //           "Add",
+  //           style: TextStyle(
+  //             color: Colors.blue,
+  //             fontWeight: FontWeight.w700,
+  //             fontSize: 14,
+  //           ),
+  //         ),
+  //         onPressed: () {},
+  //       ),
        
-      ],
-    );
-  }
+  //     ],
+  //   );
+  // }
   Column _table() {
   return Column(
     children: <Widget>[
@@ -162,44 +162,56 @@ class _Password_ManagerState extends State<Password_Manager> {
             DataTable(
               columns: const [
                 DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text(' Company Name')),
-                DataColumn(label: Text('Name / Website')),
-                DataColumn(label: Text('User Name')),
-                DataColumn(label: Text('Email')), 
-                DataColumn(label: Text('Password')),
-                DataColumn(label: Text('Edit')),
+                DataColumn(label: Text('Name')),
+                DataColumn(label: Text('Reason')),
+                DataColumn(label: Text('From Date')),
+                DataColumn(label: Text('To Date')), 
+                DataColumn(label: Text('Shift')),
+                DataColumn(label: Text('Status')),
+                DataColumn(label: Text('Accept')),
+                DataColumn(label: Text('Reject')),
                 DataColumn(label: Text('Delete')),
+                
               ],
               rows: const [
                 DataRow(cells: [
                   DataCell(Text('1')),
-                  DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                  DataCell(Text('ABC')),
+                  DataCell(Text('06/08/2022')),
+                  DataCell(Text('08/08/2022')),
+                  DataCell(Text('Morning')),
+                  DataCell(Text('Pending')),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.check))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.close))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                 
                 ]),
                 DataRow(cells: [
                   DataCell(Text('2')),
-                  DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                  DataCell(Text('ABC')),
+                  DataCell(Text('06/08/2022')),
+                  DataCell(Text('08/08/2022')),
+                  DataCell(Text('Morning')),
+                  DataCell(Text('Pending')),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.check))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.close))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                 
                 ]),
                   DataRow(cells: [
                   DataCell(Text('3')),
-                  DataCell(Text('ABC')),
                   DataCell(Text('Roy')),
-                  DataCell(Text('Roy12')),
-                  DataCell(Text('roy12@gmaqil.com')),
-                  DataCell(Text('********')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                  DataCell(Text('ABC')),
+                  DataCell(Text('06/08/2022')),
+                  DataCell(Text('08/08/2022')),
+                  DataCell(Text('Morning')),
+                  DataCell(Text('Pending')),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.check))),
+                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.close))),
                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                 
                 ]),
                 
               ],
