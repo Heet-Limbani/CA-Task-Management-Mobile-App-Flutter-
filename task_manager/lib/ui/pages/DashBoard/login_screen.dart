@@ -32,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  'assets/images/task_manager.png',
+                  'assets/images/28_generated1.png',
                 ),
                 fit: BoxFit.cover,
               ),
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage(
-                  'assets/images/task_manager.png',
+                  'assets/images/28_generated1.png',
                 ),
                 fit: BoxFit.cover,
               ),

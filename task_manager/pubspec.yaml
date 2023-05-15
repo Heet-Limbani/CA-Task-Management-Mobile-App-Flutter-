@@ -69,6 +69,7 @@ flutter:
     - assets/images/
     - assets/images/heet.png
     - assets/images/28_generated.jpg
+    - assets/images/28_generated1.png
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

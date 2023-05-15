@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.task_manager">
    <application
-        android:label="task_manager"
+        android:label="CA Task"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
