@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
 class Due_Report extends StatefulWidget {
@@ -18,25 +14,13 @@ class _Due_ReportState extends State<Due_Report> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Reports > Due Report",
+          "Menu > Reports > Due Report",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -45,7 +29,8 @@ class _Due_ReportState extends State<Due_Report> {
       body: _buildBody(),
     );
   }
-  Stack _buildBody() {    
+
+  Stack _buildBody() {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -60,7 +45,7 @@ class _Due_ReportState extends State<Due_Report> {
                 const SizedBox(
                   height: 40,
                 ),
-               _paymentHeader(),
+                _header(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -68,12 +53,7 @@ class _Due_ReportState extends State<Due_Report> {
                 const SizedBox(
                   height: 30,
                 ),
-                //  _add(),
-                // const SizedBox(
-                //   height: 0,
-                // ),
                 _table(),
-
                 const SizedBox(
                   height: 100,
                 ),
@@ -81,23 +61,11 @@ class _Due_ReportState extends State<Due_Report> {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 30,
-        //   // left: 100.w / 2 - (70 / 2),
-        //   right: 30,
-        //   child: CircleGradientIcon(
-        //     color: Colors.pink,
-        //     onTap: () {},
-        //     size: 60,
-        //     iconSize: 30,
-        //     icon: Icons.add,
-        //   ),
-        // )
       ],
     );
   }
-  
-  Row _paymentHeader() {
+
+  Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,12 +78,14 @@ class _Due_ReportState extends State<Due_Report> {
             fontSize: 22,
           ),
         ),
-        SizedBox(width: 30,),
-       
+        SizedBox(
+          width: 30,
+        ),
         const Spacer(),
       ],
     );
-  } 
+  }
+
   Row _search() {
     return Row(
       children: [
@@ -134,76 +104,55 @@ class _Due_ReportState extends State<Due_Report> {
       ],
     );
   }
-  // Row _add() {
-  //   return Row(
-  //     children: [
-  //        TextButton(
-  //         child: const Text(
-  //           "Add New",
-  //           style: TextStyle(
-  //             color: Colors.blue,
-  //             fontWeight: FontWeight.w700,
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //         onPressed: () {},
-  //       ),
-       
-  //     ],
-  //   );
-  // }
+
   Column _table() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr.No'), numeric: true),
-                DataColumn(label: Text('Company Name')),
-                DataColumn(label: Text('Contact Number')),
-                DataColumn(label: Text('Total Ticket Amount')), 
-                DataColumn(label: Text('Total Invoice Amount')),
-                DataColumn(label: Text('Total')),
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr.No'), numeric: true),
+                  DataColumn(label: Text('Company Name')),
+                  DataColumn(label: Text('Contact Number')),
+                  DataColumn(label: Text('Total Ticket Amount')),
+                  DataColumn(label: Text('Total Invoice Amount')),
+                  DataColumn(label: Text('Total')),
                 ],
-
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('2345678910')),
-                  DataCell(Text('2908')),
-                  DataCell(Text('1200')),
-                  DataCell(Text('4108')),
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('ABC')),
+                    DataCell(Text('2345678910')),
+                    DataCell(Text('2908')),
+                    DataCell(Text('1200')),
+                    DataCell(Text('4108')),
                   ]),
-
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('2345678910')),
-                  DataCell(Text('2908')),
-                  DataCell(Text('1200')),
-                  DataCell(Text('4108')),
+                  DataRow(cells: [
+                    DataCell(Text('2')),
+                    DataCell(Text('ABC')),
+                    DataCell(Text('2345678910')),
+                    DataCell(Text('2908')),
+                    DataCell(Text('1200')),
+                    DataCell(Text('4108')),
                   ]),
-
-                DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('2345678910')),
-                  DataCell(Text('2908')),
-                  DataCell(Text('1200')),
-                  DataCell(Text('4108')),
-                  ]),                
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('ABC')),
+                    DataCell(Text('2345678910')),
+                    DataCell(Text('2908')),
+                    DataCell(Text('1200')),
+                    DataCell(Text('4108')),
+                  ]),
+                ],
+                dataRowHeight: 32.0,
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 }

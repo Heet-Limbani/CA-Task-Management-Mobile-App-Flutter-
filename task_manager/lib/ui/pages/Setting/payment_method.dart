@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
 class Payment_Method extends StatefulWidget {
@@ -18,25 +14,13 @@ class _Payment_MethodState extends State<Payment_Method> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Settings > Payment Method",
+          "Menu > Settings > Payment Method",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -60,13 +44,16 @@ class _Payment_MethodState extends State<Payment_Method> {
                 const SizedBox(
                   height: 40,
                 ),
-               _paymentHeader(),
+               _header(),
                 const SizedBox(
                   height: 10,
                 ),
-                //buildGrid(),
                 const SizedBox(
                   height: 30,
+                ),
+                _add(),
+                const SizedBox(
+                  height: 10,
                 ),
                 _table(),
 
@@ -77,23 +64,11 @@ class _Payment_MethodState extends State<Payment_Method> {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 30,
-        //   // left: 100.w / 2 - (70 / 2),
-        //   right: 30,
-        //   child: CircleGradientIcon(
-        //     color: Colors.pink,
-        //     onTap: () {},
-        //     size: 60,
-        //     iconSize: 30,
-        //     icon: Icons.add,
-        //   ),
-        // )
       ],
     );
   }
   
-  Row _paymentHeader() {
+  Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,19 +81,30 @@ class _Payment_MethodState extends State<Payment_Method> {
             fontSize: 22,
           ),
         ),
-        SizedBox(width: 30,),
-        TextButton(
-          child: const Text(
+        const Spacer(),
+      ],
+    );
+  }
+   Row _add() {
+    return Row(
+      children: [
+        OutlinedButton(
+          onPressed: () {},
+          child: Text(
             "Add Payment Method",
             style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
               color: Colors.blue,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
             ),
           ),
-          onPressed: () {},
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
-        const Spacer(),
       ],
     );
   }

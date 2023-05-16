@@ -1,9 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
 import '../DashBoard/sidebar.dart';
 
 class Employee extends StatefulWidget {
@@ -15,29 +12,17 @@ class Employee extends StatefulWidget {
 
 class _EmployeeState extends State<Employee> {
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "User > Employee",
+          "Menu > User > Employee",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -60,24 +45,18 @@ Stack _buildBody() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-             
               const SizedBox(
                 height: 40,
               ),
-              _tableHeader(),
-               const SizedBox(
+              _header(),
+              const SizedBox(
                 height: 20,
               ),
-              TextField(
-                decoration: InputDecoration(
-                    contentPadding:
-                        EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    hintText: 'Search',
-                    suffixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: const BorderSide())),
+              _search(),
+              const SizedBox(
+                height: 30,
               ),
+              _add(),
               const SizedBox(
                 height: 10,
               ),
@@ -94,7 +73,7 @@ Stack _buildBody() {
 }
 
 // Table heading
-Row _tableHeader() {
+Row _header() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,6 +87,49 @@ Row _tableHeader() {
         ),
       ),
       const Spacer(),
+    ],
+  );
+}
+
+Row _search() {
+  return Row(
+    children: [
+      Expanded(
+        child: TextField(
+          decoration: InputDecoration(
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              hintText: 'Search',
+              suffixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                  borderSide: const BorderSide())),
+        ),
+      ),
+    ],
+  );
+}
+
+Row _add() {
+  return Row(
+    children: [
+      OutlinedButton(
+        onPressed: () {},
+        child: Text(
+          "Add New Employee",
+          style: TextStyle(
+            fontSize: 12,
+            letterSpacing: 0,
+            color: Colors.blue,
+          ),
+        ),
+        style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
     ],
   );
 }

@@ -1,8 +1,5 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/Theme/app_theme.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
@@ -17,6 +14,7 @@ import 'package:task_manager/ui/pages/Invoice/invoice.dart';
 import 'package:task_manager/ui/pages/Password/password_manager.dart';
 import 'package:task_manager/ui/pages/Receipt/receipt.dart';
 import 'package:task_manager/ui/pages/Reports/due_report.dart';
+import 'package:task_manager/ui/pages/Reports/gst_report.dart';
 import 'package:task_manager/ui/pages/Reports/performance_report.dart';
 import 'package:task_manager/ui/pages/Setting/configuration.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
@@ -24,11 +22,10 @@ import 'package:task_manager/ui/pages/Setting/sent.dart';
 import 'package:task_manager/ui/pages/Task/task_report.dart';
 import 'package:task_manager/ui/pages/Users/employee.dart';
 import 'package:task_manager/ui/pages/DashBoard/home.dart';
-import 'package:task_manager/Extra/profile.dart';
-import 'package:task_manager/ui/pages/Profile/Pages/profile_page.dart';
-
+import 'package:task_manager/ui/pages/Profile/profile1.dart';
 import '../Admin_Leave/admin_leave.dart';
 import '../Client_Login/client_login.dart';
+import '../Company/company_view.dart';
 import '../Department/department.dart';
 import '../Employee_Login/employee_login.dart';
 import '../Reports/attendance_log.dart';
@@ -82,9 +79,9 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
-            onTap:  () {
-                Get.off(ProfilePage());
-              },
+            onTap: () {
+              Get.off(profile1());
+            },
           ),
           ListTile(
               leading: Icon(Icons.dashboard),
@@ -108,11 +105,10 @@ class SideBar extends StatelessWidget {
                 onTap: () {
                   Get.off(Client());
                 },
-                
               ),
             ],
           ),
-         ExpansionTile(
+          ExpansionTile(
             title: Text('Settings'),
             leading: Icon(Icons.settings),
             childrenPadding: EdgeInsets.only(left: 60),
@@ -125,20 +121,19 @@ class SideBar extends StatelessWidget {
               ),
               ListTile(
                 title: Text('Expensen'),
-                 onTap: () {
+                onTap: () {
                   Get.off(Expenses());
                 },
               ),
               ListTile(
                 title: Text('Configuration Notification'),
-                 onTap: () {
+                onTap: () {
                   Get.off(Configuration());
                 },
               ),
-
               ListTile(
                 title: Text('Send Notification'),
-                 onTap: () {
+                onTap: () {
                   Get.off(Sent());
                 },
               ),
@@ -148,21 +143,28 @@ class SideBar extends StatelessWidget {
             leading: Icon(Icons.work_outline),
             title: Text('Company'),
             onTap: () {
-                  Get.off(Company());
+              Get.off(Company());
             },
           ),
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Client Manual Payment'),
             onTap: () {
-                  Get.off(Manual_Payment());
+              Get.off(Manual_Payment());
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.list_alt_outlined),
+            title: Text('Company View'),
+            onTap: () {
+              Get.off(Company_View());
             },
           ),
           ListTile(
             leading: Icon(Icons.workspaces),
             title: Text('Department'),
             onTap: () {
-                  Get.off(Department());
+              Get.off(Department());
             },
           ),
           ExpansionTile(
@@ -172,7 +174,6 @@ class SideBar extends StatelessWidget {
             children: [
               ListTile(
                 title: Text('Add Task'),
-                
               ),
               ListTile(
                 title: Text('Task On Board'),
@@ -182,7 +183,7 @@ class SideBar extends StatelessWidget {
               ),
               ListTile(
                 title: Text('Task Report'),
-                 onTap: () {
+                onTap: () {
                   Get.off(Task_Report());
                 },
               ),
@@ -195,28 +196,27 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.folder),
             title: Text('File Manager'),
-             onTap: () {
-                  Get.off(File_Manager());
-                },
+            onTap: () {
+              Get.off(File_Manager());
+            },
           ),
           ListTile(
             leading: Icon(Icons.receipt),
             title: Text('Receipt'),
-             onTap: () {
-                  Get.off(Receipt());
-                },
+            onTap: () {
+              Get.off(Receipt());
+            },
           ),
-           ExpansionTile(
+          ExpansionTile(
             title: Text('Invoice'),
             leading: Icon(Icons.inventory_outlined),
             childrenPadding: EdgeInsets.only(left: 60),
             children: [
               ListTile(
                 title: Text('Invoice List'),
-                 onTap: () {
+                onTap: () {
                   Get.off(Invoice());
                 },
-                
               ),
               ListTile(
                 title: Text('Custom Invoice List'),
@@ -230,71 +230,71 @@ class SideBar extends StatelessWidget {
             leading: Icon(Icons.password),
             title: Text('Password Manager'),
             onTap: () {
-                  Get.off(Password_Manager());
-                },
+              Get.off(Password_Manager());
+            },
           ),
           ListTile(
             leading: Icon(Icons.local_activity),
             title: Text('Activity Log'),
-             onTap: () {
-                  Get.off(Activity_Log());
-                },
+            onTap: () {
+              Get.off(Activity_Log());
+            },
           ),
-           ListTile(
+          ListTile(
             leading: Icon(Icons.password),
             title: Text('Client Password'),
-             onTap: () {
-                  Get.off(Client_Password());
-                },
+            onTap: () {
+              Get.off(Client_Password());
+            },
           ),
-           ListTile(
+          ListTile(
             leading: Icon(Icons.data_usage),
             title: Text('Client Data'),
             onTap: () {
-                  Get.off(Client_Data());
-                },
+              Get.off(Client_Data());
+            },
           ),
           ListTile(
             leading: Icon(Icons.app_registration),
             title: Text('Appointment'),
             onTap: () {
-                  Get.off(Appointment_List());
-                },
+              Get.off(Appointment_List());
+            },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Employee Leave'),
             onTap: () {
-                  Get.off(Employee_Leave());
-                },
+              Get.off(Employee_Leave());
+            },
           ),
-           ListTile(
+          ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Admin Leave'),
             onTap: () {
-                  Get.off(Admin_Leave());
-                },
+              Get.off(Admin_Leave());
+            },
           ),
           ListTile(
             leading: Icon(Icons.manage_accounts_sharp),
             title: Text('Manage Holiday'),
-             onTap: () {
-                  Get.off(Holiday());
-                },
+            onTap: () {
+              Get.off(Holiday());
+            },
           ),
           ListTile(
             leading: Icon(Icons.people_alt_outlined),
             title: Text('Employee Login'),
-             onTap: () {
-                  Get.off(Employee_Login());
-                },
+            onTap: () {
+              Get.off(Employee_Login());
+            },
           ),
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Client Login'),
             onTap: () {
-                  Get.off(Client_Login());
-                },
+              Get.off(Client_Login());
+            },
           ),
           ExpansionTile(
             title: Text('Reports'),
@@ -303,10 +303,9 @@ class SideBar extends StatelessWidget {
             children: [
               ListTile(
                 title: Text('Performance Report'),
-                 onTap: () {
+                onTap: () {
                   Get.off(Performance_Report());
                 },
-                
               ),
               ListTile(
                 title: Text('Due Report'),
@@ -329,7 +328,7 @@ class SideBar extends StatelessWidget {
               ListTile(
                 title: Text('GST Report'),
                 onTap: () {
-                  Get.off(custom_invoice());
+                  Get.off(Gst_Report());
                 },
               ),
             ],
@@ -338,8 +337,8 @@ class SideBar extends StatelessWidget {
             leading: Icon(Icons.logout),
             title: Text('Logout'),
             onTap: () {
-                  Get.off(LoginScreen());
-                },
+              Get.off(LoginScreen());
+            },
           ),
         ],
       ),

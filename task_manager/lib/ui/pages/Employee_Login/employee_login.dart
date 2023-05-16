@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
 class Employee_Login extends StatefulWidget {
@@ -18,25 +14,13 @@ class _Employee_LoginState extends State<Employee_Login> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Employee Login",
+          "Menu > Employee Login",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -60,7 +44,7 @@ class _Employee_LoginState extends State<Employee_Login> {
                 const SizedBox(
                   height: 40,
                 ),
-               _paymentHeader(),
+               _header(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -68,10 +52,6 @@ class _Employee_LoginState extends State<Employee_Login> {
                 const SizedBox(
                   height: 30,
                 ),
-                //  _add(),
-                // const SizedBox(
-                //   height: 0,
-                // ),
                 _table(),
 
                 const SizedBox(
@@ -81,23 +61,11 @@ class _Employee_LoginState extends State<Employee_Login> {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 30,
-        //   // left: 100.w / 2 - (70 / 2),
-        //   right: 30,
-        //   child: CircleGradientIcon(
-        //     color: Colors.pink,
-        //     onTap: () {},
-        //     size: 60,
-        //     iconSize: 30,
-        //     icon: Icons.add,
-        //   ),
-        // )
       ],
     );
   }
   
-  Row _paymentHeader() {
+  Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,24 +102,6 @@ class _Employee_LoginState extends State<Employee_Login> {
       ],
     );
   }
-  // Row _add() {
-  //   return Row(
-  //     children: [
-  //        TextButton(
-  //         child: const Text(
-  //           "Add",
-  //           style: TextStyle(
-  //             color: Colors.blue,
-  //             fontWeight: FontWeight.w700,
-  //             fontSize: 14,
-  //           ),
-  //         ),
-  //         onPressed: () {},
-  //       ),
-       
-  //     ],
-  //   );
-  // }
   Column _table() {
   return Column(
     children: <Widget>[

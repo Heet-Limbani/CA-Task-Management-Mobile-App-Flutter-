@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
 class Attendance_Report extends StatefulWidget {
@@ -18,25 +14,13 @@ class _Attendance_ReportState extends State<Attendance_Report> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Report > Attendance Report",
+          "Menu > Report > Attendance Report",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -45,7 +29,8 @@ class _Attendance_ReportState extends State<Attendance_Report> {
       body: _buildBody(),
     );
   }
-  Stack _buildBody() {    
+
+  Stack _buildBody() {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -60,7 +45,7 @@ class _Attendance_ReportState extends State<Attendance_Report> {
                 const SizedBox(
                   height: 40,
                 ),
-               _paymentHeader(),
+                _header(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -68,12 +53,11 @@ class _Attendance_ReportState extends State<Attendance_Report> {
                 const SizedBox(
                   height: 30,
                 ),
-                 _add(),
+                _add(),
                 const SizedBox(
-                  height: 0,
+                  height: 10,
                 ),
                 _table(),
-
                 const SizedBox(
                   height: 100,
                 ),
@@ -81,23 +65,11 @@ class _Attendance_ReportState extends State<Attendance_Report> {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 30,
-        //   // left: 100.w / 2 - (70 / 2),
-        //   right: 30,
-        //   child: CircleGradientIcon(
-        //     color: Colors.pink,
-        //     onTap: () {},
-        //     size: 60,
-        //     iconSize: 30,
-        //     icon: Icons.add,
-        //   ),
-        // )
       ],
     );
   }
-  
-  Row _paymentHeader() {
+
+  Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,12 +82,14 @@ class _Attendance_ReportState extends State<Attendance_Report> {
             fontSize: 22,
           ),
         ),
-        SizedBox(width: 30,),
-       
+        SizedBox(
+          width: 30,
+        ),
         const Spacer(),
       ],
     );
-  } 
+  }
+
   Row _search() {
     return Row(
       children: [
@@ -134,75 +108,82 @@ class _Attendance_ReportState extends State<Attendance_Report> {
       ],
     );
   }
+
   Row _add() {
     return Row(
       children: [
-         TextButton(
-          child: const Text(
+        OutlinedButton(
+          onPressed: () {},
+          child: Text(
             "Add",
             style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
               color: Colors.blue,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
             ),
           ),
-          onPressed: () {},
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
-       
       ],
     );
   }
+
   Column _table() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text('Name')),
-                DataColumn(label: Text('In Time')),
-                DataColumn(label: Text('Out Time')), 
-                DataColumn(label: Text('Date')),
-                DataColumn(label: Text('View')),
-                
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('06:24')),
-                  DataCell(Text('08:00')),
-                  DataCell(Text('24/02/2022')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye))),
-                  ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('06:24')),
-                  DataCell(Text('08:00')),
-                  DataCell(Text('24/02/2022')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye))),
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr.No.'), numeric: true),
+                  DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('In Time')),
+                  DataColumn(label: Text('Out Time')),
+                  DataColumn(label: Text('Date')),
+                  DataColumn(label: Text('View')),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('ABC')),
+                    DataCell(Text('06:24')),
+                    DataCell(Text('08:00')),
+                    DataCell(Text('24/02/2022')),
+                    DataCell(IconButton(
+                        onPressed: null, icon: Icon(Icons.remove_red_eye))),
                   ]),
                   DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('ABC')),
-                  DataCell(Text('06:24')),
-                  DataCell(Text('08:00')),
-                  DataCell(Text('24/02/2022')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                    DataCell(Text('2')),
+                    DataCell(Text('ABC')),
+                    DataCell(Text('06:24')),
+                    DataCell(Text('08:00')),
+                    DataCell(Text('24/02/2022')),
+                    DataCell(IconButton(
+                        onPressed: null, icon: Icon(Icons.remove_red_eye))),
                   ]),
-                
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('ABC')),
+                    DataCell(Text('06:24')),
+                    DataCell(Text('08:00')),
+                    DataCell(Text('24/02/2022')),
+                    DataCell(IconButton(
+                        onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                  ]),
+                ],
+                dataRowHeight: 32.0,
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 }

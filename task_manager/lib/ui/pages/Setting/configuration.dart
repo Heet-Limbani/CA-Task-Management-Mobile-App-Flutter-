@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-
-import '../../widgets/circle_gradient_icon.dart';
 import '../DashBoard/sidebar.dart';
 
 class Configuration extends StatefulWidget {
@@ -18,25 +14,13 @@ class _ConfigurationState extends State<Configuration> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Settings > Configuration",
+          "Menu > Settings > Configuration",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -45,7 +29,8 @@ class _ConfigurationState extends State<Configuration> {
       body: _buildBody(),
     );
   }
-  Stack _buildBody() {    
+
+  Stack _buildBody() {
     return Stack(
       children: [
         SingleChildScrollView(
@@ -60,7 +45,7 @@ class _ConfigurationState extends State<Configuration> {
                 const SizedBox(
                   height: 40,
                 ),
-               _paymentHeader(),
+                _header(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -68,8 +53,11 @@ class _ConfigurationState extends State<Configuration> {
                 const SizedBox(
                   height: 30,
                 ),
+                _add(),
+                const SizedBox(
+                  height: 10,
+                ),
                 _table(),
-
                 const SizedBox(
                   height: 100,
                 ),
@@ -77,23 +65,11 @@ class _ConfigurationState extends State<Configuration> {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: 30,
-        //   // left: 100.w / 2 - (70 / 2),
-        //   right: 30,
-        //   child: CircleGradientIcon(
-        //     color: Colors.pink,
-        //     onTap: () {},
-        //     size: 60,
-        //     iconSize: 30,
-        //     icon: Icons.add,
-        //   ),
-        // )
       ],
     );
   }
-  
-  Row _paymentHeader() {
+
+  Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,17 +82,8 @@ class _ConfigurationState extends State<Configuration> {
             fontSize: 22,
           ),
         ),
-        SizedBox(width: 80,),
-        TextButton(
-          child: const Text(
-            "Add Notification",
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.w700,
-              fontSize: 14,
-            ),
-          ),
-          onPressed: () {},
+        SizedBox(
+          width: 80,
         ),
         const Spacer(),
       ],
@@ -140,58 +107,87 @@ class _ConfigurationState extends State<Configuration> {
       ],
     );
   }
-  Column _table() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr.No.'), numeric: true),
-                DataColumn(label: Text('Meta')),
-                DataColumn(label: Text('Send ?')),
-                DataColumn(label: Text('Message')),
-                DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Enable')),
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('Task')),
-                  DataCell(Text('Deactive')),
-                  DataCell(Text('Your New Task Has Been Generated')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.check))),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('Client')),
-                  DataCell(Text('Deactive')),
-                  DataCell(Text('Your New Task Has Been Generated')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.check))),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('Company')),
-                  DataCell(Text('Deactive')),
-                  DataCell(Text('Your New Task Has Been Generated')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.check))),
-                ]),
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}
 
+  Row _add() {
+    return Row(
+      children: [
+        OutlinedButton(
+          onPressed: () {},
+          child: Text(
+            "Add Notification",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  
+
+  Column _table() {
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr.No.'), numeric: true),
+                  DataColumn(label: Text('Meta')),
+                  DataColumn(label: Text('Send ?')),
+                  DataColumn(label: Text('Message')),
+                  DataColumn(label: Text('Edit')),
+                  DataColumn(label: Text('Enable')),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('Task')),
+                    DataCell(Text('Deactive')),
+                    DataCell(Text('Your New Task Has Been Generated')),
+                    DataCell(
+                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                    DataCell(
+                        IconButton(onPressed: null, icon: Icon(Icons.check))),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('2')),
+                    DataCell(Text('Client')),
+                    DataCell(Text('Deactive')),
+                    DataCell(Text('Your New Task Has Been Generated')),
+                    DataCell(
+                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                    DataCell(
+                        IconButton(onPressed: null, icon: Icon(Icons.check))),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('Company')),
+                    DataCell(Text('Deactive')),
+                    DataCell(Text('Your New Task Has Been Generated')),
+                    DataCell(
+                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                    DataCell(
+                        IconButton(onPressed: null, icon: Icon(Icons.check))),
+                  ]),
+                ],
+                dataRowHeight: 32.0,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }

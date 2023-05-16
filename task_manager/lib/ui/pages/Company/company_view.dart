@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import '../DashBoard/sidebar.dart';
 
-class Attendance_Log extends StatefulWidget {
-  const Attendance_Log({super.key});
+class Company_View extends StatefulWidget {
+  const Company_View({super.key});
 
   @override
-  State<Attendance_Log> createState() => _Attendance_LogState();
+  State<Company_View> createState() => _Company_ViewState();
 }
 
-class _Attendance_LogState extends State<Attendance_Log> {
+class _Company_ViewState extends State<Company_View> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Report > Attendance Log",
+          "Menu > Company View",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -53,10 +53,6 @@ class _Attendance_LogState extends State<Attendance_Log> {
                 const SizedBox(
                   height: 30,
                 ),
-                _add(),
-                const SizedBox(
-                  height: 10,
-                ),
                 _table(),
                 const SizedBox(
                   height: 100,
@@ -75,7 +71,7 @@ class _Attendance_LogState extends State<Attendance_Log> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Reports",
+          "Company List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -109,30 +105,6 @@ class _Attendance_LogState extends State<Attendance_Log> {
     );
   }
 
-  Row _add() {
-    return Row(
-      children: [
-        OutlinedButton(
-          onPressed: () {},
-          child: Text(
-            "Add",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Column _table() {
     return Column(
       children: <Widget>[
@@ -143,39 +115,43 @@ class _Attendance_LogState extends State<Attendance_Log> {
               DataTable(
                 columns: const [
                   DataColumn(label: Text('Sr.No.'), numeric: true),
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('In Time')),
-                  DataColumn(label: Text('Out Time')),
-                  DataColumn(label: Text('Date')),
+                  DataColumn(label: Text(' Client Name')),
+                  DataColumn(label: Text('Comapany Name')),
+                  DataColumn(label: Text('Property Name')),
+                  DataColumn(label: Text('Mobile')),
+                  DataColumn(label: Text('Email')),
                   DataColumn(label: Text('View')),
                 ],
                 rows: const [
                   DataRow(cells: [
                     DataCell(Text('1')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('06:24')),
-                    DataCell(Text('08:00')),
-                    DataCell(Text('24/02/2022')),
+                    DataCell(Text('Shivam Joshi')),
+                    DataCell(Text('MYSYVA')),
+                    DataCell(Text('Mokshes shah')),
+                    DataCell(Text('1234567890')),
+                    DataCell(Text('try@gmail')),
                     DataCell(IconButton(
-                        onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                        onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                   DataRow(cells: [
                     DataCell(Text('2')),
+                    DataCell(Text('Roy')),
                     DataCell(Text('ABC')),
-                    DataCell(Text('06:24')),
-                    DataCell(Text('08:00')),
-                    DataCell(Text('24/02/2022')),
+                    DataCell(Text('New')),
+                    DataCell(Text('1234567890')),
+                    DataCell(Text('try@gmail')),
                     DataCell(IconButton(
-                        onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                        onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                   DataRow(cells: [
                     DataCell(Text('3')),
+                    DataCell(Text('Roy')),
                     DataCell(Text('ABC')),
-                    DataCell(Text('06:24')),
-                    DataCell(Text('08:00')),
-                    DataCell(Text('24/02/2022')),
+                    DataCell(Text('New')),
+                    DataCell(Text('1234567890')),
+                    DataCell(Text('try@gmail')),
                     DataCell(IconButton(
-                        onPressed: null, icon: Icon(Icons.remove_red_eye))),
+                        onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                 ],
                 dataRowHeight: 32.0,
