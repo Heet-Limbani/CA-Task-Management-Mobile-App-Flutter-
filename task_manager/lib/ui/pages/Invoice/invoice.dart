@@ -115,7 +115,7 @@ class _InvoiceState extends State<Invoice> {
         OutlinedButton(
           onPressed: () {},
           child: Text(
-            "Add Receipt",
+            "Add Invoice",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,

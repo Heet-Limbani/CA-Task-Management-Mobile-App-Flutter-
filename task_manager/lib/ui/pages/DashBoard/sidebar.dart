@@ -19,6 +19,7 @@ import 'package:task_manager/ui/pages/Reports/performance_report.dart';
 import 'package:task_manager/ui/pages/Setting/configuration.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
 import 'package:task_manager/ui/pages/Setting/sent.dart';
+import 'package:task_manager/ui/pages/Task/add_task.dart';
 import 'package:task_manager/ui/pages/Task/task_report.dart';
 import 'package:task_manager/ui/pages/Users/employee.dart';
 import 'package:task_manager/ui/pages/DashBoard/home.dart';
@@ -174,6 +175,9 @@ class SideBar extends StatelessWidget {
             children: [
               ListTile(
                 title: Text('Add Task'),
+                onTap: () {
+                  Get.off(Add_Task());
+                },
               ),
               ListTile(
                 title: Text('Task On Board'),
