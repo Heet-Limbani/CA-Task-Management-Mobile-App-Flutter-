@@ -311,9 +311,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Column _log() {
     final GlobalKey<FormState> _formKey = GlobalKey();
+    // ignore: unused_local_variable
     String client = "";
+    // ignore: unused_local_variable
     String message = "";
+    // ignore: unused_local_variable
     String description = "";
+    // ignore: unused_local_variable
     var measure;
 
     return Column(
@@ -348,6 +352,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
                     return 'First Name cannot contain special characters';
                   }
+                  return null;
                 },
               ),
               const SizedBox(
@@ -367,6 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
                     return 'Last Name cannot contain special characters';
                   }
+                  return null;
                 },
                 onFieldSubmitted: (value) {
                   setState(() {

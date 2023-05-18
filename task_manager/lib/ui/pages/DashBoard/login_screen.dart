@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
+    // ignore: unused_local_variable
     final deviceWidth = MediaQuery.of(context).size.width;
     final screens = [
       // Client Login Screen
@@ -175,7 +176,8 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonClient(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        Get.off(HomeScreen());
+        //Get.off(HomeScreen());
+        Get.off(() => HomeScreen());
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -246,7 +248,9 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        Get.off(HomeScreen());
+        //Get.off(HomeScreen());
+        Get.off(() => HomeScreen());
+
       },
       child: Padding(
         padding: EdgeInsets.symmetric(

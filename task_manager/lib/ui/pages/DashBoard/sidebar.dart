@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
@@ -35,6 +36,7 @@ import '../Setting/payment_method.dart';
 import '../Company/company.dart';
 import '../Task/task_on_board.dart';
 import '../Users/client.dart';
+import 'package:task_manager/ui/pages/Notification/notification1.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});
@@ -196,6 +198,9 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.notifications),
             title: Text('Notification'),
+             onTap: () {
+                  Get.off(Notification1());
+                },
           ),
           ListTile(
             leading: Icon(Icons.folder),
