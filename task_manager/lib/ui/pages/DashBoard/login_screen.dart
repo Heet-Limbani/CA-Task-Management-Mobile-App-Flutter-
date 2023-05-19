@@ -59,6 +59,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             fontSize: 34, fontWeight: FontWeight.bold),
                       ),
+                    
                       Form(
                           key: _clientFormKey,
                           child: Column(
@@ -207,6 +208,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   TextFormField buildPasswordFormFieldClient() {
     return TextFormField(
+      controller: TextEditingController(),
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
