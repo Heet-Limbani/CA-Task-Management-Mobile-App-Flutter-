@@ -1,0 +1,5514 @@
+{
+	"info": {
+		"_postman_id": "4ba84bb5-c489-41b5-be28-2527a1fbda64",
+		"name": "Task Management Admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23567267",
+		"_collection_link": "https://cloudy-robot-815434.postman.co/workspace/Task-Management~5b7b2dbf-2105-4775-89ef-d7d9b1252a8f/collection/23567267-4ba84bb5-c489-41b5-be28-2527a1fbda64?action=share&creator=23567267&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "SmsLog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{task_base_url}}SmsLog",
+							"host": [
+								"{{task_base_url}}SmsLog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SendSms",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "api testing",
+									"type": "text"
+								},
+								{
+									"key": "number[]",
+									"value": "6352655233,5252652525",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "client[]",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}SendSms",
+							"host": [
+								"{{task_base_url}}SendSms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SendMail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "api testing",
+									"type": "text"
+								},
+								{
+									"key": "email[]",
+									"value": "test123@test1.com,test123@test1.com",
+									"type": "text"
+								},
+								{
+									"key": "sub",
+									"value": "123 mic check 123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}SendMail",
+							"host": [
+								"{{task_base_url}}SendMail"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Dashbard",
+			"item": [
+				{
+					"name": "AdminDashboard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{task_base_url}}AdminDashboard",
+							"host": [
+								"{{task_base_url}}AdminDashboard"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EmployeeDashboard",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{task_base_url}}EmployeeDashboard",
+							"host": [
+								"{{task_base_url}}EmployeeDashboard"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PaymentMethod",
+			"item": [
+				{
+					"name": "PaymentMethod",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}PaymentMethod",
+							"host": [
+								"{{task_base_url}}PaymentMethod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PaymentMethod ADD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "UPI",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}AddPaymentMethod",
+							"host": [
+								"{{task_base_url}}AddPaymentMethod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PaymentMethod EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Cash",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditPaymentMethod",
+							"host": [
+								"{{task_base_url}}EditPaymentMethod"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PaymentMethod DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}DeletePaymentMethod",
+							"host": [
+								"{{task_base_url}}DeletePaymentMethod"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Expences",
+			"item": [
+				{
+					"name": "Expences",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Expences",
+							"host": [
+								"{{task_base_url}}Expences"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expences ADD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "test 2",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}AddExpences",
+							"host": [
+								"{{task_base_url}}AddExpences"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "test 2",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expences EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "test working",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "dcdc",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditExpences",
+							"host": [
+								"{{task_base_url}}EditExpences"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Expences DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}DeleteExpences",
+							"host": [
+								"{{task_base_url}}DeleteExpences"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Holiday",
+			"item": [
+				{
+					"name": "Holiday",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Holiday",
+							"host": [
+								"{{task_base_url}}Holiday"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Holiday EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "submit",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditHoliday",
+							"host": [
+								"{{task_base_url}}EditHoliday"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Holiday Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "testt1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "test purpose",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "2023-04-29",
+									"type": "text"
+								},
+								{
+									"key": "show_to_users",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}AddHoliday",
+							"host": [
+								"{{task_base_url}}AddHoliday"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Holiday DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "4",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}DeleteHoliday",
+							"host": [
+								"{{task_base_url}}DeleteHoliday"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "NotificationConfig",
+			"item": [
+				{
+					"name": "NotificationConfig",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}NotificationConfig",
+							"host": [
+								"{{task_base_url}}NotificationConfig"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NotificationConfig EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "message",
+									"value": "New Task File Added",
+									"type": "text"
+								},
+								{
+									"key": "send",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditNotificationConfig",
+							"host": [
+								"{{task_base_url}}EditNotificationConfig"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LogDetails",
+			"item": [
+				{
+					"name": "ActivityLog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}ActivityLog",
+							"host": [
+								"{{task_base_url}}ActivityLog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ClientLoginLog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}ClientLoginLog",
+							"host": [
+								"{{task_base_url}}ClientLoginLog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EmployeeLoginLog",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{task_base_url}}EmployeeLoginLog",
+							"host": [
+								"{{task_base_url}}EmployeeLoginLog"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "Reports",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Reports/Employee_Performance",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"Employee_Performance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "duereport",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Reports/DueReport",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"DueReport"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendance",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Reports/Attendance",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"Attendance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendance LOG",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}Reports/AttendanceLog",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"AttendanceLog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendance LOG EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Reports/AttendanceLog_Edit",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"AttendanceLog_Edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Attendance DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}Reports/DeleteAttendanceLog",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"DeleteAttendanceLog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "gst report",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Reports/gst_reports",
+							"host": [
+								"{{task_base_url}}Reports"
+							],
+							"path": [
+								"gst_reports"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Department",
+			"item": [
+				{
+					"name": "Department",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}Department",
+							"host": [
+								"{{task_base_url}}Department"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Department DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}DeleteDepartment",
+							"host": [
+								"{{task_base_url}}DeleteDepartment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Department ADD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test purpose",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}AddDepartment",
+							"host": [
+								"{{task_base_url}}AddDepartment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Department EDiT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "test purpose",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditDepartment",
+							"host": [
+								"{{task_base_url}}EditDepartment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "view Company",
+					"item": [
+						{
+							"name": "LoadLogDetail",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{task_base_url}}LoadLogDetail",
+									"host": [
+										"{{task_base_url}}LoadLogDetail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LoadCompanyTicketDetail",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{task_base_url}}LoadCompanyTicketDetail",
+									"host": [
+										"{{task_base_url}}LoadCompanyTicketDetail"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LoadCompanyFileDetail",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "{{task_base_url}}LoadCompanyFileDetail",
+									"host": [
+										"{{task_base_url}}LoadCompanyFileDetail"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Company GET",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Company",
+							"host": [
+								"{{task_base_url}}Company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Employee",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "mysyva",
+									"type": "text"
+								},
+								{
+									"key": "sdate",
+									"value": "2020-05-15",
+									"type": "text"
+								},
+								{
+									"key": "pname",
+									"value": "Mokshes shah",
+									"type": "text"
+								},
+								{
+									"key": "gstno",
+									"value": "jasdjf",
+									"type": "text"
+								},
+								{
+									"key": "pannum",
+									"value": "asdjlka456",
+									"type": "text"
+								},
+								{
+									"key": "add1",
+									"value": "test123",
+									"type": "text"
+								},
+								{
+									"key": "add2",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "guj",
+									"type": "text"
+								},
+								{
+									"key": "ref",
+									"value": "ter",
+									"type": "text"
+								},
+								{
+									"key": "number",
+									"value": "8596362545",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "shivam01@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}AddCompany",
+							"host": [
+								"{{task_base_url}}AddCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}DeleteCompany",
+							"host": [
+								"{{task_base_url}}DeleteCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditCompany getdata(ID)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditCompany",
+							"host": [
+								"{{task_base_url}}EditCompany"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EditCompany EditData",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "save",
+									"value": "save",
+									"type": "text"
+								},
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "Employee",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "mysyva",
+									"type": "text"
+								},
+								{
+									"key": "sdate",
+									"value": "2020-05-15",
+									"type": "text"
+								},
+								{
+									"key": "pname",
+									"value": "Mokshes shah",
+									"type": "text"
+								},
+								{
+									"key": "gstno",
+									"value": "jasdjf",
+									"type": "text"
+								},
+								{
+									"key": "pannum",
+									"value": "asdjlka456",
+									"type": "text"
+								},
+								{
+									"key": "add1",
+									"value": "test123",
+									"type": "text"
+								},
+								{
+									"key": "add2",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "state",
+									"value": "guj",
+									"type": "text"
+								},
+								{
+									"key": "ref",
+									"value": "ter",
+									"type": "text"
+								},
+								{
+									"key": "number",
+									"value": "8596362545",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "shivam01@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditCompany",
+							"host": [
+								"{{task_base_url}}EditCompany"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "ManageComment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}ManageComments",
+							"host": [
+								"{{task_base_url}}ManageComments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "22",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "company",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "test Checking",
+									"type": "text"
+								},
+								{
+									"key": "data",
+									"value": "working !",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditComments",
+							"host": [
+								"{{task_base_url}}EditComments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "22",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "title",
+									"value": "tet1",
+									"type": "text"
+								},
+								{
+									"key": "data",
+									"value": "tet",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditComments",
+							"host": [
+								"{{task_base_url}}EditComments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CompanyGroup",
+			"item": [
+				{
+					"name": "ManageCompanyGroup",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{task_base_url}}ManageCompanyGroup",
+							"host": [
+								"{{task_base_url}}ManageCompanyGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ManageCompanyGroup ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}ManageCompanyGroup",
+							"host": [
+								"{{task_base_url}}ManageCompanyGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "company_group ADD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "msg",
+									"value": "test checking....",
+									"type": "text"
+								},
+								{
+									"key": "intval",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "2023-05-06",
+									"type": "text"
+								},
+								{
+									"key": "file[]",
+									"value": "mysyva,1",
+									"type": "text"
+								},
+								{
+									"key": "auto",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sms",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditCompanyGroup",
+							"host": [
+								"{{task_base_url}}EditCompanyGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "company_group EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "testing",
+									"type": "text"
+								},
+								{
+									"key": "msg",
+									"value": "test checking....",
+									"type": "text"
+								},
+								{
+									"key": "intval",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "start",
+									"value": "2023-05-06",
+									"type": "text"
+								},
+								{
+									"key": "file[]",
+									"value": "mysyva",
+									"type": "text"
+								},
+								{
+									"key": "auto",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sms",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}EditCompanyGroup",
+							"host": [
+								"{{task_base_url}}EditCompanyGroup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "company_group DELETE",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}DeleteCompanyGroup",
+							"host": [
+								"{{task_base_url}}DeleteCompanyGroup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Client",
+			"item": [
+				{
+					"name": "client_password",
+					"item": [
+						{
+							"name": "client_password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "8",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/client_password",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"client_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete_client_password",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/delete_client_password",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"delete_client_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client_password ADD",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "company",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "gstun",
+											"value": "test123",
+											"type": "text"
+										},
+										{
+											"key": "gstpass",
+											"value": "123456",
+											"type": "text"
+										},
+										{
+											"key": "anotherpass",
+											"value": "654321",
+											"type": "text"
+										},
+										{
+											"key": "note",
+											"value": "Api testing...",
+											"type": "text"
+										},
+										{
+											"key": "save",
+											"value": "save",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/add_client_password",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"add_client_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client_password ADD fetch batch data",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/add_client_password",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"add_client_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client_password Edit",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "company",
+											"value": "2",
+											"type": "text"
+										},
+										{
+											"key": "gstun",
+											"value": "test12345",
+											"type": "text"
+										},
+										{
+											"key": "gstpass",
+											"value": "123456",
+											"type": "text"
+										},
+										{
+											"key": "anotherpass",
+											"value": "654321",
+											"type": "text"
+										},
+										{
+											"key": "note",
+											"value": "testing...",
+											"type": "text"
+										},
+										{
+											"key": "save",
+											"value": "save",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/edit_client_password",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"edit_client_password"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "client_password Edit fetch base data",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "4",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/edit_client_password",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"edit_client_password"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "client_manual_payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{task_base_url}}Client_Manual_Payment",
+							"host": [
+								"{{task_base_url}}Client_Manual_Payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "un",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "vivekmysyva@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "num",
+									"value": "+916352656677",
+									"type": "text"
+								},
+								{
+									"key": "sendemail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sendsms",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "bdate",
+									"value": "25/07/2003",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Client",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_Client",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Delete_Client",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Delete_Client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ClientLogData",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/ClientLogData",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"ClientLogData"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ClientResetPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "pass",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "sendemail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sendsms",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/ClientResetPassword",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"ClientResetPassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoadClientTicketDetail",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "pass",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "sendemail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sendsms",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/LoadClientTicketDetail",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"LoadClientTicketDetail"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ClientLoginData",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "pass",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "sendemail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sendsms",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/ClientLoginData",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"ClientLoginData"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ClientLog Add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "api testing",
+									"type": "text"
+								},
+								{
+									"key": "client",
+									"value": "8",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "testing prupose API",
+									"type": "text"
+								},
+								{
+									"key": "date",
+									"value": "09-09-2023",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/AddClientLog",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"AddClientLog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoadInvoiceList",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/LoadInvoiceList",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"LoadInvoiceList"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Leave",
+			"item": [
+				{
+					"name": "Admin Leave",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{task_base_url}}Admin_Leave",
+							"host": [
+								"{{task_base_url}}Admin_Leave"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin leave by id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}Edit_Admin_Leave",
+							"host": [
+								"{{task_base_url}}Edit_Admin_Leave"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Leave EDIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "save",
+									"value": "save",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "recheck",
+									"type": "text"
+								},
+								{
+									"key": "fdate",
+									"value": "06-05-2023",
+									"type": "text"
+								},
+								{
+									"key": "tdate",
+									"value": "06-05-2023",
+									"type": "text"
+								},
+								{
+									"key": "shift",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "ffddgghh tyuio",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}Edit_Admin_Leave",
+							"host": [
+								"{{task_base_url}}Edit_Admin_Leave"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Leave ADD",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6ImFkbWluIiwidG9rZW4iOiIkMmEkMTIkM3BoOGprdXJEb3QucmplMzVlUVBqT0suUkU4TnBzZ1Jyd2RvY0Z5VS5OUFdEXC9ydWtCWHgyIn0.qfaBZmPzzDEdiGEkI5OC_eUiXKF39W0Rhrsl4qVVfU4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "save",
+									"value": "save",
+									"type": "text"
+								},
+								{
+									"key": "reason",
+									"value": "recheck22",
+									"type": "text"
+								},
+								{
+									"key": "fdate",
+									"value": "06-05-2023",
+									"type": "text"
+								},
+								{
+									"key": "tdate",
+									"value": "22-05-2023",
+									"type": "text"
+								},
+								{
+									"key": "shift",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "holiday weekend",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{task_base_url}}Edit_Admin_Leave",
+							"host": [
+								"{{task_base_url}}Edit_Admin_Leave"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"item": [
+				{
+					"name": "Add_Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "un",
+									"value": "test1123",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test123@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "num",
+									"value": "+916352656678",
+									"type": "text"
+								},
+								{
+									"key": "sendemail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sendsms",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "active",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "bdate",
+									"value": "25/07/2003",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Employee",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_Employee",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "3",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Delete_Employee",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Delete_Employee"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EmployeeResetPassword",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "pass",
+									"value": "1234",
+									"type": "text"
+								},
+								{
+									"key": "sendemail",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "sendsms",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/EmployeeResetPassword",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"EmployeeResetPassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Other",
+			"item": [
+				{
+					"name": "Permission",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "permission",
+									"value": "‏‏‎ ‎",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/ChangePermission",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"ChangePermission"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Chatting",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "testing1234",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Chatting",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Chatting"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "File Manager",
+			"item": [
+				{
+					"name": "Client Upload Image",
+					"item": [
+						{
+							"name": "ClientUploadImage EDIT getdata",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "task",
+											"value": "view_company_log",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "14",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/EditVirtualFile",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"EditVirtualFile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ClientUploadImage EDIT change",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "task",
+											"value": "view_company_log",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "14",
+											"type": "text"
+										},
+										{
+											"key": "submit",
+											"value": "submit",
+											"type": "text"
+										},
+										{
+											"key": "downloadable",
+											"value": "1\n",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/EditVirtualFile",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"EditVirtualFile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ClientUploadImage DELETE Copy",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "task",
+											"value": "view_company_log",
+											"type": "text"
+										},
+										{
+											"key": "id",
+											"value": "8",
+											"type": "text"
+										},
+										{
+											"key": "ticket_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/DeleteVirtualFile",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"DeleteVirtualFile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ClientUploadImage",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "9",
+											"type": "text"
+										},
+										{
+											"key": "userImage",
+											"type": "file",
+											"src": "/home/vivek/Downloads/51XyHkb--LL._SX425_.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/ClientUploadImage",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"ClientUploadImage"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Location manage",
+					"item": [
+						{
+							"name": "getdata_file_location",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "submit",
+											"value": "submit",
+											"type": "text"
+										},
+										{
+											"key": "fromdt",
+											"value": "2023-04-25",
+											"type": "text"
+										},
+										{
+											"key": "todt",
+											"value": "2023-05-20",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/getdata_file_location",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"getdata_file_location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit_location FETCH by ID",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/edit_location",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"edit_location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "edit_location Update",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "txtlocname",
+											"value": "test",
+											"type": "text"
+										},
+										{
+											"key": "txtsorttag",
+											"value": "t",
+											"type": "text"
+										},
+										{
+											"key": "txtminlimit",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "txtmaxlimit",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "btnSave",
+											"value": "Save",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/edit_location",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"edit_location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add_location",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "txtlocname",
+											"value": "Api Testing",
+											"type": "text"
+										},
+										{
+											"key": "txtsorttag",
+											"value": "u",
+											"type": "text"
+										},
+										{
+											"key": "txtminlimit",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "txtmaxlimit",
+											"value": "15",
+											"type": "text"
+										},
+										{
+											"key": "btnSave",
+											"value": "Save",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/add_location",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"add_location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete_location",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/delete_location",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"delete_location"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SetDefault_location",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/SetDefault_location",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"SetDefault_location"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get_File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Get_File",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Get_File"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit_file_manage fetch data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/edit_file_manage",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"edit_file_manage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit_file_manage Edit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "btnSave",
+									"value": "Save",
+									"type": "text"
+								},
+								{
+									"key": "txtfilename",
+									"value": "test123",
+									"type": "text"
+								},
+								{
+									"key": "txtlocation_num",
+									"value": "10",
+									"type": "text"
+								},
+								{
+									"key": "Client",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/edit_file_manage",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"edit_file_manage"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_File",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "txtfilename",
+									"value": "Api",
+									"type": "text"
+								},
+								{
+									"key": "txtlocation_num",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "Client",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "location",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "btnSave",
+									"value": "Save",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_File",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_File"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_dispatech_file getdata by id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "18",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/update_dispatech_file",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"update_dispatech_file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update_dispatech_file",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "18",
+									"type": "text"
+								},
+								{
+									"key": "update",
+									"value": "Update",
+									"type": "text"
+								},
+								{
+									"key": "receiver_name",
+									"value": "api",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "vachva lai gyo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/update_dispatech_file",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"update_dispatech_file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view_dispatch_file",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/view_dispatch_file",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"view_dispatch_file"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view_dispatch_file filter records",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "submit",
+									"value": "submit",
+									"type": "text"
+								},
+								{
+									"key": "fromdt",
+									"value": "2023-04-25",
+									"type": "text"
+								},
+								{
+									"key": "todt",
+									"value": "2023-05-20",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/view_dispatch_file",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"view_dispatch_file"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Task",
+			"item": [
+				{
+					"name": "SUBTASK",
+					"item": [
+						{
+							"name": "AddSubTask",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "submit",
+											"value": "Save",
+											"type": "text"
+										},
+										{
+											"key": "taskid",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "txtStaskname",
+											"value": " testingg",
+											"type": "text"
+										},
+										{
+											"key": "Designation",
+											"value": " Choose a Designation...",
+											"type": "text"
+										},
+										{
+											"key": "Employee",
+											"value": " 2",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": " 1",
+											"type": "text"
+										},
+										{
+											"key": "starting_date",
+											"value": " 2023-05-22",
+											"type": "text"
+										},
+										{
+											"key": "deadline_date",
+											"value": " 2023-05-30",
+											"type": "text"
+										},
+										{
+											"key": "txtSComment",
+											"value": "Api Testing",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/AddSubTask",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"AddSubTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "DeleteSubTask",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "subtask_id",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/DeleteSubTask",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"DeleteSubTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "EditSubTask fetch by id",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "sub_tid",
+											"value": "5",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/EditSubTask",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"EditSubTask"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "EditSubTask",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "sub_tid",
+											"value": "5",
+											"type": "text"
+										},
+										{
+											"key": "submit",
+											"value": "Save",
+											"type": "text"
+										},
+										{
+											"key": "txtStaskname",
+											"value": "api test",
+											"type": "text"
+										},
+										{
+											"key": "Designation",
+											"value": " Choose a Designation...",
+											"type": "text"
+										},
+										{
+											"key": "Employee",
+											"value": " 2",
+											"type": "text"
+										},
+										{
+											"key": "priority",
+											"value": " 1",
+											"type": "text"
+										},
+										{
+											"key": "starting_date",
+											"value": " 2023-05-22",
+											"type": "text"
+										},
+										{
+											"key": "deadline_date",
+											"value": " 2023-05-30",
+											"type": "text"
+										},
+										{
+											"key": "txtSComment",
+											"value": " cdxcdxc",
+											"type": "text"
+										},
+										{
+											"key": "amount",
+											"value": " 1100",
+											"type": "text"
+										},
+										{
+											"key": "till_date",
+											"value": " 2024-01-18",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/EditSubTask",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"EditSubTask"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Expences",
+					"item": [
+						{
+							"name": "Expences ADD",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "exp",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "txtamount",
+											"value": "1200",
+											"type": "text"
+										},
+										{
+											"key": "txtComment",
+											"value": "Api Testing...",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/Add_TaskExpences",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"Add_TaskExpences"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Expences fetch by id",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/Edit_TaskExpences",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"Edit_TaskExpences"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Expences Edit",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "exp",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "txtamount",
+											"value": "120",
+											"type": "text"
+										},
+										{
+											"key": "txtComment",
+											"value": "Api checking...",
+											"type": "text"
+										},
+										{
+											"key": "submit",
+											"value": "Save",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/Edit_TaskExpences",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"Edit_TaskExpences"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Expences Delete",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Xtoken",
+										"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "id",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://task.mysyva.net/Delete_TaskExpences",
+									"protocol": "https",
+									"host": [
+										"task",
+										"mysyva",
+										"net"
+									],
+									"path": [
+										"Delete_TaskExpences"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "AddSubTask fetch by id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "taskid",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/AddSubTask?=",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"AddSubTask"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"description": "task_id throw fetch all subtask list"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All File for Task",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/GetAllFileforTask",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"GetAllFileforTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddTask",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "txtTaskname",
+									"value": "ApiTesting",
+									"type": "text"
+								},
+								{
+									"key": "Client",
+									"value": " 1",
+									"type": "text"
+								},
+								{
+									"key": "file[]",
+									"value": " 7",
+									"type": "text"
+								},
+								{
+									"key": "fileadd",
+									"value": " ",
+									"type": "text"
+								},
+								{
+									"key": "startingdate",
+									"value": " 2023-05-22",
+									"type": "text"
+								},
+								{
+									"key": "deadlinedate",
+									"value": " 2023-05-30",
+									"type": "text"
+								},
+								{
+									"key": "Department",
+									"value": " 1",
+									"type": "text"
+								},
+								{
+									"key": "auto_cmplt",
+									"value": " 1",
+									"type": "text"
+								},
+								{
+									"key": "txtamount",
+									"value": " 232",
+									"type": "text"
+								},
+								{
+									"key": "auto_inc",
+									"value": " 1",
+									"type": "text"
+								},
+								{
+									"key": "txtComment",
+									"value": " heyyy api",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/AddTask",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"AddTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LoadTask",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/LoadTask",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"LoadTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ViewTask",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/ViewTask",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"ViewTask"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FileforTaskView",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/DataforTaskView",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"DataforTaskView"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload_image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "userImage",
+									"type": "file",
+									"src": "/home/vivek/Downloads/transparent login form/bg.jpg"
+								},
+								{
+									"key": "id",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/upload_image",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"upload_image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload_image Edit status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "22",
+									"type": "text"
+								},
+								{
+									"key": "status",
+									"value": "0",
+									"type": "text"
+								},
+								{
+									"key": "ticket_id",
+									"value": "22",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Editupload_image",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Editupload_image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New_addComment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "comment",
+									"value": "api testing",
+									"type": "text"
+								},
+								{
+									"key": "task_id",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/New_addComment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"New_addComment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InsertDataintoFile",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "client_id",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "test",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/InsertDataintoFile",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"InsertDataintoFile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payment",
+			"item": [
+				{
+					"name": "Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Payment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view_payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "5",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/view_payment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"view_payment"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_Payment fetch base data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Payment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Client",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "file[]",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "payment",
+									"value": "7",
+									"type": "text"
+								},
+								{
+									"key": "amt",
+									"value": "352",
+									"type": "text"
+								},
+								{
+									"key": "pay_amount",
+									"value": "352",
+									"type": "text"
+								},
+								{
+									"key": "refer",
+									"value": "12",
+									"type": "text"
+								},
+								{
+									"key": "desc",
+									"value": "testt",
+									"type": "text"
+								},
+								{
+									"key": "paid_on",
+									"value": "2023-05-17",
+									"type": "text"
+								},
+								{
+									"key": "save",
+									"value": "save",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Payment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Payment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoice",
+			"item": [
+				{
+					"name": "Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Invoice",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Invoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_Invoice fetch company data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Invoice",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Invoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "Client",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "extra_particular[]",
+									"value": "api test 2",
+									"type": "text"
+								},
+								{
+									"key": "extra_amount[]",
+									"value": "1400",
+									"type": "text"
+								},
+								{
+									"key": "extra_particular[]",
+									"value": "testingg",
+									"type": "text"
+								},
+								{
+									"key": "extra_amount[]",
+									"value": "1200",
+									"type": "text"
+								},
+								{
+									"key": "particular",
+									"value": "Custom Generated Invoice",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "2600",
+									"type": "text"
+								},
+								{
+									"key": "btnSave",
+									"value": "Save",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Invoice",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Invoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate_invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/generate_invoice",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"generate_invoice"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "generate_pay_message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/generate_pay_message",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"generate_pay_message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit_invoice_data fetch",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "Client",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "amount",
+									"value": "1257",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Custom Generated Invoice",
+									"type": "text"
+								},
+								{
+									"key": "btnSave",
+									"value": "Update",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/edit_invoice_data",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"edit_invoice_data"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit_invoice_data fetch data",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/edit_invoice_data",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"edit_invoice_data"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vault_manager",
+			"item": [
+				{
+					"name": "Vault_manager",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Vault_manager",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Vault_manager"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check_user_pass",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6InRlc3QiLCJ0b2tlbiI6IiQyeSQxMCRTVHZUSTEwdG1IZU1VaGlMbnF3MEsuU1NSZlNsRmV0cnA4NW84MzdFcFpNWVpwTmFBRGVnMiJ9.LRPuQ0XHsnuC3VlE0lhtOh3Ivkpb5TMrggfpNIt-2YI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/check_user_pass",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"check_user_pass"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_vault_pass_by_id",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6InRlc3QiLCJ0b2tlbiI6IiQyeSQxMCRTVHZUSTEwdG1IZU1VaGlMbnF3MEsuU1NSZlNsRmV0cnA4NW84MzdFcFpNWVpwTmFBRGVnMiJ9.LRPuQ0XHsnuC3VlE0lhtOh3Ivkpb5TMrggfpNIt-2YI",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "1\n",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/get_vault_pass_by_id",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"get_vault_pass_by_id"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_vault",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Delete_vault",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Delete_vault"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit_vault GetData",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Edit_vault",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Edit_vault"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit_vault",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "2",
+									"type": "text"
+								},
+								{
+									"key": "company",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "moshes shah",
+									"type": "text"
+								},
+								{
+									"key": "usname",
+									"value": "admin@admin.com",
+									"type": "text"
+								},
+								{
+									"key": "pass",
+									"value": "mox@124",
+									"type": "text"
+								},
+								{
+									"key": "cpass",
+									"value": "mox@124",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "moksheshshah107@gmail.ttt",
+									"type": "text"
+								},
+								{
+									"key": "number",
+									"value": "9909526102",
+									"type": "text"
+								},
+								{
+									"key": "note",
+									"value": "123456",
+									"type": "text"
+								},
+								{
+									"key": "save",
+									"value": "save",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Edit_vault",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Edit_vault"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointment",
+			"item": [
+				{
+					"name": "Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Appointment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Message_Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "7",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Message_Appointment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Message_Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add_Message_Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "7",
+									"type": "text"
+								},
+								{
+									"key": "comment",
+									"value": "Api Testing...",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Add_Message_Appointment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Add_Message_Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Accept_Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Accept_Appointment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Accept_Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reject_Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Reject_Appointment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Reject_Appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete_Appointment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Xtoken",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "id",
+									"value": "9",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://task.mysyva.net/Delete_Appointment",
+							"protocol": "https",
+							"host": [
+								"task",
+								"mysyva",
+								"net"
+							],
+							"path": [
+								"Delete_Appointment"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

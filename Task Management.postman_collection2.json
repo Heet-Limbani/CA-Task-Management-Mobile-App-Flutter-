@@ -1,0 +1,551 @@
+{
+	"info": {
+		"_postman_id": "2f3bb135-9f1a-4726-9746-867e33c8d6a9",
+		"name": "Task Management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "admin@admin.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "mox@124",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{task_base_url}}Login",
+					"host": [
+						"{{task_base_url}}Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientProfile",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}ClientProfile",
+					"host": [
+						"{{task_base_url}}ClientProfile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientNotification",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientNotification",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientNotification"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientAppointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientAppointment",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientAppointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientPendingPaymentCheck",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "STATUS",
+							"value": "TXN_SUCCESS",
+							"type": "text"
+						},
+						{
+							"key": "TXNAMOUNT",
+							"value": "50",
+							"type": "text"
+						},
+						{
+							"key": "ORDERID",
+							"value": "1646144904",
+							"type": "text"
+						},
+						{
+							"key": "TXNID",
+							"value": "20220301111212800110168886603479875",
+							"type": "text"
+						},
+						{
+							"key": "data",
+							"value": "{\"TXNID\":\"20220301111212800110168886603479875\",\"BANKTXNID\":\"13191687374\",\"ORDERID\":\"20490900\",\"TXNAMOUNT\":\"2000.00\",\"STATUS\":\"TXN_SUCCESS\",\"TXNTYPE\":\"SALE\",\"GATEWAYNAME\":\"SBI\",\"RESPCODE\":\"01\",\"RESPMSG\":\"Txn Success\",\"BANKNAME\":\"State Bank of India\",\"MID\":\"rObZyS12051334349336\",\"PAYMENTMODE\":\"NB\",\"REFUNDAMT\":\"0.00\",\"TXNDATE\":\"2022-03-01 19:54:26.0\"}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{task_base_url}}ClientPendingPaymentCheck",
+					"host": [
+						"{{task_base_url}}ClientPendingPaymentCheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientAddAppointment",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "topic",
+							"value": "test",
+							"type": "text"
+						},
+						{
+							"key": "date",
+							"value": "02/06/2022",
+							"type": "text"
+						},
+						{
+							"key": "time",
+							"value": "08:00",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "test hello world",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{task_base_url}}ClientAddAppointment",
+					"host": [
+						"{{task_base_url}}ClientAddAppointment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientAddTask",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "txtTaskname",
+							"value": "test 123",
+							"type": "text"
+						},
+						{
+							"key": "Client",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "txtComment",
+							"value": "test desc",
+							"type": "text"
+						},
+						{
+							"key": "Department",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientAddTask",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientAddTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientOutstanding",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientOutstanding",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientOutstanding"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientTickets",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}ClientTickets",
+					"host": [
+						"{{task_base_url}}ClientTickets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientTransactions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientTransactions",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientTransactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientTickets/ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientTickets/1",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientTickets",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Department",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/Department",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"Department"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientCompanyFiles/ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientCompanyFiles/2",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientCompanyFiles",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientCompanyPassbook/ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}ClientCompanyPassbook/2",
+					"host": [
+						"{{task_base_url}}ClientCompanyPassbook"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ChangePassword",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "current_password",
+							"value": "mox123",
+							"type": "text"
+						},
+						{
+							"key": "new_pass",
+							"value": "mox123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ChangePassword",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ChangePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientCompany",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRiZkVpSmFDS2dYN3Q4aW5KVmpYYlVPME51RUFqVEdYRmVmSkRlc2FaWldjY2VsQ1VwRXF4cSJ9.BzD52Mm6ilAFfvgnwoHE2tHKnrhAhonyjmgqCv7MNvY"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientCompany",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientCompany"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ClientUploadTicketDoc/ID",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Xtoken",
+						"type": "text",
+						"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRiZkVpSmFDS2dYN3Q4aW5KVmpYYlVPME51RUFqVEdYRmVmSkRlc2FaWldjY2VsQ1VwRXF4cSJ9.BzD52Mm6ilAFfvgnwoHE2tHKnrhAhonyjmgqCv7MNvY"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "userImage",
+							"type": "file",
+							"src": "/home/mysyva/Pictures/2.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{task_base_url}}/ClientUploadTicketDoc/1",
+					"host": [
+						"{{task_base_url}}"
+					],
+					"path": [
+						"ClientUploadTicketDoc",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
