@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/pages/DashBoard/home.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/Theme/app_theme.dart';
+import 'package:task_manager/ui/Theme/app_theme.dart';
+import 'package:http/http.dart' as http;
+import 'package:task_manager/ui/models/genModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:task_manager/API/urls.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +22,10 @@ class _LoginScreenState extends State<LoginScreen> {
   int index = 0;
   final _clientFormKey = GlobalKey<FormState>();
   final _employeeFormKey = GlobalKey<FormState>();
+  final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordControllerC = TextEditingController();
+  final emailControllerC = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
@@ -59,7 +69,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: TextStyle(
                             fontSize: 34, fontWeight: FontWeight.bold),
                       ),
-                    
                       Form(
                           key: _clientFormKey,
                           child: Column(
@@ -177,8 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonClient(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        //Get.off(HomeScreen());
-        Get.off(() => HomeScreen());
+        loginClient();
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -196,9 +204,10 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               "Login",
               style: TextStyle(
-                  color: AppTheme.colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold),
+                color: AppTheme.colors.white,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -206,9 +215,59 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  //  Future<genModel?> genmodel = urls.postApiCall('${urls.baseUrlMain}Login', {
+  //     "email": emailControllerC.text,
+  //     "password": passwordControllerC.text,
+  //     }
+  //   );
+
+  genModel? genmodel;
+  void loginClient() async {
+    genmodel = await urls.postApiCall('${urls.login}', {
+      "email": emailControllerC.text,
+      "password": passwordControllerC.text,
+    });
+    if (genmodel != null) {
+      print('Status: ${genmodel?.message}');
+       Fluttertoast.showToast(msg: genmodel!.message.toString());
+      if (genmodel?.status == true) {
+        Get.off(() => HomeScreen());
+      }
+    }
+  }
+
+  // void loginClient() async {
+  //   try {
+  //     var request = http.Request(
+  //         'POST', Uri.parse('${urls.baseUrlMain}Login' ));
+
+  //     request.body = json.encode({
+  //       "email": emailControllerC.text,
+  //       "password": passwordControllerC.text,
+  //     });
+  //     //request.headers.addAll({  'Content-Type': 'application/json',});
+  //     http.StreamedResponse response = await request.send();
+
+  //     if (response.statusCode == 200) {
+  //       //  print(await response.stream.bytesToString());
+  //       genModel? genmodel = genModel
+  //           .fromJson(json.decode(await response.stream.bytesToString()));
+  //      Fluttertoast.showToast(msg: genmodel.message.toString());
+  //       print('Status: ${genmodel.message}');
+  //       if (genmodel.status == true) {
+  //         Get.off(() => HomeScreen());
+  //       }
+  //     } else {
+  //       print(response.reasonPhrase);
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //   }
+  // }
+
   TextFormField buildPasswordFormFieldClient() {
     return TextFormField(
-      controller: TextEditingController(),
+      controller: passwordControllerC,
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
@@ -216,32 +275,37 @@ class _LoginScreenState extends State<LoginScreen> {
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 10),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 10,
+        ),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 2),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 2,
+        ),
       ),
     );
   }
 
   TextFormField buildEmailFormFieldClient() {
     return TextFormField(
+      controller: emailControllerC,
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Email or Username",
         suffixIcon: Icon(Icons.email_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 10),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 10,
+        ),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 2),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 2,
+        ),
       ),
     );
   }
@@ -250,9 +314,8 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        //Get.off(HomeScreen());
-        Get.off(() => HomeScreen());
-
+         Get.off(() => HomeScreen());
+        //loginEmployee();
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -270,9 +333,10 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Text(
               "Login",
               style: TextStyle(
-                  color: AppTheme.colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold),
+                color: AppTheme.colors.white,
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ),
@@ -280,8 +344,67 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // void loginEmployee() async {
+  //   genmodel = await urls.postApiCall('${urls.login}', {
+  //     "email": emailController.text,
+  //     "password": passwordController.text,
+  //   });
+  //   if (genmodel != null) {
+  //     print('Status: ${genmodel?.message}');
+  //      Fluttertoast.showToast(msg: genmodel!.message.toString());
+  //     if (genmodel?.status == true) {
+  //       Get.off(() => HomeScreen());
+  //     }
+  //   }
+  // }
+
+  // void login() async {
+  //   try {
+  //     var request = http.MultipartRequest(
+  //         'POST', Uri.parse('https://task.mysyva.net/backend/Login'));
+  //     request.fields.addAll({
+  //       'email': emailController.text,
+  //       'password': passwordController.text,
+  //       'token': ''
+  //     });
+
+  //     http.StreamedResponse response = await request.send();
+
+  //     if (response.statusCode == 200) {
+  //       print(await response.stream.bytesToString());
+  //       // Successful login
+  //       Get.off(() => HomeScreen());
+  //     } else {
+  //       // Login failed
+  //       print(response.reasonPhrase);
+  //       // Display an error message to the user
+  //       showDialog(
+  //         context: context, // Replace `context` with your actual context
+  //         builder: (context) {
+  //           return AlertDialog(
+  //             title: Text('Login Failed'),
+  //             content: Text('Incorrect email or password. Please try again.'),
+  //             actions: [
+  //               TextButton(
+  //                 onPressed: () {
+  //                   Navigator.of(context).pop();
+  //                 },
+  //                 child: Text('OK'),
+  //               ),
+  //             ],
+  //           );
+  //         },
+  //       );
+  //     }
+  //   } catch (e) {
+  //     print('Error: $e');
+  //     // Handle other exceptions, e.g., display a generic error message
+  //   }
+  // }
+
   TextFormField buildPasswordFormFieldEmployee() {
     return TextFormField(
+      controller: passwordController,
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
@@ -289,32 +412,37 @@ class _LoginScreenState extends State<LoginScreen> {
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 10),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 10,
+        ),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 2),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 2,
+        ),
       ),
     );
   }
 
   TextFormField buildEmailFormFieldEmployee() {
     return TextFormField(
+      controller: emailController,
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "Email or Username",
         suffixIcon: Icon(Icons.email_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 10),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 10,
+        ),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-            borderSide: BorderSide(color: AppTheme.colors.black),
-            gapPadding: 2),
+          borderRadius: BorderRadius.circular(28),
+          borderSide: BorderSide(color: AppTheme.colors.black),
+          gapPadding: 2,
+        ),
       ),
     );
   }

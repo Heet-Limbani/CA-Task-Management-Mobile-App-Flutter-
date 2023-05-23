@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
@@ -79,6 +78,9 @@ class SideBar extends StatelessWidget {
             ),
           ),
           // Various options
+          ListTile(
+            title: Text('Admin'),
+          ),
           ListTile(
             leading: Icon(Icons.person),
             title: Text('Profile'),
@@ -198,9 +200,9 @@ class SideBar extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.notifications),
             title: Text('Notification'),
-             onTap: () {
-                  Get.off(Notification1());
-                },
+            onTap: () {
+              Get.off(Notification1());
+            },
           ),
           ListTile(
             leading: Icon(Icons.folder),
@@ -341,6 +343,74 @@ class SideBar extends StatelessWidget {
                 },
               ),
             ],
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            onTap: () {
+              Get.off(LoginScreen());
+            },
+          ),
+          ListTile(
+            title: Text('Client '),
+          ),
+          ListTile(
+            leading: Icon(Icons.dashboard),
+            title: Text('Dashboard'),
+          ),
+          ListTile(
+            leading: Icon(Icons.work_outline),
+            title: Text('Company Details'),
+          ),
+          ListTile(
+            leading: Icon(Icons.payment),
+            title: Text('Client Manual Payment'),
+          ),
+          ListTile(
+            leading: Icon(Icons.receipt),
+            title: Text('Ticket'),
+          ),
+          ListTile(
+            leading: Icon(Icons.inventory_outlined),
+            title: Text('Invoice '),
+          ),
+          ListTile(
+            leading: Icon(Icons.app_registration),
+            title: Text('Appointment'),
+          ),
+          ListTile(
+            leading: Icon(Icons.chat),
+            title: Text('Admin Chat'),
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            onTap: () {
+              Get.off(LoginScreen());
+            },
+          ),
+          ListTile(
+            title: Text('Employee'),
+          ),
+            ListTile(
+               leading: Icon(Icons.task),
+            title: Text('Company Task'),
+          ),
+           ListTile(
+               leading: Icon(Icons.work_outline),
+            title: Text('Company'),
+          ),
+          ListTile(
+               leading: Icon(Icons.list),
+            title: Text('Task List'),
+          ),
+           ListTile(
+               leading: Icon(Icons.receipt),
+            title: Text('Leave Application'),
+          ),
+          ListTile(
+            leading: Icon(Icons.chat),
+            title: Text('Admin Chat'),
           ),
           ListTile(
             leading: Icon(Icons.logout),

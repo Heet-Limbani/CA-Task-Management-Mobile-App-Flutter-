@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import '../DashBoard/sidebar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class Employee extends StatefulWidget {
   const Employee({super.key});
@@ -10,8 +13,35 @@ class Employee extends StatefulWidget {
   State<Employee> createState() => _EmployeeState();
 }
 
+String? stringResponse;
+Map? mapResponse;
+Map? dataResponse;
+
 class _EmployeeState extends State<Employee> {
+
+  Future apicall() async{
+    http.Response response;
+   response = await http.post(Uri.parse("https://task.mysyva.net/backend/GetUsers"));
+
+   if(response.statusCode == 200){
+     setState(() {
+       //stringResponse = response.body;
+       mapResponse = json.decode(response.body);
+       dataResponse = mapResponse!["data"];
+     });
+   }
+   else{
+     print(response.statusCode);
+   }
+  }
+  
   @override
+  void initState(){
+     apicall();
+    super.initState();
+   
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -61,6 +91,10 @@ Stack _buildBody() {
                 height: 10,
               ),
               _table(),
+               const SizedBox(
+                height: 50,
+              ),
+              _test(),
               const SizedBox(
                 height: 50,
               ),
@@ -127,6 +161,25 @@ Row _add() {
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+Row _test() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        height: 100,
+        width: 200,
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 182, 212, 237),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Center(
+          child: dataResponse == null ? Text("data Is Loading"):Text(dataResponse!["first_name"].toString(),
           ),
         ),
       ),
@@ -213,4 +266,5 @@ Column _table() {
       ),
     ],
   );
+  
 }
