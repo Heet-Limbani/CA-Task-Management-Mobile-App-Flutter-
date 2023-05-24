@@ -1,13 +1,9 @@
 // ignore_for_file: prefer_const_constructors
-
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/pages/DashBoard/home.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:http/http.dart' as http;
-import 'package:task_manager/ui/models/genModel.dart';
+import 'package:task_manager/API/model/genModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/urls.dart';
 
@@ -34,31 +30,31 @@ class _LoginScreenState extends State<LoginScreen> {
     final screens = [
       // Client Login Screen
       SafeArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: deviceHeight * 0.30,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/28_generated1.png',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: deviceHeight * 0.30,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/28_generated1.png',
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: AppTheme.colors.white,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(50.0),
-                      topRight: Radius.circular(50.0))),
-              child: SingleChildScrollView(
-                child: Column(
+            Expanded(
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: AppTheme.colors.white,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(50.0),
+                        topRight: Radius.circular(50.0))),
+                child: SingleChildScrollView(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
@@ -70,58 +66,61 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontSize: 34, fontWeight: FontWeight.bold),
                       ),
                       Form(
-                          key: _clientFormKey,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 30, left: 25, right: 25, bottom: 8),
-                                // Email Text Field for Client
-                                child: buildEmailFormFieldClient(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25, right: 25, bottom: 25, top: 8),
-                                // Password Text Field for Client
-                                child: buildPasswordFormFieldClient(),
-                              ),
-                              // Login Button for Client
-                              loginButtonClient(deviceHeight)
-                            ],
-                          ))
-                    ]),
+                        key: _clientFormKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 30, left: 25, right: 25, bottom: 8),
+                              // Email Text Field for Client
+                              child: buildEmailFormFieldClient(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25, right: 25, bottom: 25, top: 8),
+                              // Password Text Field for Client
+                              child: buildPasswordFormFieldClient(),
+                            ),
+                            // Login Button for Client
+                            loginButtonClient(deviceHeight)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
-      )),
+            )
+          ],
+        ),
+      ),
       // Employee Login Screen
       SafeArea(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            height: deviceHeight * 0.30,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/28_generated1.png',
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: deviceHeight * 0.30,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/images/28_generated1.png',
+                  ),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
               ),
             ),
-          ),
-          Expanded(
-            child: Container(
-              height: double.infinity,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: AppTheme.colors.white,
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(50.0),
-                      topRight: Radius.circular(50.0))),
-              child: SingleChildScrollView(
-                child: Column(
+            Expanded(
+              child: Container(
+                height: double.infinity,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                    color: AppTheme.colors.white,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(50.0),
+                        topRight: Radius.circular(50.0))),
+                child: SingleChildScrollView(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
@@ -133,31 +132,34 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontSize: 34, fontWeight: FontWeight.bold),
                       ),
                       Form(
-                          key: _employeeFormKey,
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 30, left: 25, right: 25, bottom: 8),
-                                // Email Text Field for Employee
-                                child: buildEmailFormFieldEmployee(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 25, right: 25, bottom: 25, top: 8),
-                                // Password Text Field for Employee
-                                child: buildPasswordFormFieldEmployee(),
-                              ),
-                              // Login Button for Employee
-                              loginButtonEmployee(deviceHeight)
-                            ],
-                          ))
-                    ]),
+                        key: _employeeFormKey,
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 30, left: 25, right: 25, bottom: 8),
+                              // Email Text Field for Employee
+                              child: buildEmailFormFieldEmployee(),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 25, right: 25, bottom: 25, top: 8),
+                              // Password Text Field for Employee
+                              child: buildPasswordFormFieldEmployee(),
+                            ),
+                            // Login Button for Employee
+                            loginButtonEmployee(deviceHeight)
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
-      )),
+            )
+          ],
+        ),
+      ),
     ];
     return Scaffold(
       // Navigation Bar
@@ -223,13 +225,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   genModel? genmodel;
   void loginClient() async {
-    genmodel = await urls.postApiCall('${urls.login}', {
-      "email": emailControllerC.text,
-      "password": passwordControllerC.text,
-    });
+    genmodel = await urls.postApiCall(
+      '${urls.login}',
+      {
+        "email": emailControllerC.text,
+        "password": passwordControllerC.text,
+      },
+      {
+        
+      }
+    );
     if (genmodel != null) {
       print('Status: ${genmodel?.message}');
-       Fluttertoast.showToast(msg: genmodel!.message.toString());
+      Fluttertoast.showToast(msg: genmodel!.message.toString());
       if (genmodel?.status == true) {
         Get.off(() => HomeScreen());
       }
@@ -314,7 +322,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonEmployee(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-         Get.off(() => HomeScreen());
+        Get.off(() => HomeScreen());
         //loginEmployee();
       },
       child: Padding(

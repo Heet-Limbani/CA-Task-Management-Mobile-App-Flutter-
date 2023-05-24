@@ -6,7 +6,7 @@ class TaskGroupContainer extends StatelessWidget {
   final bool? isSmall;
   final IconData icon;
   final String taskGroup;
-  final num taskCount;
+  final dynamic taskCount;
   const TaskGroupContainer({
     Key? key,
     required this.color,
