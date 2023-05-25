@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
 import 'package:task_manager/API/model/countDataModel.dart';
+import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebar.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/model/clientLogDataModel.dart';
 import '../../../API/model/genModel.dart';
 import 'package:task_manager/API/model/birthDayDataModel.dart';
 
@@ -27,6 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     clientDashboard();
     birthDayTable();
+    holidayTable();
+    clientTable();
   }
 
   CountData? dataCount;
@@ -39,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
       headers,
     );
     if (genmodel != null) {
-      print('Status: ${genmodel.message}');
+      //print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
         //print('Data: ${genmodel?.data}');
 
@@ -61,21 +67,80 @@ class _HomeScreenState extends State<HomeScreen> {
       headers,
     );
     if (genmodel != null) {
-      print('Status: ${genmodel.message}');
+      // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
         //print('Data: ${genmodel?.data}');
 
         final data = genmodel.data;
         dataBirthdayList = BirthDayList.fromJson(data);
         if (dataBirthdayList?.birthday != null) {
-        for (Birthday birthday in dataBirthdayList!.birthday!) {
-          print('BirthDay ID: ${birthday.id}');
+          // for (Birthday birthday in dataBirthdayList!.birthday!) {
+          //   print('BirthDay ID: ${birthday.id}');
+          // }
         }
-      }
         setState(() {});
       }
     }
   }
+
+  HolidayList? dataHolidayList;
+  void holidayTable() async {
+    final headers = urls.xToken;
+
+    genModel? genmodel = await urls.postApiCall(
+      '${urls.adminDashBoard}',
+      {},
+      headers,
+    );
+    if (genmodel != null) {
+      // print('Status: ${genmodel.message}');
+      if (genmodel.status == true) {
+        //print('Data: ${genmodel?.data}');
+
+        final data = genmodel.data;
+        dataHolidayList = HolidayList.fromJson(data);
+        // if (dataHolidayList?.holiday != null) {
+        //   for (Holiday holiday in dataHolidayList!.holiday!) {
+        //     print('Holiday ID: ${holiday.title}');
+        //   }
+        // }
+        setState(() {});
+      }
+    }
+  }
+
+ void clientTable() async {
+  final headers = urls.xToken;
+
+  genModel? genmodel = await urls.postApiCall(
+    '${urls.clientLog}',
+    {},
+    headers,
+  );
+
+  if (genmodel != null && genmodel.status == true) {
+    final data = genmodel.data;
+
+    if (data != null && data is List) {
+      List<Client> clients = data.map((item) => Client.fromJson(item)).toList();
+
+      for (Client client in clients) {
+        print('Client ID: ${client.id}');
+        print('Client Name: ${client.client}');
+        print('Message: ${client.message}');
+        // Print other client properties as needed
+      }
+
+      setState(() {
+        // Update the UI state if necessary
+      });
+    }
+  }
+}
+
+
+
+
 
   Stack _buildBody() {
     return Stack(
@@ -151,7 +216,6 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(
           height: 20,
         ),
-       
         Container(
           child: Text(''),
         ),
@@ -516,32 +580,61 @@ class _HomeScreenState extends State<HomeScreen> {
                   DataTable(
                     columns: const [
                       DataColumn(label: Text('Sr. No.'), numeric: true),
-                      DataColumn(label: Text('User')),
+                      DataColumn(label: Text('User ID')),
                       DataColumn(label: Text('Name')),
                       DataColumn(label: Text('Birth Date')),
+                      // DataColumn(label: Text('Meta Key')),
+                      // DataColumn(label: Text('Meta Value')),
+                      // DataColumn(label: Text('Type')),
                     ],
-                    rows: const [
-                      DataRow(cells: [
-                        DataCell(Text('1')),
-                        DataCell(Text('John')),
-                        DataCell(Text('Hello')),
-                        DataCell(Text('2023-05-10')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('2')),
-                        DataCell(Text('Jane')),
-                        DataCell(Text('Hi')),
-                        DataCell(Text('2023-05-11')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('3')),
-                        DataCell(Text('Bob')),
-                        DataCell(Text('Hey')),
-                        DataCell(Text('2023-05-12')),
-                      ]),
-                    ],
+                    rows: dataBirthdayList?.birthday?.map((birthday) {
+                          final index =
+                              dataBirthdayList?.birthday?.indexOf(birthday) ??
+                                  -1;
+                          final srNo = (index + 1).toString();
+                          final userId = birthday.userId;
+                          final name = birthday.userName;
+
+                          return DataRow(cells: [
+                            DataCell(Text(srNo)),
+                            DataCell(Text(userId!)),
+                            DataCell(Text(name!)),
+                            DataCell(Text('')),
+                          ]);
+                        }).toList() ??
+                        [],
                     dataRowHeight: 32.0,
                   ),
+
+                  // DataTable(
+                  //   columns: const [
+                  //     DataColumn(label: Text('Sr. No.'), numeric: true),
+                  //     DataColumn(label: Text('User')),
+                  //     DataColumn(label: Text('Name')),
+                  //     DataColumn(label: Text('Birth Date')),
+                  //   ],
+                  //   rows: const [
+                  //     DataRow(cells: [
+                  //       DataCell(Text('1')),
+                  //       DataCell(Text('John')),
+                  //       DataCell(Text('Hello')),
+                  //       DataCell(Text('2023-05-10')),
+                  //     ]),
+                  //     DataRow(cells: [
+                  //       DataCell(Text('2')),
+                  //       DataCell(Text('Jane')),
+                  //       DataCell(Text('Hi')),
+                  //       DataCell(Text('2023-05-11')),
+                  //     ]),
+                  //     DataRow(cells: [
+                  //       DataCell(Text('3')),
+                  //       DataCell(Text('Bob')),
+                  //       DataCell(Text('Hey')),
+                  //       DataCell(Text('2023-05-12')),
+                  //     ]),
+                  //   ],
+                  //   dataRowHeight: 32.0,
+                  // ),
                 ],
               ),
             ),
@@ -581,28 +674,57 @@ class _HomeScreenState extends State<HomeScreen> {
                       DataColumn(label: Text('Description')),
                       DataColumn(label: Text('Date')),
                     ],
-                    rows: const [
-                      DataRow(cells: [
-                        DataCell(Text('1')),
-                        DataCell(Text('John')),
-                        DataCell(Text('Hello')),
-                        DataCell(Text('2023-05-10')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('2')),
-                        DataCell(Text('Jane')),
-                        DataCell(Text('Hi')),
-                        DataCell(Text('2023-05-11')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('3')),
-                        DataCell(Text('Bob')),
-                        DataCell(Text('Hey')),
-                        DataCell(Text('2023-05-12')),
-                      ]),
-                    ],
+                    rows: dataHolidayList?.holiday?.map((holiday) {
+                          final index =
+                              dataHolidayList?.holiday?.indexOf(holiday) ?? -1;
+                          final srNo = (index + 1).toString();
+                          final title = holiday.title ?? '';
+                          final description = holiday.description ?? '';
+                          final date = DateTime.fromMillisecondsSinceEpoch(
+                              (int.tryParse(holiday.date!.toString()) ?? 0) *
+                                  1000);
+                          final formattedDate =
+                              DateFormat('dd/MM/yyyy').format(date);
+                          return DataRow(cells: [
+                            DataCell(Text(srNo)),
+                            DataCell(Text(title)),
+                            DataCell(Text(description)),
+                            DataCell(Text(formattedDate.toString())),
+                          ]);
+                        }).toList() ??
+                        [],
                     dataRowHeight: 32.0,
-                  ),
+                  )
+
+                  // DataTable(
+                  //   columns: const [
+                  //     DataColumn(label: Text('Sr. No.'), numeric: true),
+                  //     DataColumn(label: Text('Title')),
+                  //     DataColumn(label: Text('Description')),
+                  //     DataColumn(label: Text('Date')),
+                  //   ],
+                  //   rows: const [
+                  //     DataRow(cells: [
+                  //       DataCell(Text('1')),
+                  //       DataCell(Text('John')),
+                  //       DataCell(Text('Hello')),
+                  //       DataCell(Text('2023-05-10')),
+                  //     ]),
+                  //     DataRow(cells: [
+                  //       DataCell(Text('2')),
+                  //       DataCell(Text('Jane')),
+                  //       DataCell(Text('Hi')),
+                  //       DataCell(Text('2023-05-11')),
+                  //     ]),
+                  //     DataRow(cells: [
+                  //       DataCell(Text('3')),
+                  //       DataCell(Text('Bob')),
+                  //       DataCell(Text('Hey')),
+                  //       DataCell(Text('2023-05-12')),
+                  //     ]),
+                  //   ],
+                  //   dataRowHeight: 32.0,
+                  // ),
                 ],
               ),
             ),
@@ -867,4 +989,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
