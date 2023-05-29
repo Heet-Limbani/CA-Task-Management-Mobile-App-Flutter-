@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebar.dart';
+import '../DashBoard/sidebarAdmin.dart';
 
 class Client extends StatefulWidget {
   const Client({super.key});
@@ -24,7 +24,7 @@ class _ClientState extends State<Client> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBar(),
+      drawer: const SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebar.dart';
+import '../DashBoard/sidebarAdmin.dart';
 
 class File_Manager extends StatefulWidget {
   const File_Manager({super.key});
@@ -24,7 +24,7 @@ class _File_ManagerState extends State<File_Manager> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBar(),
+      drawer: const SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

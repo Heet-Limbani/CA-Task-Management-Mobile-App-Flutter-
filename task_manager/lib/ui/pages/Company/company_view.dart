@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebar.dart';
+import '../DashBoard/sidebarAdmin.dart';
 
 class Company_View extends StatefulWidget {
   const Company_View({super.key});
@@ -24,7 +24,7 @@ class _Company_ViewState extends State<Company_View> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBar(),
+      drawer: const SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

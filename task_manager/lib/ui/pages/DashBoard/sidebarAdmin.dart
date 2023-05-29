@@ -22,7 +22,7 @@ import 'package:task_manager/ui/pages/Setting/sent.dart';
 import 'package:task_manager/ui/pages/Task/add_task.dart';
 import 'package:task_manager/ui/pages/Task/task_report.dart';
 import 'package:task_manager/ui/pages/Users/employee.dart';
-import 'package:task_manager/ui/pages/DashBoard/home.dart';
+import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/pages/Profile/profile1.dart';
 import '../Admin_Leave/admin_leave.dart';
 import '../Client_Login/client_login.dart';
@@ -37,8 +37,8 @@ import '../Task/task_on_board.dart';
 import '../Users/client.dart';
 import 'package:task_manager/ui/pages/Notification/notification1.dart';
 
-class SideBar extends StatelessWidget {
-  const SideBar({super.key});
+class SideBarAdmin extends StatelessWidget {
+  const SideBarAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class SideBar extends StatelessWidget {
               leading: Icon(Icons.dashboard),
               title: Text('Dashboard'),
               onTap: () {
-                Get.offAll(HomeScreen());
+                Get.offAll(HomeAdminScreen());
               }),
           ExpansionTile(
             title: Text('Users'),
@@ -351,74 +351,7 @@ class SideBar extends StatelessWidget {
               Get.off(LoginScreen());
             },
           ),
-          ListTile(
-            title: Text('Client '),
-          ),
-          ListTile(
-            leading: Icon(Icons.dashboard),
-            title: Text('Dashboard'),
-          ),
-          ListTile(
-            leading: Icon(Icons.work_outline),
-            title: Text('Company Details'),
-          ),
-          ListTile(
-            leading: Icon(Icons.payment),
-            title: Text('Client Manual Payment'),
-          ),
-          ListTile(
-            leading: Icon(Icons.receipt),
-            title: Text('Ticket'),
-          ),
-          ListTile(
-            leading: Icon(Icons.inventory_outlined),
-            title: Text('Invoice '),
-          ),
-          ListTile(
-            leading: Icon(Icons.app_registration),
-            title: Text('Appointment'),
-          ),
-          ListTile(
-            leading: Icon(Icons.chat),
-            title: Text('Admin Chat'),
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-            onTap: () {
-              Get.off(LoginScreen());
-            },
-          ),
-          ListTile(
-            title: Text('Employee'),
-          ),
-            ListTile(
-               leading: Icon(Icons.task),
-            title: Text('Company Task'),
-          ),
-           ListTile(
-               leading: Icon(Icons.work_outline),
-            title: Text('Company'),
-          ),
-          ListTile(
-               leading: Icon(Icons.list),
-            title: Text('Task List'),
-          ),
-           ListTile(
-               leading: Icon(Icons.receipt),
-            title: Text('Leave Application'),
-          ),
-          ListTile(
-            leading: Icon(Icons.chat),
-            title: Text('Admin Chat'),
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-            onTap: () {
-              Get.off(LoginScreen());
-            },
-          ),
+         
         ],
       ),
     );

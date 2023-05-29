@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebar.dart';
+import '../DashBoard/sidebarAdmin.dart';
 
 class Manual_Payment extends StatefulWidget {
   const Manual_Payment({super.key});
@@ -24,7 +24,7 @@ class _Manual_PaymentState extends State<Manual_Payment> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBar(),
+      drawer: const SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

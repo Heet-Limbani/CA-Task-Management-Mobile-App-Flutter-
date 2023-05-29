@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebar.dart';
+import '../DashBoard/sidebarAdmin.dart';
 
 class profile1 extends StatefulWidget {
   @override
@@ -141,7 +141,7 @@ class _profile1State extends State<profile1> {
           ),
         ),
       ),
-      drawer: const SideBar(),
+      drawer: const SideBarAdmin(),
       extendBody: true,
     );
   }

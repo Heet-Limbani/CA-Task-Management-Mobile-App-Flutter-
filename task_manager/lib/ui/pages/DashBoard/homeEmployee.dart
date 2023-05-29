@@ -1,15 +1,16 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebar.dart';
+import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/DashBoard/sidebarEmployee.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/urls.dart';
@@ -17,23 +18,66 @@ import 'package:task_manager/API/model/clientLogDataModel.dart';
 import '../../../API/model/genModel.dart';
 import 'package:task_manager/API/model/birthDayDataModel.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class HomeEmployeeScreen extends StatefulWidget {
+  const HomeEmployeeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeEmployeeScreen> createState() => _HomeEmployeeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
+  List<Client> clients = [];
+  late double deviceWidth ;
+  late double deviceHeight ;
+
   @override
   void initState() {
     super.initState();
+
+    
 
     clientDashboard();
     birthDayTable();
     holidayTable();
     clientTable();
   }
+
+   @override
+  Widget build(BuildContext context) {
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Task Manager",
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: CircleGradientIcon(
+              onTap: () {},
+              icon: Icons.calendar_month,
+              color: Colors.purple,
+              iconSize: 24,
+              size: 40,
+            ),
+          )
+        ],
+        foregroundColor: Colors.grey,
+        backgroundColor: Colors.transparent,
+      ),
+      drawer: const SideBarEmployee(),
+      extendBody: true,
+      body: _buildBody(),
+    );
+  }
+  
+  
 
   CountData? dataCount;
   void clientDashboard() async {
@@ -52,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
         final data = genmodel.data;
         dataCount = CountData.fromJson(data);
         //print('data  ${dataCount?.count?.pendingCount}');
+
         setState(() {});
       }
     }
@@ -109,38 +154,32 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
- void clientTable() async {
-  final headers = urls.xToken;
+  void clientTable() async {
+    final headers = urls.xToken;
 
-  genModel? genmodel = await urls.postApiCall(
-    '${urls.clientLog}',
-    {},
-    headers,
-  );
+    genModel? genmodel = await urls.postApiCall(
+      '${urls.clientLog}',
+      {},
+      headers,
+    );
 
-  if (genmodel != null && genmodel.status == true) {
-    final data = genmodel.data;
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
 
-    if (data != null && data is List) {
-      List<Client> clients = data.map((item) => Client.fromJson(item)).toList();
-
-      for (Client client in clients) {
-        print('Client ID: ${client.id}');
-        print('Client Name: ${client.client}');
-        print('Message: ${client.message}');
-        // Print other client properties as needed
+      if (data != null && data is List) {
+        clients = data.map((item) => Client.fromJson(item)).toList();
+        // for (Client client in clients) {
+        //   print('Client ID: ${client.id}');
+        //   print('Client Name: ${client.client}');
+        //   print('Message: ${client.message}');
+        //   // Print other client properties as needed
+        // }
+        setState(() {
+          // Update the UI state if necessary
+        });
       }
-
-      setState(() {
-        // Update the UI state if necessary
-      });
     }
   }
-}
-
-
-
-
 
   Stack _buildBody() {
     return Stack(
@@ -154,21 +193,14 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
-                _admin(),
-                const SizedBox(
-                  height: 100,
-                ),
-                _client(),
-                const SizedBox(
-                  height: 100,
-                ),
+                // _admin(),
+
+                // _client(),
+
                 _employee(),
-                const SizedBox(
-                  height: 100,
-                ),
               ],
             ),
           ),
@@ -177,16 +209,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  String client = "";
+
+  String message = "";
+
+  String description = "";
+
+  var measure;
+
+  String Function(DateTime date) date = DateFormat('dd/MM/yyyy').format;
+
   Column _admin() {
     final GlobalKey<FormState> _formKey = GlobalKey();
-    // ignore: unused_local_variable
-    String client = "";
-    // ignore: unused_local_variable
-    String message = "";
-    // ignore: unused_local_variable
-    String description = "";
-    // ignore: unused_local_variable
-    var measure;
 
     return Column(
       children: [
@@ -213,14 +247,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ))
           ],
         ),
-        const SizedBox(
-          height: 20,
-        ),
-        Container(
-          child: Text(''),
-        ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.05,
         ),
         StaggeredGrid.count(
           crossAxisCount: 2,
@@ -314,7 +342,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 50,
+          height: deviceHeight * 0.1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -342,7 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 200,
+          height: deviceHeight * 0.2,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -360,7 +388,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.02,
         ),
         Column(
           children: <Widget>[
@@ -398,8 +426,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       return null;
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
+                   SizedBox(
+                    height: deviceHeight * 0.02,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -430,8 +458,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       });
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: deviceHeight * 0.02,
                   ),
                   TextFormField(
                     decoration: const InputDecoration(
@@ -445,25 +473,54 @@ class _HomeScreenState extends State<HomeScreen> {
                     keyboardType: TextInputType.text,
                     onFieldSubmitted: (value) {
                       setState(() {
-                        message = value;
+                        description = value;
                         // bodyTempList.add(bodyTemp);
                       });
                     },
                     onChanged: (value) {
                       setState(() {
-                        message = value;
+                        description = value;
                       });
                     },
                   ),
-                  const SizedBox(
-                    height: 20,
+                   SizedBox(
+                    height: deviceHeight * 0.02,
                   ),
-                  InputDatePickerFormField(
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now()),
-                  const SizedBox(
-                    height: 20,
+                  TextFormField(
+                    decoration: const InputDecoration(
+                        labelText: 'Description',
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide:
+                              BorderSide(color: Colors.grey, width: 0.0),
+                        ),
+                        border: OutlineInputBorder()),
+                    keyboardType: TextInputType.text,
+                    onTap: () async {
+                      DateTime? datePicked = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2000),
+                        lastDate: DateTime(3000),
+                      );
+                      if (datePicked != null) {
+                        (datePicked);
+                      }
+                    },
+                    onFieldSubmitted: (value) {
+                      setState(() {
+                        date = value as String Function(DateTime date);
+                        // bodyTempList.add(bodyTemp);
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        date = value as String Function(DateTime date);
+                      });
+                    },
+                  ),
+                  SizedBox(
+                     height: deviceHeight * 0.02,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -482,7 +539,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 50,
+          height: deviceHeight * 0.1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -500,7 +557,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.02,
         ),
         Column(
           children: <Widget>[
@@ -517,41 +574,74 @@ class _HomeScreenState extends State<HomeScreen> {
                       DataColumn(label: Text('Date')),
                       DataColumn(label: Text('Created On')),
                     ],
-                    rows: const [
-                      DataRow(cells: [
-                        DataCell(Text('1')),
-                        DataCell(Text('John')),
-                        DataCell(Text('Hello')),
-                        DataCell(Text('Lorem ipsum dolor sit amet')),
-                        DataCell(Text('2023-05-10')),
-                        DataCell(Text('2023-05-10')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('2')),
-                        DataCell(Text('Jane')),
-                        DataCell(Text('Hi')),
-                        DataCell(Text('Consectetur adipiscing elit')),
-                        DataCell(Text('2023-05-11')),
-                        DataCell(Text('2023-05-11')),
-                      ]),
-                      DataRow(cells: [
-                        DataCell(Text('3')),
-                        DataCell(Text('Bob')),
-                        DataCell(Text('Hey')),
-                        DataCell(Text('Sed do eiusmod tempor incididunt')),
-                        DataCell(Text('2023-05-12')),
-                        DataCell(Text('2023-05-12')),
-                      ]),
-                    ],
+                    rows: clients.map((client) {
+                      final index = clients.indexOf(client);
+                      final srNo = (index + 1).toString();
+
+                      // Parse createdOn string to DateTime
+                      final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+                      final createdOnDate =
+                          createdOnFormat.parse(client.createdOn ?? '');
+
+                      // Format the date as dd/mm/yyyy
+                      final formattedDate =
+                          DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+                      return DataRow(cells: [
+                        DataCell(Text(srNo)),
+                        DataCell(Text(client.client ?? '')),
+                        DataCell(Text(client.message ?? '')),
+                        DataCell(Text(client.description ?? '')),
+                        DataCell(Text(formattedDate)),
+                        DataCell(Text(client.createdOn ?? '')),
+                      ]);
+                    }).toList(),
                     dataRowHeight: 32.0,
-                  ),
+                  )
+                  // DataTable(
+                  //   columns: const [
+                  //     DataColumn(label: Text('Sr. No.'), numeric: true),
+                  //     DataColumnlabel: Text('Client Name')),
+                  //     DataColumn(label: Text('Message')),
+                  //     DataColumn(label: Text('Description')),
+                  //     DataColumn(label: Text('Date')),
+                  //     DataColumn(label: Text('Created On')),
+                  //   ],
+                  //   rows: const [
+                  //     DataRow(cells: [
+                  //       DataCell(Text('1')),
+                  //       DataCell(Text('John')),
+                  //       DataCell(Text('Hello')),
+                  //       DataCell(Text('Lorem ipsum dolor sit amet')),
+                  //       DataCell(Text('2023-05-10')),
+                  //       DataCell(Text('2023-05-10')),
+                  //     ]),
+                  //     DataRow(cells: [
+                  //       DataCell(Text('2')),
+                  //       DataCell(Text('Jane')),
+                  //       DataCell(Text('Hi')),
+                  //       DataCell(Text('Consectetur adipiscing elit')),
+                  //       DataCell(Text('2023-05-11')),
+                  //       DataCell(Text('2023-05-11')),
+                  //     ]),
+                  //     DataRow(cells: [
+                  //       DataCell(Text('3')),
+                  //       DataCell(Text('Bob')),
+                  //       DataCell(Text('Hey')),
+                  //       DataCell(Text('Sed do eiusmod tempor incididunt')),
+                  //       DataCell(Text('2023-05-12')),
+                  //       DataCell(Text('2023-05-12')),
+                  //     ]),
+                  //   ],
+                  //   dataRowHeight: 32.0,
+                  // ),
                 ],
               ),
             ),
           ],
         ),
         SizedBox(
-          height: 50,
+          height: deviceHeight * 0.1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -569,7 +659,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.02,
         ),
         Column(
           children: <Widget>[
@@ -641,7 +731,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 50,
+          height: deviceHeight * 0.1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -659,7 +749,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.02,
         ),
         Column(
           children: <Widget>[
@@ -730,6 +820,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+         SizedBox(
+          height: deviceHeight * 0.2,
+        ),
       ],
     );
   }
@@ -751,7 +844,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.02,
         ),
         StaggeredGrid.count(
             crossAxisCount: 2,
@@ -834,7 +927,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.05,
         ),
         StaggeredGrid.count(
           crossAxisCount: 2,
@@ -896,7 +989,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 50,
+          height: deviceHeight * 0.1,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -914,7 +1007,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(
-          height: 20,
+          height: deviceHeight * 0.02,
         ),
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -955,37 +1048,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
+ 
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Task Manager",
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
-              .copyWith(fontWeight: FontWeight.bold),
-        ),
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CircleGradientIcon(
-              onTap: () {},
-              icon: Icons.calendar_month,
-              color: Colors.purple,
-              iconSize: 24,
-              size: 40,
-            ),
-          )
-        ],
-        foregroundColor: Colors.grey,
-        backgroundColor: Colors.transparent,
-      ),
-      drawer: const SideBar(),
-      extendBody: true,
-      body: _buildBody(),
-    );
-  }
 }
