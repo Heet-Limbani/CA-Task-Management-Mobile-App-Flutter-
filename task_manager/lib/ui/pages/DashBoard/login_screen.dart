@@ -261,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailControllerA,
       decoration: InputDecoration(
         labelText: "Email",
-        hintText: "Email or Username",
+        //hintText: "Email or Username",
         suffixIcon: Icon(Icons.email_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -295,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
-        hintText: "Password",
+        //hintText: "Password",
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -376,7 +376,7 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailControllerC,
       decoration: InputDecoration(
         labelText: "Email",
-        hintText: "Email or Username",
+        //hintText: "Email or Username",
         suffixIcon: Icon(Icons.email_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -410,7 +410,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
-        hintText: "Password",
+       // hintText: "Password",
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -488,7 +488,7 @@ class _LoginScreenState extends State<LoginScreen> {
       controller: emailControllerE,
       decoration: InputDecoration(
         labelText: "Email",
-        hintText: "Email or Username",
+       // hintText: "Email or Username",
         suffixIcon: Icon(Icons.email_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -522,7 +522,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
-        hintText: "Password",
+       // hintText: "Password",
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(

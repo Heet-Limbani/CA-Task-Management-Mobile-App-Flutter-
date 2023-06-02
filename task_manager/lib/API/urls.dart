@@ -9,6 +9,7 @@ class urls {
   static String login = "${urls.baseUrlMain}Login";
   static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
+  static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
 
 
 

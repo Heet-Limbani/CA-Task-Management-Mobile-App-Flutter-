@@ -1,7 +1,10 @@
 //import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -29,6 +32,29 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   List<Client> clients = [];
   late double deviceWidth;
   late double deviceHeight;
+  final GlobalKey<FormState> _formKey = GlobalKey();
+
+  TextEditingController clientController = TextEditingController();
+  TextEditingController messageController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController searchLogController = TextEditingController();
+  String clientName = "";
+  String message = "";
+  String description = "";
+  String date = '';
+  int currentPage = 0;
+  int entriesPerPage = 10;
+
+  @override
+  void dispose() {
+    clientController.dispose();
+    messageController.dispose();
+    descriptionController.dispose();
+    dateController.dispose();
+    searchLogController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -38,41 +64,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     birthDayTable();
     holidayTable();
     clientTable();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    deviceWidth = MediaQuery.of(context).size.width;
-    deviceHeight = MediaQuery.of(context).size.height;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Task Manager",
-          style: Theme.of(context)
-              .textTheme
-              .bodySmall!
-              .copyWith(fontWeight: FontWeight.bold),
-        ),
-        elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CircleGradientIcon(
-              onTap: () {},
-              icon: Icons.calendar_month,
-              color: Colors.purple,
-              iconSize: 24,
-              size: 40,
-            ),
-          )
-        ],
-        foregroundColor: Colors.grey,
-        backgroundColor: Colors.transparent,
-      ),
-      drawer: const SideBarAdmin(),
-      extendBody: true,
-      body: _buildBody(),
-    );
   }
 
   CountData? dataCount;
@@ -140,11 +131,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
         final data = genmodel.data;
         dataHolidayList = HolidayList.fromJson(data);
-        // if (dataHolidayList?.holiday != null) {
-        //   for (Holiday holiday in dataHolidayList!.holiday!) {
-        //     print('Holiday ID: ${holiday.title}');
-        //   }
-        // }
+
         setState(() {});
       }
     }
@@ -155,7 +142,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
     genModel? genmodel = await urls.postApiCall(
       '${urls.clientLog}',
-      {},
+      {"offset": 0, "limit": 100, "search": searchLogController.text},
       headers,
     );
 
@@ -173,6 +160,29 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         setState(() {
           // Update the UI state if necessary
         });
+      }
+    }
+  }
+
+  void clientLogAdd() async {
+    final headers = urls.xToken;
+
+    genModel? genmodel = await urls.postApiCall(
+      '${urls.clientLogAdd}',
+      {
+        'message': message,
+        'client': clientName,
+        'description': description,
+        'date': date,
+      },
+      headers,
+    );
+    if (genmodel != null) {
+      print('Status: ${genmodel.message}');
+      if (genmodel.status == true) {
+        print('data added successfully');
+
+        setState(() {});
       }
     }
   }
@@ -205,19 +215,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     );
   }
 
-  String client = "";
-
-  String message = "";
-
-  String description = "";
-
-  var measure;
-
-  String Function(DateTime date) date = DateFormat('dd/MM/yyyy').format;
-
   Column _admin() {
-    final _clientLogFormKey = GlobalKey<FormState>();
-    final clientControllerC = TextEditingController();
     return Column(
       children: [
         Row(
@@ -341,8 +339,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           height: deviceHeight * 0.1,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
               "Task List",
@@ -352,7 +349,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(), sir without debuging run karavu padse ok sir run nathi thatu km ?
             InkWell(
               onTap: () {},
               child: Text(
@@ -369,8 +366,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           height: deviceHeight * 0.2,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Add Client Log",
@@ -380,220 +375,185 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
           ],
         ),
         SizedBox(
           height: deviceHeight * 0.02,
         ),
         Form(
-          key: _clientLogFormKey,
+          key: _formKey,
           child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 30, left: 25, right: 25, bottom: 8),
-                // Email Text Field for Employee
-                child: TextFormField(
-                  controller: clientControllerC,
-                  decoration: InputDecoration(
-                    labelText: "Client",
-                    hintText: "Client Name",
-                    suffixIcon: Icon(Icons.person),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            children: <Widget>[
+              TextFormField(
+                controller: clientController,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    labelText: 'Client ID',
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(28),
-                      borderSide: BorderSide(color: AppTheme.colors.black),
-                      gapPadding: 10,
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(28),
-                      borderSide: BorderSide(color: AppTheme.colors.black),
-                      gapPadding: 2,
+                    border: OutlineInputBorder()),
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    clientName = value;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    clientName = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.contains(RegExp(r'^[a-zA-Z\-]'))) {
+                    return 'Use only numbers!';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              TextFormField(
+                controller: messageController,
+                decoration: const InputDecoration(
+                    labelText: 'Message',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
                     ),
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Please enter an email';
-                    }
+                    border: OutlineInputBorder()),
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length < 3) {
+                    return 'Last Name must contain at least 3 characters';
+                  } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                    return 'Last Name cannot contain special characters';
+                  }
+                  return null;
+                },
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    message = value;
+                    // lastNameList.add(lastName);
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    message = value;
+                  });
+                },
+              ),
+              SizedBox(height: deviceHeight * 0.02),
+              TextFormField(
+                controller: descriptionController,
+                decoration: const InputDecoration(
+                    labelText: 'Description',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                    ),
+                    border: OutlineInputBorder()),
+                keyboardType: TextInputType.text,
+                validator: (value) {
+                  if (value == null || value.isEmpty || value.length < 3) {
+                    return 'Description must contain at least 3 characters';
+                  } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                    return 'Description cannot contain special characters';
+                  }
+                  return null;
+                },
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    description = value;
+                    // bodyTempList.add(bodyTemp);
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    description = value;
+                  });
+                },
+              ),
+              SizedBox(height: deviceHeight * 0.02),
+              TextFormField(
+                controller: dateController,
+                decoration: const InputDecoration(
+                    labelText: 'Date And Time',
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                    ),
+                    border: OutlineInputBorder()),
+                onTap: () async {
+                  DateTime? selectedDateTime = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(3000),
+                  );
+                  if (selectedDateTime != null) {
+                    TimeOfDay? selectedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                    );
 
-                    final emailRegex =
-                        r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
-                    if (!RegExp(emailRegex).hasMatch(value)) {
-                      return 'Please enter a valid email';
+                    if (selectedTime != null) {
+                      selectedDateTime = DateTime(
+                        selectedDateTime.year,
+                        selectedDateTime.month,
+                        selectedDateTime.day,
+                        selectedTime.hour,
+                        selectedTime.minute,
+                      );
+                      setState(() {
+                        date = selectedDateTime.toString();
+                        dateController.text = date;
+                      });
                     }
-                    return null;
-                  },
-                ),
+                  }
+                },
+                onFieldSubmitted: (value) {
+                  setState(() {
+                    date = value;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    date = value;
+                  });
+                },
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 25, right: 25, bottom: 25, top: 8),
-                // Password Text Field for Employee
-                //child: buildPasswordFormFieldAdmin(),
+              SizedBox(height: deviceHeight * 0.02),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(60)),
+                onPressed: () {
+                  //clientLogAdd();
+                  if (_formKey.currentState!.validate()) {
+                    clientLogAdd();
+                    Fluttertoast.showToast(
+                        msg: "Client Log Added Successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: AppColors.primaryColor,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                },
+                child: const Text("Submit"),
               ),
-              // Login Button for Employee
-              // loginButtonAdmin(deviceHeight)
             ],
           ),
         ),
-        // Column(
-        //   children: <Widget>[
-        //     Form(
-        //       key: _formKey,
-        //       child: Column(
-        //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //         children: <Widget>[
-        //           TextFormField(
-        //             decoration: const InputDecoration(
-        //                 labelText: 'Client',
-        //                 enabledBorder: OutlineInputBorder(
-        //                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        //                   borderSide:
-        //                       BorderSide(color: Colors.grey, width: 0.0),
-        //                 ),
-        //                 border: OutlineInputBorder()),
-        //             onFieldSubmitted: (value) {
-        //               setState(() {
-        //                 client = value;
-        //                 // firstNameList.add(firstName);
-        //               });
-        //             },
-        //             onChanged: (value) {
-        //               setState(() {
-        //                 client = value;
-        //               });
-        //             },
-        //             validator: (value) {
-        //               if (value == null || value.isEmpty || value.length < 3) {
-        //                 return 'First Name must contain at least 3 characters';
-        //               } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-        //                 return 'First Name cannot contain special characters';
-        //               }
-        //               return null;
-        //             },
-        //           ),
-        //            SizedBox(
-        //             height: deviceHeight * 0.02,
-        //           ),
-        //           TextFormField(
-        //             decoration: const InputDecoration(
-        //                 labelText: 'Message',
-        //                 enabledBorder: OutlineInputBorder(
-        //                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        //                   borderSide:
-        //                       BorderSide(color: Colors.grey, width: 0.0),
-        //                 ),
-        //                 border: OutlineInputBorder()),
-        //             validator: (value) {
-        //               if (value == null || value.isEmpty || value.length < 3) {
-        //                 return 'Last Name must contain at least 3 characters';
-        //               } else if (value.contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
-        //                 return 'Last Name cannot contain special characters';
-        //               }
-        //               return null;
-        //             },
-        //             onFieldSubmitted: (value) {
-        //               setState(() {
-        //                 message = value;
-        //                 // lastNameList.add(lastName);
-        //               });
-        //             },
-        //             onChanged: (value) {
-        //               setState(() {
-        //                 message = value;
-        //               });
-        //             },
-        //           ),
-        //           SizedBox(
-        //             height: deviceHeight * 0.02,
-        //           ),
-        //           TextFormField(
-        //             decoration: const InputDecoration(
-        //                 labelText: 'Description',
-        //                 enabledBorder: OutlineInputBorder(
-        //                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        //                   borderSide:
-        //                       BorderSide(color: Colors.grey, width: 0.0),
-        //                 ),
-        //                 border: OutlineInputBorder()),
-        //             keyboardType: TextInputType.text,
-        //             onFieldSubmitted: (value) {
-        //               setState(() {
-        //                 description = value;
-        //                 // bodyTempList.add(bodyTemp);
-        //               });
-        //             },
-        //             onChanged: (value) {
-        //               setState(() {
-        //                 description = value;
-        //               });
-        //             },
-        //           ),
-        //            SizedBox(
-        //             height: deviceHeight * 0.02,
-        //           ),
-        //           TextFormField(
 
-        //             decoration: const InputDecoration(
-        //                 labelText: 'Date',
-
-        //                 enabledBorder: OutlineInputBorder(
-        //                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
-        //                   borderSide:
-        //                       BorderSide(color: Colors.grey, width: 0.0),
-        //                 ),
-        //                 border: OutlineInputBorder()),
-        //             keyboardType: TextInputType.text,
-        //             onTap: () async {
-        //               DateTime? datePicked = await showDatePicker(
-        //                 context: context,
-        //                 initialDate: DateTime.now(),
-        //                 firstDate: DateTime(2000),
-        //                 lastDate: DateTime(3000),
-        //               );
-        //               if (datePicked != null) {
-        //                 (datePicked);
-        //               }
-        //             },
-        //             onFieldSubmitted: (value) {
-        //               setState(() {
-        //                 date = value as String Function(DateTime date);
-        //                 // bodyTempList.add(bodyTemp);
-        //               });
-        //             },
-        //             onChanged: (value) {
-        //               setState(() {
-        //                 date = value as String Function(DateTime date);
-        //               });
-        //             },
-        //           ),
-        //           SizedBox(
-        //              height: deviceHeight * 0.02,
-        //           ),
-        //           ElevatedButton(
-        //             style: ElevatedButton.styleFrom(
-        //                 minimumSize: const Size.fromHeight(60)),
-        //             onPressed: () {
-        //               // Validate returns true if the form is valid, or false otherwise.
-        //               if (_formKey.currentState!.validate()) {
-        //                 //_submit();
-        //               }
-        //             },
-        //             child: const Text("Submit"),
-        //           ),
-        //         ],
-        //       ),
-        //     ),
-        //   ],
-        // ),
         SizedBox(
           height: deviceHeight * 0.1,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Client Log Data",
@@ -603,7 +563,43 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                width: deviceWidth * 0.3,
+                child: TextField(
+                  controller: searchLogController,
+                  onChanged: (value) {
+                    clientTable(); //
+                  },
+                  decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      hintText: 'Search',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(),
+                      ),
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          searchLogController.clear();
+                          FocusScope.of(context).unfocus();
+                          searchLogController.clear();
+                          clientTable();
+                          // setState(() {});
+                        },
+                        child: Icon(Icons.clear),
+                      )),
+                ),
+              ),
+            ),
           ],
         ),
         SizedBox(
@@ -648,54 +644,47 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                     }).toList(),
                     dataRowHeight: 32.0,
                   )
-                  // DataTable(
-                  //   columns: const [
-                  //     DataColumn(label: Text('Sr. No.'), numeric: true),
-                  //     DataColumnlabel: Text('Client Name')),
-                  //     DataColumn(label: Text('Message')),
-                  //     DataColumn(label: Text('Description')),
-                  //     DataColumn(label: Text('Date')),
-                  //     DataColumn(label: Text('Created On')),
-                  //   ],
-                  //   rows: const [
-                  //     DataRow(cells: [
-                  //       DataCell(Text('1')),
-                  //       DataCell(Text('John')),
-                  //       DataCell(Text('Hello')),
-                  //       DataCell(Text('Lorem ipsum dolor sit amet')),
-                  //       DataCell(Text('2023-05-10')),
-                  //       DataCell(Text('2023-05-10')),
-                  //     ]),
-                  //     DataRow(cells: [
-                  //       DataCell(Text('2')),
-                  //       DataCell(Text('Jane')),
-                  //       DataCell(Text('Hi')),
-                  //       DataCell(Text('Consectetur adipiscing elit')),
-                  //       DataCell(Text('2023-05-11')),
-                  //       DataCell(Text('2023-05-11')),
-                  //     ]),
-                  //     DataRow(cells: [
-                  //       DataCell(Text('3')),
-                  //       DataCell(Text('Bob')),
-                  //       DataCell(Text('Hey')),
-                  //       DataCell(Text('Sed do eiusmod tempor incididunt')),
-                  //       DataCell(Text('2023-05-12')),
-                  //       DataCell(Text('2023-05-12')),
-                  //     ]),
-                  //   ],
-                  //   dataRowHeight: 32.0,
-                  // ),
                 ],
               ),
             ),
           ],
         ),
+
+        // Column(
+        //   children: <Widget>[
+        //     SingleChildScrollView(
+        //       scrollDirection: Axis.horizontal,
+        //       child: Row(
+        //         children: [
+        //             PaginatedDataTable(
+        //             header: const Text('Client List'),
+        //             columns: const [
+        //               DataColumn(label: Text('Sr. No.'), numeric: true),
+        //               DataColumn(label: Text('Client Name')),
+        //               DataColumn(label: Text('Message')),
+        //               DataColumn(label: Text('Description')),
+        //               DataColumn(label: Text('Date')),
+        //               DataColumn(label: Text('Created On')),
+        //             ],
+        //             source: _ClientDataTableSource(clients),//ui no ss moklav
+        //             onPageChanged: (pageIndex) {
+        //               // Fetch data for the new page using the pageIndex
+        //               // You can update the clients list and call setState here
+        //             },
+        //             rowsPerPage:
+        //                 10, // Adjust the number of rows per page as needed
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
+
         SizedBox(
           height: deviceHeight * 0.1,
         ),
+
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Birthday List",
@@ -705,7 +694,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
           ],
         ),
         SizedBox(
@@ -723,9 +712,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       DataColumn(label: Text('User ID')),
                       DataColumn(label: Text('Name')),
                       DataColumn(label: Text('Birth Date')),
-                      // DataColumn(label: Text('Meta Key')),
-                      // DataColumn(label: Text('Meta Value')),
-                      // DataColumn(label: Text('Type')),
                     ],
                     rows: dataBirthdayList?.birthday?.map((birthday) {
                           final index =
@@ -745,36 +731,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                         [],
                     dataRowHeight: 32.0,
                   ),
-
-                  // DataTable(
-                  //   columns: const [
-                  //     DataColumn(label: Text('Sr. No.'), numeric: true),
-                  //     DataColumn(label: Text('User')),
-                  //     DataColumn(label: Text('Name')),
-                  //     DataColumn(label: Text('Birth Date')),
-                  //   ],
-                  //   rows: const [
-                  //     DataRow(cells: [
-                  //       DataCell(Text('1')),
-                  //       DataCell(Text('John')),
-                  //       DataCell(Text('Hello')),
-                  //       DataCell(Text('2023-05-10')),
-                  //     ]),
-                  //     DataRow(cells: [
-                  //       DataCell(Text('2')),
-                  //       DataCell(Text('Jane')),
-                  //       DataCell(Text('Hi')),
-                  //       DataCell(Text('2023-05-11')),
-                  //     ]),
-                  //     DataRow(cells: [
-                  //       DataCell(Text('3')),
-                  //       DataCell(Text('Bob')),
-                  //       DataCell(Text('Hey')),
-                  //       DataCell(Text('2023-05-12')),
-                  //     ]),
-                  //   ],
-                  //   dataRowHeight: 32.0,
-                  // ),
                 ],
               ),
             ),
@@ -784,8 +740,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           height: deviceHeight * 0.1,
         ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
               "Holiday List",
@@ -795,7 +749,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
           ],
         ),
         SizedBox(
@@ -835,36 +789,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                         [],
                     dataRowHeight: 32.0,
                   )
-
-                  // DataTable(
-                  //   columns: const [
-                  //     DataColumn(label: Text('Sr. No.'), numeric: true),
-                  //     DataColumn(label: Text('Title')),
-                  //     DataColumn(label: Text('Description')),
-                  //     DataColumn(label: Text('Date')),
-                  //   ],
-                  //   rows: const [
-                  //     DataRow(cells: [
-                  //       DataCell(Text('1')),
-                  //       DataCell(Text('John')),
-                  //       DataCell(Text('Hello')),
-                  //       DataCell(Text('2023-05-10')),
-                  //     ]),
-                  //     DataRow(cells: [
-                  //       DataCell(Text('2')),
-                  //       DataCell(Text('Jane')),
-                  //       DataCell(Text('Hi')),
-                  //       DataCell(Text('2023-05-11')),
-                  //     ]),
-                  //     DataRow(cells: [
-                  //       DataCell(Text('3')),
-                  //       DataCell(Text('Bob')),
-                  //       DataCell(Text('Hey')),
-                  //       DataCell(Text('2023-05-12')),
-                  //     ]),
-                  //   ],
-                  //   dataRowHeight: 32.0,
-                  // ),
                 ],
               ),
             ),
@@ -890,7 +814,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
           ],
         ),
         SizedBox(
@@ -973,7 +897,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
           ],
         ),
         SizedBox(
@@ -1053,49 +977,128 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            const Spacer(),
+            // const Spacer(),
           ],
         ),
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              DataTable(
-                columns: const [
-                  DataColumn(label: Text('Sr. No.'), numeric: true),
-                  DataColumn(label: Text('Title')),
-                  DataColumn(label: Text('Description')),
-                  DataColumn(label: Text('Date')),
-                ],
-                rows: const [
-                  DataRow(cells: [
-                    DataCell(Text('1')),
-                    DataCell(Text('John')),
-                    DataCell(Text('Hello')),
-                    DataCell(Text('2023-05-10')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('2')),
-                    DataCell(Text('Jane')),
-                    DataCell(Text('Hi')),
-                    DataCell(Text('2023-05-11')),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('3')),
-                    DataCell(Text('Bob')),
-                    DataCell(Text('Hey')),
-                    DataCell(Text('2023-05-12')),
-                  ]),
-                ],
-                dataRowHeight: 32.0,
-              ),
-            ],
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                DataTable(
+                  columns: const [
+                    DataColumn(label: Text('Sr. No.'), numeric: true),
+                    DataColumn(label: Text('Title')),
+                    DataColumn(label: Text('Description')),
+                    DataColumn(label: Text('Date')),
+                  ],
+                  rows: const [
+                    DataRow(cells: [
+                      DataCell(Text('1')),
+                      DataCell(Text('John')),
+                      DataCell(Text('Hello')),
+                      DataCell(Text('2023-05-10')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text('2')),
+                      DataCell(Text('Jane')),
+                      DataCell(Text('Hi')),
+                      DataCell(Text('2023-05-11')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text('3')),
+                      DataCell(Text('Bob')),
+                      DataCell(Text('Hey')),
+                      DataCell(Text('2023-05-12')),
+                    ]),
+                  ],
+                  dataRowHeight: 32.0,
+                ),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceHeight = MediaQuery.of(context).size.height;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "Task Manager",
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(fontWeight: FontWeight.bold),
+        ),
+        elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: CircleGradientIcon(
+              onTap: () {},
+              icon: Icons.calendar_month,
+              color: Colors.purple,
+              iconSize: 24,
+              size: 40,
+            ),
+          )
+        ],
+        foregroundColor: Colors.grey,
+        backgroundColor: Colors.transparent,
+      ),
+      drawer: const SideBarAdmin(),
+      extendBody: true,
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: _buildBody(), //try now
+      ),
+    );
+  }
+}
+
+class _ClientDataTableSource extends DataTableSource {
+  final List<Client> clients;
+
+  _ClientDataTableSource(this.clients);
+
+  @override
+  DataRow? getRow(int index) {
+    if (index >= clients.length) {
+      return null;
+    }
+
+    final client = clients[index];
+    final srNo = (index + 1).toString();
+
+    final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
+    final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+    return DataRow(cells: [
+      DataCell(Text(srNo)),
+      DataCell(Text(client.client ?? '')),
+      DataCell(Text(client.message ?? '')),
+      DataCell(Text(client.description ?? '')),
+      DataCell(Text(formattedDate)),
+      DataCell(Text(client.createdOn ?? '')),
+    ]);
+  }
+
+  @override
+  bool get isRowCountApproximate => false;
+
+  @override
+  int get rowCount => clients.length;
+
+  @override
+  int get selectedRowCount => 0;
 }
