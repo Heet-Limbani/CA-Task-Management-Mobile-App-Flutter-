@@ -1,5 +1,9 @@
 // ignore_for_file: prefer_const_constructors
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/API/model/loginDataModel.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
@@ -27,11 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailControllerC = TextEditingController();
   final passwordControllerA = TextEditingController();
   final emailControllerA = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
     // ignore: unused_local_variable
     final deviceWidth = MediaQuery.of(context).size.width;
+
     final screens = [
       // Client Login Screen
       SafeArea(
@@ -324,10 +330,10 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonAdmin(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-        // if (_adminFormKey.currentState!.validate()) {
-        //   loginAdmin();
-        // }
-        Get.off(() => HomeAdminScreen());
+        if (_adminFormKey.currentState!.validate()) {
+          loginAdmin();
+        }
+        //Get.off(() => HomeAdminScreen());
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -357,14 +363,27 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   genModel? genmodel;
+  LoginData logindata = LoginData();
   void loginAdmin() async {
-    genmodel = await urls.postApiCall('${urls.login}', {
+    genmodel = await urls.postApiCall( method: '${urls.login}', params: {
       "email": emailControllerA.text,
       "password": passwordControllerA.text,
-    }, {});
+    }, );
     if (genmodel != null) {
-      print('Status: ${genmodel?.message}');
+      //print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
+
+      LoginData loginData = LoginData.fromJson(genmodel!.data);
+print("LOgin data ${loginData.toJson()}");
+      // Store xtoken in SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('xtoken', loginData.xtoken ?? '');
+      String? storedXToken = prefs.getString('xtoken');
+      if (storedXToken != null && storedXToken.isNotEmpty) {
+        print('xtoken is stored in SharedPreferences: $storedXToken');
+      } else {
+        print('xtoken is not available in SharedPreferences');
+      }
       if (genmodel?.status == true) {
         Get.off(() => HomeAdminScreen());
       }
@@ -410,7 +429,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
-       // hintText: "Password",
+        // hintText: "Password",
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -439,9 +458,9 @@ class _LoginScreenState extends State<LoginScreen> {
   GestureDetector loginButtonClient(double deviceHeight) {
     return GestureDetector(
       onTap: () {
-       // if (_clientFormKey.currentState!.validate()) {
-       //  loginClient();}
-       Get.off(() => HomeClientScreen());
+        // if (_clientFormKey.currentState!.validate()) {
+        //  loginClient();}
+        Get.off(() => HomeClientScreen());
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -469,11 +488,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
- void loginClient() async {
-    genmodel = await urls.postApiCall('${urls.login}', {
+
+  void loginClient() async {
+    genmodel = await urls.postApiCall( method: '${urls.login}', params: {
       "email": emailControllerC.text,
       "password": passwordControllerC.text,
-    }, {});
+    }, );
     if (genmodel != null) {
       print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
@@ -482,13 +502,13 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
- 
+
   TextFormField buildEmailFormFieldEmployee() {
     return TextFormField(
       controller: emailControllerE,
       decoration: InputDecoration(
         labelText: "Email",
-       // hintText: "Email or Username",
+        // hintText: "Email or Username",
         suffixIcon: Icon(Icons.email_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -522,7 +542,7 @@ class _LoginScreenState extends State<LoginScreen> {
       obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
-       // hintText: "Password",
+        // hintText: "Password",
         suffixIcon: Icon(Icons.lock_rounded),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         enabledBorder: OutlineInputBorder(
@@ -555,7 +575,6 @@ class _LoginScreenState extends State<LoginScreen> {
         //   loginEmployee();
         // }
         Get.off(() => HomeEmployeeScreen());
-       
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -583,11 +602,12 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-   void loginEmployee() async {
-    genmodel = await urls.postApiCall('${urls.login}', {
+
+  void loginEmployee() async {
+    genmodel = await urls.postApiCall( method: '${urls.login}', params: {
       "email": emailControllerE.text,
       "password": passwordControllerE.text,
-    }, {});
+    }, );
     if (genmodel != null) {
       print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());

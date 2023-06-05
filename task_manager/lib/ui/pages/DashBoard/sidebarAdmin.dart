@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
@@ -24,6 +27,7 @@ import 'package:task_manager/ui/pages/Task/task_report.dart';
 import 'package:task_manager/ui/pages/Users/employee.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/pages/Profile/profile1.dart';
+import '../../../API/model/loginDataModel.dart';
 import '../Admin_Leave/admin_leave.dart';
 import '../Client_Login/client_login.dart';
 import '../Company/company_view.dart';
@@ -38,7 +42,7 @@ import '../Users/client.dart';
 import 'package:task_manager/ui/pages/Notification/notification1.dart';
 
 class SideBarAdmin extends StatelessWidget {
-  const SideBarAdmin({super.key});
+  const SideBarAdmin({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +66,35 @@ class SideBarAdmin extends StatelessWidget {
               "Admin",
               style: TextStyle(color: Colors.black),
             ),
-            accountEmail: Text(
-              "admin@admin.com",
-              style: TextStyle(color: Colors.black),
-            ),
+            accountEmail: FutureBuilder<LoginData?>(
+          future: retrieveLoginData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text(
+                'Loading...', // Placeholder text while retrieving data
+                style: TextStyle(color: Colors.black),
+              );
+            }
+            if (snapshot.hasError) {
+              return Text(
+                'Error', // Placeholder text for error case
+                style: TextStyle(color: Colors.black),
+              );
+            }
+            final loginData = snapshot.data;
+            if (loginData != null) {
+              return Text(
+                loginData.email ?? 'N/A',
+                style: TextStyle(color: Colors.black),
+              );
+            } else {
+              return Text(
+                'Email nott available', // Placeholder text if email is null
+                style: TextStyle(color: Colors.black),
+              );
+            }
+          },
+        ),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Color.fromARGB(255, 255, 255, 255),
               child: ClipOval(
@@ -355,5 +384,15 @@ class SideBarAdmin extends StatelessWidget {
         ],
       ),
     );
+  }
+  Future<LoginData?> retrieveLoginData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final loginDataString = prefs.getString('loginData');
+    if (loginDataString != null) {
+      final loginData = LoginData.fromJson(jsonDecode(loginDataString));
+      return loginData;
+    } else {
+      return null;
+    }
   }
 }

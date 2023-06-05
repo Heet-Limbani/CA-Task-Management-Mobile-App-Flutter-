@@ -81,12 +81,10 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   CountData? dataCount;
   void clientDashboard() async {
-    final headers = urls.xToken;
-
+   
     genModel? genmodel = await urls.postApiCall(
-      '${urls.adminDashBoard}',
-      {},
-      headers,
+      method: '${urls.adminDashBoard}',
+     
     );
     if (genmodel != null) {
       //print('Status: ${genmodel.message}');
@@ -104,12 +102,10 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   BirthDayList? dataBirthdayList;
   void birthDayTable() async {
-    final headers = urls.xToken;
-
+  
     genModel? genmodel = await urls.postApiCall(
-      '${urls.adminDashBoard}',
-      {},
-      headers,
+      method: '${urls.adminDashBoard}',
+     
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -130,12 +126,11 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   HolidayList? dataHolidayList;
   void holidayTable() async {
-    final headers = urls.xToken;
+   
 
     genModel? genmodel = await urls.postApiCall(
-      '${urls.adminDashBoard}',
-      {},
-      headers,
+      method: '${urls.adminDashBoard}',
+     
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -155,12 +150,11 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
   }
 
   void clientTable() async {
-    final headers = urls.xToken;
+  
 
     genModel? genmodel = await urls.postApiCall(
-      '${urls.clientLog}',
-      {},
-      headers,
+       method: '${urls.clientLog}',
+    
     );
 
     if (genmodel != null && genmodel.status == true) {

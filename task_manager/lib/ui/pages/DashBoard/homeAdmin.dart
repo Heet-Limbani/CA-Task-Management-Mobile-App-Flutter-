@@ -14,6 +14,7 @@ import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/DashBoard/today_task.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/urls.dart';
@@ -43,8 +44,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String message = "";
   String description = "";
   String date = '';
-  int currentPage = 0;
-  int entriesPerPage = 10;
+  int offset = 0;
+  int limit = 10;
+  int totalCount = 0;
 
   @override
   void dispose() {
@@ -68,12 +70,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   CountData? dataCount;
   void clientDashboard() async {
-    final headers = urls.xToken;
+   
 
     genModel? genmodel = await urls.postApiCall(
-      '${urls.adminDashBoard}',
-      {},
-      headers,
+     method: '${urls.adminDashBoard}'
     );
     if (genmodel != null) {
       //print('Status: ${genmodel.message}');
@@ -91,12 +91,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   BirthDayList? dataBirthdayList;
   void birthDayTable() async {
-    final headers = urls.xToken;
-
+  
     genModel? genmodel = await urls.postApiCall(
-      '${urls.adminDashBoard}',
-      {},
-      headers,
+      method: '${urls.adminDashBoard}'
+     
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -116,13 +114,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   HolidayList? dataHolidayList;
-  void holidayTable() async {
-    final headers = urls.xToken;
-
+  void holidayTable() async { 
+//method required chhe params nthi required
+// khbr pdi ? ha sir , get put delete badhi methods aam j rakhje ok sir, pela errors solve kar pachi check kar token pass thay che ke nai
+//ha sir
     genModel? genmodel = await urls.postApiCall(
-      '${urls.adminDashBoard}',
-      {},
-      headers,
+      method: '${urls.adminDashBoard}'
+      
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -137,13 +135,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     }
   }
 
+  
   void clientTable() async {
-    final headers = urls.xToken;
+    
+  
 
     genModel? genmodel = await urls.postApiCall(
-      '${urls.clientLog}',
-      {"offset": 0, "limit": 100, "search": searchLogController.text},
-      headers,
+       method: '${urls.clientLog}'
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -151,6 +149,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
       if (data != null && data is List) {
         clients = data.map((item) => Client.fromJson(item)).toList();
+        // print("Count :- ${genmodel.count}");
+        totalCount = genmodel.count ?? 0;
         // for (Client client in clients) {
         //   print('Client ID: ${client.id}');
         //   print('Client Name: ${client.client}');
@@ -165,17 +165,17 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   void clientLogAdd() async {
-    final headers = urls.xToken;
+   
 
     genModel? genmodel = await urls.postApiCall(
-      '${urls.clientLogAdd}',
-      {
+      method: '${urls.clientLogAdd}',
+      params: {
         'message': message,
         'client': clientName,
         'description': description,
         'date': date,
       },
-      headers,
+     
     );
     if (genmodel != null) {
       print('Status: ${genmodel.message}');
@@ -233,12 +233,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 selectAll: true,
               ),
             ),
-            IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.add_circle_outline,
-                  color: Colors.blue[400],
-                ))
+            // IconButton(
+            //     onPressed: () {},
+            //     icon: Icon(
+            //       Icons.add_circle_outline,
+            //       color: Colors.blue[400],
+            //     ))
           ],
         ),
         SizedBox(
@@ -531,18 +531,21 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(60)),
                 onPressed: () {
-                  //clientLogAdd();
+                  clientTable();
                   if (_formKey.currentState!.validate()) {
                     clientLogAdd();
+
                     Fluttertoast.showToast(
-                        msg: "Client Log Added Successfully",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: AppColors.primaryColor,
-                        textColor: Colors.white,
-                        fontSize: 16.0);
+                      msg: "Client Log Added Successfully",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: AppColors.primaryColor,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
                   }
+                  clientTable();
                 },
                 child: const Text("Submit"),
               ),
@@ -605,59 +608,34 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-        Column(
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Sr. No.'), numeric: true),
-                      DataColumn(label: Text('Client Name')),
-                      DataColumn(label: Text('Message')),
-                      DataColumn(label: Text('Description')),
-                      DataColumn(label: Text('Date')),
-                      DataColumn(label: Text('Created On')),
-                    ],
-                    rows: clients.map((client) {
-                      final index = clients.indexOf(client);
-                      final srNo = (index + 1).toString();
-
-                      // Parse createdOn string to DateTime
-                      final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-                      final createdOnDate =
-                          createdOnFormat.parse(client.createdOn ?? '');
-
-                      // Format the date as dd/mm/yyyy
-                      final formattedDate =
-                          DateFormat('dd/MM/yyyy').format(createdOnDate);
-
-                      return DataRow(cells: [
-                        DataCell(Text(srNo)),
-                        DataCell(Text(client.client ?? '')),
-                        DataCell(Text(client.message ?? '')),
-                        DataCell(Text(client.description ?? '')),
-                        DataCell(Text(formattedDate)),
-                        DataCell(Text(client.createdOn ?? '')),
-                      ]);
-                    }).toList(),
-                    dataRowHeight: 32.0,
-                  )
-                ],
-              ),
-            ),
+        PaginatedDataTable(
+          header: const Text('Client List'),
+          columns: const [
+            DataColumn(label: Text('Sr. No.'), numeric: true),
+            DataColumn(label: Text('Client Name')),
+            DataColumn(label: Text('Message')),
+            DataColumn(label: Text('Description')),
+            DataColumn(label: Text('Date')),
+            DataColumn(label: Text('Created On')),
           ],
+          source: _ClientDataTableSource(
+              clients, totalCount, limit, offset,),
+          onPageChanged: (int pageIndex) {
+            setState(() {
+              offset = limit * pageIndex;
+              //offset = (limit * pageIndex) - (limit - 1);
+            });
+            clientTable();
+          },
+          rowsPerPage: limit,
         ),
-
         // Column(
         //   children: <Widget>[
         //     SingleChildScrollView(
         //       scrollDirection: Axis.horizontal,
         //       child: Row(
         //         children: [
-        //             PaginatedDataTable(
-        //             header: const Text('Client List'),
+        //           DataTable(
         //             columns: const [
         //               DataColumn(label: Text('Sr. No.'), numeric: true),
         //               DataColumn(label: Text('Client Name')),
@@ -666,14 +644,30 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //               DataColumn(label: Text('Date')),
         //               DataColumn(label: Text('Created On')),
         //             ],
-        //             source: _ClientDataTableSource(clients),//ui no ss moklav
-        //             onPageChanged: (pageIndex) {
-        //               // Fetch data for the new page using the pageIndex
-        //               // You can update the clients list and call setState here
-        //             },
-        //             rowsPerPage:
-        //                 10, // Adjust the number of rows per page as needed
-        //           ),
+        //             rows: clients.map((client) {
+        //               final index = clients.indexOf(client);
+        //               final srNo = (index + 1).toString();
+
+        //               // Parse createdOn string to DateTime
+        //               final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+        //               final createdOnDate =
+        //                   createdOnFormat.parse(client.createdOn ?? '');
+
+        //               // Format the date as dd/mm/yyyy
+        //               final formattedDate =
+        //                   DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+        //               return DataRow(cells: [
+        //                 DataCell(Text(srNo)),
+        //                 DataCell(Text(client.client ?? '')),
+        //                 DataCell(Text(client.message ?? '')),
+        //                 DataCell(Text(client.description ?? '')),
+        //                 DataCell(Text(formattedDate)),
+        //                 DataCell(Text(client.createdOn ?? '')),
+        //               ]);
+        //             }).toList(),
+        //             dataRowHeight: 32.0,
+        //           )
         //         ],
         //       ),
         //     ),
@@ -1039,18 +1033,18 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: CircleGradientIcon(
-              onTap: () {},
-              icon: Icons.calendar_month,
-              color: Colors.purple,
-              iconSize: 24,
-              size: 40,
-            ),
-          )
-        ],
+        // actions: [
+        //   Padding(
+        //     padding: const EdgeInsets.symmetric(horizontal: 20),
+        //     child: CircleGradientIcon(
+        //       onTap: () {},
+        //       icon: Icons.calendar_month,
+        //       color: Colors.purple,
+        //       iconSize: 24,
+        //       size: 40,
+        //     ),
+        //   )
+        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -1067,18 +1061,24 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
 class _ClientDataTableSource extends DataTableSource {
   final List<Client> clients;
+  final int totalCount;
+  final int limit;
+  final int offset;
 
-  _ClientDataTableSource(this.clients);
+
+  _ClientDataTableSource(
+      this.clients, this.totalCount, this.limit, this.offset);
 
   @override
   DataRow? getRow(int index) {
-    if (index >= clients.length) {
+    if (index >= rowCount) {
       return null;
     }
-
-    final client = clients[index];
-    final srNo = (index + 1).toString();
-
+     final clientIndex = offset + index;
+    //final clientIndex = index + (pageIndex * limit);
+    final client = clients[clientIndex];
+    final srNo = (clientIndex + 1).toString();
+    // final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
     final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
     final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
@@ -1097,8 +1097,47 @@ class _ClientDataTableSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => clients.length;
+  int get rowCount => totalCount;
 
   @override
   int get selectedRowCount => 0;
 }
+
+
+// class _ClientDataTableSource extends DataTableSource {
+//   final List<Client> clients;
+
+//   _ClientDataTableSource(this.clients);
+
+//   @override
+//   DataRow? getRow(int index) {
+//     if (index >= clients.length) {
+//       return null;
+//     }
+
+//     final client = clients[index];
+//     final srNo = (index + 1).toString();
+
+//     final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+//     final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
+//     final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+//     return DataRow(cells: [
+//       DataCell(Text(srNo)),
+//       DataCell(Text(client.client ?? '')),
+//       DataCell(Text(client.message ?? '')),
+//       DataCell(Text(client.description ?? '')),
+//       DataCell(Text(formattedDate)),
+//       DataCell(Text(client.createdOn ?? '')),
+//     ]);
+//   }
+
+//   @override
+//   bool get isRowCountApproximate => false;
+
+//   @override
+//   int get rowCount => clients.length;
+
+//   @override
+//   int get selectedRowCount => 0;
+// }

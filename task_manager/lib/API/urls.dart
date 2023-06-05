@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/genModel.dart';
 
 class urls {
@@ -10,20 +11,25 @@ class urls {
   static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
   static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
+   
+  static Future<Map<String, String>> getXTokenHeader() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? xtoken = prefs.getString('xtoken');
 
-
-
-   static Map<String, String> xToken = {
-    'Xtoken':
-        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4',
-   // 'Cookie': 'ci_session=a7c4368defaabe2595797df65df38def',
-  };
+    if (xtoken != null && xtoken.isNotEmpty) {
+     return {'Xtoken': xtoken};
+    } else {
+      return {}; // Set xToken to an empty map if xtoken is not available
+    }
+  }
+//aa corect che ?
+  //  static Map<String, String> xToken = {
+  //   'Xtoken':
+  //       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4',
+  // };
 
   static Future<genModel?> postApiCall(
-    String method,
-    Map<String, dynamic> params,
-    Map<String, String> headers,
-  ) async {
+   {required String method,Map<String, dynamic>? params=const {},}  ) async {
     if (kDebugMode) {
       print(method);
       print(params);
@@ -31,9 +37,10 @@ class urls {
     try {
       var request = http.Request('POST', Uri.parse(method));
       request.body = json.encode(params);
-      headers.forEach((key, value) {
-        request.headers[key] = value;
+      getXTokenHeader().then((value) {
+        request.headers.addAll(value);
       });
+      //am thse ok to sir aa na ma 
 
       // request.headers.addAll({
       //   'Content-Type': 'application/json',
