@@ -24,7 +24,7 @@ class _Manual_PaymentState extends State<Manual_Payment> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBarAdmin(),
+      drawer:  SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

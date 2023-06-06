@@ -24,7 +24,7 @@ class _CompanyState extends State<Company> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBarAdmin(),
+      drawer:  SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

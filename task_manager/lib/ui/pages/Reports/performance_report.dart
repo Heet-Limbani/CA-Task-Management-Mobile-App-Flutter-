@@ -24,7 +24,7 @@ class _Performance_ReportState extends State<Performance_Report> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBarAdmin(),
+      drawer:  SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

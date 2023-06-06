@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
@@ -42,8 +44,9 @@ import '../Users/client.dart';
 import 'package:task_manager/ui/pages/Notification/notification1.dart';
 
 class SideBarAdmin extends StatelessWidget {
-  const SideBarAdmin({Key? key}) : super(key: key);
-
+  SideBarAdmin({Key? key}) : super(key: key);
+  final String email = urls.profileEmail;
+  final String userName = urls.profileUserName;
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -63,38 +66,13 @@ class SideBarAdmin extends StatelessWidget {
               ],
             )),
             accountName: Text(
-              "Admin",
+              userName,
               style: TextStyle(color: Colors.black),
             ),
-            accountEmail: FutureBuilder<LoginData?>(
-          future: retrieveLoginData(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text(
-                'Loading...', // Placeholder text while retrieving data
-                style: TextStyle(color: Colors.black),
-              );
-            }
-            if (snapshot.hasError) {
-              return Text(
-                'Error', // Placeholder text for error case
-                style: TextStyle(color: Colors.black),
-              );
-            }
-            final loginData = snapshot.data;
-            if (loginData != null) {
-              return Text(
-                loginData.email ?? 'N/A',
-                style: TextStyle(color: Colors.black),
-              );
-            } else {
-              return Text(
-                'Email nott available', // Placeholder text if email is null
-                style: TextStyle(color: Colors.black),
-              );
-            }
-          },
-        ),
+            accountEmail: Text(
+              email,
+              style: TextStyle(color: Colors.black),
+            ),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Color.fromARGB(255, 255, 255, 255),
               child: ClipOval(
@@ -376,15 +354,18 @@ class SideBarAdmin extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
-            onTap: () {
-              Get.off(LoginScreen());
+            onTap: () async {
+              var sharedPref = await SharedPreferences.getInstance();
+              sharedPref.setBool(MyApp.KEYLOGIN, false);
+
+              Get.offAll(MyApp());
             },
           ),
-         
         ],
       ),
     );
   }
+
   Future<LoginData?> retrieveLoginData() async {
     final prefs = await SharedPreferences.getInstance();
     final loginDataString = prefs.getString('loginData');

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/loginDataModel.dart';
+import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
@@ -72,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: deviceHeight * 0.04,
                       ),
                       Text(
-                        'Admin Login',
+                        'Login',
                         style: TextStyle(
                             fontSize: 34, fontWeight: FontWeight.bold),
                       ),
@@ -239,24 +240,24 @@ class _LoginScreenState extends State<LoginScreen> {
     ];
     return Scaffold(
       // Navigation Bar
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
-                TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
-        child: NavigationBar(
-          height: deviceHeight * 0.09,
-          selectedIndex: index,
-          onDestinationSelected: (index) => setState(() {
-            this.index = index;
-          }),
-          destinations: const [
-            NavigationDestination(
-                icon: Icon(Icons.admin_panel_settings), label: 'Admin'),
-            NavigationDestination(icon: Icon(Icons.people), label: 'Client'),
-            NavigationDestination(icon: Icon(Icons.person), label: 'Employee'),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: NavigationBarTheme(
+      //   data: NavigationBarThemeData(
+      //       labelTextStyle: MaterialStateProperty.all(
+      //           TextStyle(fontSize: 14, fontWeight: FontWeight.bold))),
+      //   child: NavigationBar(
+      //     height: deviceHeight * 0.09,
+      //     selectedIndex: index,
+      //     onDestinationSelected: (index) => setState(() {
+      //       this.index = index;
+      //     }),
+      //     destinations: const [
+      //       NavigationDestination(
+      //           icon: Icon(Icons.admin_panel_settings), label: 'Admin'),
+      //       NavigationDestination(icon: Icon(Icons.people), label: 'Client'),
+      //       NavigationDestination(icon: Icon(Icons.person), label: 'Employee'),
+      //     ],
+      //   ),
+      // ),
       backgroundColor: AppTheme.colors.lightGrey,
       body: screens[index],
     );
@@ -319,8 +320,8 @@ class _LoginScreenState extends State<LoginScreen> {
         if (value!.isEmpty) {
           return 'Please enter a password';
         }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters long';
+        if (value.length < 3) {
+          return 'Password must be at least 3 characters long';
         }
         return null; // Return null if the input is valid
       },
@@ -365,27 +366,36 @@ class _LoginScreenState extends State<LoginScreen> {
   genModel? genmodel;
   LoginData logindata = LoginData();
   void loginAdmin() async {
-    genmodel = await urls.postApiCall( method: '${urls.login}', params: {
-      "email": emailControllerA.text,
-      "password": passwordControllerA.text,
-    }, );
+    genmodel = await urls.postApiCall(
+      method: '${urls.login}',
+      params: {
+        "email": emailControllerA.text,
+        "password": passwordControllerA.text,
+      },
+    );
     if (genmodel != null) {
       //print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
 
       LoginData loginData = LoginData.fromJson(genmodel!.data);
-print("LOgin data ${loginData.toJson()}");
+      print("LOgin data ${loginData.toJson()}");
       // Store xtoken in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('xtoken', loginData.xtoken ?? '');
-      String? storedXToken = prefs.getString('xtoken');
-      if (storedXToken != null && storedXToken.isNotEmpty) {
-        print('xtoken is stored in SharedPreferences: $storedXToken');
-      } else {
-        print('xtoken is not available in SharedPreferences');
-      }
+      prefs.setString('email', loginData.email ?? '');
+      prefs.setString('username', loginData.username ?? '');
+      prefs.setString('type', loginData.type ?? '');
+      // String? storedXType = prefs.getString('type');
+      // if (storedXType != null && storedXType.isNotEmpty) {
+      //   print('xtoken is stored in SharedPreferences: $storedXType');
+      // } else {
+      //   print('xtoken is not available in SharedPreferences');
+      // }
       if (genmodel?.status == true) {
-        Get.off(() => HomeAdminScreen());
+        var sharedPref = await SharedPreferences.getInstance();
+        sharedPref.setBool(MyApp.KEYLOGIN, true);
+
+        Get.offAll(MyApp());
       }
     }
   }
@@ -490,10 +500,13 @@ print("LOgin data ${loginData.toJson()}");
   }
 
   void loginClient() async {
-    genmodel = await urls.postApiCall( method: '${urls.login}', params: {
-      "email": emailControllerC.text,
-      "password": passwordControllerC.text,
-    }, );
+    genmodel = await urls.postApiCall(
+      method: '${urls.login}',
+      params: {
+        "email": emailControllerC.text,
+        "password": passwordControllerC.text,
+      },
+    );
     if (genmodel != null) {
       print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
@@ -604,10 +617,13 @@ print("LOgin data ${loginData.toJson()}");
   }
 
   void loginEmployee() async {
-    genmodel = await urls.postApiCall( method: '${urls.login}', params: {
-      "email": emailControllerE.text,
-      "password": passwordControllerE.text,
-    }, );
+    genmodel = await urls.postApiCall(
+      method: '${urls.login}',
+      params: {
+        "email": emailControllerE.text,
+        "password": passwordControllerE.text,
+      },
+    );
     if (genmodel != null) {
       print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());

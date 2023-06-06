@@ -11,11 +11,19 @@ class urls {
   static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
   static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
-   
+  static String profileEmail = "";
+  static String profileUserName = "";
+  static String profileType = "";
+
   static Future<Map<String, String>> getXTokenHeader() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? xtoken = prefs.getString('xtoken');
-
+    String? email = prefs.getString('email');
+    profileEmail = email ?? "" ;
+    String? userName = prefs.getString('username');
+    profileUserName = userName ?? "" ;
+    String? type = prefs.getString('type');
+    profileType = type ?? "" ;
     if (xtoken != null && xtoken.isNotEmpty) {
      return {'Xtoken': xtoken};
     } else {

@@ -1,7 +1,5 @@
-//import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -70,11 +68,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   CountData? dataCount;
   void clientDashboard() async {
-   
-
-    genModel? genmodel = await urls.postApiCall(
-     method: '${urls.adminDashBoard}'
-    );
+    genModel? genmodel =
+        await urls.postApiCall(method: '${urls.adminDashBoard}');
     if (genmodel != null) {
       //print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -91,11 +86,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   BirthDayList? dataBirthdayList;
   void birthDayTable() async {
-  
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.adminDashBoard}'
-     
-    );
+    genModel? genmodel =
+        await urls.postApiCall(method: '${urls.adminDashBoard}');
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -114,14 +106,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   HolidayList? dataHolidayList;
-  void holidayTable() async { 
+  void holidayTable() async {
 //method required chhe params nthi required
 // khbr pdi ? ha sir , get put delete badhi methods aam j rakhje ok sir, pela errors solve kar pachi check kar token pass thay che ke nai
 //ha sir
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.adminDashBoard}'
-      
-    );
+    genModel? genmodel =
+        await urls.postApiCall(method: '${urls.adminDashBoard}');
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -135,17 +125,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     }
   }
 
-  
   void clientTable() async {
-    
-  
-
     genModel? genmodel = await urls.postApiCall(
-       method: '${urls.clientLog}',
+      method: '${urls.clientLog}',
       params: {
         'limit': 100, //limit
-        'offset': 0,  //offset,
-        'search': searchLogController.text,
+        'offset': 0, //offset,
+        'search': searchLogController.text.trim(),
       },
     );
 
@@ -170,8 +156,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   void clientLogAdd() async {
-   
-
     genModel? genmodel = await urls.postApiCall(
       method: '${urls.clientLogAdd}',
       params: {
@@ -180,7 +164,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         'description': description,
         'date': date,
       },
-     
     );
     if (genmodel != null) {
       print('Status: ${genmodel.message}');
@@ -624,13 +607,17 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             DataColumn(label: Text('Created On')),
           ],
           source: _ClientDataTableSource(
-              clients, totalCount, limit, offset,),
+            clients,
+            totalCount,
+            limit,
+            offset,
+          ),
           onPageChanged: (int pageIndex) {
             setState(() {
-             // offset = limit * pageIndex;
+              // offset = limit * pageIndex;
               //offset = (limit * pageIndex) - (limit - 1);
             });
-            print('Page Index: $pageIndex' );
+            print('Page Index: $pageIndex');
             clientTable();
           },
           rowsPerPage: limit,
@@ -1054,7 +1041,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
@@ -1071,7 +1058,6 @@ class _ClientDataTableSource extends DataTableSource {
   final int limit;
   final int offset;
 
-
   _ClientDataTableSource(
       this.clients, this.totalCount, this.limit, this.offset);
 
@@ -1080,7 +1066,7 @@ class _ClientDataTableSource extends DataTableSource {
     if (index >= rowCount) {
       return null;
     }
-     final clientIndex = offset + index;
+    final clientIndex = offset + index;
     //final clientIndex = index + (pageIndex * limit);
     final client = clients[clientIndex];
     final srNo = (clientIndex + 1).toString();

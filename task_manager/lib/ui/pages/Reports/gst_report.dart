@@ -24,7 +24,7 @@ class _Gst_ReportState extends State<Gst_Report> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBarAdmin(),
+      drawer:  SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

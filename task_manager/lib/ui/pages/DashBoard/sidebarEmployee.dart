@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/main.dart';
 
 import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
 
@@ -44,24 +46,24 @@ class SideBarEmployee extends StatelessWidget {
             ),
           ),
           // Various options
-         
+
           ListTile(
             title: Text('Employee'),
           ),
-            ListTile(
-               leading: Icon(Icons.task),
+          ListTile(
+            leading: Icon(Icons.task),
             title: Text('Company Task'),
           ),
-           ListTile(
-               leading: Icon(Icons.work_outline),
+          ListTile(
+            leading: Icon(Icons.work_outline),
             title: Text('Company'),
           ),
           ListTile(
-               leading: Icon(Icons.list),
+            leading: Icon(Icons.list),
             title: Text('Task List'),
           ),
-           ListTile(
-               leading: Icon(Icons.receipt),
+          ListTile(
+            leading: Icon(Icons.receipt),
             title: Text('Leave Application'),
           ),
           ListTile(
@@ -71,8 +73,11 @@ class SideBarEmployee extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
-            onTap: () {
-              Get.off(LoginScreen());
+            onTap: () async {
+              var sharedPref = await SharedPreferences.getInstance();
+              sharedPref.setBool(MyApp.KEYLOGIN, false);
+
+              Get.offAll(MyApp());
             },
           ),
         ],

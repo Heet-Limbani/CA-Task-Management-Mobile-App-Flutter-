@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
 
 class SideBarClient extends StatelessWidget {
@@ -78,8 +80,11 @@ class SideBarClient extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
-            onTap: () {
-              Get.off(LoginScreen());
+            onTap: () async {
+              var sharedPref = await SharedPreferences.getInstance();
+              sharedPref.setBool(MyApp.KEYLOGIN, false);
+
+              Get.offAll(MyApp());
             },
           ),
         ],
