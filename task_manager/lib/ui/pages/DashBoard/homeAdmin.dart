@@ -141,7 +141,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   
 
     genModel? genmodel = await urls.postApiCall(
-       method: '${urls.clientLog}'
+       method: '${urls.clientLog}',
+      params: {
+        'limit': 100, //limit
+        'offset': 0,  //offset,
+        'search': searchLogController.text,
+      },
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -622,9 +627,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               clients, totalCount, limit, offset,),
           onPageChanged: (int pageIndex) {
             setState(() {
-              offset = limit * pageIndex;
+             // offset = limit * pageIndex;
               //offset = (limit * pageIndex) - (limit - 1);
             });
+            print('Page Index: $pageIndex' );
             clientTable();
           },
           rowsPerPage: limit,
