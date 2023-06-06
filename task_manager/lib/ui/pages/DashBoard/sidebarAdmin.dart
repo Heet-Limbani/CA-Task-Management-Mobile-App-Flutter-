@@ -10,7 +10,6 @@ import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
 import 'package:task_manager/ui/pages/Client_Data/client_data.dart';
 import 'package:task_manager/ui/pages/Client_Password/client_password.dart';
-import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
 import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
 import 'package:task_manager/ui/pages/File_Manager/file_manager.dart';
 import 'package:task_manager/ui/pages/Holiday/holiday.dart';
@@ -301,7 +300,7 @@ class SideBarAdmin extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.people_alt_outlined),
+            leading: Icon(Icons.login),
             title: Text('Employee Login'),
             onTap: () {
               Get.off(Employee_Login());

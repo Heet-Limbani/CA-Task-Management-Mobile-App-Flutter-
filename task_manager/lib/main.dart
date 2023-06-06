@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:task_manager/API/urls.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeClient.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeEmployee.dart';
 import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
@@ -38,12 +37,6 @@ class MyApp extends StatelessWidget {
     var isLogin = sharedPref.getBool(KEYLOGIN);
     String? type = sharedPref.getString('type');
     if (isLogin != null && isLogin) {
-      // Navigate to home screen
-      //Get.off(HomeAdminScreen());
-      // Navigator.pushReplacement(
-      //     Get.context!,
-      //     MaterialPageRoute(builder: (context) => HomeAdminScreen()),
-      //   );
       if (type == "0") {
         Get.offAll(HomeAdminScreen());
       } else if (type == "1") {
@@ -54,7 +47,6 @@ class MyApp extends StatelessWidget {
         print("Error: Invalid type $type");
       }
     } else {
-      
       Get.offAll(LoginScreen());
     }
   }
