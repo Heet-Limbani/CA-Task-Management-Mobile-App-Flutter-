@@ -107,9 +107,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   HolidayList? dataHolidayList;
   void holidayTable() async {
-//method required chhe params nthi required
-// khbr pdi ? ha sir , get put delete badhi methods aam j rakhje ok sir, pela errors solve kar pachi check kar token pass thay che ke nai
-//ha sir
     genModel? genmodel =
         await urls.postApiCall(method: '${urls.adminDashBoard}');
     if (genmodel != null) {
