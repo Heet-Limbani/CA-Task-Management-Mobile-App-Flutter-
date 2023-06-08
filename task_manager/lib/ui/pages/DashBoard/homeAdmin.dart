@@ -55,6 +55,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String?
       selectedClientId1; // Create a variable to store the selected client ID
 
+  //DateTime? selectedDateTime;
+  DateTime? selectedDateTime =
+      DateTime.now(); // Initialize with current date and time
+int currentPage = 0;
+  int rowsPerPage = 10;
+
   @override
   void dispose() {
     clientController.dispose();
@@ -68,13 +74,14 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   @override
   void initState() {
     super.initState();
-
+    fetchData();
     clientDashboard();
     birthDayTable();
     holidayTable();
     clientTable();
     clientData();
     getUser();
+   
   }
 
   CountData? dataCount;
@@ -170,8 +177,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     genModel? genmodel = await urls.postApiCall(
       method: '${urls.clientLog}',
       params: {
-        'limit': 100,
-        'offset': 0,
+        'offset': offset,
         'search': searchLogController.text.trim(),
       },
     );
@@ -196,29 +202,60 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     }
   }
 
+   Future<void> fetchData() async {
+    int offset = currentPage;
+       // int offset = (currentPage - 1) * rowsPerPage; 
+    print('offset $offset');
+    print('currentPage $currentPage');
+    print('rowsPerPage $rowsPerPage');
+    genModel? genmodel = await urls.postApiCall(
+      method: '${urls.clientLog}',
+      params: {
+        'offset': offset,
+        'search': searchLogController.text.trim(),
+      },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+
+      if (data != null && data is List) {
+        setState(() {
+          clients = data.map((item) => Client.fromJson(item)).toList();
+          totalCount = genmodel.count ?? 0;
+        });
+      }
+    }
+  }
+  void handlePageChange(int pageIndex) {
+    setState(() {
+      currentPage = pageIndex;
+      fetchData();
+    });
+  }
   void clientLogAdd() async {
     try {
+      if (selectedDateTime == null) {
+        selectedDateTime = DateTime.now();
+      }
       genModel? genmodel = await urls.postApiCall(
         method: '${urls.clientLogAdd}',
         params: {
           'message': message,
           'client': selectedClientId1,
           'description': description,
-          'date': date,
+          'date': selectedDateTime.toString(),
         },
       );
       if (genmodel != null) {
-        // print('Status: ${genmodel.message}');
         if (genmodel.status == true) {
-          //print('data added successfully');
-
           setState(() {
             clientId = '';
           });
         }
       }
     } catch (e) {
-      // print('Exception: $e');
+      // Handle the exception
     }
   }
 
@@ -309,6 +346,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   Column _admin() {
+        final int totalPages = (totalCount / rowsPerPage).ceil();
+
     return Column(
       children: [
         Row(
@@ -662,32 +701,34 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               TextFormField(
                 controller: dateController,
                 decoration: const InputDecoration(
-                    labelText: 'Date And Time',
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
-                    ),
-                    border: OutlineInputBorder()),
+                  labelText: 'Date And Time',
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                  ),
+                  border: OutlineInputBorder(),
+                ),
                 onTap: () async {
-                  DateTime? selectedDateTime = await showDatePicker(
+                  DateTime? pickedDateTime = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: selectedDateTime ?? DateTime.now(),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(3000),
                   );
-                  if (selectedDateTime != null) {
-                    TimeOfDay? selectedTime = await showTimePicker(
+                  if (pickedDateTime != null) {
+                    TimeOfDay? pickedTime = await showTimePicker(
                       context: context,
-                      initialTime: TimeOfDay.now(),
+                      initialTime: TimeOfDay.fromDateTime(
+                          selectedDateTime ?? DateTime.now()),
                     );
 
-                    if (selectedTime != null) {
+                    if (pickedTime != null) {
                       selectedDateTime = DateTime(
-                        selectedDateTime.year,
-                        selectedDateTime.month,
-                        selectedDateTime.day,
-                        selectedTime.hour,
-                        selectedTime.minute,
+                        pickedDateTime.year,
+                        pickedDateTime.month,
+                        pickedDateTime.day,
+                        pickedTime.hour,
+                        pickedTime.minute,
                       );
                       setState(() {
                         date = selectedDateTime.toString();
@@ -698,15 +739,64 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 },
                 onFieldSubmitted: (value) {
                   setState(() {
-                    date = value;
+                    selectedDateTime = DateTime.tryParse(value);
                   });
                 },
                 onChanged: (value) {
                   setState(() {
-                    date = value;
+                    selectedDateTime = DateTime.tryParse(value);
                   });
                 },
               ),
+
+              // TextFormField(
+              //   controller: dateController,
+              //   decoration: const InputDecoration(
+              //       labelText: 'Date And Time',
+              //       enabledBorder: OutlineInputBorder(
+              //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //         borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              //       ),
+              //       border: OutlineInputBorder()),
+              //   onTap: () async {
+              //     DateTime? selectedDateTime = await showDatePicker(
+              //       context: context,
+              //       initialDate: DateTime.now(),
+              //       firstDate: DateTime(2000),
+              //       lastDate: DateTime(3000),
+              //     );
+              //     if (selectedDateTime != null) {
+              //       TimeOfDay? selectedTime = await showTimePicker(
+              //         context: context,
+              //         initialTime: TimeOfDay.now(),
+              //       );
+
+              //       if (selectedTime != null) {
+              //         selectedDateTime = DateTime(
+              //           selectedDateTime.year,
+              //           selectedDateTime.month,
+              //           selectedDateTime.day,
+              //           selectedTime.hour,
+              //           selectedTime.minute,
+              //         );
+              //         setState(() {
+              //           date = selectedDateTime.toString();
+              //           dateController.text = date;
+              //         });
+              //       }
+              //     }
+              //   },
+              //   onFieldSubmitted: (value) {
+              //     setState(() {
+              //       date = value;
+              //     });
+              //   },
+              //   onChanged: (value) {
+              //     setState(() {
+              //       date = value;
+              //     });
+              //   },
+              // ),
               SizedBox(height: deviceHeight * 0.02),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -789,34 +879,54 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-        PaginatedDataTable(
-          header: const Text('Client List'),
-          columns: const [
-            DataColumn(label: Text('Sr. No.'), numeric: true),
-            DataColumn(label: Text('Client Name')),
-            DataColumn(label: Text('Message')),
-            DataColumn(label: Text('Description')),
-            DataColumn(label: Text('Date')),
-            DataColumn(label: Text('Created On')),
-          ],
-          source: _ClientDataTableSource(
-            clients,
-            totalCount,
-            limit,
-            offset,
-          ),
-          onPageChanged: (int pageIndex) {
-            setState(() {
-              offset += pageIndex;
-              // print('offset $offset');
-              // print('pageindex $pageIndex');
-              // run kar to
-            }); //offset ni value page change upar proper set nathi thati
+  PaginatedDataTable(
+        header: const Text('Your Table'),
+        columns: const [
+          DataColumn(label: Text('Sr. No.'), numeric: true),
+          DataColumn(label: Text('Client Name')),
+          DataColumn(label: Text('Message')),
+          DataColumn(label: Text('Description')),
+          DataColumn(label: Text('Date')),
+          DataColumn(label: Text('Created On')),
+        ],
+        source: ClientDataSource(clients, totalCount),
+        rowsPerPage: rowsPerPage,
+        availableRowsPerPage: [rowsPerPage],
+        onPageChanged: (newPage) {
+          setState(() {
+           currentPage = newPage ; // Update the starting index of the page entry
+            fetchData();
+          });
+        },
+      ),
+        // PaginatedDataTable(
+        //   header: const Text('Client List'),
+        //   columns: const [
+        //     DataColumn(label: Text('Sr. No.'), numeric: true),
+        //     DataColumn(label: Text('Client Name')),
+        //     DataColumn(label: Text('Message')),
+        //     DataColumn(label: Text('Description')),
+        //     DataColumn(label: Text('Date')),
+        //     DataColumn(label: Text('Created On')),
+        //   ],
+        //   source: _ClientDataTableSource(
+        //     clients,
+        //     totalCount,
+        //     limit,
+        //     offset,
+        //   ),
+        //   onPageChanged: (int pageIndex) {
+        //     setState(() {
+        //       offset += pageIndex;
+        //       // print('offset $offset');
+        //       // print('pageindex $pageIndex');
+        //       // run kar to
+        //     }); //offset ni value page change upar proper set nathi thati
 
-            clientTable(offset: offset);
-          },
-          rowsPerPage: limit,
-        ),
+        //     clientTable(offset: offset);
+        //   },
+        //   rowsPerPage: limit,
+        // ),
         // Column(
         //   children: <Widget>[
         //     SingleChildScrollView(
@@ -1247,32 +1357,26 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 }
 
-class _ClientDataTableSource extends DataTableSource {
+class ClientDataSource extends DataTableSource {
   final List<Client> clients;
   final int totalCount;
-  final int limit;
-  final int offset;
 
-  _ClientDataTableSource(
-      this.clients, this.totalCount, this.limit, this.offset);
+  ClientDataSource(this.clients, this.totalCount);
 
   @override
   DataRow? getRow(int index) {
-    if (index >= rowCount) {
+    if (index >= clients.length) {
       return null;
     }
-    // final clientIndex = index;//   aa logic ? ha aa logic work nathi karto
-    //print("index : $index");
-    // print("offset : $offset"); //run
-    //final clientIndex = index + (pageIndex * limit);
+
     final client = clients[index];
-    final srNo = (index + 1).toString(); //
-    // final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
+    final srNo = (index + 1).toString();
+
     final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
     final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
 
-    return DataRow.byIndex(index: index, cells: [
+    return DataRow(cells: [
       DataCell(Text(srNo)),
       DataCell(Text(client.client ?? '')),
       DataCell(Text(client.message ?? '')),
@@ -1283,14 +1387,58 @@ class _ClientDataTableSource extends DataTableSource {
   }
 
   @override
-  bool get isRowCountApproximate => false;
+  int get rowCount => totalCount;
 
   @override
-  int get rowCount => totalCount;
+  bool get isRowCountApproximate => false;
 
   @override
   int get selectedRowCount => 0;
 }
+// class _ClientDataTableSource extends DataTableSource {
+//   final List<Client> clients;
+//   final int totalCount;
+//   final int limit;
+//   final int offset;
+
+//   _ClientDataTableSource(
+//       this.clients, this.totalCount, this.limit, this.offset);
+
+//   @override
+//   DataRow? getRow(int index) {
+//     if (index >= rowCount) {
+//       return null;
+//     }
+//     // final clientIndex = index;//   aa logic ? ha aa logic work nathi karto
+//     //print("index : $index");
+//     // print("offset : $offset"); //run
+//     //final clientIndex = index + (pageIndex * limit);
+//     final client = clients[index];
+//     final srNo = (index + 1).toString(); //
+//     // final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
+//     final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+//     final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
+//     final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+//     return DataRow.byIndex(index: index, cells: [
+//       DataCell(Text(srNo)),
+//       DataCell(Text(client.client ?? '')),
+//       DataCell(Text(client.message ?? '')),
+//       DataCell(Text(client.description ?? '')),
+//       DataCell(Text(formattedDate)),
+//       DataCell(Text(client.createdOn ?? '')),
+//     ]);
+//   }
+
+//   @override
+//   bool get isRowCountApproximate => false;
+
+//   @override
+//   int get rowCount => totalCount;
+
+//   @override
+//   int get selectedRowCount => 0;
+// }
 
 // class _ClientDataTableSource extends DataTableSource {
 //   final List<Client> clients;
