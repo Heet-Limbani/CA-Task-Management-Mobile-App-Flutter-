@@ -382,6 +382,12 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('email', loginData.email ?? '');
       prefs.setString('username', loginData.username ?? '');
       prefs.setString('type', loginData.type ?? '');
+      prefs.setString('contactnumber', loginData.contactNumber ?? '');
+      prefs.setString('firstname', loginData.firstName ?? '');
+      prefs.setString('lastname', loginData.lastName ?? '');
+      prefs.setString('password', loginData.password ?? '');
+      prefs.setString('sessiontime', loginData.sessionTime ?? '');
+      prefs.setString('avatar', loginData.avatar ?? '');
       // String? storedXType = prefs.getString('type');
       // if (storedXType != null && storedXType.isNotEmpty) {
       //   print('xtoken is stored in SharedPreferences: $storedXType');

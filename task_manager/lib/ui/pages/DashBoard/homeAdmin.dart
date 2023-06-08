@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 //import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:task_manager/API/model/clientDataModel.dart';
 
 import 'package:task_manager/API/model/countDataModel.dart';
+import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/core/res/color.dart';
@@ -29,6 +31,9 @@ class HomeAdminScreen extends StatefulWidget {
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   List<Client> clients = [];
+
+  List<ClientData> clientsdata = [];
+
   late double deviceWidth;
   late double deviceHeight;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -38,13 +43,17 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController searchLogController = TextEditingController();
-  String clientName = "";
+  String clientId = "";
+  String selectedClientId = "";
+  String clientName = '';
   String message = "";
   String description = "";
   String date = '';
   int offset = 0;
   int limit = 10;
   int totalCount = 0;
+  String?
+      selectedClientId1; // Create a variable to store the selected client ID
 
   @override
   void dispose() {
@@ -64,6 +73,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     birthDayTable();
     holidayTable();
     clientTable();
+    clientData();
+    getUser();
   }
 
   CountData? dataCount;
@@ -122,12 +133,45 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     }
   }
 
-  void clientTable() async {
+  ClientList? dataClientList;
+  void clientData() async {
+    genModel? genmodel =
+        await urls.postApiCall(method: '${urls.adminDashBoard}');
+    if (genmodel != null) {
+      // print('Status: ${genmodel.message}');
+      if (genmodel.status == true) {
+        //print('Data: ${genmodel.data}');
+
+        final data = genmodel.data;
+        dataClientList = ClientList.fromJson(data);
+        if (dataClientList?.clientdata != null) {
+          clientsdata = (data['client'] as List<dynamic>)
+              .map((item) => ClientData.fromJson(item as Map<String, dynamic>))
+              .toList();
+          //print("clients $clients.asString()");
+          //print("clientsdata $clientsdata");
+          if (clientsdata.isEmpty) {
+            // List is empty
+            // print("No client data available.");
+          } else {
+            // List has values
+            // print("Client data available.");
+          }
+          for (ClientData clientdata1 in dataClientList!.clientdata!) {
+            // print('UserName: ${clientdata1.username}');
+          }
+        }
+        setState(() {});
+      }
+    }
+  }
+
+  void clientTable({int offset = 0, int limit = 10}) async {
     genModel? genmodel = await urls.postApiCall(
       method: '${urls.clientLog}',
       params: {
-        'limit': 100, //limit
-        'offset': 0, //offset,
+        'limit': 100,
+        'offset': 0,
         'search': searchLogController.text.trim(),
       },
     );
@@ -153,24 +197,88 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   void clientLogAdd() async {
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.clientLogAdd}',
-      params: {
-        'message': message,
-        'client': clientName,
-        'description': description,
-        'date': date,
-      },
-    );
-    if (genmodel != null) {
-      print('Status: ${genmodel.message}');
-      if (genmodel.status == true) {
-        print('data added successfully');
+    try {
+      genModel? genmodel = await urls.postApiCall(
+        method: '${urls.clientLogAdd}',
+        params: {
+          'message': message,
+          'client': selectedClientId1,
+          'description': description,
+          'date': date,
+        },
+      );
+      if (genmodel != null) {
+        // print('Status: ${genmodel.message}');
+        if (genmodel.status == true) {
+          //print('data added successfully');
 
+          setState(() {
+            clientId = '';
+          });
+        }
+      }
+    } catch (e) {
+      // print('Exception: $e');
+    }
+  }
+
+  List<GetUser> clientType = [];
+  void getUser() async {
+    genModel? genmodel = await urls.postApiCall(
+      method: '${urls.getUsers}',
+      params: {'type': urls.clientType},
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+
+      if (data != null && data is List) {
+        clientType = data.map((item) => GetUser.fromJson(item)).toList();
+        //if (clientType.isEmpty) {
+        // List is empty
+        //print("No client data available.");
+        // } else {
+        // List has values
+        //print("Client data available.");
+        // }
+        // for (GetUser clientdata1 in clientType) {
+        //   print('UserName: ${clientdata1.username}');
+        // }
         setState(() {});
       }
     }
   }
+  // void openUserListDialog(List<ClientData> clientList) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Select User'),
+  //         content: Container(
+  //           width: double.maxFinite,
+  //           child: ListView.builder(
+  //             /// aa customise karvu padse list view last itm ma ave etle api call karavi ne bijo  data server prthi fetch karvau pdse ok sir and sir naitar api call karvi ne limit ma count put karaviye to badhi entry aavijay list ma ? na em nai chale moklavu tne example tyar sudhi package implement kar advance pagination varo ha sir
+  //             shrinkWrap: true,
+  //             itemCount: clientList.length,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               final client = clientList[index];
+  //               return ListTile(
+  //                 title: Text(client.username ?? ''),
+  //                 onTap: () {
+  //                   setState(() {
+  //                     clientId = client.iD!;
+  //                     clientController.text = clientId;
+  //                   });
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Stack _buildBody() {
     return Stack(
@@ -370,35 +478,123 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              TextFormField(
-                controller: clientController,
-                keyboardType: TextInputType.number,
+              DropdownButtonFormField<String>(
+                value: selectedClientId1,
                 decoration: const InputDecoration(
-                    labelText: 'Client ID',
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                      borderSide: BorderSide(color: Colors.grey, width: 0.0),
-                    ),
-                    border: OutlineInputBorder()),
-                onFieldSubmitted: (value) {
+                  labelText: 'Client',
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+                onChanged: (String? newValue) {
                   setState(() {
-                    clientName = value;
+                    selectedClientId1 = newValue;
+                    clientController.text = selectedClientId1 ??
+                        ''; // Update the clientController value
                   });
                 },
-                onChanged: (value) {
-                  setState(() {
-                    clientName = value;
-                  });
-                },
+                items: clientType.map((GetUser user) {
+                  return DropdownMenuItem<String>(
+                    value: user.iD ?? '',
+                    child: Text(user.username ?? ''),
+                  );
+                }).toList(),
                 validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.contains(RegExp(r'^[a-zA-Z\-]'))) {
-                    return 'Use only numbers!';
+                  if (value == null || value.isEmpty) {
+                    return 'Please select a client';
                   }
                   return null;
                 },
               ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              // TextFormField(
+              //   controller: clientController,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Client ID',
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              //     ),
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   onChanged: (value) {
+              //     setState(() {
+              //       selectedClientId1 = value;
+              //     });
+              //   },
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please enter a client ID';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // TextFormField(
+              //   controller: clientController,
+              //   keyboardType: TextInputType.number,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Client ID',
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              //     ),
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   onTap: () {
+
+              //     openUserListDialog(clientsdata);
+              //   },
+              //   onChanged: (value) {
+              //     setState(() {
+              //       clientId = value;
+              //     });
+              //   },
+              //   validator: (value) {
+              //     if (value == null ||
+              //         value.isEmpty ||
+              //         value.contains(RegExp(r'^[a-zA-Z\-]'))) {
+              //       return 'Use only numbers!';
+              //     }
+              //     return null;
+              //   },
+              // ),
+
+              // void openUserListDialog(List<ClientData> clientList) {
+              //   showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return AlertDialog(
+              //         title: Text('Select User'),
+              //         content: Container(
+              //           width: double.maxFinite,
+              //           child: ListView.builder(
+              //             /// aa customise karvu padse list view last itm ma ave etle api call karavi ne bijo  data server prthi fetch karvau pdse ok sir and sir naitar api call karvi ne limit ma count put karaviye to badhi entry aavijay list ma ? na em nai chale moklavu tne example tyar sudhi package implement kar advance pagination varo ha sir
+              //             shrinkWrap: true,
+              //             itemCount: clientList.length,
+              //             itemBuilder: (BuildContext context, int index) {
+              //               final client = clientList[index];
+              //               return ListTile(
+              //                 title: Text(client.username ?? ''),
+              //                 onTap: () {
+              //                   setState(() {
+              //                     clientId = client.iD!;
+              //                     clientController.text = clientId;
+              //                   });
+              //                   Navigator.of(context).pop();
+              //                 },
+              //               );
+              //             },
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //   );
+              // }
+
               SizedBox(
                 height: deviceHeight * 0.02,
               ),
@@ -611,11 +807,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           ),
           onPageChanged: (int pageIndex) {
             setState(() {
-              // offset = limit * pageIndex;
-              //offset = (limit * pageIndex) - (limit - 1);
-            });
-            print('Page Index: $pageIndex');
-            clientTable();
+              offset += pageIndex;
+              // print('offset $offset');
+              // print('pageindex $pageIndex');
+              // run kar to
+            }); //offset ni value page change upar proper set nathi thati
+
+            clientTable(offset: offset);
           },
           rowsPerPage: limit,
         ),
@@ -1063,16 +1261,18 @@ class _ClientDataTableSource extends DataTableSource {
     if (index >= rowCount) {
       return null;
     }
-    final clientIndex = offset + index;
+    // final clientIndex = index;//   aa logic ? ha aa logic work nathi karto
+    //print("index : $index");
+    // print("offset : $offset"); //run
     //final clientIndex = index + (pageIndex * limit);
-    final client = clients[clientIndex];
-    final srNo = (clientIndex + 1).toString();
+    final client = clients[index];
+    final srNo = (index + 1).toString(); //
     // final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
     final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
     final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
     final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
 
-    return DataRow(cells: [
+    return DataRow.byIndex(index: index, cells: [
       DataCell(Text(srNo)),
       DataCell(Text(client.client ?? '')),
       DataCell(Text(client.message ?? '')),
@@ -1091,7 +1291,6 @@ class _ClientDataTableSource extends DataTableSource {
   @override
   int get selectedRowCount => 0;
 }
-
 
 // class _ClientDataTableSource extends DataTableSource {
 //   final List<Client> clients;

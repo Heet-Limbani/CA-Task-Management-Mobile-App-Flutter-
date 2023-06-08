@@ -11,21 +11,45 @@ class urls {
   static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
   static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
+  static String getUsers = "${urls.baseUrlMain}GetUsers";
   static String profileEmail = "";
   static String profileUserName = "";
   static String profileType = "";
+  static String profileContactNumber = "";
+  static String profileFirstName = "";
+  static String profileLastName = "";
+  static String profilePassword = "";
+  static String profileSessionTime = "";
+  static String profileAvatar = "";
+  static String adminType = "0";
+  static String employeeType = "1";
+  static String clientType = "2";
+
 
   static Future<Map<String, String>> getXTokenHeader() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? xtoken = prefs.getString('xtoken');
     String? email = prefs.getString('email');
-    profileEmail = email ?? "" ;
+    profileEmail = email ?? "";
     String? userName = prefs.getString('username');
-    profileUserName = userName ?? "" ;
+    profileUserName = userName ?? "";
     String? type = prefs.getString('type');
-    profileType = type ?? "" ;
+    profileType = type ?? "";
+    String? contactNumber = prefs.getString('contactnumber');
+    profileContactNumber = contactNumber ?? "";
+    String? firstName = prefs.getString('firstname');
+    profileFirstName = firstName ?? "";
+    String? lastName = prefs.getString('lastname');
+    profileLastName = lastName ?? "";
+     String? password = prefs.getString('password');
+    profilePassword = password ?? "" ;
+     String? sessionTime = prefs.getString('sessiontime');
+    profileSessionTime = sessionTime ?? "" ;
+     String? avatar = prefs.getString('avatar');
+    profileAvatar = avatar ?? "" ;
+
     if (xtoken != null && xtoken.isNotEmpty) {
-     return {'Xtoken': xtoken};
+      return {'Xtoken': xtoken};
     } else {
       return {}; // Set xToken to an empty map if xtoken is not available
     }
@@ -36,8 +60,10 @@ class urls {
   //       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4',
   // };
 
-  static Future<genModel?> postApiCall(
-   {required String method,Map<String, dynamic>? params=const {},}  ) async {
+  static Future<genModel?> postApiCall({
+    required String method,
+    Map<String, dynamic>? params = const {},
+  }) async {
     if (kDebugMode) {
       print(method);
       print(params);
@@ -48,7 +74,7 @@ class urls {
       getXTokenHeader().then((value) {
         request.headers.addAll(value);
       });
-      //am thse ok to sir aa na ma 
+      //am thse ok to sir aa na ma
 
       // request.headers.addAll({
       //   'Content-Type': 'application/json',

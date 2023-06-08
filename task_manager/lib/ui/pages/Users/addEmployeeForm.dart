@@ -1,31 +1,31 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:task_manager/ui/pages/Users/addEmployeeForm.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
-class Employee extends StatefulWidget {
-  const Employee({super.key});
+class AddEmployeeForm extends StatefulWidget {
+  const AddEmployeeForm({super.key});
 
   @override
-  State<Employee> createState() => _EmployeeState();
+  State<AddEmployeeForm> createState() => _AddEmployeeFormState();
 }
 
 String? stringResponse;
 Map? mapResponse;
 Map? dataResponse;
+final GlobalKey<FormState> _addEmployeeformKey = GlobalKey<FormState>();
+TextEditingController userName = TextEditingController();
+late double deviceWidth;
+late double deviceHeight;
 
-class _EmployeeState extends State<Employee> {
-
+class _AddEmployeeFormState extends State<AddEmployeeForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > User > Employee",
+          "Menu > User > Employee > Add Employee",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -35,7 +35,7 @@ class _EmployeeState extends State<Employee> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer:  SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );
@@ -54,29 +54,31 @@ Stack _buildBody() {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 40,
+               SizedBox(
+                height: deviceHeight * 2,
               ),
+
               _header(),
-              const SizedBox(
-                height: 20,
+              SizedBox(
+                height: deviceHeight * 2,
               ),
-              _search(),
-              const SizedBox(
-                height: 30,
-              ),
-              _add(),
-              const SizedBox(
-                height: 10,
-              ),
-              _table(),
-               const SizedBox(
-                height: 50,
-              ),
-              _test(),
-              const SizedBox(
-                height: 50,
-              ),
+              _addEmployeeForm(),
+              // _search(),
+              // const SizedBox(
+              //   height: 30,
+              // ),
+              // _add(),
+              // const SizedBox(
+              //   height: 10,
+              // ),
+              // _table(),
+              //  const SizedBox(
+              //   height: 50,
+              // ),
+              // _test(),
+              // const SizedBox(
+              //   height: 50,
+              // ),
             ],
           ),
         ),
@@ -85,24 +87,46 @@ Stack _buildBody() {
   );
 }
 
-// Table heading
 Row _header() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Text(
-        "Employee List",
+        "Add EmployeeForm",
         style: TextStyle(
           color: Colors.blueGrey[900],
           fontWeight: FontWeight.w700,
           fontSize: 22,
         ),
       ),
-      const Spacer(),
     ],
   );
 }
+
+Form _addEmployeeForm() {
+  return Form(
+    key: _addEmployeeformKey,
+    child: Column(
+      children: <Widget>[
+        TextFormField(
+          controller: userName,
+          keyboardType: TextInputType.text,
+          decoration: const InputDecoration(
+            labelText: 'User Name',
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(color: Colors.grey, width: 0.0),
+            ),
+            border: OutlineInputBorder(),
+          ),
+        )
+      ],
+    ),
+  );
+}
+
+// Table heading
 
 Row _search() {
   return Row(
@@ -123,17 +147,13 @@ Row _search() {
   );
 }
 
-
-
 Row _add() {
   return Row(
     children: [
       OutlinedButton(
-        onPressed: () {
-          Get.to(()=>AddEmployeeForm());
-        },
+        onPressed: () {},
         child: Text(
-          "Add New Employee",
+          "Add New AddEmployeeForm",
           style: TextStyle(
             fontSize: 12,
             letterSpacing: 0,
@@ -150,6 +170,7 @@ Row _add() {
     ],
   );
 }
+
 Row _test() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,
@@ -162,8 +183,11 @@ Row _test() {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
-          child: dataResponse == null ? Text("data Is Loading"):Text(dataResponse!["first_name"].toString(),
-          ),
+          child: dataResponse == null
+              ? Text("data Is Loading")
+              : Text(
+                  dataResponse!["first_name"].toString(),
+                ),
         ),
       ),
     ],
@@ -249,5 +273,4 @@ Column _table() {
       ),
     ],
   );
-  
 }
