@@ -1,27 +1,50 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:task_manager/ui/Theme/app_theme.dart';
+import 'package:task_manager/ui/Theme/colors.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class AddEmployeeForm extends StatefulWidget {
-  const AddEmployeeForm({super.key});
+  const AddEmployeeForm({Key? key}) : super(key: key);
 
   @override
   State<AddEmployeeForm> createState() => _AddEmployeeFormState();
 }
 
-String? stringResponse;
-Map? mapResponse;
-Map? dataResponse;
-final GlobalKey<FormState> _addEmployeeformKey = GlobalKey<FormState>();
-TextEditingController userName = TextEditingController();
-late double deviceWidth;
-late double deviceHeight;
-
 class _AddEmployeeFormState extends State<AddEmployeeForm> {
+  late double deviceWidth;
+  late double deviceHeight;
+
+  Map? dataResponse;
+
+  final GlobalKey<FormState> _addEmployeeformKey = GlobalKey<FormState>();
+  TextEditingController userName = TextEditingController();
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController contact = TextEditingController();
+  TextEditingController contact2 = TextEditingController();
+
+  bool isActive = true;
+  bool checkSMS = true;
+  bool checkEmail = true;
+
+  @override
+  void dispose() {
+    userName.dispose();
+    firstName.dispose();
+    lastName.dispose();
+    birthDateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -40,90 +63,350 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
       body: _buildBody(),
     );
   }
-}
 
-Stack _buildBody() {
-  return Stack(
-    children: [
-      SingleChildScrollView(
-        child: Container(
-          margin: const EdgeInsets.symmetric(
-            horizontal: 15,
-            vertical: 0,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-               SizedBox(
-                height: deviceHeight * 2,
-              ),
-
-              _header(),
-              SizedBox(
-                height: deviceHeight * 2,
-              ),
-              _addEmployeeForm(),
-              // _search(),
-              // const SizedBox(
-              //   height: 30,
-              // ),
-              // _add(),
-              // const SizedBox(
-              //   height: 10,
-              // ),
-              // _table(),
-              //  const SizedBox(
-              //   height: 50,
-              // ),
-              // _test(),
-              // const SizedBox(
-              //   height: 50,
-              // ),
-            ],
-          ),
-        ),
-      ),
-    ],
-  );
-}
-
-Row _header() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    crossAxisAlignment: CrossAxisAlignment.center,
-    children: [
-      Text(
-        "Add EmployeeForm",
-        style: TextStyle(
-          color: Colors.blueGrey[900],
-          fontWeight: FontWeight.w700,
-          fontSize: 22,
-        ),
-      ),
-    ],
-  );
-}
-
-Form _addEmployeeForm() {
-  return Form(
-    key: _addEmployeeformKey,
-    child: Column(
-      children: <Widget>[
-        TextFormField(
-          controller: userName,
-          keyboardType: TextInputType.text,
-          decoration: const InputDecoration(
-            labelText: 'User Name',
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-              borderSide: BorderSide(color: Colors.grey, width: 0.0),
+  Stack _buildBody() {
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Container(
+            margin: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 0,
             ),
-            border: OutlineInputBorder(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: deviceHeight * 0.04,
+                ),
+                _header(),
+                SizedBox(
+                  height: deviceHeight * 0.05,
+                ),
+                _addEmployeeForm(),
+              ],
+            ),
           ),
-        )
+        ),
       ],
-    ),
-  );
+    );
+  }
+
+  Row _header() {
+    return Row(
+      children: [
+        Text(
+          "Add Employee Form",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Form _addEmployeeForm() {
+    return Form(
+      key: _addEmployeeformKey,
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            controller: userName,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              labelText: 'User Name',
+              suffixIcon: Icon(Icons.system_security_update_good_sharp),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: firstName,
+            decoration: InputDecoration(
+              labelText: 'First Name',
+              suffixIcon: Icon(Icons.keyboard),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: lastName,
+            decoration: InputDecoration(
+              labelText: 'Last Name',
+              suffixIcon: Icon(Icons.keyboard),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: birthDateController,
+            decoration: InputDecoration(
+              labelText: 'Birth Date',
+              suffixIcon: Icon(Icons.calendar_month),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+            onTap: () async {
+              // Show date picker when the text field is tapped
+              DateTime? selectedDate = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+              );
+
+              if (selectedDate != null) {
+                // Format the selected date as 'dd-MM-yyyy'
+                String formattedDate =
+                    DateFormat('dd-MM-yyyy').format(selectedDate);
+
+                setState(() {
+                  birthDateController.text = formattedDate;
+                });
+              }
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please select a birth date.';
+              }
+              return null;
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: email,
+            decoration: InputDecoration(
+              labelText: 'Email',
+              suffixIcon: Icon(Icons.email),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: contact,
+            decoration: InputDecoration(
+              labelText: 'Contact Number',
+              suffixIcon: Icon(Icons.phone),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: contact2,
+            decoration: InputDecoration(
+              labelText: 'Parent Number',
+              suffixIcon: Icon(Icons.contact_phone),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(28),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          SwitchListTile(
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Account', style: TextStyle(fontSize: 20)),
+                Text(
+                  isActive ? 'Active' : 'Inactive',
+                  style: TextStyle(fontSize: 14),
+                ),
+              ],
+            ),
+            value: isActive,
+            onChanged: (value) {
+              setState(() {
+                isActive = value;
+              });
+            },
+            controlAffinity: ListTileControlAffinity.trailing,
+            secondary: isActive
+                ? Icon(Icons.check_circle, color: Colors.green)
+                : Icon(Icons.cancel, color: Colors.red),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 16),
+            title: Row(
+              children: [
+                Text('Send Text SMS', style: TextStyle(fontSize: 20)),
+                SizedBox(
+                  width: deviceWidth * 0.05,
+                ),
+                Spacer(), // Add spacer to push checkbox to the right
+                Checkbox(
+                  value: checkSMS,
+                  onChanged: (value) {
+                    setState(() {
+                      checkSMS = value!;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.symmetric(horizontal: 16),
+            title: Row(
+              children: [
+                Text('Send Email', style: TextStyle(fontSize: 20)),
+                SizedBox(
+                  width: deviceWidth * 0.05,
+                ),
+                Spacer(), // Add spacer to push checkbox to the right
+                Checkbox(
+                  value: checkEmail,
+                  onChanged: (value) {
+                    setState(() {
+                      checkEmail = value!;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.05,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              elevation: 8,
+              minimumSize: Size.fromHeight(60),
+              backgroundColor: Colors.blue, // Set the background color
+              primary: Colors.white, // Set the text color
+              shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(30), // Set the border radius
+              ),
+              shadowColor: Colors.black, // Set the shadow color
+            ),
+            onPressed: () {
+              // Your code goes here
+              // clientTable();
+              // if (_formKey.currentState!.validate()) {
+              //   clientLogAdd();
+              //   Fluttertoast.showToast(
+              //     msg: "Client Log Added Successfully",
+              //     toastLength: Toast.LENGTH_SHORT,
+              //     gravity: ToastGravity.BOTTOM,
+              //     timeInSecForIosWeb: 1,
+              //     backgroundColor: Colors.blue,
+              //     textColor: Colors.white,
+              //     fontSize: 16.0,
+              //   );
+              // }
+              // clientTable();
+            },
+            child: Text(
+              "Submit",
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.2,
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // Table heading
@@ -171,28 +454,28 @@ Row _add() {
   );
 }
 
-Row _test() {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Container(
-        height: 100,
-        width: 200,
-        decoration: BoxDecoration(
-          color: const Color.fromARGB(255, 182, 212, 237),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Center(
-          child: dataResponse == null
-              ? Text("data Is Loading")
-              : Text(
-                  dataResponse!["first_name"].toString(),
-                ),
-        ),
-      ),
-    ],
-  );
-}
+// Row _test() {
+//   return Row(
+//     mainAxisAlignment: MainAxisAlignment.center,
+//     children: [
+//       Container(
+//         height: 100,
+//         width: 200,
+//         decoration: BoxDecoration(
+//           color: const Color.fromARGB(255, 182, 212, 237),
+//           borderRadius: BorderRadius.circular(10),
+//         ),
+//         child: Center(
+//           child: dataResponse == null
+//               ? Text("data Is Loading")
+//               : Text(
+//                   dataResponse!["first_name"].toString(),
+//                 ),
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
 // Table contents
 Column _table() {
