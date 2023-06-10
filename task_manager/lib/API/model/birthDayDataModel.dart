@@ -5,7 +5,7 @@ class BirthDayList {
     this.birthday,
   });
 
-  BirthDayList.fromJson(Map<String, dynamic> json) {
+  BirthDayList.fromJson(Map<String,dynamic> json) {
     if (json['birthday_list'] != null) {
       birthday = <Birthday>[];
       json['birthday_list'].forEach((v) {
