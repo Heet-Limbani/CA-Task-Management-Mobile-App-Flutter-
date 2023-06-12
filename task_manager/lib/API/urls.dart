@@ -11,6 +11,7 @@ class urls {
   static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
   static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
+  static String paymentMethod="${urls.baseUrlMain}PaymentMethod";
   static String getUsers = "${urls.baseUrlMain}GetUsers";
   static String addEmployee = "${urls.baseUrlMain}Add_Employee";
   static String deleteEmployee = "${urls.baseUrlMain}Delete_Employee";
