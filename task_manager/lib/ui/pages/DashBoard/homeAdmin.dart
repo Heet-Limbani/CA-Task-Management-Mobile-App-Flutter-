@@ -30,6 +30,7 @@ class HomeAdminScreen extends StatefulWidget {
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
+
   List<Client> clients = [];
 
   List<ClientData> clientsdata = [];
@@ -263,7 +264,11 @@ int currentPage = 0;
   void getUser() async {
     genModel? genmodel = await urls.postApiCall(
       method: '${urls.getUsers}',
-      params: {'type': urls.clientType},
+      params: {
+        'type': urls.clientType,
+        'limit':"200"
+        
+      },
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -927,48 +932,48 @@ int currentPage = 0;
         //   },
         //   rowsPerPage: limit,
         // ),
-        // Column(
-        //   children: <Widget>[
-        //     SingleChildScrollView(
-        //       scrollDirection: Axis.horizontal,
-        //       child: Row(
-        //         children: [
-        //           DataTable(
-        //             columns: const [
-        //               DataColumn(label: Text('Sr. No.'), numeric: true),
-        //               DataColumn(label: Text('Client Name')),
-        //               DataColumn(label: Text('Message')),
-        //               DataColumn(label: Text('Description')),
-        //               DataColumn(label: Text('Date')),
-        //               DataColumn(label: Text('Created On')),
-        //             ],
+        // // Column(
+        // //   children: <Widget>[
+        // //     SingleChildScrollView(
+        // //       scrollDirection: Axis.horizontal,
+        // //       child: Row(
+        // //         children: [
+        // //           DataTable(
+        // //             columns: const [
+        // //               DataColumn(label: Text('Sr. No.'), numeric: true),
+        // //               DataColumn(label: Text('Client Name')),
+        // //               DataColumn(label: Text('Message')),
+        // //               DataColumn(label: Text('Description')),
+        // //               DataColumn(label: Text('Date')),
+        // //               DataColumn(label: Text('Created On')),
+        // //             ],
         //             rows: clients.map((client) {
-        //               final index = clients.indexOf(client);
-        //               final srNo = (index + 1).toString();
+        // //               final index = clients.indexOf(client);
+        // //               final srNo = (index + 1).toString();
 
-        //               // Parse createdOn string to DateTime
-        //               final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-        //               final createdOnDate =
-        //                   createdOnFormat.parse(client.createdOn ?? '');
+        // //               // Parse createdOn string to DateTime
+        // //               final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+        // //               final createdOnDate =
+        // //                   createdOnFormat.parse(client.createdOn ?? '');
 
-        //               // Format the date as dd/mm/yyyy
-        //               final formattedDate =
-        //                   DateFormat('dd/MM/yyyy').format(createdOnDate);
+        // //               // Format the date as dd/mm/yyyy
+        // //               final formattedDate =
+        // //                   DateFormat('dd/MM/yyyy').format(createdOnDate);
 
-        //               return DataRow(cells: [
-        //                 DataCell(Text(srNo)),
-        //                 DataCell(Text(client.client ?? '')),
-        //                 DataCell(Text(client.message ?? '')),
-        //                 DataCell(Text(client.description ?? '')),
-        //                 DataCell(Text(formattedDate)),
-        //                 DataCell(Text(client.createdOn ?? '')),
-        //               ]);
-        //             }).toList(),
-        //             dataRowHeight: 32.0,
-        //           )
-        //         ],
-        //       ),
-        //     ),
+        // //               return DataRow(cells: [
+        // //                 DataCell(Text(srNo)),
+        // //                 DataCell(Text(client.client ?? '')),
+        // //                 DataCell(Text(client.message ?? '')),
+        // //                 DataCell(Text(client.description ?? '')),
+        // //                 DataCell(Text(formattedDate)),
+        // //                 DataCell(Text(client.createdOn ?? '')),
+        // //               ]);
+        // //             }).toList(),
+        // //             dataRowHeight: 32.0,
+        // //           )
+        // //         ],
+        // //       ),
+        // //     ),
         //   ],
         // ),
 

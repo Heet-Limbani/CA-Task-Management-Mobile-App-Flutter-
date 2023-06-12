@@ -12,6 +12,10 @@ class urls {
   static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
   static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
   static String getUsers = "${urls.baseUrlMain}GetUsers";
+  static String addEmployee = "${urls.baseUrlMain}Add_Employee";
+  static String deleteEmployee = "${urls.baseUrlMain}Delete_Employee";
+  static String updateEmployeePassword = "${urls.baseUrlMain}EmployeeResetPassword";
+  static String editEmployee = "${urls.baseUrlMain}Edit_Employee";
   static String profileEmail = "";
   static String profileUserName = "";
   static String profileType = "";

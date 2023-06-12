@@ -7,6 +7,7 @@ class GetUser {
   String? username;
   String? firstName;
   String? lastName;
+  String? birthdate;
   String? avatar;
   String? joined;
   String? joinedDate;
@@ -43,6 +44,7 @@ class GetUser {
       this.username,
       this.firstName,
       this.lastName,
+      this.birthdate,
       this.avatar,
       this.joined,
       this.joinedDate,
@@ -79,6 +81,7 @@ class GetUser {
     username = json['username'];
     firstName = json['first_name'];
     lastName = json['last_name'];
+    birthdate = json['birthdate'];
     avatar = json['avatar'];
     joined = json['joined'];
     joinedDate = json['joined_date'];
@@ -117,6 +120,7 @@ class GetUser {
     data['username'] = this.username;
     data['first_name'] = this.firstName;
     data['last_name'] = this.lastName;
+    data['birthdate'] = this.birthdate;
     data['avatar'] = this.avatar;
     data['joined'] = this.joined;
     data['joined_date'] = this.joinedDate;

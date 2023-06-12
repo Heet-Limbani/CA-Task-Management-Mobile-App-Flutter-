@@ -1,10 +1,18 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/Theme/colors.dart';
+import 'package:task_manager/ui/pages/Users/employee.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/ui/core/res/color.dart';
 
 class AddEmployeeForm extends StatefulWidget {
   const AddEmployeeForm({Key? key}) : super(key: key);
@@ -31,6 +39,9 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   bool isActive = true;
   bool checkSMS = true;
   bool checkEmail = true;
+  String isActiveValue = "";
+  String checkSMSValue = "";
+  String checkEmailValue = "";
 
   @override
   void dispose() {
@@ -39,6 +50,56 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     lastName.dispose();
     birthDateController.dispose();
     super.dispose();
+  }
+
+  void clearField() {
+    userName.clear();
+    firstName.clear();
+    lastName.clear();
+    birthDateController.clear();
+    email.clear();
+    contact.clear();
+    contact2.clear();
+  }
+
+  void employeeAdd() async {
+    isActiveValue = (isActive ? "1" : "0");
+    checkSMSValue = (checkSMS ? "1" : "0");
+    checkEmailValue = (checkEmail ? "1" : "0");
+    try {
+      genModel? genmodel = await urls.postApiCall(
+        method: '${urls.addEmployee}',
+        params: {
+          'un': userName.text,
+          'fname': firstName.text,
+          'lname': lastName.text,
+          'email': email.text,
+          'num': contact.text,
+          'par_num': contact2.text,
+          'sendemail': checkEmailValue,
+          'sendsms': checkSMSValue,
+          'active': isActiveValue,
+          'bdate': birthDateController.text,
+        },
+      );
+      if (genmodel != null) {
+        print('Status: ${genmodel.message}');
+        Fluttertoast.showToast(
+          msg: genmodel.message.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          // backgroundColor: AppColors.primaryColor,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+        if (genmodel.status == true) {
+          setState(() {});
+        }
+      }
+    } catch (e) {
+      // Handle the exception
+    }
   }
 
   @override
@@ -115,9 +176,10 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
           TextFormField(
             controller: userName,
             keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'User Name',
-              suffixIcon: Icon(Icons.system_security_update_good_sharp),
+              suffixIcon: Icon(Icons.person),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
@@ -131,12 +193,23 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 gapPadding: 10,
               ),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter UserName';
+              }
+              if (value.length < 3) {
+                return 'Username must be at least 3 characters long';
+              }
+              return null; // Return null if the input is valid
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
             controller: firstName,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'First Name',
               suffixIcon: Icon(Icons.keyboard),
@@ -153,12 +226,23 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 gapPadding: 10,
               ),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter First Name';
+              }
+              if (value.length < 3) {
+                return 'First Name must be at least 3 characters long';
+              }
+              return null; // Return null if the input is valid
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
             controller: lastName,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Last Name',
               suffixIcon: Icon(Icons.keyboard),
@@ -175,12 +259,23 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 gapPadding: 10,
               ),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter Last Name';
+              }
+              if (value.length < 3) {
+                return 'Last Name must be at least 3 characters long';
+              }
+              return null; // Return null if the input is valid
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
             controller: birthDateController,
+            keyboardType: TextInputType.datetime,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Birth Date',
               suffixIcon: Icon(Icons.calendar_month),
@@ -208,8 +303,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
 
               if (selectedDate != null) {
                 // Format the selected date as 'dd-MM-yyyy'
-                String formattedDate =
-                    DateFormat('dd-MM-yyyy').format(selectedDate);
+                    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
 
                 setState(() {
                   birthDateController.text = formattedDate;
@@ -218,7 +312,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select a birth date.';
+                return 'Please Select birth date.';
               }
               return null;
             },
@@ -228,6 +322,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
           ),
           TextFormField(
             controller: email,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Email',
               suffixIcon: Icon(Icons.email),
@@ -244,12 +340,26 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 gapPadding: 10,
               ),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter email';
+              }
+
+              final emailRegex =
+                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
+              if (!RegExp(emailRegex).hasMatch(value)) {
+                return 'Please Enter Valid Email';
+              }
+              return null;
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
             controller: contact,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Contact Number',
               suffixIcon: Icon(Icons.phone),
@@ -266,12 +376,25 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 gapPadding: 10,
               ),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter Contact Number';
+              }
+
+              final numberRegex = r'^[0-9]+$';
+              if (!RegExp(numberRegex).hasMatch(value)) {
+                return 'Please Enter valid Number';
+              }
+              return null;
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
             controller: contact2,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               labelText: 'Parent Number',
               suffixIcon: Icon(Icons.contact_phone),
@@ -288,6 +411,17 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
                 gapPadding: 10,
               ),
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter Parent Contact Number';
+              }
+
+              final numberRegex = r'^[0-9]+$';
+              if (!RegExp(numberRegex).hasMatch(value)) {
+                return 'Please Enter Valid Number';
+              }
+              return null;
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
@@ -376,21 +510,11 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              // Your code goes here
-              // clientTable();
-              // if (_formKey.currentState!.validate()) {
-              //   clientLogAdd();
-              //   Fluttertoast.showToast(
-              //     msg: "Client Log Added Successfully",
-              //     toastLength: Toast.LENGTH_SHORT,
-              //     gravity: ToastGravity.BOTTOM,
-              //     timeInSecForIosWeb: 1,
-              //     backgroundColor: Colors.blue,
-              //     textColor: Colors.white,
-              //     fontSize: 16.0,
-              //   );
-              // }
-              // clientTable();
+              if (_addEmployeeformKey.currentState!.validate()) {
+                employeeAdd();
+                clearField();
+               
+              }
             },
             child: Text(
               "Submit",
