@@ -30,9 +30,7 @@ class HomeAdminScreen extends StatefulWidget {
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
-
-  List<Client> clients = [];
-
+  List<GetUser> clientType = [];
   List<ClientData> clientsdata = [];
 
   late double deviceWidth;
@@ -51,16 +49,15 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String description = "";
   String date = '';
   int offset = 0;
+
   int limit = 10;
-  int totalCount = 0;
+
   String?
       selectedClientId1; // Create a variable to store the selected client ID
 
   //DateTime? selectedDateTime;
   DateTime? selectedDateTime =
       DateTime.now(); // Initialize with current date and time
-int currentPage = 0;
-  int rowsPerPage = 10;
 
   @override
   void dispose() {
@@ -82,7 +79,63 @@ int currentPage = 0;
     clientTable();
     clientData();
     getUser();
-   
+  }
+
+  List<Client> clients = [];
+  int currentPage = 0;
+  int rowsPerPage = 10;
+  int totalCount = 0;
+  genModel? dataModel;
+
+  Future<void> fetchData() async {
+    int offset = currentPage * rowsPerPage;
+
+    dataModel = await urls.postApiCall(
+      method: '${urls.clientLog}',
+      params: {
+        'offset': offset,
+        'search': searchLogController.text.trim(),
+      },
+    );
+
+    if (dataModel != null && dataModel?.status == true) {
+      final dynamicData = dataModel?.data;
+
+      if (dynamicData != null && dynamicData is List) {
+        clients = dynamicData
+            .map<Client>(
+                (item) => Client.fromJson(item as Map<String, dynamic>))
+            .toList();
+        totalCount = dataModel?.count ?? 0;
+        print("Data $dynamicData"); // Print the received data for debugging
+      } else {
+        clients = [];
+        totalCount = 0;
+      }
+    }
+
+    // Print the values for debugging
+    print("Offset: $offset");
+    print("Data Model: $dataModel");
+    print("Clients: $clients");
+    print("Total Count: $totalCount");
+  }
+
+  void handlePageChange(int pageIndex, genModel? model) async {
+    currentPage = pageIndex ~/ rowsPerPage;
+    print('currentPage $currentPage');
+
+    await fetchData();
+
+    if (dataModel != null && dataModel?.data != null) {
+      clients = dataModel?.data!
+          .map<Client>((item) => Client.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } else {
+      clients = [];
+    }
+
+    setState(() {}); // Only call setState once after updating clients
   }
 
   CountData? dataCount;
@@ -165,9 +218,9 @@ int currentPage = 0;
             // List has values
             // print("Client data available.");
           }
-          for (ClientData clientdata1 in dataClientList!.clientdata!) {
-            // print('UserName: ${clientdata1.username}');
-          }
+          // for (ClientData clientdata1 in dataClientList!.clientdata!) {
+          // print('UserName: ${clientdata1.username}');
+          //}
         }
         setState(() {});
       }
@@ -203,37 +256,6 @@ int currentPage = 0;
     }
   }
 
-   Future<void> fetchData() async {
-    int offset = currentPage;
-       // int offset = (currentPage - 1) * rowsPerPage; 
-    print('offset $offset');
-    print('currentPage $currentPage');
-    print('rowsPerPage $rowsPerPage');
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.clientLog}',
-      params: {
-        'offset': offset,
-        'search': searchLogController.text.trim(),
-      },
-    );
-
-    if (genmodel != null && genmodel.status == true) {
-      final data = genmodel.data;
-
-      if (data != null && data is List) {
-        setState(() {
-          clients = data.map((item) => Client.fromJson(item)).toList();
-          totalCount = genmodel.count ?? 0;
-        });
-      }
-    }
-  }
-  void handlePageChange(int pageIndex) {
-    setState(() {
-      currentPage = pageIndex;
-      fetchData();
-    });
-  }
   void clientLogAdd() async {
     try {
       if (selectedDateTime == null) {
@@ -260,15 +282,10 @@ int currentPage = 0;
     }
   }
 
-  List<GetUser> clientType = [];
   void getUser() async {
     genModel? genmodel = await urls.postApiCall(
       method: '${urls.getUsers}',
-      params: {
-        'type': urls.clientType,
-        'limit':"200"
-        
-      },
+      params: {'type': urls.clientType, 'limit': "200"},
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -339,7 +356,20 @@ int currentPage = 0;
                 ),
                 _admin(),
 
-                // _client(),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: clients.length,
+                  itemBuilder: (context, index) {
+                    final client = clients[index];
+                    return ListTile(
+                      title: Text(client.client ?? ''),
+                      subtitle: Text(client.message ?? ''),
+                    );
+                  },
+                ),
+
+                //_client(),
 
                 //_employee(),
               ],
@@ -350,9 +380,35 @@ int currentPage = 0;
     );
   }
 
-  Column _admin() {
-        final int totalPages = (totalCount / rowsPerPage).ceil();
+  // Stack _buildBody() {
+  //   return Stack(
+  //     children: [
+  //       SingleChildScrollView(
+  //         child: Container(
+  //           margin: const EdgeInsets.symmetric(
+  //             horizontal: 15,
+  //             vertical: 0,
+  //           ),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               SizedBox(
+  //                 height: deviceHeight * 0.02,
+  //               ),
+  //               _admin(),
 
+  //               // _client(),
+
+  //               //_employee(),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  Column _admin() {
     return Column(
       children: [
         Row(
@@ -884,26 +940,24 @@ int currentPage = 0;
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-  PaginatedDataTable(
-        header: const Text('Your Table'),
-        columns: const [
-          DataColumn(label: Text('Sr. No.'), numeric: true),
-          DataColumn(label: Text('Client Name')),
-          DataColumn(label: Text('Message')),
-          DataColumn(label: Text('Description')),
-          DataColumn(label: Text('Date')),
-          DataColumn(label: Text('Created On')),
-        ],
-        source: ClientDataSource(clients, totalCount),
-        rowsPerPage: rowsPerPage,
-        availableRowsPerPage: [rowsPerPage],
-        onPageChanged: (newPage) {
-          setState(() {
-           currentPage = newPage ; // Update the starting index of the page entry
-            fetchData();
-          });
-        },
-      ),
+        PaginatedDataTable(
+          header: const Text('Your Table'),
+          columns: const [
+            DataColumn(label: Text('Sr. No.'), numeric: true),
+            DataColumn(label: Text('Client Name')),
+            DataColumn(label: Text('Message')),
+            DataColumn(label: Text('Description')),
+            DataColumn(label: Text('Date')),
+            DataColumn(label: Text('Created On')),
+          ],
+          source:
+              ClientDataSource(clients, totalCount, currentPage * rowsPerPage),
+          rowsPerPage: rowsPerPage,
+          availableRowsPerPage: [rowsPerPage],
+          onPageChanged: (pageIndex) {
+            handlePageChange(pageIndex, dataModel);
+          },
+        ),
         // PaginatedDataTable(
         //   header: const Text('Client List'),
         //   columns: const [
@@ -1365,29 +1419,33 @@ int currentPage = 0;
 class ClientDataSource extends DataTableSource {
   final List<Client> clients;
   final int totalCount;
+  final int startIndex;
 
-  ClientDataSource(this.clients, this.totalCount);
+  ClientDataSource(this.clients, this.totalCount, this.startIndex);
 
   @override
-  DataRow? getRow(int index) {
-    if (index >= clients.length) {
-      return null;
+  DataRow getRow(int index) {
+    final clientIndex = startIndex + index;
+    if (clientIndex >= clients.length) {
+      return DataRow(cells: [
+        DataCell(Text('')),
+        DataCell(Text('')),
+        DataCell(Text('')),
+        DataCell(Text('')),
+        DataCell(Text('')),
+        DataCell(Text('')),
+      ]);
     }
 
-    final client = clients[index];
-    final srNo = (index + 1).toString();
-
-    final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
-    final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
-    final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
+    final client = clients[clientIndex];
 
     return DataRow(cells: [
-      DataCell(Text(srNo)),
-      DataCell(Text(client.client ?? '')),
-      DataCell(Text(client.message ?? '')),
-      DataCell(Text(client.description ?? '')),
-      DataCell(Text(formattedDate)),
-      DataCell(Text(client.createdOn ?? '')),
+      DataCell(Text((clientIndex + 1).toString())),
+      DataCell(Text(client.client ?? "")),
+      DataCell(Text(client.message ?? "")),
+      DataCell(Text(client.description ?? "")),
+      DataCell(Text(client.onDate.toString())),
+      DataCell(Text(client.createdOn ?? "")),
     ]);
   }
 
@@ -1400,6 +1458,8 @@ class ClientDataSource extends DataTableSource {
   @override
   int get selectedRowCount => 0;
 }
+
+
 // class _ClientDataTableSource extends DataTableSource {
 //   final List<Client> clients;
 //   final int totalCount;

@@ -142,30 +142,27 @@ class _EmployeeState extends State<Employee> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: deviceHeight * 0.05,
                 ),
                 _header(),
-                const SizedBox(
-                  height: 20,
+                 SizedBox(
+                  height: deviceHeight * 0.05,
                 ),
                 _add(),
-                const SizedBox(
-                  height: 10,
+                 SizedBox(
+                  height: deviceHeight * 0.05,
                 ),
                 _search(),
-                const SizedBox(
-                  height: 30,
+                 SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
 
                 _table(),
-                const SizedBox(
-                  height: 50,
+                SizedBox(
+                  height: deviceHeight * 0.05,
                 ),
-                //_test(),
-                const SizedBox(
-                  height: 50,
-                ),
+                
               ],
             ),
           ),
