@@ -18,7 +18,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   static const String KEYLOGIN = 'Login';
-  //static String type = urls.profileType;
+  //static String type = Urls.profileType;
   @override
   Widget build(BuildContext context) {
     whereToGo();

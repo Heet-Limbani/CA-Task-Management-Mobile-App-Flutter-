@@ -4,19 +4,25 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/genModel.dart';
 
-class urls {
+class Urls {
   static String baseUrlMain = "https://task.mysyva.net/backend/";
 
-  static String login = "${urls.baseUrlMain}Login";
-  static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
-  static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
-  static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
-  static String paymentMethod="${urls.baseUrlMain}PaymentMethod";
-  static String getUsers = "${urls.baseUrlMain}GetUsers";
-  static String addEmployee = "${urls.baseUrlMain}Add_Employee";
-  static String deleteEmployee = "${urls.baseUrlMain}Delete_Employee";
-  static String updateEmployeePassword = "${urls.baseUrlMain}EmployeeResetPassword";
-  static String editEmployee = "${urls.baseUrlMain}Edit_Employee";
+  static String login = "${Urls.baseUrlMain}Login";
+  static String adminDashBoard = "${Urls.baseUrlMain}AdminDashboard";
+  static String clientLog = "${Urls.baseUrlMain}ClientLogData_Dashboard";
+  static String clientLogAdd = "${Urls.baseUrlMain}AddClientLog";
+  static String paymentMethod = "${Urls.baseUrlMain}PaymentMethod";
+  static String getUsers = "${Urls.baseUrlMain}GetUsers";
+  static String addEmployee = "${Urls.baseUrlMain}Add_Employee";
+  static String deleteEmployee = "${Urls.baseUrlMain}Delete_Employee";
+  static String updateEmployeePassword =
+      "${Urls.baseUrlMain}EmployeeResetPassword";
+  static String editEmployee = "${Urls.baseUrlMain}Edit_Employee";
+  static String deleteClient = "${Urls.baseUrlMain}Delete_Client";
+  static String updateClientPassword = "${Urls.baseUrlMain}ClientResetPassword";
+  static String editClient = "${Urls.baseUrlMain}Edit_Client";
+  static String addClient = "${Urls.baseUrlMain}Add_Client";
+
   static String profileEmail = "";
   static String profileUserName = "";
   static String profileType = "";
@@ -29,7 +35,6 @@ class urls {
   static String adminType = "0";
   static String employeeType = "1";
   static String clientType = "2";
-
 
   static Future<Map<String, String>> getXTokenHeader() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,12 +51,12 @@ class urls {
     profileFirstName = firstName ?? "";
     String? lastName = prefs.getString('lastname');
     profileLastName = lastName ?? "";
-     String? password = prefs.getString('password');
-    profilePassword = password ?? "" ;
-     String? sessionTime = prefs.getString('sessiontime');
-    profileSessionTime = sessionTime ?? "" ;
-     String? avatar = prefs.getString('avatar');
-    profileAvatar = avatar ?? "" ;
+    String? password = prefs.getString('password');
+    profilePassword = password ?? "";
+    String? sessionTime = prefs.getString('sessiontime');
+    profileSessionTime = sessionTime ?? "";
+    String? avatar = prefs.getString('avatar');
+    profileAvatar = avatar ?? "";
 
     if (xtoken != null && xtoken.isNotEmpty) {
       return {'Xtoken': xtoken};

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/Urls.dart';
 
 class profile1 extends StatefulWidget {
   @override
@@ -56,11 +56,11 @@ class _profile1State extends State<profile1> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: urls.profileAvatar == ""
+                          image: Urls.profileAvatar == ""
                               ? AssetImage(
                                   "assets/images/heet.png",
                                 )
-                              : NetworkImage(urls.profileAvatar) as ImageProvider,
+                              : NetworkImage(Urls.profileAvatar) as ImageProvider,
                           // AssetImage(
                           //   "assets/images/heet.png",
                           // ),
@@ -90,12 +90,12 @@ class _profile1State extends State<profile1> {
               SizedBox(
                 height: 50,
               ),
-              buildTextField("User Name", urls.profileUserName, false),
-              buildTextField("E-mail", urls.profileEmail, false),
-              buildTextField("Contact Number", urls.profileContactNumber, false),
-              buildTextField("First Name", urls.profileFirstName, false),
-              buildTextField("Last Name", urls.profileLastName, false),
-              buildTextField("Password", urls.profilePassword, true),
+              buildTextField("User Name", Urls.profileUserName, false),
+              buildTextField("E-mail", Urls.profileEmail, false),
+              buildTextField("Contact Number", Urls.profileContactNumber, false),
+              buildTextField("First Name", Urls.profileFirstName, false),
+              buildTextField("Last Name", Urls.profileLastName, false),
+              buildTextField("Password", Urls.profilePassword, true),
               buildTextField("About Me", "Flutter developer", false),
               SizedBox(
                 height: 10,
@@ -115,7 +115,7 @@ class _profile1State extends State<profile1> {
               SizedBox(
                 height: 30,
               ),
-              buildTextField("Session Time", urls.profileSessionTime, false),
+              buildTextField("Session Time", Urls.profileSessionTime, false),
               SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

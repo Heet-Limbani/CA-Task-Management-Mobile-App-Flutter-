@@ -6,12 +6,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/pages/Users/addEmployeeForm.dart';
 import 'package:task_manager/ui/pages/Users/editEmployeeForm.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:task_manager/API/urls.dart';
+
 
 class Employee extends StatefulWidget {
   const Employee({super.key});
@@ -41,11 +40,11 @@ class _EmployeeState extends State<Employee> {
   }
 
   void getUser() async {
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.getUsers}',
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.getUsers}',
       params: {
-        'type': urls.employeeType,
-        'limit': "500",
+        'type': Urls.employeeType,
+        'limit': "200",
         'search': searchLogController.text.trim(),
       },
     );
@@ -72,8 +71,8 @@ class _EmployeeState extends State<Employee> {
 
   void deleteUser(String? employeeId) async {
     if (employeeId != null) {
-      genModel? genmodel = await urls.postApiCall(
-        method: '${urls.deleteEmployee}',
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.deleteEmployee}',
         params: {'id': employeeId},
       );
 
@@ -91,8 +90,8 @@ class _EmployeeState extends State<Employee> {
 
   void updateUserPassword(String? employeeId, String newPassword) async {
     if (employeeId != null) {
-      genModel? genmodel = await urls.postApiCall(
-        method: '${urls.updateEmployeePassword}',
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.updateEmployeePassword}',
         params: {'id': employeeId, 'pass': newPassword},
       );
 
@@ -171,7 +170,7 @@ class _EmployeeState extends State<Employee> {
     );
   }
 
-// Table heading
+ // Table heading
   Row _header() {
     return Row(
       children: [

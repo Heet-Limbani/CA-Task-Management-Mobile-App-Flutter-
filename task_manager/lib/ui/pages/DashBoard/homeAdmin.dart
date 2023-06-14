@@ -17,7 +17,7 @@ import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/ui/pages/DashBoard/today_task.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
-import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/clientLogDataModel.dart';
 import '../../../API/model/genModel.dart';
 import 'package:task_manager/API/model/birthDayDataModel.dart';
@@ -90,14 +90,14 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
 
-    dataModel = await urls.postApiCall(
-      method: '${urls.clientLog}',
+    dataModel = await Urls.postApiCall(
+      method: '${Urls.clientLog}',
       params: {
         'offset': offset,
         'search': searchLogController.text.trim(),
       },
     );
-
+              
     if (dataModel != null && dataModel?.status == true) {
       final dynamicData = dataModel?.data;
 
@@ -141,7 +141,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   CountData? dataCount;
   void clientDashboard() async {
     genModel? genmodel =
-        await urls.postApiCall(method: '${urls.adminDashBoard}');
+        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
     if (genmodel != null) {
       //print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -159,7 +159,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   BirthDayList? dataBirthdayList;
   void birthDayTable() async {
     genModel? genmodel =
-        await urls.postApiCall(method: '${urls.adminDashBoard}');
+        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -180,7 +180,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   HolidayList? dataHolidayList;
   void holidayTable() async {
     genModel? genmodel =
-        await urls.postApiCall(method: '${urls.adminDashBoard}');
+        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -197,7 +197,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   ClientList? dataClientList;
   void clientData() async {
     genModel? genmodel =
-        await urls.postApiCall(method: '${urls.adminDashBoard}');
+        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
@@ -228,8 +228,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   void clientTable({int offset = 0, int limit = 10}) async {
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.clientLog}',
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.clientLog}',
       params: {
         'offset': offset,
         'search': searchLogController.text.trim(),
@@ -261,8 +261,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       if (selectedDateTime == null) {
         selectedDateTime = DateTime.now();
       }
-      genModel? genmodel = await urls.postApiCall(
-        method: '${urls.clientLogAdd}',
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.clientLogAdd}',
         params: {
           'message': message,
           'client': selectedClientId1,
@@ -283,9 +283,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   void getUser() async {
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.getUsers}',
-      params: {'type': urls.clientType, 'limit': "200"},
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.getUsers}',
+      params: {'type': Urls.clientType, 'limit': "200"},
     );
 
     if (genmodel != null && genmodel.status == true) {

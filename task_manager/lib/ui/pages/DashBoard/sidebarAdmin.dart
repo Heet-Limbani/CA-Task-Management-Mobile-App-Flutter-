@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
@@ -44,8 +44,8 @@ import 'package:task_manager/ui/pages/Notification/notification1.dart';
 
 class SideBarAdmin extends StatelessWidget {
   SideBarAdmin({Key? key}) : super(key: key);
-  final String email = urls.profileEmail;
-  final String userName = urls.profileUserName;
+  final String email = Urls.profileEmail;
+  final String userName = Urls.profileUserName;
   @override
   Widget build(BuildContext context) {
     return Drawer(

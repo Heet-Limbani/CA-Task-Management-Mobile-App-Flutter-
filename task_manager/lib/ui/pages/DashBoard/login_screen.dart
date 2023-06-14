@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeClient.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeEmployee.dart';
 
@@ -363,8 +363,8 @@ class _LoginScreenState extends State<LoginScreen> {
   genModel? genmodel;
   LoginData logindata = LoginData();
   void loginAdmin() async {
-    genmodel = await urls.postApiCall(
-      method: '${urls.login}',
+    genmodel = await Urls.postApiCall(
+      method: '${Urls.login}',
       params: {
         "email": emailControllerA.text,
         "password": passwordControllerA.text,
@@ -503,8 +503,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginClient() async {
-    genmodel = await urls.postApiCall(
-      method: '${urls.login}',
+    genmodel = await Urls.postApiCall(
+      method: '${Urls.login}',
       params: {
         "email": emailControllerC.text,
         "password": passwordControllerC.text,
@@ -620,8 +620,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void loginEmployee() async {
-    genmodel = await urls.postApiCall(
-      method: '${urls.login}',
+    genmodel = await Urls.postApiCall(
+      method: '${Urls.login}',
       params: {
         "email": emailControllerE.text,
         "password": passwordControllerE.text,

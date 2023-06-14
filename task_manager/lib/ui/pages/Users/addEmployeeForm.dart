@@ -11,7 +11,7 @@ import 'package:task_manager/ui/pages/Users/employee.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 
 class AddEmployeeForm extends StatefulWidget {
@@ -67,8 +67,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     checkSMSValue = (checkSMS ? "1" : "0");
     checkEmailValue = (checkEmail ? "1" : "0");
     try {
-      genModel? genmodel = await urls.postApiCall(
-        method: '${urls.addEmployee}',
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.addEmployee}',
         params: {
           'un': userName.text,
           'fname': firstName.text,
@@ -391,7 +391,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          TextFormField(
+           TextFormField(
             controller: contact2,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.done,
@@ -412,17 +412,47 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               ),
             ),
             validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Parent Contact Number';
-              }
-
-              final numberRegex = r'^[0-9]+$';
-              if (!RegExp(numberRegex).hasMatch(value)) {
-                return 'Please Enter Valid Number';
+              if (value!.isNotEmpty) {
+                final numberRegex = r'^[0-9]+$';
+                if (!RegExp(numberRegex).hasMatch(value)) {
+                  return 'Please Enter a Valid Number';
+                }
               }
               return null;
             },
           ),
+          // TextFormField(
+          //   controller: contact2,
+          //   keyboardType: TextInputType.number,
+          //   textInputAction: TextInputAction.done,
+          //   decoration: InputDecoration(
+          //     labelText: 'Parent Number',
+          //     suffixIcon: Icon(Icons.contact_phone),
+          //     contentPadding:
+          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          //     enabledBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.circular(28),
+          //       borderSide: BorderSide(color: AppTheme.colors.grey),
+          //       gapPadding: 10,
+          //     ),
+          //     focusedBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.circular(28),
+          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+          //       gapPadding: 10,
+          //     ),
+          //   ),
+          //   validator: (value) {
+          //     if (value!.isEmpty) {
+          //       return 'Please Enter Parent Contact Number';
+          //     }
+
+          //     final numberRegex = r'^[0-9]+$';
+          //     if (!RegExp(numberRegex).hasMatch(value)) {
+          //       return 'Please Enter Valid Number';
+          //     }
+          //     return null;
+          //   },
+          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),

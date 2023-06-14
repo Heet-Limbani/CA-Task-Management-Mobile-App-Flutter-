@@ -12,22 +12,22 @@ import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class EditEmployeeForm extends StatefulWidget {
+class EditClientForm extends StatefulWidget {
   final String userId;
 
-  const EditEmployeeForm({required this.userId, Key? key}) : super(key: key);
+  const EditClientForm({required this.userId, Key? key}) : super(key: key);
 
   @override
-  State<EditEmployeeForm> createState() => _EditEmployeeFormState();
+  State<EditClientForm> createState() => _EditClientFormState();
 }
 
-class _EditEmployeeFormState extends State<EditEmployeeForm> {
+class _EditClientFormState extends State<EditClientForm> {
   late double deviceWidth;
   late double deviceHeight;
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _editEmployeeFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _EditClientFormKey = GlobalKey<FormState>();
   TextEditingController userName = TextEditingController();
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
@@ -75,7 +75,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.getUsers}',
       params: {
-        'type': Urls.employeeType,
+        'type': Urls.clientType,
         'id': userId.toString(),
       },
     );
@@ -100,6 +100,8 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
         checkSMS = clientType[0].sendSms.toString() == "1" ? true : false;
         checkEmail = clientType[0].sendEmail.toString() == "1" ? true : false;
 
+       
+
         // if (clientType.isEmpty) {
         //   // List is empty
         //   print("No client data available.");
@@ -116,17 +118,18 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
     }
   }
 
-  void employeeEdit() async {
+  void clientEdit() async {
     isActiveValue = (isActive ? "1" : "0");
     checkSMSValue = (checkSMS ? "1" : "0");
     checkEmailValue = (checkEmail ? "1" : "0");
-
+    print("Contact2 : ${contact2.text}");
+   
     try {
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.editEmployee}',
+        method: '${Urls.editClient}',
         params: {
           'id': userId.toString(),
-          'save': "save",
+          'save':"save",
           'un': userName.text,
           'fname': firstName.text,
           'lname': lastName.text,
@@ -140,6 +143,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
         },
       );
       if (genmodel != null) {
+      
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -163,11 +167,11 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
-
+   
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > User > Employee > Edit Employee",
+          "Menu > User > Client > Edit Client",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -202,7 +206,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _editEmployeeForm(),
+                _EditClientForm(),
               ],
             ),
           ),
@@ -215,7 +219,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
     return Row(
       children: [
         Text(
-          "Edit Employee Form",
+          "Edit Client Form",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -226,9 +230,9 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
     );
   }
 
-  Form _editEmployeeForm() {
+  Form _EditClientForm() {
     return Form(
-      key: _editEmployeeFormKey,
+      key: _EditClientFormKey,
       child: Column(
         children: <Widget>[
           TextFormField(
@@ -452,35 +456,35 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: contact2,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            decoration: InputDecoration(
-              labelText: 'Parent Number',
-              suffixIcon: Icon(Icons.contact_phone),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.grey),
-                gapPadding: 10,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-                gapPadding: 10,
-              ),
-            ),
-            validator: (value) {
-              if (value!.isNotEmpty) {
-                final numberRegex = r'^[0-9]+$';
-                if (!RegExp(numberRegex).hasMatch(value)) {
-                  return 'Please Enter a Valid Number';
-                }
-              }
-              return null;
-            },
-          ),
+  controller: contact2,
+  keyboardType: TextInputType.number,
+  textInputAction: TextInputAction.done,
+  decoration: InputDecoration(
+    labelText: 'Parent Number',
+    suffixIcon: Icon(Icons.contact_phone),
+    contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(28),
+      borderSide: BorderSide(color: AppTheme.colors.grey),
+      gapPadding: 10,
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(28),
+      borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+      gapPadding: 10,
+    ),
+  ),
+  validator: (value) {
+    if (value!.isNotEmpty) {
+      final numberRegex = r'^[0-9]+$';
+      if (!RegExp(numberRegex).hasMatch(value)) {
+        return 'Please Enter a Valid Number';
+      }
+    }
+    return null;
+  },
+),
+
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -568,8 +572,9 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              if (_editEmployeeFormKey.currentState!.validate()) {
-                employeeEdit();
+              if (_EditClientFormKey.currentState!.validate()) {
+                clientEdit();
+                
               }
             },
             child: Text(
@@ -616,7 +621,7 @@ Row _add() {
       OutlinedButton(
         onPressed: () {},
         child: Text(
-          "Add New EditEmployeeForm",
+          "Add New EditClientForm",
           style: TextStyle(
             fontSize: 12,
             letterSpacing: 0,

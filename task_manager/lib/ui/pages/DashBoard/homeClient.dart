@@ -13,7 +13,7 @@ import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarClient.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
-import 'package:task_manager/API/urls.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/clientLogDataModel.dart';
 import '../../../API/model/genModel.dart';
 import 'package:task_manager/API/model/birthDayDataModel.dart';
@@ -83,8 +83,8 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   void clientDashboard() async {
    
 
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.adminDashBoard}',
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.adminDashBoard}',
      
     );
     if (genmodel != null) {
@@ -105,8 +105,8 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   void birthDayTable() async {
    
 
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.adminDashBoard}',
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.adminDashBoard}',
     
     );
     if (genmodel != null) {
@@ -130,8 +130,8 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   void holidayTable() async {
    
 
-    genModel? genmodel = await urls.postApiCall(
-       method: '${urls.adminDashBoard}',
+    genModel? genmodel = await Urls.postApiCall(
+       method: '${Urls.adminDashBoard}',
      
     );
     if (genmodel != null) {
@@ -154,8 +154,8 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   void clientTable() async {
    
 
-    genModel? genmodel = await urls.postApiCall(
-      method: '${urls.clientLog}',
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.clientLog}',
      
     );
 
