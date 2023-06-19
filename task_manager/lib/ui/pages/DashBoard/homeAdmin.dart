@@ -1,8 +1,11 @@
+import 'package:advanced_datatable/advanced_datatable_source.dart';
+import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+
 //import 'package:fluttertoast/fluttertoast.dart';
 //import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -30,6 +33,22 @@ class HomeAdminScreen extends StatefulWidget {
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
+  // variables for adv datatable
+  final _source = ClientSource();
+  var _sortIndex = 0;
+  var _sortAsc = true;
+  var _customFooter = false;
+  var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
+  TextEditingController _searchController = TextEditingController();
+
+  // ignore: avoid_positional_boolean_parameters
+  void setSort(int i, bool asc) => setState(() {
+        _sortIndex = i;
+        _sortAsc = asc;
+      });
+
+// end here
+
   List<GetUser> clientType = [];
   List<ClientData> clientsdata = [];
 
@@ -97,7 +116,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         'search': searchLogController.text.trim(),
       },
     );
-              
+
     if (dataModel != null && dataModel?.status == true) {
       final dynamicData = dataModel?.data;
 
@@ -139,6 +158,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   CountData? dataCount;
+
   void clientDashboard() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -157,6 +177,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   BirthDayList? dataBirthdayList;
+
   void birthDayTable() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -178,6 +199,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   HolidayList? dataHolidayList;
+
   void holidayTable() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -195,6 +217,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   ClientList? dataClientList;
+
   void clientData() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -222,7 +245,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           // print('UserName: ${clientdata1.username}');
           //}
         }
-        setState(() {});
+        if (mounted) {
+          setState(() {});
+        }
       }
     }
   }
@@ -307,6 +332,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       }
     }
   }
+
   // void openUserListDialog(List<ClientData> clientList) {
   //   showDialog(
   //     context: context,
@@ -903,6 +929,159 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
+
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    labelText: 'Search by Client Name',
+                  ),
+                  onSubmitted: (vlaue) {
+                    _source.filterServerSide(_searchController.text);
+                  },
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _searchController.text = '';
+                });
+                _source.filterServerSide(_searchController.text);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            IconButton(
+              onPressed: () => _source.filterServerSide(_searchController.text),
+              icon: const Icon(Icons.search),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        AdvancedPaginatedDataTable(
+          addEmptyRows: false,
+          source: _source,
+          showHorizontalScrollbarAlways: true,
+          sortAscending: _sortAsc,
+          sortColumnIndex: _sortIndex,
+          showFirstLastButtons: true,
+          rowsPerPage: _rowsPerPage,
+          availableRowsPerPage: const [10, 20, 30, 50],
+          onRowsPerPageChanged: (newRowsPerPage) {
+            if (newRowsPerPage != null) {
+              setState(() {
+                _rowsPerPage = newRowsPerPage;
+              });
+            }
+          },
+          columns: [
+            DataColumn(
+              label: const Text('Sr. No.'),
+              numeric: true,
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Client Name'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Message'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Description'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Date'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Created On'),
+              onSort: setSort,
+            ),
+          ],
+          //Optianl override to support custom data row text / translation
+          getFooterRowText:
+              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
+            final localizations = MaterialLocalizations.of(context);
+            var amountText = localizations.pageRowsInfoTitle(
+              startRow,
+              pageSize,
+              totalFilter ?? totalRowsWithoutFilter,
+              false,
+            );
+
+            if (totalFilter != null) {
+              //Filtered data source show addtional information
+              amountText += ' filtered from ($totalRowsWithoutFilter)';
+            }
+
+            return amountText;
+          },
+          customTableFooter: _customFooter
+              ? (source, offset) {
+                  const maxPagesToShow = 6;
+                  const maxPagesBeforeCurrent = 3;
+                  final lastRequestDetails = source.lastDetails!;
+                  final rowsForPager = lastRequestDetails.filteredRows ??
+                      lastRequestDetails.totalRows;
+                  final totalPages = rowsForPager ~/ _rowsPerPage;
+                  final currentPage = (offset ~/ _rowsPerPage) + 1;
+                  final List<int> pageList = [];
+                  if (currentPage > 1) {
+                    pageList.addAll(
+                      List.generate(currentPage - 1, (index) => index + 1),
+                    );
+                    //Keep up to 3 pages before current in the list
+                    pageList.removeWhere(
+                      (element) =>
+                          element < currentPage - maxPagesBeforeCurrent,
+                    );
+                  }
+                  pageList.add(currentPage);
+                  //Add reminding pages after current to the list
+                  pageList.addAll(
+                    List.generate(
+                      maxPagesToShow - (pageList.length - 1),
+                      (index) => (currentPage + 1) + index,
+                    ),
+                  );
+                  pageList.removeWhere((element) => element > totalPages);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: pageList
+                        .map(
+                          (e) => TextButton(
+                            onPressed: e != currentPage
+                                ? () {
+                                    //Start index is zero based
+                                    source.setNextView(
+                                      startIndex: (e - 1) * _rowsPerPage,
+                                    );
+                                  }
+                                : null,
+                            child: Text(
+                              e.toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+              : null,
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
         Row(
           children: [
             Expanded(
@@ -1389,6 +1568,19 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
+        // for setting custom footer adv dtable
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.table_chart_outlined),
+            tooltip: 'Change footer',
+            onPressed: () {
+              // handle the press
+              setState(() {
+                _customFooter = !_customFooter;
+              });
+            },
+          ),
+        ],
         elevation: 0,
         // actions: [
         //   Padding(
@@ -1459,6 +1651,73 @@ class ClientDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
+typedef SelectedCallBack = Function(String id, bool newSelectState);
+
+class ClientSource extends AdvancedDataTableSource<Client> {
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+
+  @override
+  DataRow? getRow(int index) =>
+      lastDetails!.rows[index].getRow(selectedRow, selectedIds, index);
+
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  // ignore: avoid_positional_boolean_parameters
+  void selectedRow(String id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
+    } else {
+      selectedIds.add(id);
+    }
+    notifyListeners();
+  }
+
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.toLowerCase().trim();
+    setNextView();
+  }
+
+  @override
+  Future<RemoteDataSourceDetails<Client>> getNextPage(
+    NextPageRequest pageRequest,
+  ) async {
+    //the remote data source has to support the pagaing and sorting
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      // 'pageSize': pageRequest.pageSize.toString(),
+      // 'sortIndex': ((pageRequest.columnSortIndex ?? 0) + 1).toString(),
+      // 'sortAsc': ((pageRequest.sortAscending ?? true) ? 1 : 0).toString(),
+      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+    };
+
+    genModel? dataModel = await Urls.postApiCall(
+      method: '${Urls.clientLog}',
+      params: queryParameter,
+    );
+
+    if (dataModel != null && dataModel.status == true) {
+      final dynamicData = dataModel.data;
+
+      return RemoteDataSourceDetails(
+        dataModel?.count ?? 0,
+        dynamicData
+            .map<Client>(
+                (item) => Client.fromJson(item as Map<String, dynamic>))
+            .toList(),
+        filteredRows: lastSearchTerm.isNotEmpty
+            ? dynamicData
+                .map<Client>(
+                    (item) => Client.fromJson(item as Map<String, dynamic>))
+                .length
+            : null,
+      );
+    } else {
+      throw Exception('Unable to query remote server');
+    }
+  }
+}
 
 // class _ClientDataTableSource extends DataTableSource {
 //   final List<Client> clients;

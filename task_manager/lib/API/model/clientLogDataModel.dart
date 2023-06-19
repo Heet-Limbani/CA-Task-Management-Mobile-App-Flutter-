@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+
+import '../../ui/pages/DashBoard/homeAdmin.dart';
+
 class Client {
   String? id;
   String? clientId;
@@ -40,5 +44,32 @@ class Client {
     data['dl'] = this.dl;
     data['client'] = this.client;
     return data;
+  }
+
+  DataRow getRow(
+    SelectedCallBack callback,
+    List<String> selectedIds,
+    int index,
+  ) {
+    return DataRow(
+      cells: [
+        /* DataCell(Text(id.toString())),
+        DataCell(Text(companyName)),
+        DataCell(Text(firstName)),
+        DataCell(Text(lastName)),
+        DataCell(Text(phone)),*/
+        DataCell(Text((index + 1).toString())),
+        // DataCell(Text(id.toString())),
+        DataCell(Text(client ?? "")),
+        DataCell(Text(message ?? "")),
+        DataCell(Text(description ?? "")),
+        DataCell(Text(onDate.toString())),
+        DataCell(Text(createdOn ?? "")),
+      ],
+      onSelectChanged: (newState) {
+        callback(id.toString(), newState ?? false);
+      },
+      selected: selectedIds.contains(id.toString()),
+    );
   }
 }
