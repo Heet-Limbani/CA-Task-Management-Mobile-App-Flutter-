@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/API/model/expensesDataModel.dart';
+import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/ui/pages/Setting/addExpenses.dart';
+import 'package:task_manager/ui/pages/Setting/editExpenses.dart';
 import '../DashBoard/sidebarAdmin.dart';
 
 class Expenses extends StatefulWidget {
@@ -9,8 +16,59 @@ class Expenses extends StatefulWidget {
 }
 
 class _ExpensesState extends State<Expenses> {
+  late double deviceWidth;
+  late double deviceHeight;
+
+  @override
+  void initState() {
+    super.initState();
+
+    expenses();
+  }
+
+  void refreshTable() {
+    expenses(); // Refresh data
+  }
+
+  List<Expense> expensesList = [];
+  void expenses() async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.expences}',
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+
+      if (data != null && data is List) {
+        expensesList = data.map((item) => Expense.fromJson(item)).toList();
+        setState(() {});
+      }
+    }
+  }
+
+   void deleteExpense(String? expenseId) async {
+    if (expenseId != null) {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.deleteExpences}',
+        params: {'id': expenseId},
+      );
+
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+        setState(() {});
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,7 +82,7 @@ class _ExpensesState extends State<Expenses> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer:  SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );
@@ -42,20 +100,20 @@ class _ExpensesState extends State<Expenses> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
                 _header(),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: deviceHeight * 0.01,
                 ),
                 _add(),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
                 _table(),
-                const SizedBox(
-                  height: 100,
+                 SizedBox(
+                  height: deviceHeight * 0.1,
                 ),
               ],
             ),
@@ -67,11 +125,9 @@ class _ExpensesState extends State<Expenses> {
 
   Row _header() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Expenses List",
+          "Expense List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -79,9 +135,12 @@ class _ExpensesState extends State<Expenses> {
           ),
         ),
         SizedBox(
-          width: 30,
+          width: deviceWidth * 0.02,
         ),
-        const Spacer(),
+        IconButton(
+          icon: Icon(Icons.refresh),
+          onPressed: refreshTable,
+        ),
       ],
     );
   }
@@ -92,7 +151,9 @@ class _ExpensesState extends State<Expenses> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(AddExpenses());
+          },
           child: Text(
             "Add Expenses List",
             style: TextStyle(
@@ -131,37 +192,66 @@ class _ExpensesState extends State<Expenses> {
                   DataColumn(label: Text('Edit')),
                   DataColumn(label: Text('Delete')),
                 ],
-                rows: const [
-                  DataRow(cells: [
-                    DataCell(Text('1')),
-                    DataCell(Text('BOB')),
-                    DataCell(Text('Chargeable')),
+                rows: expensesList.map((Expense expense) {
+                  final index = expensesList.indexOf(expense);
+                  final srNo = (index + 1).toString();
+
+                  return DataRow(cells: [
+                    DataCell(Text(srNo)),
+                    DataCell(Text(expense.name ?? "")),
+                    DataCell(Text(
+                        expense.type == "1" ? 'Deductable' : 'Chargeable')),
+                    DataCell(IconButton(
+                        onPressed: () {
+                          if (expense.id != null) {
+                            Get.to(EditExpenses(userId: expense.id!));
+                          }
+                        },
+                        icon: Icon(Icons.edit))),
                     DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('2')),
-                    DataCell(Text('UPI')),
-                    DataCell(Text('Deductable')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('3')),
-                    DataCell(Text('HDFC')),
-                    DataCell(Text('Chargeable')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                  ]),
-                ],
+                        IconButton(onPressed: () {
+                             if (expense.id != null) {
+                          deleteExpense(expense.id!);
+                          expenses();
+                        }
+                        }, icon: Icon(Icons.delete))),
+                  ]);
+                }).toList(),
                 dataRowHeight: 32.0,
-              ),
+                //       rows: const [
+                //         DataRow(cells: [
+                //           DataCell(Text('1')),
+                //           DataCell(Text('BOB')),
+                //           DataCell(Text('Chargeable')),
+                //           DataCell(
+                //               IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                //           DataCell(
+                //               IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                //         ]),
+                //         DataRow(cells: [
+                //           DataCell(Text('2')),
+                //           DataCell(Text('UPI')),
+                //           DataCell(Text('Deductable')),
+                //           DataCell(
+                //               IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                //           DataCell(
+                //               IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                //         ]),
+                //         DataRow(cells: [
+                //           DataCell(Text('3')),
+                //           DataCell(Text('HDFC')),
+                //           DataCell(Text('Chargeable')),
+                //           DataCell(
+                //               IconButton(onPressed: null, icon: Icon(Icons.edit))),
+                //           DataCell(
+                //               IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                //         ]),
+                //       ],
+                //       dataRowHeight: 32.0,
+                //     ),
+                //   ],
+                // ),
+              )
             ],
           ),
         ),

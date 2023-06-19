@@ -22,6 +22,12 @@ class Urls {
   static String updateClientPassword = "${Urls.baseUrlMain}ClientResetPassword";
   static String editClient = "${Urls.baseUrlMain}Edit_Client";
   static String addClient = "${Urls.baseUrlMain}Add_Client";
+  static String expences = "${Urls.baseUrlMain}Expences";
+  static String editExpences = "${Urls.baseUrlMain}EditExpences";
+  static String deleteExpences = "${Urls.baseUrlMain}DeleteExpences";
+  static String addExpences = "${Urls.baseUrlMain}AddExpences";
+
+
 
   static String profileEmail = "";
   static String profileUserName = "";

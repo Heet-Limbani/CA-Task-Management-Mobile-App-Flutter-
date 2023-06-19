@@ -137,24 +137,24 @@ class _ClientState extends State<Client> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
-                const SizedBox(
-                  height: 20,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
                 _add(),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: deviceHeight * 0.01,
                 ),
                 _search(),
-                const SizedBox(
-                  height: 30,
+               SizedBox(
+                  height: deviceHeight * 0.03,
                 ),
                 _table(),
-                const SizedBox(
-                  height: 50,
+               SizedBox(
+                  height: deviceHeight * 0.1,
                 ),
               ],
             ),
@@ -183,6 +183,7 @@ class _ClientState extends State<Client> {
           icon: Icon(Icons.refresh),
           onPressed: refreshTable,
         ),
+        
       ],
     );
   }
@@ -406,84 +407,5 @@ class _ClientState extends State<Client> {
     );
   }
 
-// Table contents
-// Column _table() {
-//   return Column(
-//     children: <Widget>[
-//       SingleChildScrollView(
-//         scrollDirection: Axis.horizontal,
-//         child: Row(
-//           children: [
-//             DataTable(
-//               columns: const [
-//                 DataColumn(label: Text('Sr. No.'), numeric: true),
-//                 DataColumn(label: Text('User Name')),
-//                 DataColumn(label: Text('First Name')),
-//                 DataColumn(label: Text('Last Name')),
-//                 DataColumn(label: Text('Email ID')),
-//                 DataColumn(label: Text('Status')),
-//                 DataColumn(label: Text('Edit')),
-//                 DataColumn(label: Text('Delete')),
-//                 DataColumn(label: Text('Reset Password')),
-//                 DataColumn(label: Text('View Client')),
-//                 DataColumn(label: Text('Chat')),
-//               ],
-//               rows: const [
-//                 DataRow(cells: [
-//                   DataCell(Text('1')),
-//                   DataCell(Text('John')),
-//                   DataCell(Text('John ')),
-//                   DataCell(Text('Cena')),
-//                   DataCell(Text('john@gmail.com')),
-//                   DataCell(Text('Active')),
-//                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.delete))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.password))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.check))),
-//                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.chat))),
-//                 ]),
-//                 DataRow(cells: [
-//                   DataCell(Text('2')),
-//                   DataCell(Text('Jane')),
-//                   DataCell(Text('Jane')),
-//                   DataCell(Text('Doe')),
-//                   DataCell(Text('jane@gmail.com')),
-//                   DataCell(Text('Active')),
-//                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.delete))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.password))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.check))),
-//                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.chat))),
-//                 ]),
-//                 DataRow(cells: [
-//                   DataCell(Text('3')),
-//                   DataCell(Text('Bob')),
-//                   DataCell(Text('Bob')),
-//                   DataCell(Text('Charley')),
-//                   DataCell(Text('bob@gmail.com')),
-//                   DataCell(Text('Inactive')),
-//                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.delete))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.password))),
-//                   DataCell(
-//                       IconButton(onPressed: null, icon: Icon(Icons.check))),
-//                   DataCell(IconButton(onPressed: null, icon: Icon(Icons.chat))),
-//                 ]),
-//               ],
-//               dataRowHeight: 32.0,
-//             ),
-//           ],
-//         ),
-//       ),
-//     ],
-//   );
-// }
+
 }
