@@ -5,10 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:task_manager/API/model/clientLogDataModel.dart';
+import 'package:task_manager/ui/pages/Setting/add_payment_method.dart';
 import '../../../API/model/genModel.dart';
 import '../../../API/model/paymentMethodModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:task_manager/API/Urls.dart' as url;
+import 'package:task_manager/API/urls.dart' as url;
 
 class Payment_Method extends StatefulWidget {
   const Payment_Method({super.key});
@@ -24,8 +25,8 @@ class _Payment_MethodState extends State<Payment_Method> {
   int totalCount = 0;
 
   void paymentTable() async {
-    genModel? genmodel = await url.Urls.postApiCall(
-      method: '${url.Urls.paymentMethod}',
+    genModel? genmodel = await url.urls.postApiCall(
+      method: '${url.urls.paymentMethod}',
       // params: {
       //   'offset': offset,
       //   'search': searchLogController.text.trim(),
@@ -52,6 +53,27 @@ class _Payment_MethodState extends State<Payment_Method> {
       }
     }
   }
+
+  Future<void> deleteData(int id) async {
+    genModel? genmodel =
+    await url.urls.postApiCall(method: '${url.urls.deletePaymentMethod}',
+        params: {
+          "id":id.toString(),
+        });
+    if (genmodel != null) {
+      //print('Status: ${genmodel.message}');
+      if (genmodel.status == true) {
+        //print('Data: ${genmodel?.data}');
+
+        // final data = genmodel.data;
+        print(id);
+        // dataCount = CountData.fromJson(data);
+        //print('data  ${dataCount?.count?.pendingCount}');
+        setState(() {});
+      }
+    }
+  }
+
 
 
   // void paymentTable() async {
@@ -107,6 +129,7 @@ class _Payment_MethodState extends State<Payment_Method> {
   //     _currentPage = page;
   //   });
   // }
+  // _PaymentDataTableSource src=_PaymentDataTableSource();
   @override
   void initState() {
     super.initState();
@@ -198,7 +221,9 @@ class _Payment_MethodState extends State<Payment_Method> {
     return Row(
       children: [
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/addPaymentMethod');
+          },
           child: Text(
             "Add Payment Method",
             style: TextStyle(
@@ -219,6 +244,17 @@ class _Payment_MethodState extends State<Payment_Method> {
   }
 
   _table() {
+    // return SingleChildScrollView(
+    //   child: PaginatedDataTable(
+    //     header: Text('Table Header'),
+    //     rowsPerPage: 10, // Number of rows per page
+    //     source: _PaymentDataTableSource(clients),
+    //     columns: [
+    //       DataColumn(label: Text('ID')),
+    //       DataColumn(label: Text('Name')),
+    //     ],
+    //   ),
+    // );
     return Column(
       children: <Widget>[
         SingleChildScrollView(
@@ -230,6 +266,8 @@ class _Payment_MethodState extends State<Payment_Method> {
                   DataColumn(label: Text('Sr. No.'), numeric: true),
                   DataColumn(label: Text('User ID')),
                   DataColumn(label: Text('Name')),
+                  DataColumn(label: Text('Edit')),
+                  DataColumn(label: Text('Delete')),
                 ],
                 rows: clients?.map((birthday) {
                   final index =
@@ -243,6 +281,20 @@ class _Payment_MethodState extends State<Payment_Method> {
                     DataCell(Text(srNo)),
                     DataCell(Text(userId!)),
                     DataCell(Text(name!)),
+                    DataCell(IconButton(
+                      onPressed: (){
+                        Navigator.pushReplacementNamed(context, '/editPaymentMethod', arguments: {
+                          'userId':userId
+                        });
+                      },
+                        icon: Icon(Icons.edit)
+                    )),
+                    DataCell(IconButton(
+                        onPressed: (){
+                          deleteData(int.parse(userId));
+                          paymentTable();
+                        },
+                        icon: Icon(Icons.delete))),
                   ]);
                 }).toList() ??
                     [],
@@ -296,40 +348,73 @@ class _Payment_MethodState extends State<Payment_Method> {
     // );
   }
 }
-
-  class _PaymentDataTableSource extends DataTableSource {
+class _PaymentDataTableSource extends DataTableSource {
   final List<PaymentMethod> clients;
-  final int totalCount;
-  final int limit;
-  final int offset;
+  List<DataRow> _rows=[];// List of rows for the data table
 
-  _PaymentDataTableSource(
-  this.clients, this.totalCount, this.limit, this.offset);
+  _PaymentDataTableSource(this.clients);
+
 
   @override
   DataRow? getRow(int index) {
-  if (index >= rowCount) {
-    return null;
+    for (PaymentMethod client in clients) {
+      _rows.add(DataRow(cells: [
+        DataCell(Text(client.id.toString())),
+        DataCell(Text(client.name.toString()))
+      ]));
+    }
+    print('hi');
+    if (index >= _rows.length) return null;
+    return _rows[index];
   }
-  final clientIndex = offset + index;
-  //final clientIndex = index + (pageIndex * limit);
-  final client = clients[clientIndex];
-  final srNo = (clientIndex + 1).toString();
-  // final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
 
-  return DataRow(cells: [
-    DataCell(Text(srNo)),
-    DataCell(Text(client.name ?? '')),
-  // DataCell(Text(client.id ?? '')),
-  ]);
-  }
+  @override
+  int get rowCount => _rows.length;
 
   @override
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => totalCount;
-
-  @override
   int get selectedRowCount => 0;
-  }
+
+
+
+}
+
+
+  // class _PaymentDataTableSource extends DataTableSource {
+  // final List<PaymentMethod> clients;
+  // final int totalCount;
+  // final int limit;
+  // final int offset;
+  //
+  // _PaymentDataTableSource(
+  // this.clients, this.totalCount, this.limit, this.offset);
+  //
+  // @override
+  // DataRow? getRow(int index) {
+  // if (index >= rowCount) {
+  //   return null;
+  // }
+  // final clientIndex = offset + index;
+  // //final clientIndex = index + (pageIndex * limit);
+  // final client = clients[clientIndex];
+  // final srNo = (clientIndex + 1).toString();
+  // // final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
+  //
+  // return DataRow(cells: [
+  //   DataCell(Text(srNo)),
+  //   DataCell(Text(client.name ?? '')),
+  // // DataCell(Text(client.id ?? '')),
+  // ]);
+  // }
+  //
+  // @override
+  // bool get isRowCountApproximate => false;
+  //
+  // @override
+  // int get rowCount => totalCount;
+  //
+  // @override
+  // int get selectedRowCount => 0;
+  // }
