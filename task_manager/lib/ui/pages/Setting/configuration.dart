@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../../../API/model/genModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/API/urls.dart' as url;
+import 'package:task_manager/API/model/configurationNotificationModel.dart';
 
 class Configuration extends StatefulWidget {
   const Configuration({super.key});
@@ -9,6 +12,75 @@ class Configuration extends StatefulWidget {
 }
 
 class _ConfigurationState extends State<Configuration> {
+  List<ConfigurationModel> clients = [];
+  int offset = 0;
+  int limit = 10;
+  int totalCount = 0;
+  int selectedValue=0;
+  int selectedRowIndex = -1;
+
+  void notificationTable() async {
+    genModel? genmodel = await url.Urls.postApiCall(
+      method: '${url.Urls.configurationNotification}',
+      // params: {
+      //   'offset': offset,
+      //   'search': searchLogController.text.trim(),
+      // },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+
+      if (data != null && data is List) {
+        clients = data.map((item) => ConfigurationModel.fromJson(item)).toList();
+        // print("Count :- ${genmodel.count}");
+        // print(clients);
+        totalCount = genmodel.count ?? 0;
+        for (ConfigurationModel client in clients) {
+          print('Client ID: ${client.id}');
+          print('Client Meta: ${client.meta}');
+          print('Client send: ${client.send}');
+          print('Message: ${client.message}');
+          // Print other client properties as needed
+        }
+        setState(() {
+          // Update the UI state if necessary
+        });
+      }
+    }
+  }
+
+  Future<void> actionMessage(int id, String message, int send) async {
+    genModel? genmodel =
+    await url.Urls.postApiCall(method: '${url.Urls.configurationNotificationEdit}',
+        params: {
+          "id":id.toString(),
+          "message":message,
+          "send":send.toString()
+        });
+    if (genmodel != null) {
+      //print('Status: ${genmodel.message}');
+      if (genmodel.status == true) {
+        //print('Data: ${genmodel?.data}');
+
+        // final data = genmodel.data;
+        print(id);
+        // dataCount = CountData.fromJson(data);
+        //print('data  ${dataCount?.count?.pendingCount}');
+        setState(() {});
+      }
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    notificationTable();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,51 +215,134 @@ class _ConfigurationState extends State<Configuration> {
             children: [
               DataTable(
                 columns: const [
-                  DataColumn(label: Text('Sr.No.'), numeric: true),
+                  DataColumn(label: Text('Sr. No.'), numeric: true),
+                  DataColumn(label: Text('User ID')),
                   DataColumn(label: Text('Meta')),
-                  DataColumn(label: Text('Send ?')),
+                  DataColumn(label: Text('Send')),
                   DataColumn(label: Text('Message')),
                   DataColumn(label: Text('Edit')),
-                  DataColumn(label: Text('Enable')),
+                  DataColumn(label: Text('Action')),
                 ],
-                rows: const [
-                  DataRow(cells: [
-                    DataCell(Text('1')),
-                    DataCell(Text('Task')),
-                    DataCell(Text('Deactive')),
-                    DataCell(Text('Your New Task Has Been Generated')),
+                rows: clients?.map((birthday) {
+                  final index =
+                      clients?.indexOf(birthday) ??
+                          -1;
+                  final srNo = (index + 1).toString();
+                  final userId = birthday.id;
+                  final meta = birthday.meta;
+                  final send=birthday.send;
+                  final message=birthday.message;
+
+                  return DataRow(
+                      selected: selectedRowIndex == index,
+                      onSelectChanged: (isSelected) {
+                        setState(() {
+                          selectedRowIndex = isSelected! ? index : -1;
+                        });
+                      },
+                      cells: [
+                    DataCell(Text(srNo)),
+                    DataCell(Text(userId!)),
+                    DataCell(Text(meta!)),
+                    DataCell(Text(send!)),
+                    DataCell(Text(message!)),
+                    DataCell(IconButton(
+                        onPressed: (){
+                          Navigator.pushReplacementNamed(context, '/editPaymentMethod', arguments: {
+                            'userId':userId
+                          });
+                        },
+                        icon: Icon(Icons.edit)
+                    )),
                     DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.check))),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('2')),
-                    DataCell(Text('Client')),
-                    DataCell(Text('Deactive')),
-                    DataCell(Text('Your New Task Has Been Generated')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.check))),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('3')),
-                    DataCell(Text('Company')),
-                    DataCell(Text('Deactive')),
-                    DataCell(Text('Your New Task Has Been Generated')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.check))),
-                  ]),
-                ],
-                dataRowHeight: 32.0,
+                      Column(
+                        children: [
+                          RadioListTile(
+                            title: Text('Enable'),
+                            groupValue: selectedRowIndex,
+                            value: 1,
+                            onChanged: (value){
+                              setState(() {
+                                selectedRowIndex=value!;
+                              });
+                            },
+                    ),
+                          RadioListTile(
+                            title: Text('Disable'),
+                            groupValue: selectedRowIndex,
+                            value: 2,
+                            onChanged: (value){
+                              setState(() {
+                                selectedRowIndex=value!;
+                              });
+                            },
+                          ),
+                  ]
+                      ),
+                  ),
+                  ]);
+                }).toList() ??
+                    [],
+                dataRowHeight: 113.0,
               ),
             ],
           ),
         ),
       ],
     );
+    // return Column(
+    //   children: <Widget>[
+    //     SingleChildScrollView(
+    //       scrollDirection: Axis.horizontal,
+    //       child: Row(
+    //         children: [
+    //           DataTable(
+    //             columns: const [
+    //               DataColumn(label: Text('Sr.No.'), numeric: true),
+    //               DataColumn(label: Text('Meta')),
+    //               DataColumn(label: Text('Send ?')),
+    //               DataColumn(label: Text('Message')),
+    //               DataColumn(label: Text('Edit')),
+    //               DataColumn(label: Text('Enable')),
+    //             ],
+    //             rows: const [
+    //               DataRow(cells: [
+    //                 DataCell(Text('1')),
+    //                 DataCell(Text('Task')),
+    //                 DataCell(Text('Deactive')),
+    //                 DataCell(Text('Your New Task Has Been Generated')),
+    //                 DataCell(
+    //                     IconButton(onPressed: null, icon: Icon(Icons.edit))),
+    //                 DataCell(
+    //                     IconButton(onPressed: null, icon: Icon(Icons.check))),
+    //               ]),
+    //               DataRow(cells: [
+    //                 DataCell(Text('2')),
+    //                 DataCell(Text('Client')),
+    //                 DataCell(Text('Deactive')),
+    //                 DataCell(Text('Your New Task Has Been Generated')),
+    //                 DataCell(
+    //                     IconButton(onPressed: null, icon: Icon(Icons.edit))),
+    //                 DataCell(
+    //                     IconButton(onPressed: null, icon: Icon(Icons.check))),
+    //               ]),
+    //               DataRow(cells: [
+    //                 DataCell(Text('3')),
+    //                 DataCell(Text('Company')),
+    //                 DataCell(Text('Deactive')),
+    //                 DataCell(Text('Your New Task Has Been Generated')),
+    //                 DataCell(
+    //                     IconButton(onPressed: null, icon: Icon(Icons.edit))),
+    //                 DataCell(
+    //                     IconButton(onPressed: null, icon: Icon(Icons.check))),
+    //               ]),
+    //             ],
+    //             dataRowHeight: 32.0,
+    //           ),
+    //         ],
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 }
