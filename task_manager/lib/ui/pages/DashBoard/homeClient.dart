@@ -7,7 +7,7 @@ import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarClient.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
-import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/API/urls.dart';
 import 'package:task_manager/API/model/clientLogDataModel.dart';
 import '../../../API/model/genModel.dart';
 import 'package:task_manager/API/model/birthDayDataModel.dart';

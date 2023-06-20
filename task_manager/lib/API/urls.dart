@@ -16,7 +16,8 @@ class Urls {
   static String addPaymentMethod="${Urls.baseUrlMain}AddPaymentMethod";
   static String editPaymentMethod="${Urls.baseUrlMain}EditPaymentMethod";
   static String deletePaymentMethod="${Urls.baseUrlMain}DeletePaymentMethod";
-
+  static String configurationNotification="${Urls.baseUrlMain}NotificationConfig";
+  static String configurationNotificationEdit="${Urls.baseUrlMain}EditNotificationConfig";
   static String addEmployee = "${Urls.baseUrlMain}Add_Employee";
   static String deleteEmployee = "${Urls.baseUrlMain}Delete_Employee";
   static String updateEmployeePassword =
