@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:task_manager/API/urls.dart' as url;
+import 'package:task_manager/API/Urls.dart' as url;
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 
 import '../../../API/model/countDataModel.dart';
@@ -20,7 +20,7 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
 
   Future<void> postData(String input) async {
     genModel? genmodel =
-    await url.urls.postApiCall(method: '${url.urls.addPaymentMethod}',
+    await url.Urls.postApiCall(method: '${url.Urls.addPaymentMethod}',
     params: {
       "name":input
     });
@@ -40,7 +40,7 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
 
   // Future<void> postData(String input) async{
   //   final response = await http.post(
-  //     Uri.parse('${url.urls.addPaymentMethod}'),
+  //     Uri.parse('${url.Urls.addPaymentMethod}'),
   //     body: {
   //       "name": input
   //     },

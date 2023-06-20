@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/expensesDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/pages/Setting/addExpenses.dart';
 import 'package:task_manager/ui/pages/Setting/editExpenses.dart';
 import '../DashBoard/sidebarAdmin.dart';
@@ -46,7 +47,7 @@ class _ExpensesState extends State<Expenses> {
     }
   }
 
-   void deleteExpense(String? expenseId) async {
+  void deleteExpense(String? expenseId) async {
     if (expenseId != null) {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.deleteExpences}',
@@ -112,7 +113,7 @@ class _ExpensesState extends State<Expenses> {
                   height: deviceHeight * 0.02,
                 ),
                 _table(),
-                 SizedBox(
+                SizedBox(
                   height: deviceHeight * 0.1,
                 ),
               ],
@@ -144,6 +145,8 @@ class _ExpensesState extends State<Expenses> {
       ],
     );
   }
+
+ 
 
   Row _add() {
     return Row(
@@ -208,49 +211,17 @@ class _ExpensesState extends State<Expenses> {
                           }
                         },
                         icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: () {
-                             if (expense.id != null) {
-                          deleteExpense(expense.id!);
-                          expenses();
-                        }
-                        }, icon: Icon(Icons.delete))),
+                    DataCell(IconButton(
+                        onPressed: () {
+                          if (expense.id != null) {
+                            deleteExpense(expense.id!);
+                            expenses();
+                          }
+                        },
+                        icon: Icon(Icons.delete))),
                   ]);
                 }).toList(),
                 dataRowHeight: 32.0,
-                //       rows: const [
-                //         DataRow(cells: [
-                //           DataCell(Text('1')),
-                //           DataCell(Text('BOB')),
-                //           DataCell(Text('Chargeable')),
-                //           DataCell(
-                //               IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                //           DataCell(
-                //               IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                //         ]),
-                //         DataRow(cells: [
-                //           DataCell(Text('2')),
-                //           DataCell(Text('UPI')),
-                //           DataCell(Text('Deductable')),
-                //           DataCell(
-                //               IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                //           DataCell(
-                //               IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                //         ]),
-                //         DataRow(cells: [
-                //           DataCell(Text('3')),
-                //           DataCell(Text('HDFC')),
-                //           DataCell(Text('Chargeable')),
-                //           DataCell(
-                //               IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                //           DataCell(
-                //               IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                //         ]),
-                //       ],
-                //       dataRowHeight: 32.0,
-                //     ),
-                //   ],
-                // ),
               )
             ],
           ),

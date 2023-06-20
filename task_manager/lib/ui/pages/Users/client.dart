@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/ui/pages/Users/addClientForm.dart';
@@ -277,7 +276,7 @@ class _ClientState extends State<Client> {
                   final index = clientType.indexOf(user);
                   final srNo = (index + 1).toString();
 
-                  final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+                  //final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
                   // final createdOnDate =
                   //     createdOnFormat.parse(user.createdOn ?? '');
 

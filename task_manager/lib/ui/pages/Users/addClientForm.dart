@@ -1,17 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:task_manager/ui/Theme/colors.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/core/res/color.dart';
 
 class AddClientForm extends StatefulWidget {
   const AddClientForm({Key? key}) : super(key: key);
@@ -33,7 +26,7 @@ class _AddClientFormState extends State<AddClientForm> {
   TextEditingController birthDateController = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
-  TextEditingController contact2 = TextEditingController();
+  //TextEditingController contact2 = TextEditingController();
 
   bool isActive = true;
   bool checkSMS = true;
@@ -58,7 +51,7 @@ class _AddClientFormState extends State<AddClientForm> {
     birthDateController.clear();
     email.clear();
     contact.clear();
-    contact2.clear();
+    //contact2.clear();
   }
 
   void clientAdd() async {
@@ -74,7 +67,7 @@ class _AddClientFormState extends State<AddClientForm> {
           'lname': lastName.text,
           'email': email.text,
           'num': contact.text,
-          'par_num': contact2.text,
+         // 'par_num': contact2.text,
           'sendemail': checkEmailValue,
           'sendsms': checkSMSValue,
           'active': isActiveValue,
@@ -387,39 +380,39 @@ class _AddClientFormState extends State<AddClientForm> {
               return null;
             },
           ),
-          SizedBox(
-            height: deviceHeight * 0.02,
-          ),
-           TextFormField(
-            controller: contact2,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.done,
-            decoration: InputDecoration(
-              labelText: 'Parent Number',
-              suffixIcon: Icon(Icons.contact_phone),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.grey),
-                gapPadding: 10,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-                gapPadding: 10,
-              ),
-            ),
-            validator: (value) {
-              if (value!.isNotEmpty) {
-                final numberRegex = r'^[0-9]+$';
-                if (!RegExp(numberRegex).hasMatch(value)) {
-                  return 'Please Enter a Valid Number';
-                }
-              }
-              return null;
-            },
-          ),
+          // SizedBox(
+          //   height: deviceHeight * 0.02,
+          // ),
+          //  TextFormField(
+          //   controller: contact2,
+          //   keyboardType: TextInputType.number,
+          //   textInputAction: TextInputAction.done,
+          //   decoration: InputDecoration(
+          //     labelText: 'Parent Number',
+          //     suffixIcon: Icon(Icons.contact_phone),
+          //     contentPadding:
+          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          //     enabledBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.circular(28),
+          //       borderSide: BorderSide(color: AppTheme.colors.grey),
+          //       gapPadding: 10,
+          //     ),
+          //     focusedBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.circular(28),
+          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+          //       gapPadding: 10,
+          //     ),
+          //   ),
+          //   validator: (value) {
+          //     if (value!.isNotEmpty) {
+          //       final numberRegex = r'^[0-9]+$';
+          //       if (!RegExp(numberRegex).hasMatch(value)) {
+          //         return 'Please Enter a Valid Number';
+          //       }
+          //     }
+          //     return null;
+          //   },
+          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),

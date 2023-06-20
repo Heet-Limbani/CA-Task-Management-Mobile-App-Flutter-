@@ -4,12 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:task_manager/ui/Theme/colors.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditClientForm extends StatefulWidget {
@@ -34,7 +29,7 @@ class _EditClientFormState extends State<EditClientForm> {
   TextEditingController birthDateController = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
-  TextEditingController contact2 = TextEditingController();
+ // TextEditingController contact2 = TextEditingController();
 
   bool isActive = true;
   bool checkSMS = true;
@@ -67,7 +62,7 @@ class _EditClientFormState extends State<EditClientForm> {
     birthDateController.clear();
     email.clear();
     contact.clear();
-    contact2.clear();
+   // contact2.clear();
   }
 
   List<GetUser> clientType = [];
@@ -95,12 +90,10 @@ class _EditClientFormState extends State<EditClientForm> {
         // birthDateController.text = clientType[0].birthdate.toString();
         email.text = clientType[0].email.toString();
         contact.text = clientType[0].contactNumber.toString();
-        contact2.text = clientType[0].parentNumber.toString();
+        //contact2.text = clientType[0].parentNumber.toString();
         isActive = clientType[0].active.toString() == "1" ? true : false;
         checkSMS = clientType[0].sendSms.toString() == "1" ? true : false;
         checkEmail = clientType[0].sendEmail.toString() == "1" ? true : false;
-
-       
 
         // if (clientType.isEmpty) {
         //   // List is empty
@@ -122,20 +115,20 @@ class _EditClientFormState extends State<EditClientForm> {
     isActiveValue = (isActive ? "1" : "0");
     checkSMSValue = (checkSMS ? "1" : "0");
     checkEmailValue = (checkEmail ? "1" : "0");
-    print("Contact2 : ${contact2.text}");
-   
+   // print("Contact2 : ${contact2.text}");
+
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.editClient}',
         params: {
           'id': userId.toString(),
-          'save':"save",
+          'save': "save",
           'un': userName.text,
           'fname': firstName.text,
           'lname': lastName.text,
           'email': email.text,
           'num': contact.text,
-          'par_num': contact2.text,
+         // 'par_num': contact2.text,
           'sendemail': checkEmailValue,
           'sendsms': checkSMSValue,
           'active': isActiveValue,
@@ -143,7 +136,6 @@ class _EditClientFormState extends State<EditClientForm> {
         },
       );
       if (genmodel != null) {
-      
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -167,7 +159,7 @@ class _EditClientFormState extends State<EditClientForm> {
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
-   
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -452,39 +444,39 @@ class _EditClientFormState extends State<EditClientForm> {
               return null;
             },
           ),
-          SizedBox(
-            height: deviceHeight * 0.02,
-          ),
-          TextFormField(
-  controller: contact2,
-  keyboardType: TextInputType.number,
-  textInputAction: TextInputAction.done,
-  decoration: InputDecoration(
-    labelText: 'Parent Number',
-    suffixIcon: Icon(Icons.contact_phone),
-    contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(28),
-      borderSide: BorderSide(color: AppTheme.colors.grey),
-      gapPadding: 10,
-    ),
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(28),
-      borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-      gapPadding: 10,
-    ),
-  ),
-  validator: (value) {
-    if (value!.isNotEmpty) {
-      final numberRegex = r'^[0-9]+$';
-      if (!RegExp(numberRegex).hasMatch(value)) {
-        return 'Please Enter a Valid Number';
-      }
-    }
-    return null;
-  },
-),
-
+          // SizedBox(
+          //   height: deviceHeight * 0.02,
+          // ),
+          // TextFormField(
+          //   controller: contact2,
+          //   keyboardType: TextInputType.number,
+          //   textInputAction: TextInputAction.done,
+          //   decoration: InputDecoration(
+          //     labelText: 'Parent Number',
+          //     suffixIcon: Icon(Icons.contact_phone),
+          //     contentPadding:
+          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          //     enabledBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.circular(28),
+          //       borderSide: BorderSide(color: AppTheme.colors.grey),
+          //       gapPadding: 10,
+          //     ),
+          //     focusedBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.circular(28),
+          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+          //       gapPadding: 10,
+          //     ),
+          //   ),
+          //   validator: (value) {
+          //     if (value!.isNotEmpty) {
+          //       final numberRegex = r'^[0-9]+$';
+          //       if (!RegExp(numberRegex).hasMatch(value)) {
+          //         return 'Please Enter a Valid Number';
+          //       }
+          //     }
+          //     return null;
+          //   },
+          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -574,7 +566,6 @@ class _EditClientFormState extends State<EditClientForm> {
             onPressed: () {
               if (_EditClientFormKey.currentState!.validate()) {
                 clientEdit();
-                
               }
             },
             child: Text(

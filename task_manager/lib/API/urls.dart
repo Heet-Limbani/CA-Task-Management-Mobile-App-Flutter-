@@ -4,32 +4,32 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/genModel.dart';
 
-class urls {
+class Urls {
   static String baseUrlMain = "https://task.mysyva.net/backend/";
 
-  static String login = "${urls.baseUrlMain}Login";
-  static String adminDashBoard = "${urls.baseUrlMain}AdminDashboard";
-  static String clientLog = "${urls.baseUrlMain}ClientLogData_Dashboard";
-  static String clientLogAdd = "${urls.baseUrlMain}AddClientLog";
-  static String paymentMethod="${urls.baseUrlMain}PaymentMethod";
-  static String getUsers = "${urls.baseUrlMain}GetUsers";
-  static String addPaymentMethod="${urls.baseUrlMain}AddPaymentMethod";
-  static String editPaymentMethod="${urls.baseUrlMain}EditPaymentMethod";
-  static String deletePaymentMethod="${urls.baseUrlMain}DeletePaymentMethod";
+  static String login = "${Urls.baseUrlMain}Login";
+  static String adminDashBoard = "${Urls.baseUrlMain}AdminDashboard";
+  static String clientLog = "${Urls.baseUrlMain}ClientLogData_Dashboard";
+  static String clientLogAdd = "${Urls.baseUrlMain}AddClientLog";
+  static String paymentMethod="${Urls.baseUrlMain}PaymentMethod";
+  static String getUsers = "${Urls.baseUrlMain}GetUsers";
+  static String addPaymentMethod="${Urls.baseUrlMain}AddPaymentMethod";
+  static String editPaymentMethod="${Urls.baseUrlMain}EditPaymentMethod";
+  static String deletePaymentMethod="${Urls.baseUrlMain}DeletePaymentMethod";
 
-  static String addEmployee = "${urls.baseUrlMain}Add_Employee";
-  static String deleteEmployee = "${urls.baseUrlMain}Delete_Employee";
+  static String addEmployee = "${Urls.baseUrlMain}Add_Employee";
+  static String deleteEmployee = "${Urls.baseUrlMain}Delete_Employee";
   static String updateEmployeePassword =
-      "${urls.baseUrlMain}EmployeeResetPassword";
-  static String editEmployee = "${urls.baseUrlMain}Edit_Employee";
-  static String deleteClient = "${urls.baseUrlMain}Delete_Client";
-  static String updateClientPassword = "${urls.baseUrlMain}ClientResetPassword";
-  static String editClient = "${urls.baseUrlMain}Edit_Client";
-  static String addClient = "${urls.baseUrlMain}Add_Client";
-  static String expences = "${urls.baseUrlMain}Expences";
-  static String editExpences = "${urls.baseUrlMain}EditExpences";
-  static String deleteExpences = "${urls.baseUrlMain}DeleteExpences";
-  static String addExpences = "${urls.baseUrlMain}AddExpences";
+      "${Urls.baseUrlMain}EmployeeResetPassword";
+  static String editEmployee = "${Urls.baseUrlMain}Edit_Employee";
+  static String deleteClient = "${Urls.baseUrlMain}Delete_Client";
+  static String updateClientPassword = "${Urls.baseUrlMain}ClientResetPassword";
+  static String editClient = "${Urls.baseUrlMain}Edit_Client";
+  static String addClient = "${Urls.baseUrlMain}Add_Client";
+  static String expences = "${Urls.baseUrlMain}Expences";
+  static String editExpences = "${Urls.baseUrlMain}EditExpences";
+  static String deleteExpences = "${Urls.baseUrlMain}DeleteExpences";
+  static String addExpences = "${Urls.baseUrlMain}AddExpences";
 
 
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:task_manager/API/urls.dart' as url;
+import 'package:task_manager/API/Urls.dart' as url;
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 
 import '../../../API/model/countDataModel.dart';
@@ -21,7 +21,7 @@ class _EditPaymentMethodState extends State<EditPaymentMethod> {
 
   Future<void> editData(int id, String input) async {
     genModel? genmodel =
-    await url.urls.postApiCall(method: '${url.urls.editPaymentMethod}',
+    await url.Urls.postApiCall(method: '${url.Urls.editPaymentMethod}',
         params: {
           "id":id,
           "name":input

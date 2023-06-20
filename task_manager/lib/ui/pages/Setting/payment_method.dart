@@ -9,7 +9,7 @@ import 'package:task_manager/ui/pages/Setting/add_payment_method.dart';
 import '../../../API/model/genModel.dart';
 import '../../../API/model/paymentMethodModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:task_manager/API/urls.dart' as url;
+import 'package:task_manager/API/Urls.dart' as url;
 
 class Payment_Method extends StatefulWidget {
   const Payment_Method({super.key});
@@ -25,8 +25,8 @@ class _Payment_MethodState extends State<Payment_Method> {
   int totalCount = 0;
 
   void paymentTable() async {
-    genModel? genmodel = await url.urls.postApiCall(
-      method: '${url.urls.paymentMethod}',
+    genModel? genmodel = await url.Urls.postApiCall(
+      method: '${url.Urls.paymentMethod}',
       // params: {
       //   'offset': offset,
       //   'search': searchLogController.text.trim(),
@@ -56,7 +56,7 @@ class _Payment_MethodState extends State<Payment_Method> {
 
   Future<void> deleteData(int id) async {
     genModel? genmodel =
-    await url.urls.postApiCall(method: '${url.urls.deletePaymentMethod}',
+    await url.Urls.postApiCall(method: '${url.Urls.deletePaymentMethod}',
         params: {
           "id":id.toString(),
         });
