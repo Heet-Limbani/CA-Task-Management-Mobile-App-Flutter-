@@ -75,7 +75,7 @@ class _AddClientFormState extends State<AddClientForm> {
         },
       );
       if (genmodel != null) {
-        print('Status: ${genmodel.message}');
+        //print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,

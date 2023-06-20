@@ -1,5 +1,3 @@
-import 'package:advanced_datatable/advanced_datatable_source.dart';
-import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -24,22 +22,6 @@ class HomeAdminScreen extends StatefulWidget {
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
-  // variables for adv datatable
-  final _source = ClientSource();
-  var _sortIndex = 0;
-  var _sortAsc = true;
-  var _customFooter = false;
-  var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
-  TextEditingController _searchController = TextEditingController();
-
-  // ignore: avoid_positional_boolean_parameters
-  void setSort(int i, bool asc) => setState(() {
-        _sortIndex = i;
-        _sortAsc = asc;
-      });
-
-// end here
-
   List<GetUser> clientType = [];
   List<ClientData> clientsdata = [];
 
@@ -59,10 +41,16 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   String description = "";
   String date = '';
   int offset = 0;
-  int limit = 10;
-  String? selectedClientId1;
 
-  DateTime? selectedDateTime = DateTime.now();
+  int limit = 10;
+
+  String?
+      selectedClientId1; // Create a variable to store the selected client ID
+
+  //DateTime? selectedDateTime;
+  DateTime? selectedDateTime =
+      DateTime.now(); // Initialize with current date and time
+
   @override
   void dispose() {
     clientController.dispose();
@@ -85,14 +73,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     getUser();
   }
 
-  void clear() {
-    clientController.clear();
-    messageController.clear();
-    descriptionController.clear();
-    dateController.clear();
-    
-  }
-
   List<Client> clients = [];
   int currentPage = 0;
   int rowsPerPage = 10;
@@ -109,7 +89,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         'search': searchLogController.text.trim(),
       },
     );
-
+              
     if (dataModel != null && dataModel?.status == true) {
       final dynamicData = dataModel?.data;
 
@@ -119,11 +99,18 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 (item) => Client.fromJson(item as Map<String, dynamic>))
             .toList();
         totalCount = dataModel?.count ?? 0;
+       // print("Data $dynamicData"); // Print the received data for debugging
       } else {
         clients = [];
         totalCount = 0;
       }
     }
+
+    // Print the values for debugging
+    // print("Offset: $offset");
+    // print("Data Model: $dataModel");
+    // print("Clients: $clients");
+    // print("Total Count: $totalCount");
   }
 
   void handlePageChange(int pageIndex, genModel? model) async {
@@ -140,11 +127,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       clients = [];
     }
 
-    setState(() {});
+    setState(() {}); // Only call setState once after updating clients
   }
 
   CountData? dataCount;
-
   void clientDashboard() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -163,7 +149,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   BirthDayList? dataBirthdayList;
-
   void birthDayTable() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -185,7 +170,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   HolidayList? dataHolidayList;
-
   void holidayTable() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -203,7 +187,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   ClientList? dataClientList;
-
   void clientData() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -231,9 +214,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           // print('UserName: ${clientdata1.username}');
           //}
         }
-        if (mounted) {
-          setState(() {});
-        }
+        setState(() {});
       }
     }
   }
@@ -288,7 +269,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           });
         }
       }
-    } catch (e) {}
+    } catch (e) {
+      // Handle the exception
+    }
   }
 
   void getUser() async {
@@ -316,6 +299,37 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       }
     }
   }
+  // void openUserListDialog(List<ClientData> clientList) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         title: Text('Select User'),
+  //         content: Container(
+  //           width: double.maxFinite,
+  //           child: ListView.builder(
+  //             /// aa customise karvu padse list view last itm ma ave etle api call karavi ne bijo  data server prthi fetch karvau pdse ok sir and sir naitar api call karvi ne limit ma count put karaviye to badhi entry aavijay list ma ? na em nai chale moklavu tne example tyar sudhi package implement kar advance pagination varo ha sir
+  //             shrinkWrap: true,
+  //             itemCount: clientList.length,
+  //             itemBuilder: (BuildContext context, int index) {
+  //               final client = clientList[index];
+  //               return ListTile(
+  //                 title: Text(client.username ?? ''),
+  //                 onTap: () {
+  //                   setState(() {
+  //                     clientId = client.iD!;
+  //                     clientController.text = clientId;
+  //                   });
+  //                   Navigator.of(context).pop();
+  //                 },
+  //               );
+  //             },
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Stack _buildBody() {
     return Stack(
@@ -334,18 +348,18 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 ),
                 _admin(),
 
-                // ListView.builder(
-                //   shrinkWrap: true,
-                //   physics: NeverScrollableScrollPhysics(),
-                //   itemCount: clients.length,
-                //   itemBuilder: (context, index) {
-                //     final client = clients[index];
-                //     return ListTile(
-                //       title: Text(client.client ?? ''),
-                //       subtitle: Text(client.message ?? ''),
-                //     );
-                //   },
-                // ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: clients.length,
+                  itemBuilder: (context, index) {
+                    final client = clients[index];
+                    return ListTile(
+                      title: Text(client.client ?? ''),
+                      subtitle: Text(client.message ?? ''),
+                    );
+                  },
+                ),
 
                 //_client(),
 
@@ -357,6 +371,34 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
       ],
     );
   }
+
+  // Stack _buildBody() {
+  //   return Stack(
+  //     children: [
+  //       SingleChildScrollView(
+  //         child: Container(
+  //           margin: const EdgeInsets.symmetric(
+  //             horizontal: 15,
+  //             vertical: 0,
+  //           ),
+  //           child: Column(
+  //             crossAxisAlignment: CrossAxisAlignment.start,
+  //             children: [
+  //               SizedBox(
+  //                 height: deviceHeight * 0.02,
+  //               ),
+  //               _admin(),
+
+  //               // _client(),
+
+  //               //_employee(),
+  //             ],
+  //           ),
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Column _admin() {
     return Column(
@@ -376,6 +418,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 selectAll: true,
               ),
             ),
+            // IconButton(
+            //     onPressed: () {},
+            //     icon: Icon(
+            //       Icons.add_circle_outline,
+            //       color: Colors.blue[400],
+            //     ))
           ],
         ),
         SizedBox(
@@ -486,6 +534,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
+            // const Spacer(), sir without debuging run karavu padse ok sir run nathi thatu km ?
             InkWell(
               onTap: () {},
               child: Text(
@@ -511,6 +560,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
+            // const Spacer(),
           ],
         ),
         SizedBox(
@@ -533,7 +583,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 onChanged: (String? newValue) {
                   setState(() {
                     selectedClientId1 = newValue;
-                    clientController.text = selectedClientId1 ?? '';
+                    clientController.text = selectedClientId1 ??
+                        ''; // Update the clientController value
                   });
                 },
                 items: clientType.map((GetUser user) {
@@ -549,6 +600,93 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   return null;
                 },
               ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              // TextFormField(
+              //   controller: clientController,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Client ID',
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              //     ),
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   onChanged: (value) {
+              //     setState(() {
+              //       selectedClientId1 = value;
+              //     });
+              //   },
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please enter a client ID';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // TextFormField(
+              //   controller: clientController,
+              //   keyboardType: TextInputType.number,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Client ID',
+              //     enabledBorder: OutlineInputBorder(
+              //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              //     ),
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   onTap: () {
+
+              //     openUserListDialog(clientsdata);
+              //   },
+              //   onChanged: (value) {
+              //     setState(() {
+              //       clientId = value;
+              //     });
+              //   },
+              //   validator: (value) {
+              //     if (value == null ||
+              //         value.isEmpty ||
+              //         value.contains(RegExp(r'^[a-zA-Z\-]'))) {
+              //       return 'Use only numbers!';
+              //     }
+              //     return null;
+              //   },
+              // ),
+
+              // void openUserListDialog(List<ClientData> clientList) {
+              //   showDialog(
+              //     context: context,
+              //     builder: (BuildContext context) {
+              //       return AlertDialog(
+              //         title: Text('Select User'),
+              //         content: Container(
+              //           width: double.maxFinite,
+              //           child: ListView.builder(
+              //             /// aa customise karvu padse list view last itm ma ave etle api call karavi ne bijo  data server prthi fetch karvau pdse ok sir and sir naitar api call karvi ne limit ma count put karaviye to badhi entry aavijay list ma ? na em nai chale moklavu tne example tyar sudhi package implement kar advance pagination varo ha sir
+              //             shrinkWrap: true,
+              //             itemCount: clientList.length,
+              //             itemBuilder: (BuildContext context, int index) {
+              //               final client = clientList[index];
+              //               return ListTile(
+              //                 title: Text(client.username ?? ''),
+              //                 onTap: () {
+              //                   setState(() {
+              //                     clientId = client.iD!;
+              //                     clientController.text = clientId;
+              //                   });
+              //                   Navigator.of(context).pop();
+              //                 },
+              //               );
+              //             },
+              //           ),
+              //         ),
+              //       );
+              //     },
+              //   );
+              // }
+
               SizedBox(
                 height: deviceHeight * 0.02,
               ),
@@ -616,7 +754,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               TextFormField(
                 controller: dateController,
                 decoration: const InputDecoration(
-                  labelText: 'Date',
+                  labelText: 'Date And Time',
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(20.0)),
                     borderSide: BorderSide(color: Colors.grey, width: 0.0),
@@ -624,22 +762,32 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   border: OutlineInputBorder(),
                 ),
                 onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
+                  DateTime? pickedDateTime = await showDatePicker(
                     context: context,
                     initialDate: selectedDateTime ?? DateTime.now(),
                     firstDate: DateTime(2000),
                     lastDate: DateTime(3000),
                   );
-                  if (pickedDate != null) {
-                    setState(() {
+                  if (pickedDateTime != null) {
+                    TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(
+                          selectedDateTime ?? DateTime.now()),
+                    );
+
+                    if (pickedTime != null) {
                       selectedDateTime = DateTime(
-                        pickedDate.year,
-                        pickedDate.month,
-                        pickedDate.day,
+                        pickedDateTime.year,
+                        pickedDateTime.month,
+                        pickedDateTime.day,
+                        pickedTime.hour,
+                        pickedTime.minute,
                       );
-                      date = DateFormat('yyyy-MM-dd').format(selectedDateTime!);
-                      dateController.text = date;
-                    });
+                      setState(() {
+                        date = selectedDateTime.toString();
+                        dateController.text = date;
+                      });
+                    }
                   }
                 },
                 onFieldSubmitted: (value) {
@@ -653,6 +801,55 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   });
                 },
               ),
+
+              // TextFormField(
+              //   controller: dateController,
+              //   decoration: const InputDecoration(
+              //       labelText: 'Date And Time',
+              //       enabledBorder: OutlineInputBorder(
+              //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              //         borderSide: BorderSide(color: Colors.grey, width: 0.0),
+              //       ),
+              //       border: OutlineInputBorder()),
+              //   onTap: () async {
+              //     DateTime? selectedDateTime = await showDatePicker(
+              //       context: context,
+              //       initialDate: DateTime.now(),
+              //       firstDate: DateTime(2000),
+              //       lastDate: DateTime(3000),
+              //     );
+              //     if (selectedDateTime != null) {
+              //       TimeOfDay? selectedTime = await showTimePicker(
+              //         context: context,
+              //         initialTime: TimeOfDay.now(),
+              //       );
+
+              //       if (selectedTime != null) {
+              //         selectedDateTime = DateTime(
+              //           selectedDateTime.year,
+              //           selectedDateTime.month,
+              //           selectedDateTime.day,
+              //           selectedTime.hour,
+              //           selectedTime.minute,
+              //         );
+              //         setState(() {
+              //           date = selectedDateTime.toString();
+              //           dateController.text = date;
+              //         });
+              //       }
+              //     }
+              //   },
+              //   onFieldSubmitted: (value) {
+              //     setState(() {
+              //       date = value;
+              //     });
+              //   },
+              //   onChanged: (value) {
+              //     setState(() {
+              //       date = value;
+              //     });
+              //   },
+              // ),
               SizedBox(height: deviceHeight * 0.02),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
@@ -660,8 +857,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 onPressed: () {
                   clientTable();
                   if (_formKey.currentState!.validate()) {
-                     FocusScope.of(context).unfocus();
-
                     clientLogAdd();
 
                     Fluttertoast.showToast(
@@ -675,7 +870,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                     );
                   }
                   clientTable();
-                  clear();
                 },
                 child: const Text("Submit"),
               ),
@@ -701,193 +895,137 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
+              child: SizedBox(
+                width: deviceWidth * 0.3,
                 child: TextField(
-                  controller: _searchController,
-                  decoration: const InputDecoration(
-                    labelText: 'Search by Client Name',
-                  ),
-                  onSubmitted: (vlaue) {
-                    _source.filterServerSide(_searchController.text);
+                  controller: searchLogController,
+                  onChanged: (value) {
+                    clientTable(); //
                   },
+                  decoration: InputDecoration(
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      hintText: 'Search',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30),
+                        borderSide: const BorderSide(),
+                      ),
+                      prefixIcon: Icon(Icons.search),
+                      suffixIcon: GestureDetector(
+                        onTap: () {
+                          searchLogController.clear();
+                          FocusScope.of(context).unfocus();
+                          searchLogController.clear();
+                          clientTable();
+                          // setState(() {});
+                        },
+                        child: Icon(Icons.clear),
+                      )),
                 ),
               ),
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _searchController.text = '';
-                });
-                _source.filterServerSide(_searchController.text);
-              },
-              icon: const Icon(Icons.clear),
-            ),
-            IconButton(
-              onPressed: () => _source.filterServerSide(_searchController.text),
-              icon: const Icon(Icons.search),
             ),
           ],
         ),
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-        AdvancedPaginatedDataTable(
-          addEmptyRows: false,
-          source: _source,
-          showHorizontalScrollbarAlways: true,
-          sortAscending: _sortAsc,
-          sortColumnIndex: _sortIndex,
-          showFirstLastButtons: true,
-          rowsPerPage: _rowsPerPage,
-          availableRowsPerPage: const [10],
-          onRowsPerPageChanged: (newRowsPerPage) {
-            if (newRowsPerPage != null) {
-              setState(() {
-                _rowsPerPage = newRowsPerPage;
-              });
-            }
-          },
-          columns: [
-            DataColumn(
-              label: const Text('Sr. No.'),
-              numeric: true,
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Client Name'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Message'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Description'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Created On'),
-              onSort: setSort,
-            ),
+        PaginatedDataTable(
+          header: const Text('Your Table'),
+          columns: const [
+            DataColumn(label: Text('Sr. No.'), numeric: true),
+            DataColumn(label: Text('Client Name')),
+            DataColumn(label: Text('Message')),
+            DataColumn(label: Text('Description')),
+            DataColumn(label: Text('Date')),
+            DataColumn(label: Text('Created On')),
           ],
-          //Optianl override to support custom data row text / translation
-          getFooterRowText:
-              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
-            final localizations = MaterialLocalizations.of(context);
-            var amountText = localizations.pageRowsInfoTitle(
-              startRow,
-              pageSize,
-              totalFilter ?? totalRowsWithoutFilter,
-              false,
-            );
-
-            if (totalFilter != null) {
-              //Filtered data source show addtional information
-              amountText += ' filtered from ($totalRowsWithoutFilter)';
-            }
-
-            return amountText;
+          source:
+              ClientDataSource(clients, totalCount, currentPage * rowsPerPage),
+          rowsPerPage: rowsPerPage,
+          availableRowsPerPage: [rowsPerPage],
+          onPageChanged: (pageIndex) {
+            handlePageChange(pageIndex, dataModel);
           },
-          customTableFooter: _customFooter
-              ? (source, offset) {
-                  const maxPagesToShow = 6;
-                  const maxPagesBeforeCurrent = 3;
-                  final lastRequestDetails = source.lastDetails!;
-                  final rowsForPager = lastRequestDetails.filteredRows ??
-                      lastRequestDetails.totalRows;
-                  final totalPages = rowsForPager ~/ _rowsPerPage;
-                  final currentPage = (offset ~/ _rowsPerPage) + 1;
-                  final List<int> pageList = [];
-                  if (currentPage > 1) {
-                    pageList.addAll(
-                      List.generate(currentPage - 1, (index) => index + 1),
-                    );
-                    //Keep up to 3 pages before current in the list
-                    pageList.removeWhere(
-                      (element) =>
-                          element < currentPage - maxPagesBeforeCurrent,
-                    );
-                  }
-                  pageList.add(currentPage);
-                  //Add reminding pages after current to the list
-                  pageList.addAll(
-                    List.generate(
-                      maxPagesToShow - (pageList.length - 1),
-                      (index) => (currentPage + 1) + index,
-                    ),
-                  );
-                  pageList.removeWhere((element) => element > totalPages);
-
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: pageList
-                        .map(
-                          (e) => TextButton(
-                            onPressed: e != currentPage
-                                ? () {
-                                    //Start index is zero based
-                                    source.setNextView(
-                                      startIndex: (e - 1) * _rowsPerPage,
-                                    );
-                                  }
-                                : null,
-                            child: Text(
-                              e.toString(),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  );
-                }
-              : null,
         ),
+        // PaginatedDataTable(
+        //   header: const Text('Client List'),
+        //   columns: const [
+        //     DataColumn(label: Text('Sr. No.'), numeric: true),
+        //     DataColumn(label: Text('Client Name')),
+        //     DataColumn(label: Text('Message')),
+        //     DataColumn(label: Text('Description')),
+        //     DataColumn(label: Text('Date')),
+        //     DataColumn(label: Text('Created On')),
+        //   ],
+        //   source: _ClientDataTableSource(
+        //     clients,
+        //     totalCount,
+        //     limit,
+        //     offset,
+        //   ),
+        //   onPageChanged: (int pageIndex) {
+        //     setState(() {
+        //       offset += pageIndex;
+        //       // print('offset $offset');
+        //       // print('pageindex $pageIndex');
+        //       // run kar to
+        //     }); //offset ni value page change upar proper set nathi thati
+
+        //     clientTable(offset: offset);
+        //   },
+        //   rowsPerPage: limit,
+        // ),
+        // // Column(
+        // //   children: <Widget>[
+        // //     SingleChildScrollView(
+        // //       scrollDirection: Axis.horizontal,
+        // //       child: Row(
+        // //         children: [
+        // //           DataTable(
+        // //             columns: const [
+        // //               DataColumn(label: Text('Sr. No.'), numeric: true),
+        // //               DataColumn(label: Text('Client Name')),
+        // //               DataColumn(label: Text('Message')),
+        // //               DataColumn(label: Text('Description')),
+        // //               DataColumn(label: Text('Date')),
+        // //               DataColumn(label: Text('Created On')),
+        // //             ],
+        //             rows: clients.map((client) {
+        // //               final index = clients.indexOf(client);
+        // //               final srNo = (index + 1).toString();
+
+        // //               // Parse createdOn string to DateTime
+        // //               final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+        // //               final createdOnDate =
+        // //                   createdOnFormat.parse(client.createdOn ?? '');
+
+        // //               // Format the date as dd/mm/yyyy
+        // //               final formattedDate =
+        // //                   DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+        // //               return DataRow(cells: [
+        // //                 DataCell(Text(srNo)),
+        // //                 DataCell(Text(client.client ?? '')),
+        // //                 DataCell(Text(client.message ?? '')),
+        // //                 DataCell(Text(client.description ?? '')),
+        // //                 DataCell(Text(formattedDate)),
+        // //                 DataCell(Text(client.createdOn ?? '')),
+        // //               ]);
+        // //             }).toList(),
+        // //             dataRowHeight: 32.0,
+        // //           )
+        // //         ],
+        // //       ),
+        // //     ),
+        //   ],
+        // ),
+
         SizedBox(
           height: deviceHeight * 0.1,
         ),
-        // Row(
-        //   children: [
-        //     Expanded(
-        //       child: SizedBox(
-        //         width: deviceWidth * 0.3,
-        //         child: TextField(
-        //           controller: searchLogController,
-        //           onChanged: (value) {
-        //             clientTable();
-        //           },
-        //           decoration: InputDecoration(
-        //               contentPadding:
-        //                   EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-        //               hintText: 'Search',
-        //               border: OutlineInputBorder(
-        //                 borderRadius: BorderRadius.circular(30),
-        //                 borderSide: const BorderSide(),
-        //               ),
-        //               prefixIcon: Icon(Icons.search),
-        //               suffixIcon: GestureDetector(
-        //                 onTap: () {
-        //                   searchLogController.clear();
-        //                   FocusScope.of(context).unfocus();
-        //                   searchLogController.clear();
-        //                   clientTable();
-        //                   // setState(() {});
-        //                 },
-        //                 child: Icon(Icons.clear),
-        //               )),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
 
         Row(
           children: [
@@ -1006,6 +1144,230 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     );
   }
 
+  Column _client() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              "Client Dashboard",
+              style: TextStyle(
+                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+              ),
+            ),
+            // const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        StaggeredGrid.count(
+            crossAxisCount: 2,
+            mainAxisSpacing: 15,
+            crossAxisSpacing: 15,
+            children: const [
+              StaggeredGridTile.count(
+                crossAxisCellCount: 2,
+                mainAxisCellCount: 1.1,
+                child: TaskGroupContainer(
+                  color: Colors.blue,
+                  icon: Icons.keyboard,
+                  taskCount: 5,
+                  taskGroup: "On Going Task",
+                ),
+              ),
+              StaggeredGridTile.count(
+                crossAxisCellCount: 1,
+                mainAxisCellCount: 1,
+                child: TaskGroupContainer(
+                  color: Colors.green,
+                  isSmall: true,
+                  icon: Icons.live_help_rounded,
+                  taskCount: 2,
+                  taskGroup: "Query Raised",
+                ),
+              ),
+              StaggeredGridTile.count(
+                crossAxisCellCount: 1,
+                mainAxisCellCount: 1.2,
+                child: TaskGroupContainer(
+                  color: Colors.orange,
+                  icon: Icons.pending_actions,
+                  taskCount: 5,
+                  taskGroup: "Inoice Raised",
+                ),
+              ),
+              StaggeredGridTile.count(
+                crossAxisCellCount: 1,
+                mainAxisCellCount: 1.2,
+                child: TaskGroupContainer(
+                  color: Colors.blue,
+                  icon: Icons.attach_money,
+                  taskCount: 10,
+                  taskGroup: "Amount",
+                ),
+              ),
+              StaggeredGridTile.count(
+                crossAxisCellCount: 1,
+                mainAxisCellCount: 1,
+                child: TaskGroupContainer(
+                  color: Colors.purple,
+                  icon: Icons.download,
+                  taskCount: 5,
+                  isSmall: true,
+                  taskGroup: "Download",
+                ),
+              ),
+            ])
+      ],
+    );
+  }
+
+  Column _employee() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Employee Dashboard",
+              style: TextStyle(
+                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+              ),
+            ),
+            // const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        StaggeredGrid.count(
+          crossAxisCount: 2,
+          mainAxisSpacing: 15,
+          crossAxisSpacing: 15,
+          children: [
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1.1,
+              child: TaskGroupContainer(
+                color: Colors.blue,
+                icon: Icons.keyboard,
+                taskCount: 5,
+                taskGroup: "Today's Task",
+              ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: TaskGroupContainer(
+                color: Colors.orange,
+                isSmall: true,
+                icon: Icons.pending_actions,
+                taskCount: 2,
+                taskGroup: "Pending Task",
+              ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1.2,
+              child: TaskGroupContainer(
+                color: Colors.green,
+                icon: Icons.currency_rupee,
+                taskCount: 5,
+                taskGroup: "Task Payable",
+              ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1.2,
+              child: TaskGroupContainer(
+                color: Colors.red,
+                icon: Icons.watch_later_rounded,
+                taskCount: 10,
+                taskGroup: "Overdue Task",
+              ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: TaskGroupContainer(
+                color: Colors.purple,
+                icon: Icons.live_help_outlined,
+                taskCount: 5,
+                isSmall: true,
+                taskGroup: "Query Raised",
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.1,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Holiday List",
+              style: TextStyle(
+                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+              ),
+            ),
+            // const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                DataTable(
+                  columns: const [
+                    DataColumn(label: Text('Sr. No.'), numeric: true),
+                    DataColumn(label: Text('Title')),
+                    DataColumn(label: Text('Description')),
+                    DataColumn(label: Text('Date')),
+                  ],
+                  rows: const [
+                    DataRow(cells: [
+                      DataCell(Text('1')),
+                      DataCell(Text('John')),
+                      DataCell(Text('Hello')),
+                      DataCell(Text('2023-05-10')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text('2')),
+                      DataCell(Text('Jane')),
+                      DataCell(Text('Hi')),
+                      DataCell(Text('2023-05-11')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text('3')),
+                      DataCell(Text('Bob')),
+                      DataCell(Text('Hey')),
+                      DataCell(Text('2023-05-12')),
+                    ]),
+                  ],
+                  dataRowHeight: 32.0,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -1019,19 +1381,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
-        // for setting custom footer adv dtable
-        actions: [
-          // IconButton(
-          //   icon: const Icon(Icons.table_chart_outlined),
-          //   tooltip: 'Change footer',
-          //   onPressed: () {
-          //     // handle the press
-          //     setState(() {
-          //       _customFooter = !_customFooter;
-          //     });
-          //   },
-          // ),
-        ],
         elevation: 0,
         // actions: [
         //   Padding(
@@ -1102,91 +1451,86 @@ class ClientDataSource extends DataTableSource {
   int get selectedRowCount => 0;
 }
 
-typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class ClientSource extends AdvancedDataTableSource<Client> {
-  List<String> selectedIds = [];
-  String lastSearchTerm = '';
+// class _ClientDataTableSource extends DataTableSource {
+//   final List<Client> clients;
+//   final int totalCount;
+//   final int limit;
+//   final int offset;
 
-  int startIndex = 0; // Add the startIndex variable
+//   _ClientDataTableSource(
+//       this.clients, this.totalCount, this.limit, this.offset);
 
-  @override
-  DataRow? getRow(int index) {
-    final int srNo = startIndex + index + 1;
-    final Client client = lastDetails!.rows[index];
-    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(client.onDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    //print("parsedDate $parsedDate");
+//   @override
+//   DataRow? getRow(int index) {
+//     if (index >= rowCount) {
+//       return null;
+//     }
+//     // final clientIndex = index;//   aa logic ? ha aa logic work nathi karto
+//     //print("index : $index");
+//     // print("offset : $offset"); //run
+//     //final clientIndex = index + (pageIndex * limit);
+//     final client = clients[index];
+//     final srNo = (index + 1).toString(); 
+//      final srNo = ((limit * pageIndex) - (limit - 1) + index).toString();
+    // final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+    // final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
+    // final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
 
-    return DataRow(
-      cells: [
-        DataCell(Text(srNo.toString())),
-        DataCell(Text(client.client ?? "")),
-        DataCell(Text(client.message ?? "")),
-        DataCell(Text(client.description ?? "")),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(client.createdOn ?? "")),
-      ],
-      selected: selectedIds.contains(client.id),
-      onSelectChanged: (value) {
-        selectedRow(client.id.toString(), value ?? false);
-      },
-    );
-  }
+//     return DataRow.byIndex(index: index, cells: [
+//       DataCell(Text(srNo)),
+//       DataCell(Text(client.client ?? '')),
+//       DataCell(Text(client.message ?? '')),
+//       DataCell(Text(client.description ?? '')),
+//       DataCell(Text(formattedDate)),
+//       DataCell(Text(client.createdOn ?? '')),
+//     ]);
+//   }
 
-  @override
-  int get selectedRowCount => selectedIds.length;
+//   @override
+//   bool get isRowCountApproximate => false;
 
-  void selectedRow(String id, bool newSelectState) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
-    } else {
-      selectedIds.add(id);
-    }
-    notifyListeners();
-  }
+//   @override
+//   int get rowCount => totalCount;
 
-  void filterServerSide(String filterQuery) {
-    lastSearchTerm = filterQuery.toLowerCase().trim();
-    setNextView();
-  }
+//   @override
+//   int get selectedRowCount => 0;
+// }
 
-  @override
-  Future<RemoteDataSourceDetails<Client>> getNextPage(
-    NextPageRequest pageRequest,
-  ) async {
-    startIndex = pageRequest.offset;
-    final queryParameter = <String, dynamic>{
-      'offset': pageRequest.offset.toString(),
-      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-    };
+// class _ClientDataTableSource extends DataTableSource {
+//   final List<Client> clients;
 
-    genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientLog}',
-      params: queryParameter,
-    );
+//   _ClientDataTableSource(this.clients);
 
-    if (dataModel != null && dataModel.status == true) {
-      final dynamicData = dataModel.data;
+//   @override
+//   DataRow? getRow(int index) {
+//     if (index >= clients.length) {
+//       return null;
+//     }
 
-      return RemoteDataSourceDetails(
-        dataModel.count ?? 0,
-        dynamicData
-            .map<Client>(
-              (item) => Client.fromJson(item as Map<String, dynamic>),
-            )
-            .toList(),
-        filteredRows: lastSearchTerm.isNotEmpty
-            ? dynamicData
-                .map<Client>(
-                  (item) => Client.fromJson(item as Map<String, dynamic>),
-                )
-                .length
-            : null,
-      );
-    } else {
-      throw Exception('Unable to query remote server');
-    }
-  }
-}
+//     final client = clients[index];
+//     final srNo = (index + 1).toString();
+
+//     final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+//     final createdOnDate = createdOnFormat.parse(client.createdOn ?? '');
+//     final formattedDate = DateFormat('dd/MM/yyyy').format(createdOnDate);
+
+//     return DataRow(cells: [
+//       DataCell(Text(srNo)),
+//       DataCell(Text(client.client ?? '')),
+//       DataCell(Text(client.message ?? '')),
+//       DataCell(Text(client.description ?? '')),
+//       DataCell(Text(formattedDate)),
+//       DataCell(Text(client.createdOn ?? '')),
+//     ]);
+//   }
+
+//   @override
+//   bool get isRowCountApproximate => false;
+
+//   @override
+//   int get rowCount => clients.length;
+
+//   @override
+//   int get selectedRowCount => 0;
+// }

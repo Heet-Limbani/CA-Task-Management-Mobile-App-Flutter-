@@ -1,11 +1,4 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
-import 'package:task_manager/API/model/clientLogDataModel.dart';
-import 'package:task_manager/ui/pages/Setting/add_payment_method.dart';
 import '../../../API/model/genModel.dart';
 import '../../../API/model/paymentMethodModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
@@ -41,12 +34,12 @@ class _Payment_MethodState extends State<Payment_Method> {
         // print("Count :- ${genmodel.count}");
         // print(clients);
         totalCount = genmodel.count ?? 0;
-        for (PaymentMethod client in clients) {
-          print('Client ID: ${client.id}');
-          print('Client Name: ${client.name}');
+        //for (PaymentMethod client in clients) {
+          // print('Client ID: ${client.id}');
+          // print('Client Name: ${client.name}');
           // print('Message: ${client.message}');
           // Print other client properties as needed
-        }
+        //}
         setState(() {
           // Update the UI state if necessary
         });
@@ -66,7 +59,7 @@ class _Payment_MethodState extends State<Payment_Method> {
         //print('Data: ${genmodel?.data}');
 
         // final data = genmodel.data;
-        print(id);
+        //print(id);
         // dataCount = CountData.fromJson(data);
         //print('data  ${dataCount?.count?.pendingCount}');
         setState(() {});
@@ -269,10 +262,9 @@ class _Payment_MethodState extends State<Payment_Method> {
                   DataColumn(label: Text('Edit')),
                   DataColumn(label: Text('Delete')),
                 ],
-                rows: clients?.map((birthday) {
+                rows: clients.map((birthday) {
                   final index =
-                      clients?.indexOf(birthday) ??
-                          -1;
+                      clients.indexOf(birthday);
                   final srNo = (index + 1).toString();
                   final userId = birthday.id;
                   final name = birthday.name;
@@ -296,8 +288,7 @@ class _Payment_MethodState extends State<Payment_Method> {
                         },
                         icon: Icon(Icons.delete))),
                   ]);
-                }).toList() ??
-                    [],
+                }).toList(),
                 dataRowHeight: 32.0,
               ),
             ],
@@ -363,7 +354,7 @@ class _PaymentDataTableSource extends DataTableSource {
         DataCell(Text(client.name.toString()))
       ]));
     }
-    print('hi');
+   
     if (index >= _rows.length) return null;
     return _rows[index];
   }

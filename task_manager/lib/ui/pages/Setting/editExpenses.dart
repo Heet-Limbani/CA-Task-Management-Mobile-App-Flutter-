@@ -61,20 +61,20 @@ class _EditExpensesState extends State<EditExpenses> {
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-      print("data $data");
-      print("data type: ${data.runtimeType}");
-      print("genmodel.data type: ${genmodel.data.runtimeType}");
+      // print("data $data");
+      // print("data type: ${data.runtimeType}");
+      // print("genmodel.data type: ${genmodel.data.runtimeType}");
 
       if (data != null && data is Map<String, dynamic>) {
-        print("data is available");
+        //print("data is available");
         final expenseData = Expense.fromJson(data);
         expensesList = [expenseData];
         name.text = expenseData.name.toString();
 
         isActive = expenseData.type.toString() == "1" ? true : false;
 
-        print("name: ${expenseData.name}");
-        print("type: ${expenseData.type}");
+        // print("name: ${expenseData.name}");
+        // print("type: ${expenseData.type}");
 
         setState(() {});
       }

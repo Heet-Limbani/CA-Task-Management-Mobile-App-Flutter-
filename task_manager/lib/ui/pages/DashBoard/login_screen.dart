@@ -511,7 +511,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
     if (genmodel != null) {
-      print('Status: ${genmodel?.message}');
+     // print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
       if (genmodel?.status == true) {
         Get.off(() => HomeAdminScreen());
@@ -628,7 +628,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
     if (genmodel != null) {
-      print('Status: ${genmodel?.message}');
+     // print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
       if (genmodel?.status == true) {
         Get.off(() => HomeAdminScreen());

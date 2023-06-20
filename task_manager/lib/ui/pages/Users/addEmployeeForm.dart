@@ -1,18 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:task_manager/ui/Theme/colors.dart';
-import 'package:task_manager/ui/pages/Users/employee.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/core/res/color.dart';
+
 
 class AddEmployeeForm extends StatefulWidget {
   const AddEmployeeForm({Key? key}) : super(key: key);
@@ -83,7 +76,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
         },
       );
       if (genmodel != null) {
-        print('Status: ${genmodel.message}');
+       // print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,

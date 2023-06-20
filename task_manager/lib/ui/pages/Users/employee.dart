@@ -1,9 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
@@ -281,7 +278,7 @@ class _EmployeeState extends State<Employee> {
                   final index = clientType.indexOf(user);
                   final srNo = (index + 1).toString();
 
-                  final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
+                  //final createdOnFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
                   // final createdOnDate =
                   //     createdOnFormat.parse(user.createdOn ?? '');
 
