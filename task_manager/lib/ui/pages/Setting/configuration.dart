@@ -223,10 +223,9 @@ class _ConfigurationState extends State<Configuration> {
                   DataColumn(label: Text('Edit')),
                   DataColumn(label: Text('Action')),
                 ],
-                rows: clients?.map((birthday) {
+                rows: clients.map((birthday) {
                   final index =
-                      clients?.indexOf(birthday) ??
-                          -1;
+                      clients.indexOf(birthday);
                   final srNo = (index + 1).toString();
                   final userId = birthday.id;
                   final meta = birthday.meta;
@@ -281,8 +280,7 @@ class _ConfigurationState extends State<Configuration> {
                       ),
                   ),
                   ]);
-                }).toList() ??
-                    [],
+                }).toList(),
                 dataRowHeight: 113.0,
               ),
             ],
