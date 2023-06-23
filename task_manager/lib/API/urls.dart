@@ -11,13 +11,15 @@ class Urls {
   static String adminDashBoard = "${Urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${Urls.baseUrlMain}ClientLogData_Dashboard";
   static String clientLogAdd = "${Urls.baseUrlMain}AddClientLog";
-  static String paymentMethod="${Urls.baseUrlMain}PaymentMethod";
+  static String paymentMethod = "${Urls.baseUrlMain}PaymentMethod";
   static String getUsers = "${Urls.baseUrlMain}GetUsers";
-  static String addPaymentMethod="${Urls.baseUrlMain}AddPaymentMethod";
-  static String editPaymentMethod="${Urls.baseUrlMain}EditPaymentMethod";
-  static String deletePaymentMethod="${Urls.baseUrlMain}DeletePaymentMethod";
-  static String configurationNotification="${Urls.baseUrlMain}NotificationConfig";
-  static String configurationNotificationEdit="${Urls.baseUrlMain}EditNotificationConfig";
+  static String addPaymentMethod = "${Urls.baseUrlMain}AddPaymentMethod";
+  static String editPaymentMethod = "${Urls.baseUrlMain}EditPaymentMethod";
+  static String deletePaymentMethod = "${Urls.baseUrlMain}DeletePaymentMethod";
+  static String configurationNotification =
+      "${Urls.baseUrlMain}NotificationConfig";
+  static String configurationNotificationEdit =
+      "${Urls.baseUrlMain}EditNotificationConfig";
   static String addEmployee = "${Urls.baseUrlMain}Add_Employee";
   static String deleteEmployee = "${Urls.baseUrlMain}Delete_Employee";
   static String updateEmployeePassword =
@@ -31,8 +33,8 @@ class Urls {
   static String editExpences = "${Urls.baseUrlMain}EditExpences";
   static String deleteExpences = "${Urls.baseUrlMain}DeleteExpences";
   static String addExpences = "${Urls.baseUrlMain}AddExpences";
-
-
+  static String clientViewLogDetails = "${Urls.baseUrlMain}ClientLogData";
+  static String clientViewLogDetailsEdit = "${Urls.baseUrlMain}EditClientLog";
 
   static String profileEmail = "";
   static String profileUserName = "";
@@ -46,7 +48,6 @@ class Urls {
   static String adminType = "0";
   static String employeeType = "1";
   static String clientType = "2";
-
 
   static Future<Map<String, String>> getXTokenHeader() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -63,12 +64,12 @@ class Urls {
     profileFirstName = firstName ?? "";
     String? lastName = prefs.getString('lastname');
     profileLastName = lastName ?? "";
-     String? password = prefs.getString('password');
-    profilePassword = password ?? "" ;
-     String? sessionTime = prefs.getString('sessiontime');
-    profileSessionTime = sessionTime ?? "" ;
-     String? avatar = prefs.getString('avatar');
-    profileAvatar = avatar ?? "" ;
+    String? password = prefs.getString('password');
+    profilePassword = password ?? "";
+    String? sessionTime = prefs.getString('sessiontime');
+    profileSessionTime = sessionTime ?? "";
+    String? avatar = prefs.getString('avatar');
+    profileAvatar = avatar ?? "";
 
     if (xtoken != null && xtoken.isNotEmpty) {
       return {'Xtoken': xtoken};

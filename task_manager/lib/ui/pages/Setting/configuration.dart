@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../API/model/genModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
-import 'package:task_manager/API/urls.dart' as url;
+import 'package:task_manager/API/Urls.dart' as url;
 import 'package:task_manager/API/model/configurationNotificationModel.dart';
 
 class Configuration extends StatefulWidget {

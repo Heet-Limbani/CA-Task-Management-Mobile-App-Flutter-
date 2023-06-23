@@ -90,7 +90,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     messageController.clear();
     descriptionController.clear();
     dateController.clear();
-    
   }
 
   List<Client> clients = [];
@@ -101,7 +100,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
-
+    print("row per page $rowsPerPage");
     dataModel = await Urls.postApiCall(
       method: '${Urls.clientLog}',
       params: {
@@ -124,6 +123,17 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         totalCount = 0;
       }
     }
+  }
+
+  void refreshTable() {
+    // Perform the refresh operation here
+    // For example, you can update the table data or reset the search/filter criteria
+    setState(() {
+      // Update the necessary variables or perform any other actions to refresh the table
+      // For example, you can reset the startIndex and call setNextView() again
+      _source.startIndex = 0;
+      _source.setNextView();
+    });
   }
 
   void handlePageChange(int pageIndex, genModel? model) async {
@@ -660,7 +670,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 onPressed: () {
                   clientTable();
                   if (_formKey.currentState!.validate()) {
-                     FocusScope.of(context).unfocus();
+                    FocusScope.of(context).unfocus();
 
                     clientLogAdd();
 
@@ -696,6 +706,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
+           
           ],
         ),
         SizedBox(
@@ -711,7 +722,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 child: TextField(
                   controller: _searchController,
                   decoration: const InputDecoration(
-                    labelText: 'Search by Client Name',
+                    labelText: 'Search by User Name',
                   ),
                   onSubmitted: (vlaue) {
                     _source.filterServerSide(_searchController.text);
@@ -725,6 +736,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   _searchController.text = '';
                 });
                 _source.filterServerSide(_searchController.text);
+                ;
               },
               icon: const Icon(Icons.clear),
             ),
@@ -732,11 +744,16 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               onPressed: () => _source.filterServerSide(_searchController.text),
               icon: const Icon(Icons.search),
             ),
+            IconButton(
+              icon: Icon(Icons.refresh,),
+              onPressed: refreshTable,
+            ),
           ],
         ),
         SizedBox(
           height: deviceHeight * 0.02,
         ),
+
         AdvancedPaginatedDataTable(
           addEmptyRows: false,
           source: _source,
@@ -745,7 +762,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           sortColumnIndex: _sortIndex,
           showFirstLastButtons: true,
           rowsPerPage: _rowsPerPage,
-          availableRowsPerPage: const [10],
+          availableRowsPerPage: const [10, 20, 50, 100, 200],
+
           onRowsPerPageChanged: (newRowsPerPage) {
             if (newRowsPerPage != null) {
               setState(() {
@@ -781,6 +799,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             ),
           ],
           //Optianl override to support custom data row text / translation
+
           getFooterRowText:
               (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
             final localizations = MaterialLocalizations.of(context);
@@ -851,6 +870,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 }
               : null,
         ),
+
         SizedBox(
           height: deviceHeight * 0.1,
         ),
@@ -1152,6 +1172,10 @@ class ClientSource extends AdvancedDataTableSource<Client> {
     setNextView();
   }
 
+  void refresh() {
+    setNextView();
+  }
+
   @override
   Future<RemoteDataSourceDetails<Client>> getNextPage(
     NextPageRequest pageRequest,
@@ -1160,6 +1184,7 @@ class ClientSource extends AdvancedDataTableSource<Client> {
     final queryParameter = <String, dynamic>{
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+      'limit': pageRequest.pageSize.toString(),
     };
 
     genModel? dataModel = await Urls.postApiCall(
