@@ -3,20 +3,18 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/clientLogDataModel.dart';
+import 'package:task_manager/API/model/clientTicketDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/logModel.dart';
 import 'package:task_manager/ui/pages/Users/editClientForm.dart';
-import 'package:task_manager/ui/pages/Users/editLogClient.dart';
 import '../DashBoard/sidebarAdmin.dart';
 
-class ClientLogDetails extends StatefulWidget {
+class ClientTicketDetails extends StatefulWidget {
   final String userId;
-  const ClientLogDetails({required this.userId, Key? key}) : super(key: key);
+  const ClientTicketDetails({required this.userId, Key? key}) : super(key: key);
   @override
-  State<ClientLogDetails> createState() => _ClientLogDetailsState();
+  State<ClientTicketDetails> createState() => _ClientTicketDetailsState();
 }
 
 String userId = '';
@@ -32,7 +30,7 @@ var _customFooter = false;
 var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 TextEditingController _searchController = TextEditingController();
 
-class _ClientLogDetailsState extends State<ClientLogDetails> {
+class _ClientTicketDetailsState extends State<ClientTicketDetails> {
   @override
   void initState() {
     super.initState();
@@ -49,7 +47,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Users > Client > viewClient > Log",
+          "Menu > Users > Client > viewClient > Ticket",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -94,7 +92,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                 height: deviceHeight * 0.04,
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
                 SizedBox(
@@ -118,7 +116,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Client Log Details",
+          "Client Ticket Details",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -209,7 +207,11 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
             //   onSort: setSort,
             // ),
             DataColumn(
-              label: const Text('Message'),
+              label: const Text('Name'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Starting Date'),
               onSort: setSort,
             ),
             DataColumn(
@@ -217,19 +219,11 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Date'),
+              label: const Text('Amount'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Created On'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Edit'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Delete'),
+              label: const Text('Status'),
               onSort: setSort,
             ),
           ],
@@ -393,7 +387,7 @@ class ClientDataSource extends DataTableSource {
 ///////
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class ClientSource extends AdvancedDataTableSource<Client> {
+class ClientSource extends AdvancedDataTableSource<Ticket> {
   final BuildContext context; // Add the context parameter
   ClientSource(this.context);
 
@@ -401,179 +395,44 @@ class ClientSource extends AdvancedDataTableSource<Client> {
   String lastSearchTerm = '';
 
   int startIndex = 0; // Add the startIndex variable
-  void deleteUser(String? clientId) async {
-    if (clientId != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.clientViewLogDetailsEdit}',
-        params: {'id': clientId, 'delete': "delete"},
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: "${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
-    }
-  }
-
-  void updateUserPassword(String? clientId, String message, String description, String date ) async {
-    if (clientId != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.clientViewLogDetailsEdit}',
-        params: {'id': clientId, 'message': message, 'description': description, 'date': date, 'save': "save"},
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: " ${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
-    }
-  }
 
   @override
   DataRow? getRow(int index) {
     final int srNo = startIndex + index + 1;
-    final log = lastDetails!.rows[index];
-    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(log.onDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    //print("parsedDate $parsedDate");
+    final ticket = lastDetails!.rows[index];
+
+    String statusText = '';
+    if (ticket.status == "0") {
+      statusText = "Unassigned";
+    } else if (ticket.status == "1") {
+      statusText = "Inactive";
+    } else if (ticket.status == "2") {
+      statusText = "In Progress";
+    } else if (ticket.status == "3") {
+      statusText = "Query Raised";
+    } else if (ticket.status == "4") {
+      statusText = "Completed";
+    } else if (ticket.status == "5") {
+      statusText = "Completed & Reviewed";
+    } else if (ticket.status == "6") {
+      statusText = "Invoice Raised";
+    } else if (ticket.status == "7") {
+      statusText = "Paid";
+    }
 
     return DataRow(
       cells: [
         DataCell(Text(srNo.toString())),
         //DataCell(Text(client.client ?? "")),
-        DataCell(Text(log.message ?? "")),
-        DataCell(Text(log.description ?? "")),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(log.createdOn ?? "")),
-        DataCell(
-          IconButton(
-            onPressed: () {
-              Get.to(EditLogClient(logId: log.id!));
-              // showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) {
-              //     String message = '';
-              //     String dateValue = '';
-              //     String description = ''; // Store the entered new password
-
-              //     ''; // Store the entered confirm password
-              //     return AlertDialog(
-              //       title: Text('Update Log'),
-              //       content: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           TextField(
-              //             onChanged: (value) {
-              //               message = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Message',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onChanged: (value) {
-              //               description = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Description',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onTap: () async {
-              //               DateTime? pickedDate = await showDatePicker(
-              //                 context: context,
-              //                 initialDate: selectedDateTime ?? DateTime.now(),
-              //                 firstDate: DateTime(2000),
-              //                 lastDate: DateTime(3000),
-              //               );
-              //               if (pickedDate != null) {
-              //                 // setState(() {
-              //                   selectedDateTime = DateTime(
-              //                     pickedDate.year,
-              //                     pickedDate.month,
-              //                     pickedDate.day,
-              //                   );
-              //                   date = DateFormat('yyyy-MM-dd')
-              //                       .format(selectedDateTime!);
-              //                   dateValue = date;
-              //                // },);
-              //               }
-              //             },
-              //             onSubmitted: (value) {
-              //               //setState(() {
-              //                 dateValue = value;
-              //               //});
-              //             },
-              //             onChanged: (value) {
-              //              // setState(() {
-              //                 dateValue = value;
-              //               //});
-              //             },
-              //             // onChanged: (value) {
-              //             //   dateValue = value;
-              //             // },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Date',
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       actions: [
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //           },
-              //           child: Text('Cancel'),
-              //         ),
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //             if (message.isNotEmpty &&
-              //                 description.isNotEmpty &&
-              //                 dateValue.isNotEmpty) {
-              //               updateUserPassword(log.id, message, description,
-              //                   dateValue);
-              //             } else {
-              //               Fluttertoast.showToast(
-              //                 msg: "Passwords do not match.",
-              //                 toastLength: Toast.LENGTH_SHORT,
-              //                 gravity: ToastGravity.BOTTOM,
-              //                 timeInSecForIosWeb: 1,
-              //               );
-              //             }
-              //           },
-              //           child: Text('Reset'),
-              //         ),
-              //       ],
-              //     );
-              //   },
-              // );
-            },
-            icon: Icon(Icons.edit),
-          ),
-        ),
-        DataCell(IconButton(
-          onPressed: () {
-            deleteUser(log.id!);
-          },
-          icon: Icon(Icons.delete),
-        )),
+        DataCell(Text(ticket.title ?? "")),
+        DataCell(Text(ticket.startingDate ?? "")),
+        DataCell(Text(ticket.description ?? "")),
+        DataCell(Text(ticket.amount ?? "")),
+        DataCell(Text(statusText)),
       ],
-      selected: selectedIds.contains(log.id),
+      selected: selectedIds.contains(ticket.ticketId),
       onSelectChanged: (value) {
-        selectedRow(log.id.toString(), value ?? false);
+        selectedRow(ticket.ticketId.toString(), value ?? false);
       },
     );
   }
@@ -600,7 +459,7 @@ class ClientSource extends AdvancedDataTableSource<Client> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Client>> getNextPage(
+  Future<RemoteDataSourceDetails<Ticket>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -612,7 +471,7 @@ class ClientSource extends AdvancedDataTableSource<Client> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientViewLogDetails}',
+      method: '${Urls.clientViewTicketDetails}',
       params: queryParameter,
     );
 
@@ -622,14 +481,14 @@ class ClientSource extends AdvancedDataTableSource<Client> {
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData
-            .map<Client>(
-              (item) => Client.fromJson(item as Map<String, dynamic>),
+            .map<Ticket>(
+              (item) => Ticket.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<Client>(
-                  (item) => Client.fromJson(item as Map<String, dynamic>),
+                .map<Ticket>(
+                  (item) => Ticket.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

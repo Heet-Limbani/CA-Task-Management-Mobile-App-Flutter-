@@ -35,6 +35,10 @@ class Urls {
   static String addExpences = "${Urls.baseUrlMain}AddExpences";
   static String clientViewLogDetails = "${Urls.baseUrlMain}ClientLogData";
   static String clientViewLogDetailsEdit = "${Urls.baseUrlMain}EditClientLog";
+  static String clientViewLoginDetails = "${Urls.baseUrlMain}ClientLoginData";
+  static String clientViewTicketDetails = "${Urls.baseUrlMain}LoadClientTicketDetail";
+  static String clientViewInvoiceDetails = "${Urls.baseUrlMain}LoadInvoiceList";
+  
 
   static String profileEmail = "";
   static String profileUserName = "";

@@ -5,18 +5,17 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/clientLogDataModel.dart';
+import 'package:task_manager/API/model/clientLoginDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/logModel.dart';
 import 'package:task_manager/ui/pages/Users/editClientForm.dart';
-import 'package:task_manager/ui/pages/Users/editLogClient.dart';
 import '../DashBoard/sidebarAdmin.dart';
 
-class ClientLogDetails extends StatefulWidget {
+class ClientLoginDetails extends StatefulWidget {
   final String userId;
-  const ClientLogDetails({required this.userId, Key? key}) : super(key: key);
+  const ClientLoginDetails({required this.userId, Key? key}) : super(key: key);
   @override
-  State<ClientLogDetails> createState() => _ClientLogDetailsState();
+  State<ClientLoginDetails> createState() => _ClientLoginDetailsState();
 }
 
 String userId = '';
@@ -32,7 +31,7 @@ var _customFooter = false;
 var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 TextEditingController _searchController = TextEditingController();
 
-class _ClientLogDetailsState extends State<ClientLogDetails> {
+class _ClientLoginDetailsState extends State<ClientLoginDetails> {
   @override
   void initState() {
     super.initState();
@@ -49,7 +48,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Users > Client > viewClient > Log",
+          "Menu > Users > Client > viewClient > Login",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -118,7 +117,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Client Log Details",
+          "Client Login Details",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -209,27 +208,15 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
             //   onSort: setSort,
             // ),
             DataColumn(
-              label: const Text('Message'),
+              label: const Text('Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Description'),
+              label: const Text('Login'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Created On'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Edit'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Delete'),
+              label: const Text('Logout'),
               onSort: setSort,
             ),
           ],
@@ -393,7 +380,7 @@ class ClientDataSource extends DataTableSource {
 ///////
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class ClientSource extends AdvancedDataTableSource<Client> {
+class ClientSource extends AdvancedDataTableSource<Login> {
   final BuildContext context; // Add the context parameter
   ClientSource(this.context);
 
@@ -401,179 +388,30 @@ class ClientSource extends AdvancedDataTableSource<Client> {
   String lastSearchTerm = '';
 
   int startIndex = 0; // Add the startIndex variable
-  void deleteUser(String? clientId) async {
-    if (clientId != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.clientViewLogDetailsEdit}',
-        params: {'id': clientId, 'delete': "delete"},
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: "${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
-    }
-  }
-
-  void updateUserPassword(String? clientId, String message, String description, String date ) async {
-    if (clientId != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.clientViewLogDetailsEdit}',
-        params: {'id': clientId, 'message': message, 'description': description, 'date': date, 'save': "save"},
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: " ${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
-    }
-  }
 
   @override
   DataRow? getRow(int index) {
     final int srNo = startIndex + index + 1;
-    final log = lastDetails!.rows[index];
+    final login = lastDetails!.rows[index];
     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(log.onDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+        int.parse(login.loginTime ?? '0') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd  HH:mm:ss').format(parsedDate);
+    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(login.logoutTime ?? '0') * 1000);
+    final formattedDate1 = DateFormat('yyyy-MM-dd  HH:mm:ss').format(parsedDate1);
     //print("parsedDate $parsedDate");
 
     return DataRow(
       cells: [
         DataCell(Text(srNo.toString())),
         //DataCell(Text(client.client ?? "")),
-        DataCell(Text(log.message ?? "")),
-        DataCell(Text(log.description ?? "")),
+        DataCell(Text(login.userName ?? "")),
         DataCell(Text(formattedDate)),
-        DataCell(Text(log.createdOn ?? "")),
-        DataCell(
-          IconButton(
-            onPressed: () {
-              Get.to(EditLogClient(logId: log.id!));
-              // showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) {
-              //     String message = '';
-              //     String dateValue = '';
-              //     String description = ''; // Store the entered new password
-
-              //     ''; // Store the entered confirm password
-              //     return AlertDialog(
-              //       title: Text('Update Log'),
-              //       content: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           TextField(
-              //             onChanged: (value) {
-              //               message = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Message',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onChanged: (value) {
-              //               description = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Description',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onTap: () async {
-              //               DateTime? pickedDate = await showDatePicker(
-              //                 context: context,
-              //                 initialDate: selectedDateTime ?? DateTime.now(),
-              //                 firstDate: DateTime(2000),
-              //                 lastDate: DateTime(3000),
-              //               );
-              //               if (pickedDate != null) {
-              //                 // setState(() {
-              //                   selectedDateTime = DateTime(
-              //                     pickedDate.year,
-              //                     pickedDate.month,
-              //                     pickedDate.day,
-              //                   );
-              //                   date = DateFormat('yyyy-MM-dd')
-              //                       .format(selectedDateTime!);
-              //                   dateValue = date;
-              //                // },);
-              //               }
-              //             },
-              //             onSubmitted: (value) {
-              //               //setState(() {
-              //                 dateValue = value;
-              //               //});
-              //             },
-              //             onChanged: (value) {
-              //              // setState(() {
-              //                 dateValue = value;
-              //               //});
-              //             },
-              //             // onChanged: (value) {
-              //             //   dateValue = value;
-              //             // },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Date',
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       actions: [
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //           },
-              //           child: Text('Cancel'),
-              //         ),
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //             if (message.isNotEmpty &&
-              //                 description.isNotEmpty &&
-              //                 dateValue.isNotEmpty) {
-              //               updateUserPassword(log.id, message, description,
-              //                   dateValue);
-              //             } else {
-              //               Fluttertoast.showToast(
-              //                 msg: "Passwords do not match.",
-              //                 toastLength: Toast.LENGTH_SHORT,
-              //                 gravity: ToastGravity.BOTTOM,
-              //                 timeInSecForIosWeb: 1,
-              //               );
-              //             }
-              //           },
-              //           child: Text('Reset'),
-              //         ),
-              //       ],
-              //     );
-              //   },
-              // );
-            },
-            icon: Icon(Icons.edit),
-          ),
-        ),
-        DataCell(IconButton(
-          onPressed: () {
-            deleteUser(log.id!);
-          },
-          icon: Icon(Icons.delete),
-        )),
+        DataCell(Text(formattedDate1)),
       ],
-      selected: selectedIds.contains(log.id),
+      selected: selectedIds.contains(login.id),
       onSelectChanged: (value) {
-        selectedRow(log.id.toString(), value ?? false);
+        selectedRow(login.id.toString(), value ?? false);
       },
     );
   }
@@ -600,7 +438,7 @@ class ClientSource extends AdvancedDataTableSource<Client> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<Client>> getNextPage(
+  Future<RemoteDataSourceDetails<Login>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -612,7 +450,7 @@ class ClientSource extends AdvancedDataTableSource<Client> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientViewLogDetails}',
+      method: '${Urls.clientViewLoginDetails}',
       params: queryParameter,
     );
 
@@ -622,14 +460,14 @@ class ClientSource extends AdvancedDataTableSource<Client> {
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData
-            .map<Client>(
-              (item) => Client.fromJson(item as Map<String, dynamic>),
+            .map<Login>(
+              (item) => Login.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<Client>(
-                  (item) => Client.fromJson(item as Map<String, dynamic>),
+                .map<Login>(
+                  (item) => Login.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

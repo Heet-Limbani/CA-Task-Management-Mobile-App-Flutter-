@@ -140,16 +140,16 @@ class _EditLogClientState extends State<EditLogClient> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: deviceHeight * 0.01,
                 ),
                 _form(),
-                const SizedBox(
-                  height: 100,
+                SizedBox(
+                  height: deviceHeight * 0.1,
                 ),
               ],
             ),
