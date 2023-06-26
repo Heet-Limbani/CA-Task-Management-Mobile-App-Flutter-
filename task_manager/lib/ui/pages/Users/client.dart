@@ -634,6 +634,7 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
       'limit': pageRequest.pageSize.toString(),
+       'type': Urls.clientType,
     };
 
     genModel? dataModel = await Urls.postApiCall(

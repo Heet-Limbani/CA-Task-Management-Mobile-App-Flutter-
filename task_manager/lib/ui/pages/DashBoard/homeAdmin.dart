@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:task_manager/API/model/cardDataModel.dart';
 import 'package:task_manager/API/model/clientDataModel.dart';
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
+//import 'package:task_manager/API/model/pendingTasksDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
@@ -83,6 +85,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     clientTable();
     clientData();
     getUser();
+    fetchCardData();
   }
 
   void clear() {
@@ -97,6 +100,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int rowsPerPage = 10;
   int totalCount = 0;
   genModel? dataModel;
+  bool showTable = false;
 
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
@@ -172,6 +176,26 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     }
   }
 
+  CardData? cardData;
+
+  Future<void> fetchCardData() async {
+    genModel? genmodel =
+        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+      cardData = CardData.fromJson(data);
+      // Print the pending items
+      if (cardData?.cardData?.pending != null) {
+        for (Pending pendingItem in cardData!.cardData!.pending!) {
+          print('Pending Ticket ID: ${pendingItem.ticketId}');
+          print('Title: ${pendingItem.title}');
+          print('Status: ${pendingItem.status}');
+          print('----------------------');
+        }
+      }
+    }
+  }
+
   BirthDayList? dataBirthdayList;
 
   void birthDayTable() async {
@@ -180,15 +204,15 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
-        //print('Data: ${genmodel?.data}');
+        // print('Data: ${genmodel.data}');
 
         final data = genmodel.data;
         dataBirthdayList = BirthDayList.fromJson(data);
-        if (dataBirthdayList?.birthday != null) {
-          // for (Birthday birthday in dataBirthdayList!.birthday!) {
-          //   print('BirthDay ID: ${birthday.id}');
-          // }
-        }
+        // if (dataBirthdayList?.birthday != null) {
+        //   for (Birthday birthday in dataBirthdayList!.birthday!) {
+        //     print('BirthDay ID: ${birthday.id}');
+        //   }
+        // }
         setState(() {});
       }
     }
@@ -406,16 +430,74 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 taskGroup: "Today's Task",
               ),
             ),
+            // StaggeredGridTile.count(
+            //   crossAxisCellCount: 1,
+            //   mainAxisCellCount: 1.1,
+            //   child: InkWell(
+            //     onTap: () {
+            //       setState(() {
+            //         showTable =
+            //             !showTable; // Toggle the visibility of the table
+            //       });
+
+            //       // Show snackbar message
+            //       final snackBar = SnackBar(
+            //         content: Text(showTable
+            //             ? "Pending Task is Added to Task List"
+            //             : "Pending Task is Removed from Task List"),
+            //       );
+            //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            //     },
+            //     child: TaskGroupContainer(
+            //       color: Colors.blue,
+            //       icon: Icons.pending_actions,
+            //       taskCount: dataCount?.count?.pendingCount ?? '0',
+            //       taskGroup: "Pending Task",
+            //     ),
+            //   ),
+            // ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1.1,
-              child: TaskGroupContainer(
-                color: Colors.blue,
-                icon: Icons.pending_actions,
-                taskCount: dataCount?.count?.pendingCount ?? '0',
-                taskGroup: "Pending Task",
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    showTable =
+                        !showTable; // Toggle the visibility of the table
+                  });
+
+                  // Show snackbar message
+                  final snackBar = SnackBar(
+                    content: Text(
+                      showTable
+                          ? "Pending Task is Added to Task List"
+                          : "Pending Task is Removed from Task List",
+                    style: TextStyle(color: Colors.black), ),
+                    backgroundColor: Colors.blue,
+                    behavior: SnackBarBehavior.floating,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    action: SnackBarAction(
+                      label: 'Dismiss',
+                      textColor: Colors.white,
+                      onPressed: () {
+                        // Perform any action on snackbar action press (if needed)
+                      },
+                    ),
+                  );
+
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                },
+                child: TaskGroupContainer(
+                  color: Colors.blue,
+                  icon: Icons.pending_actions,
+                  taskCount: dataCount?.count?.pendingCount ?? '0',
+                  taskGroup: "Pending Task",
+                ),
               ),
             ),
+
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1,
@@ -509,7 +591,89 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           ],
         ),
         SizedBox(
-          height: deviceHeight * 0.2,
+          height: deviceHeight * 0.02,
+        ),
+        if (showTable) ...{
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Pending Tasks List",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  // const Spacer(),
+                ],
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              Column(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Task Name'), numeric: true),
+                            DataColumn(label: Text('Ticket Id')),
+                            DataColumn(label: Text('Client Name')),
+                            DataColumn(label: Text('Employee Name')),
+                            DataColumn(label: Text('Deadline')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('Action')),
+                          ],
+                          rows: cardData?.cardData?.pending?.map(
+                                (pending) {
+                                  final taskName = pending.title ?? '';
+                                  final ticketId = pending.ticketId ?? '';
+                                  final clientName = pending.clientName ?? '';
+                                  final employeeName =
+                                      pending.employeeName ?? '';
+                                  final deadline = pending.cdeadlineDate ?? '';
+                                  final status = pending.status ?? '';
+
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(taskName)),
+                                      DataCell(Text(ticketId)),
+                                      DataCell(Text(clientName)),
+                                      DataCell(Text(employeeName)),
+                                      DataCell(Text(deadline)),
+                                      DataCell(Text(status)),
+                                      DataCell(
+                                        IconButton(
+                                          onPressed: () {},
+                                          icon: Icon(
+                                            Icons.remove_red_eye,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          dataRowHeight: 32.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        },
+        SizedBox(
+          height: deviceHeight * 0.1,
         ),
         Row(
           children: [
@@ -706,7 +870,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-           
           ],
         ),
         SizedBox(
@@ -745,7 +908,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               icon: const Icon(Icons.search),
             ),
             IconButton(
-              icon: Icon(Icons.refresh,),
+              icon: Icon(
+                Icons.refresh,
+              ),
               onPressed: refreshTable,
             ),
           ],
@@ -908,7 +1073,78 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //     ),
         //   ],
         // ),
+        Row(
+          children: [
+            Text(
+              "Pending Tasks List",
+              style: TextStyle(
+                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+              ),
+            ),
+            // const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        Column(
+          children: <Widget>[
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  DataTable(
+                    columns: const [
+                      DataColumn(label: Text('Task Name'), numeric: true),
+                      DataColumn(label: Text('Ticket Id')),
+                      DataColumn(label: Text('Client Name')),
+                      DataColumn(label: Text('Employee Name')),
+                      DataColumn(label: Text('Deadline')),
+                      DataColumn(label: Text('Status')),
+                      DataColumn(label: Text('Action')),
+                    ],
+                    rows: cardData?.cardData?.pending?.map(
+                          (pending) {
+                            final taskName = pending.title ?? '';
+                            final ticketId = pending.ticketId ?? '';
+                            final clientName = pending.clientName ?? '';
+                            final employeeName = pending.employeeName ?? '';
+                            final deadline = pending.cdeadlineDate ?? '';
+                            final status = pending.status ?? '';
 
+                            return DataRow(
+                              cells: [
+                                DataCell(Text(taskName)),
+                                DataCell(Text(ticketId)),
+                                DataCell(Text(clientName)),
+                                DataCell(Text(employeeName)),
+                                DataCell(Text(deadline)),
+                                DataCell(Text(status)),
+                                DataCell(
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: Icon(
+                                      Icons.remove_red_eye,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ).toList() ??
+                        [],
+                    dataRowHeight: 32.0,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.1,
+        ),
         Row(
           children: [
             Text(
