@@ -3,15 +3,16 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/cardDataModel.dart';
 import 'package:task_manager/API/model/clientDataModel.dart';
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
-//import 'package:task_manager/API/model/pendingTasksDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/DashBoard/viewPendingTask.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/clientLogDataModel.dart';
@@ -100,7 +101,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int rowsPerPage = 10;
   int totalCount = 0;
   genModel? dataModel;
-  bool showTable = false;
+  bool showTablePending = false;
+  bool showTableOverdue = false;
 
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
@@ -184,18 +186,18 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       cardData = CardData.fromJson(data);
-      // Print the pending items
-      if (cardData?.cardData?.pending != null) {
-        for (Pending pendingItem in cardData!.cardData!.pending!) {
-          print('Pending Ticket ID: ${pendingItem.ticketId}');
-          print('Title: ${pendingItem.title}');
-          print('Status: ${pendingItem.status}');
-          print('----------------------');
-        }
-      }
     }
   }
 
+  // Print the pending items
+  // if (cardData?.cardData?.pending != null) {
+  //   for (Pending pendingItem in cardData!.cardData!.pending!) {
+  //     print('Pending Ticket ID: ${pendingItem.ticketId}');
+  //     print('Title: ${pendingItem.title}');
+  //     print('Status: ${pendingItem.status}');
+  //     print('----------------------');
+  //   }
+  // }
   BirthDayList? dataBirthdayList;
 
   void birthDayTable() async {
@@ -423,71 +425,118 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             StaggeredGridTile.count(
               crossAxisCellCount: 2,
               mainAxisCellCount: 1.1,
-              child: TaskGroupContainer(
-                color: Colors.purple,
-                icon: Icons.today_rounded,
-                taskCount: dataCount?.count?.tasksCount ?? '0',
-                taskGroup: "Today's Task",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.tasksCount ?? '0') != 0) {
+                    // setState(() {
+                    //   showTablePending =
+                    //       !showTablePending; // Toggle the visibility of the table
+                    // });
+                    final snackBar = SnackBar(
+                      content: Text(
+                        showTablePending
+                            ? "Today's Task Added to Task List"
+                            : "Today's Task Removed from Task List",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.purple,
+                  icon: Icons.today_rounded,
+                  taskCount: dataCount?.count?.tasksCount ?? '0',
+                  taskGroup: "Today's Task",
+                ),
               ),
             ),
-            // StaggeredGridTile.count(
-            //   crossAxisCellCount: 1,
-            //   mainAxisCellCount: 1.1,
-            //   child: InkWell(
-            //     onTap: () {
-            //       setState(() {
-            //         showTable =
-            //             !showTable; // Toggle the visibility of the table
-            //       });
-
-            //       // Show snackbar message
-            //       final snackBar = SnackBar(
-            //         content: Text(showTable
-            //             ? "Pending Task is Added to Task List"
-            //             : "Pending Task is Removed from Task List"),
-            //       );
-            //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            //     },
-            //     child: TaskGroupContainer(
-            //       color: Colors.blue,
-            //       icon: Icons.pending_actions,
-            //       taskCount: dataCount?.count?.pendingCount ?? '0',
-            //       taskGroup: "Pending Task",
-            //     ),
-            //   ),
-            // ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1.1,
               child: InkWell(
                 onTap: () {
-                  setState(() {
-                    showTable =
-                        !showTable; // Toggle the visibility of the table
-                  });
-
-                  // Show snackbar message
-                  final snackBar = SnackBar(
-                    content: Text(
-                      showTable
-                          ? "Pending Task is Added to Task List"
-                          : "Pending Task is Removed from Task List",
-                    style: TextStyle(color: Colors.black), ),
-                    backgroundColor: Colors.blue,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                    action: SnackBarAction(
-                      label: 'Dismiss',
-                      textColor: Colors.white,
-                      onPressed: () {
-                        // Perform any action on snackbar action press (if needed)
-                      },
-                    ),
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  if ((dataCount?.count?.pendingCount ?? '0') != 0) {
+                    setState(() {
+                      showTablePending =
+                          !showTablePending; // Toggle the visibility of the table
+                    });
+                    final snackBar = SnackBar(
+                      content: Text(
+                        showTablePending
+                            ? "Pending Task Added to Task List"
+                            : "Pending Task Removed from Task List",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
                 },
                 child: TaskGroupContainer(
                   color: Colors.blue,
@@ -497,69 +546,305 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 ),
               ),
             ),
-
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1,
-              child: TaskGroupContainer(
-                color: Colors.orange,
-                isSmall: true,
-                icon: Icons.attach_money,
-                taskCount: dataCount?.count?.taxPayableCount ?? '0',
-                taskGroup: "Tax Payable",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.taxPayableCount ?? '0') != 0) {
+                    // setState(() {
+                    //   showTablePending =
+                    //       !showTablePending; // Toggle the visibility of the table
+                    // });
+                    final snackBar = SnackBar(
+                      content: Text(
+                        showTablePending
+                            ? "Pending Task Added to Task List"
+                            : "Pending Task Removed from Task List",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.orange,
+                  isSmall: true,
+                  icon: Icons.attach_money,
+                  taskCount: dataCount?.count?.taxPayableCount ?? '0',
+                  taskGroup: "Tax Payable",
+                ),
               ),
             ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1.2,
-              child: TaskGroupContainer(
-                color: Colors.red,
-                icon: Icons.watch_later_outlined,
-                taskCount: dataCount?.count?.totalOverdueTaskCount ?? '0',
-                taskGroup: "Overdue Task",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.totalOverdueTaskCount ?? '0') != 0) {
+                    setState(() {
+                      showTableOverdue =
+                          !showTableOverdue; // Toggle the visibility of the table
+                    });
+                    final snackBar = SnackBar(
+                      content: Text(
+                        showTablePending
+                            ? "Overdue Task Added to Task List"
+                            : "Overdue Task Removed from Task List",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.red,
+                  icon: Icons.watch_later_outlined,
+                  taskCount: dataCount?.count?.totalOverdueTaskCount ?? '0',
+                  taskGroup: "Overdue Task",
+                ),
               ),
             ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1,
-              child: TaskGroupContainer(
-                color: Colors.green,
-                isSmall: true,
-                icon: Icons.live_help_rounded,
-                taskCount: dataCount?.count?.totalQueryRaisedCount ?? '0',
-                taskGroup: "Query Raised",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.totalQueryRaisedCount ?? '0') != 0) {
+                    // setState(() {
+                    //   showTablePending =
+                    //       !showTablePending; // Toggle the visibility of the table
+                    // });
+                    final snackBar = SnackBar(
+                      content: Text(
+                        showTablePending
+                            ? "Pending Task Added to Task List"
+                            : "Pending Task Removed from Task List",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.green,
+                  isSmall: true,
+                  icon: Icons.live_help_rounded,
+                  taskCount: dataCount?.count?.totalQueryRaisedCount ?? '0',
+                  taskGroup: "Query Raised",
+                ),
               ),
             ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1.2,
-              child: TaskGroupContainer(
-                color: Colors.pink,
-                icon: Icons.keyboard,
-                taskCount: dataCount?.count?.totalOnBoardCount ?? '0',
-                taskGroup: "On Board Task",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.totalOnBoardCount ?? '0') != 0) {
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.pink,
+                  icon: Icons.keyboard,
+                  taskCount: dataCount?.count?.totalOnBoardCount ?? '0',
+                  taskGroup: "On Board Task",
+                ),
               ),
             ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1.05,
-              child: TaskGroupContainer(
-                color: Colors.blue,
-                isSmall: true,
-                icon: Icons.punch_clock,
-                taskCount: dataCount?.count?.unassignedTaskCount ?? '0',
-                taskGroup: "UnAssign Work",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.unassignedTaskCount ?? '0') != 0) {
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.blue,
+                  isSmall: true,
+                  icon: Icons.punch_clock,
+                  taskCount: dataCount?.count?.unassignedTaskCount ?? '0',
+                  taskGroup: "UnAssign Work",
+                ),
               ),
             ),
             StaggeredGridTile.count(
               crossAxisCellCount: 1,
               mainAxisCellCount: 1,
-              child: TaskGroupContainer(
-                color: Colors.orange,
-                isSmall: true,
-                icon: Icons.money_off_outlined,
-                taskCount: dataCount?.count?.unpaidTaskBoardCount ?? '0',
-                taskGroup: "UnPaid Tax",
+              child: InkWell(
+                onTap: () {
+                  if ((dataCount?.count?.unpaidTaskBoardCount ?? '0') != 0) {
+                  } else {
+                    // Show a message when no tasks are found
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {
+                          // Perform any action on snackbar action press (if needed)
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.orange,
+                  isSmall: true,
+                  icon: Icons.money_off_outlined,
+                  taskCount: dataCount?.count?.unpaidTaskBoardCount ?? '0',
+                  taskGroup: "UnPaid Tax",
+                ),
               ),
             ),
           ],
@@ -578,22 +863,22 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            InkWell(
-              onTap: () {},
-              child: Text(
-                "See all",
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            )
+            // InkWell(
+            //   onTap: () {},
+            //   child: Text(
+            //     "See all",
+            //     style: TextStyle(
+            //       color: AppColors.primaryColor,
+            //       fontWeight: FontWeight.w500,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
         SizedBox(
-          height: deviceHeight * 0.02,
+          height: deviceHeight * 0.05,
         ),
-        if (showTable) ...{
+        if (showTablePending) ...{
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -602,7 +887,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               Row(
                 children: [
                   Text(
-                    "Pending Tasks List",
+                    "Pending Tasks",
                     style: TextStyle(
                       color: Colors.grey,
                       fontWeight: FontWeight.w700,
@@ -629,9 +914,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                             DataColumn(label: Text('Employee Name')),
                             DataColumn(label: Text('Deadline')),
                             DataColumn(label: Text('Status')),
-                            DataColumn(label: Text('Action')),
+                            DataColumn(label: Text('View')),
                           ],
-                          rows: cardData?.cardData?.pending?.map(
+                          rows: cardData?.cardData?.pending1?.map(
                                 (pending) {
                                   final taskName = pending.title ?? '';
                                   final ticketId = pending.ticketId ?? '';
@@ -639,7 +924,25 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                   final employeeName =
                                       pending.employeeName ?? '';
                                   final deadline = pending.cdeadlineDate ?? '';
-                                  final status = pending.status ?? '';
+
+                                  String statusText = '';
+                                  if (pending.status == "0") {
+                                    statusText = "Unassigned";
+                                  } else if (pending.status == "1") {
+                                    statusText = "0%";
+                                  } else if (pending.status == "2") {
+                                    statusText = "In Progress";
+                                  } else if (pending.status == "3") {
+                                    statusText = "Query Raised";
+                                  } else if (pending.status == "4") {
+                                    statusText = "Closed";
+                                  } else if (pending.status == "5") {
+                                    statusText = "Completed & Reviewed";
+                                  } else if (pending.status == "6") {
+                                    statusText = "Invoice Raised";
+                                  } else if (pending.status == "7") {
+                                    statusText = "Paid";
+                                  }
 
                                   return DataRow(
                                     cells: [
@@ -648,10 +951,120 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                       DataCell(Text(clientName)),
                                       DataCell(Text(employeeName)),
                                       DataCell(Text(deadline)),
-                                      DataCell(Text(status)),
+                                      DataCell(Text(statusText)),
                                       DataCell(
                                         IconButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Get.to(
+                                              ViewPendingTask(
+                                                  ticketId: pending.ticketId!),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          dataRowHeight: 32.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        },
+        SizedBox(
+          height: deviceHeight * 0.05,
+        ),
+        if (showTableOverdue) ...{
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Overdue Tasks",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  // const Spacer(),
+                ],
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              Column(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Task Name'), numeric: true),
+                            DataColumn(label: Text('Ticket Id')),
+                            DataColumn(label: Text('Client Name')),
+                            DataColumn(label: Text('Employee Name')),
+                            DataColumn(label: Text('Deadline')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('View')),
+                          ],
+                          rows: cardData?.cardData?.overdue?.map(
+                                (overdue) {
+                                  final taskName = overdue.title ?? '';
+                                  final ticketId = overdue.ticketId ?? '';
+                                  final clientName = overdue.clientName ?? '';
+                                  final employeeName =
+                                      overdue.employeeName ?? '';
+                                  final deadline = overdue.cdeadlineDate ?? '';
+
+                                  String statusText = '';
+                                  if (overdue.status == "0") {
+                                    statusText = "Unassigned";
+                                  } else if (overdue.status == "1") {
+                                    statusText = "0%";
+                                  } else if (overdue.status == "2") {
+                                    statusText = "In Progress";
+                                  } else if (overdue.status == "3") {
+                                    statusText = "Query Raised";
+                                  } else if (overdue.status == "4") {
+                                    statusText = "Closed";
+                                  } else if (overdue.status == "5") {
+                                    statusText = "Completed & Reviewed";
+                                  } else if (overdue.status == "6") {
+                                    statusText = "Invoice Raised";
+                                  } else if (overdue.status == "7") {
+                                    statusText = "Paid";
+                                  }
+
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(taskName)),
+                                      DataCell(Text(ticketId)),
+                                      DataCell(Text(clientName)),
+                                      DataCell(Text(employeeName)),
+                                      DataCell(Text(deadline)),
+                                      DataCell(Text(statusText)),
+                                      DataCell(
+                                        IconButton(
+                                          onPressed: () {
+                                            Get.to(
+                                              ViewPendingTask(
+                                                  ticketId: overdue.ticketId!),
+                                            );
+                                          },
                                           icon: Icon(
                                             Icons.remove_red_eye,
                                           ),
@@ -1073,78 +1486,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //     ),
         //   ],
         // ),
-        Row(
-          children: [
-            Text(
-              "Pending Tasks List",
-              style: TextStyle(
-                color: Colors.blueGrey[900],
-                fontWeight: FontWeight.w700,
-                fontSize: 22,
-              ),
-            ),
-            // const Spacer(),
-          ],
-        ),
-        SizedBox(
-          height: deviceHeight * 0.02,
-        ),
-        Column(
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Task Name'), numeric: true),
-                      DataColumn(label: Text('Ticket Id')),
-                      DataColumn(label: Text('Client Name')),
-                      DataColumn(label: Text('Employee Name')),
-                      DataColumn(label: Text('Deadline')),
-                      DataColumn(label: Text('Status')),
-                      DataColumn(label: Text('Action')),
-                    ],
-                    rows: cardData?.cardData?.pending?.map(
-                          (pending) {
-                            final taskName = pending.title ?? '';
-                            final ticketId = pending.ticketId ?? '';
-                            final clientName = pending.clientName ?? '';
-                            final employeeName = pending.employeeName ?? '';
-                            final deadline = pending.cdeadlineDate ?? '';
-                            final status = pending.status ?? '';
 
-                            return DataRow(
-                              cells: [
-                                DataCell(Text(taskName)),
-                                DataCell(Text(ticketId)),
-                                DataCell(Text(clientName)),
-                                DataCell(Text(employeeName)),
-                                DataCell(Text(deadline)),
-                                DataCell(Text(status)),
-                                DataCell(
-                                  IconButton(
-                                    onPressed: () {},
-                                    icon: Icon(
-                                      Icons.remove_red_eye,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ).toList() ??
-                        [],
-                    dataRowHeight: 32.0,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: deviceHeight * 0.1,
-        ),
         Row(
           children: [
             Text(
