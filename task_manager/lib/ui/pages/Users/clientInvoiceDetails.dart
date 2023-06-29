@@ -526,3 +526,60 @@ class ClientSource extends AdvancedDataTableSource<Invoice> {
     }
   }
 }
+
+/*
+if($r->status==0){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'> <span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>
+    <a href=". base_url()."Task/Delete_Task/".$r->ticket_id." title='Delete Data' class='btn btn-danger btn-sm'> <span class='glyphicon glyphicon-trash'/></a>";
+    if($r->deadline_date < $today){
+        //$status="Overdue - ".number_format($r->task_complete_percentage,0)."%";
+        $action .="<input type='hidden' value='overdue'>";
+    }
+    $status="Un-assigned";
+    // $status="Open";
+}elseif($r->status==1){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>";
+    if($r->deadline_date < $today){
+        //$status="Overdue - ".number_format($r->task_complete_percentage,0)."%";
+        $action .="<input type='hidden' value='overdue'>";
+    }
+    // $status="Completed - ".number_format($r->task_complete_percentage,0)."%";
+    $status="Open - ".number_format($r->task_complete_percentage,0)."%";
+    // $status="Assigned - ".number_format($r->task_complete_percentage,0)."%";
+}elseif($r->status==2){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>";
+    if($r->deadline_date < $today){
+        $action .="<input type='hidden' value='overdue'>";
+        //$status="Overdue - ".number_format($r->task_complete_percentage,0)."%";
+    }
+    $status="In-progress - ".number_format($r->task_complete_percentage,0)."%";
+}elseif($r->status==3){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>";
+    $status="Query Raised";
+}elseif($r->status==4){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>
+    <a href=". base_url()."Task/reviewtask/".$r->ticket_id." title='Task Reviewed' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-ok'/></a>";
+    // $status="Completed";
+    $status="Closed";
+}elseif($r->status==5){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>
+    <a href=". base_url()."Task/invoice_raised/".$r->ticket_id." title='Raise Invoice' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-list-alt'/></a>";
+    $status="Completed & Reviewed";
+}elseif($r->status==6){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
+    <a href=". base_url()."Payment/task_payment/".$r->ticket_id." title='Task Payment' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-paste'/></a>";
+    $status="Invoice-Raised";
+}elseif($r->status==7){
+    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>";
+    $status="Paid";
+}else{
+    $action = " ";
+    $status = " ";
+}
+*/

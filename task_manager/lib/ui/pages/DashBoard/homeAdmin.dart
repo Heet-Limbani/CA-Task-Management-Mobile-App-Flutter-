@@ -12,6 +12,7 @@ import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/DashBoard/viewPendingTask.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
@@ -740,6 +741,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.totalOnBoardCount ?? '0') != 0) {
+                    Get.to(
+                      TaskOnBoard(),
+                    );
                   } else {
                     // Show a message when no tasks are found
                     final snackBar = SnackBar(

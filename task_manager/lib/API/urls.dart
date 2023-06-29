@@ -39,6 +39,7 @@ class Urls {
   static String clientViewTicketDetails = "${Urls.baseUrlMain}LoadClientTicketDetail";
   static String clientViewInvoiceDetails = "${Urls.baseUrlMain}LoadInvoiceList";
   static String pendingTaskViewTaskDetails = "${Urls.baseUrlMain}ViewTask";
+  static String loadTaskOnboard = "${Urls.baseUrlMain}LoadTaskOnboard";
 
   static String profileEmail = "";
   static String profileUserName = "";
