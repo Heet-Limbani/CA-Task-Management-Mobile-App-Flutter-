@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/Urls.dart' as url;
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 import '../../../API/model/genModel.dart';
 
@@ -11,43 +13,31 @@ class AddPaymentMethod extends StatefulWidget {
 }
 
 class _AddPaymentMethodState extends State<AddPaymentMethod> {
-  TextEditingController nameController=TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
-  Future<void> postData(String input) async {
+  Future<void> postData() async {
     genModel? genmodel =
-    await url.Urls.postApiCall(method: '${url.Urls.addPaymentMethod}',
-    params: {
-      "name":input
+        await url.Urls.postApiCall(method: '${Urls.addPaymentMethod}', params: {
+      "name": nameController.text,
     });
     if (genmodel != null) {
-      //print('Status: ${genmodel.message}');
       if (genmodel.status == true) {
-        //print('Data: ${genmodel?.data}');
-
-        // final data = genmodel.data;
-       // print(input);
-        // dataCount = CountData.fromJson(data);
-        //print('data  ${dataCount?.count?.pendingCount}');
+        Fluttertoast.showToast(
+            msg: genmodel.message!,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.green.shade400,
+            textColor: Colors.white,
+            fontSize: 16.0);
         setState(() {});
       }
     }
   }
 
-  // Future<void> postData(String input) async{
-  //   final response = await http.post(
-  //     Uri.parse('${url.Urls.addPaymentMethod}'),
-  //     body: {
-  //       "name": input
-  //     },
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     final data=jsonDecode(response.body);
-  //     print('API response: $data');
-  //   } else {
-  //     print('Request failed with status: ${response.statusCode}.');
-  //   }
-  // }
+  void clearData() {
+    nameController.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +45,7 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
       appBar: AppBar(
         title: Text(
           "Menu > Settings > Payment Method",
-          style: Theme
-              .of(context)
+          style: Theme.of(context)
               .textTheme
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
@@ -72,20 +61,25 @@ class _AddPaymentMethodState extends State<AddPaymentMethod> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name', style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),),
+            Text(
+              'Name',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             // SizedBox(height: 10,),
             TextField(
               controller: nameController,
             ),
-            SizedBox(height: 10,),
-            ElevatedButton(onPressed: (){
-              String input=nameController.text;
-              postData(input);
-            }, child: Text(
-              'Submit'
-            )),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  postData();
+                  clearData();
+                },
+                child: Text('Submit')),
           ],
         ),
       ),

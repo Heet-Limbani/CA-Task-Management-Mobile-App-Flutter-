@@ -13,7 +13,10 @@ import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
+import 'package:task_manager/ui/pages/DashBoard/taskUnPaid.dart';
+import 'package:task_manager/ui/pages/DashBoard/viewOverdueTask.dart';
 import 'package:task_manager/ui/pages/DashBoard/viewPendingTask.dart';
+import 'package:task_manager/ui/pages/DashBoard/viewTasksTask.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/clientLogDataModel.dart';
@@ -28,7 +31,6 @@ class HomeAdminScreen extends StatefulWidget {
 }
 
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
-  // variables for adv datatable
   final _source = ClientSource();
   var _sortIndex = 0;
   var _sortAsc = true;
@@ -36,7 +38,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
   TextEditingController _searchController = TextEditingController();
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -65,6 +66,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int offset = 0;
   int limit = 10;
   String? selectedClientId1;
+  bool showTablePending = false;
+  bool showTableOverdue = false;
+  bool showTableTask = true;
+  bool showHideAll = false;
+  bool showSeeAll = true;
 
   DateTime? selectedDateTime = DateTime.now();
   @override
@@ -102,8 +108,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int rowsPerPage = 10;
   int totalCount = 0;
   genModel? dataModel;
-  bool showTablePending = false;
-  bool showTableOverdue = false;
 
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
@@ -133,11 +137,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   }
 
   void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
     setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
       _source.startIndex = 0;
       _source.setNextView();
     });
@@ -416,7 +416,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           ],
         ),
         SizedBox(
-          height: deviceHeight * 0.05,
+          height: deviceHeight * 0.03,
         ),
         StaggeredGrid.count(
           crossAxisCount: 2,
@@ -429,13 +429,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.tasksCount ?? '0') != 0) {
-                    // setState(() {
-                    //   showTablePending =
-                    //       !showTablePending; // Toggle the visibility of the table
-                    // });
+                    setState(() {
+                      showTableTask = !showTableTask;
+                    });
                     final snackBar = SnackBar(
                       content: Text(
-                        showTablePending
+                        showTableTask
                             ? "Today's Task Added to Task List"
                             : "Today's Task Removed from Task List",
                         style: TextStyle(color: Colors.black),
@@ -448,14 +447,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -469,9 +465,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -492,8 +486,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 onTap: () {
                   if ((dataCount?.count?.pendingCount ?? '0') != 0) {
                     setState(() {
-                      showTablePending =
-                          !showTablePending; // Toggle the visibility of the table
+                      showTablePending = !showTablePending;
                     });
                     final snackBar = SnackBar(
                       content: Text(
@@ -510,14 +503,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -531,9 +521,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -572,14 +560,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -593,9 +578,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -617,12 +600,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 onTap: () {
                   if ((dataCount?.count?.totalOverdueTaskCount ?? '0') != 0) {
                     setState(() {
-                      showTableOverdue =
-                          !showTableOverdue; // Toggle the visibility of the table
+                      showTableOverdue = !showTableOverdue;
                     });
                     final snackBar = SnackBar(
                       content: Text(
-                        showTablePending
+                        showTableOverdue
                             ? "Overdue Task Added to Task List"
                             : "Overdue Task Removed from Task List",
                         style: TextStyle(color: Colors.black),
@@ -635,14 +617,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -656,9 +635,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -704,7 +681,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -718,9 +694,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -745,7 +719,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       TaskOnBoard(),
                     );
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -759,9 +732,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -782,7 +753,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 onTap: () {
                   if ((dataCount?.count?.unassignedTaskCount ?? '0') != 0) {
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -796,9 +766,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                       action: SnackBarAction(
                         label: 'Dismiss',
                         textColor: Colors.white,
-                        onPressed: () {
-                          // Perform any action on snackbar action press (if needed)
-                        },
+                        onPressed: () {},
                       ),
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -819,8 +787,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.unpaidTaskBoardCount ?? '0') != 0) {
+                     Get.to(
+                      TaskUnPaid(),
+                    );
                   } else {
-                    // Show a message when no tasks are found
                     final snackBar = SnackBar(
                       content: Text(
                         "No Tasks Found",
@@ -867,18 +837,138 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontSize: 22,
               ),
             ),
-            // InkWell(
-            //   onTap: () {},
-            //   child: Text(
-            //     "See all",
-            //     style: TextStyle(
-            //       color: AppColors.primaryColor,
-            //       fontWeight: FontWeight.w500,
-            //     ),
-            //   ),
-            // ),
+            if (showSeeAll) ...{
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    showTableTask = true;
+                    showTablePending = true;
+                    showTableOverdue = true;
+                    showHideAll = true;
+                    showSeeAll = false;
+                  });
+                },
+                child: Text(
+                  "See all",
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            },
+            if (showHideAll) ...{
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    showTableTask = false;
+                    showTablePending = false;
+                    showTableOverdue = false;
+                    showHideAll = false;
+                    showSeeAll = true;
+                  });
+                },
+                child: Text(
+                  "Hide all",
+                  style: TextStyle(
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            },
           ],
         ),
+        SizedBox(
+          height: deviceHeight * 0.05,
+        ),
+        if (showTableTask) ...{
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Todays Tasks",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  // const Spacer(),
+                ],
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              Column(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Task Name'), numeric: true),
+                            DataColumn(label: Text('Ticket Id')),
+                            DataColumn(label: Text('Client Name')),
+                            DataColumn(label: Text('Employee Name')),
+                            DataColumn(label: Text('Deadline')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('View')),
+                          ],
+                          rows: cardData?.cardData?.tasks?.map(
+                                (tasks) {
+                                  final taskName = tasks.title ?? '';
+                                  final ticketId = tasks.ticketId ?? '';
+                                  final clientName = tasks.clientName ?? '';
+                                  final employeeName = tasks.employeeName ?? '';
+                                  final deadline = tasks.cdeadlineDate ?? '';
+                                  int roundedPercentage = 0;
+                                  double percentage = double.parse(
+                                      tasks.taskCompletePercentage!);
+                                  roundedPercentage = percentage.toInt();
+                                  final statusText = "$roundedPercentage%";
+
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(taskName)),
+                                      DataCell(Text(ticketId)),
+                                      DataCell(Text(clientName)),
+                                      DataCell(Text(employeeName)),
+                                      DataCell(Text(deadline)),
+                                      DataCell(Text(statusText)),
+                                      DataCell(
+                                        IconButton(
+                                          onPressed: () {
+                                            Get.to(
+                                              ViewTasksTask(ticketId: ticketId),
+                                            );
+                                            print("Ticket Id :- $ticketId");
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          dataRowHeight: 32.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        },
         SizedBox(
           height: deviceHeight * 0.05,
         ),
@@ -929,24 +1019,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                       pending.employeeName ?? '';
                                   final deadline = pending.cdeadlineDate ?? '';
 
-                                  String statusText = '';
-                                  if (pending.status == "0") {
-                                    statusText = "Unassigned";
-                                  } else if (pending.status == "1") {
-                                    statusText = "0%";
-                                  } else if (pending.status == "2") {
-                                    statusText = "In Progress";
-                                  } else if (pending.status == "3") {
-                                    statusText = "Query Raised";
-                                  } else if (pending.status == "4") {
-                                    statusText = "Closed";
-                                  } else if (pending.status == "5") {
-                                    statusText = "Completed & Reviewed";
-                                  } else if (pending.status == "6") {
-                                    statusText = "Invoice Raised";
-                                  } else if (pending.status == "7") {
-                                    statusText = "Paid";
-                                  }
+                                  int roundedPercentage = 0;
+                                  double percentage = double.parse(
+                                      pending.taskCompletePercentage!);
+                                  roundedPercentage = percentage.toInt();
+                                  final statusText = "$roundedPercentage%";
 
                                   return DataRow(
                                     cells: [
@@ -1034,24 +1111,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                       overdue.employeeName ?? '';
                                   final deadline = overdue.cdeadlineDate ?? '';
 
-                                  String statusText = '';
-                                  if (overdue.status == "0") {
-                                    statusText = "Unassigned";
-                                  } else if (overdue.status == "1") {
-                                    statusText = "0%";
-                                  } else if (overdue.status == "2") {
-                                    statusText = "In Progress";
-                                  } else if (overdue.status == "3") {
-                                    statusText = "Query Raised";
-                                  } else if (overdue.status == "4") {
-                                    statusText = "Closed";
-                                  } else if (overdue.status == "5") {
-                                    statusText = "Completed & Reviewed";
-                                  } else if (overdue.status == "6") {
-                                    statusText = "Invoice Raised";
-                                  } else if (overdue.status == "7") {
-                                    statusText = "Paid";
-                                  }
+                                  int roundedPercentage = 0;
+                                  double percentage = double.parse(
+                                      overdue.taskCompletePercentage!);
+                                  roundedPercentage = percentage.toInt();
+                                  final statusText = "$roundedPercentage%";
 
                                   return DataRow(
                                     cells: [
@@ -1065,7 +1129,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                         IconButton(
                                           onPressed: () {
                                             Get.to(
-                                              ViewPendingTask(
+                                              ViewOverdueTask(
                                                   ticketId: overdue.ticketId!),
                                             );
                                           },
@@ -1089,6 +1153,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             ],
           ),
         },
+
         SizedBox(
           height: deviceHeight * 0.1,
         ),
@@ -1452,7 +1517,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 }
               : null,
         ),
-
         SizedBox(
           height: deviceHeight * 0.1,
         ),
@@ -1490,7 +1554,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //     ),
         //   ],
         // ),
-
         Row(
           children: [
             Text(

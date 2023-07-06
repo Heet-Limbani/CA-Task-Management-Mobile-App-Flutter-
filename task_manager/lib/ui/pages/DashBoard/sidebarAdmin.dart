@@ -20,9 +20,9 @@ import 'package:task_manager/ui/pages/Receipt/receipt.dart';
 import 'package:task_manager/ui/pages/Reports/due_report.dart';
 import 'package:task_manager/ui/pages/Reports/gst_report.dart';
 import 'package:task_manager/ui/pages/Reports/performance_report.dart';
-import 'package:task_manager/ui/pages/Setting/configuration.dart';
+import 'package:task_manager/ui/pages/Setting/notificationConfig.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
-import 'package:task_manager/ui/pages/Setting/sent.dart';
+import 'package:task_manager/ui/pages/Setting/msgConfig.dart';
 import 'package:task_manager/ui/pages/Task/add_task.dart';
 import 'package:task_manager/ui/pages/Task/task_report.dart';
 import 'package:task_manager/ui/pages/Users/employee.dart';
@@ -136,16 +136,16 @@ class SideBarAdmin extends StatelessWidget {
                   Get.off(Expenses());
                 },
               ),
-              ListTile(
-                title: Text('Configuration Notification'),
+               ListTile(
+                title: Text('Configure SMS'),
                 onTap: () {
-                  Get.off(Configuration());
+                  Get.off(Sent());
                 },
               ),
               ListTile(
-                title: Text('Send Notification'),
+                title: Text('Configure Notification'),
                 onTap: () {
-                  Get.off(Sent());
+                  Get.off(NotificationConfig());
                 },
               ),
             ],

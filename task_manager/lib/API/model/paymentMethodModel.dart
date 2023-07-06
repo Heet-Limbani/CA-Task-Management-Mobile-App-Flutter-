@@ -3,11 +3,10 @@ class PaymentMethod {
   String? name;
   String? isFixed;
   String? dl;
-  List<dynamic> res =[];
+
   PaymentMethod({this.id, this.name, this.isFixed, this.dl});
 
   PaymentMethod.fromJson(Map<String, dynamic> json) {
-
     id = json['id'];
     name = json['name'];
     isFixed = json['is_fixed'];
@@ -22,5 +21,4 @@ class PaymentMethod {
     data['dl'] = this.dl;
     return data;
   }
-
 }

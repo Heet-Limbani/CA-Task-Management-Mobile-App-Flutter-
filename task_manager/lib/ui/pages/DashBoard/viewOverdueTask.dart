@@ -5,12 +5,12 @@ import 'package:task_manager/API/model/viewTasksDataModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class ViewPendingTask extends StatefulWidget {
+class ViewOverdueTask extends StatefulWidget {
   final String ticketId;
-  const ViewPendingTask({required this.ticketId, Key? key}) : super(key: key);
+  const ViewOverdueTask({required this.ticketId, Key? key}) : super(key: key);
 
   @override
-  State<ViewPendingTask> createState() => _ViewPendingTaskState();
+  State<ViewOverdueTask> createState() => _ViewOverdueTaskState();
 }
 
 late double deviceWidth;
@@ -28,7 +28,7 @@ String ticketId = "";
 
 String? selectedClientId1;
 
-class _ViewPendingTaskState extends State<ViewPendingTask> {
+class _ViewOverdueTaskState extends State<ViewOverdueTask> {
   bool isObscurePassword = true;
 
   @override
@@ -38,7 +38,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
     // getUser();
     getTaskDetails();
   }
- List<Pending> cardDataList = [];
+ List<TotalOverdueTask> cardDataList = [];
   void getTaskDetails() async {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.taskViewTaskDetails}',
@@ -46,7 +46,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
         'id': ticketId.toString(),
       },
     );
-   if (genmodel != null && genmodel.status == true) {
+    if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
 
       final taskData = TasksData.fromJson(data);
@@ -61,7 +61,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       setState(() {});
     }
   }
-  // List<Pending> cardDataList = [];
+  // List<TotalOverdueTask> cardDataList = [];
   // void getTaskDetails() async {
   //   genModel? genmodel = await Urls.postApiCall(
   //     method: '${Urls.taskViewTaskDetails}',
@@ -73,8 +73,8 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
   //     final data = genmodel.data;
 
   //     if (data != null && data is Map<String, dynamic>) {
-  //       Pending cardData =
-  //           Pending.fromJson(data['data']);
+  //        TotalOverdueTask cardData =
+  //           TotalOverdueTask.fromJson(data['data']);
   //       cardDataList.add(cardData);
   //       descriptionController.text = cardDataList[0].description.toString();
   //       //clientNameController.text = cardDataList[0].clientName.toString();
@@ -95,7 +95,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Pending Tasks > View Pending Task",
+          "Dashboard > Overdue Tasks > View Overdue Task",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -141,7 +141,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
                 ),
                 _add2(),
                 SizedBox(
-                  height: deviceHeight * 0.01,
+                  height: deviceHeight * 0.02,
                 ),
                 _header(),
                 SizedBox(
@@ -193,9 +193,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       ],
     );
   }
-
-  
-  Row _add2() {
+Row _add2() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -282,7 +280,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       children: [
        
         SizedBox(
-          width: deviceWidth * 0.1,
+          width: deviceWidth * 0.05,
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
@@ -302,7 +300,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
             // );
           },
           child: Text(
-            'File Details',
+            'File',
             style: TextStyle(color: Colors.black),
           ),
         ),

@@ -4,22 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/model/notificationConficDataModel.dart';
 import 'package:task_manager/API/model/paymentMethodModel.dart';
-import 'package:task_manager/ui/pages/Setting/add_payment_method.dart';
+import 'package:task_manager/ui/pages/Setting/add_Payment_Method.dart';
+import 'package:task_manager/ui/pages/Setting/editNotificationConfig.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class Payment_Method extends StatefulWidget {
-  const Payment_Method({super.key});
+class NotificationConfig extends StatefulWidget {
+  const NotificationConfig({super.key});
 
   @override
-  State<Payment_Method> createState() => _Payment_MethodState();
+  State<NotificationConfig> createState() => _NotificationConfigState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
-class _Payment_MethodState extends State<Payment_Method> {
+class _NotificationConfigState extends State<NotificationConfig> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -58,7 +60,7 @@ class _Payment_MethodState extends State<Payment_Method> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Setting > Payment Method",
+          "Menu > Setting > SMS Configuration",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -93,10 +95,6 @@ class _Payment_MethodState extends State<Payment_Method> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                _add(),
-                SizedBox(
-                  height: deviceHeight * 0.01,
-                ),
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -114,46 +112,11 @@ class _Payment_MethodState extends State<Payment_Method> {
     return Row(
       children: [
         Text(
-          "Payment Method",
+          "Message Configure",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
-          ),
-        ),
-        SizedBox(
-          width: deviceWidth * 0.1,
-        ),
-        IconButton(
-          icon: Icon(
-            Icons.refresh,
-          ),
-          onPressed: refreshTable,
-        ),
-      ],
-    );
-  }
-
-  Row _add() {
-    return Row(
-      children: [
-        OutlinedButton(
-          onPressed: () {
-            Get.to(() => AddPaymentMethod());
-          },
-          child: Text(
-            "Add Payment Method",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
           ),
         ),
       ],
@@ -163,51 +126,51 @@ class _Payment_MethodState extends State<Payment_Method> {
   Column _table() {
     return Column(
       children: <Widget>[
-        // SizedBox(
-        //   height: deviceHeight * 0.02,
-        // ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     Expanded(
-        //       child: Padding(
-        //         padding: const EdgeInsets.only(left: 10),
-        //         child: TextField(
-        //           controller: _searchController,
-        //           decoration: const InputDecoration(
-        //             labelText: 'Search by User Name',
-        //           ),
-        //           onSubmitted: (vlaue) {
-        //             _source.filterServerSide(_searchController.text);
-        //           },
-        //         ),
-        //       ),
-        //     ),
-        //     IconButton(
-        //       onPressed: () {
-        //         setState(() {
-        //           _searchController.text = '';
-        //         });
-        //         _source.filterServerSide(_searchController.text);
-        //         ;
-        //       },
-        //       icon: const Icon(Icons.clear),
-        //     ),
-        //     IconButton(
-        //       onPressed: () => _source.filterServerSide(_searchController.text),
-        //       icon: const Icon(Icons.search),
-        //     ),
-        //     IconButton(
-        //       icon: Icon(
-        //         Icons.refresh,
-        //       ),
-        //       onPressed: refreshTable,
-        //     ),
-        //   ],
-        // ),
-        // SizedBox(
-        //   height: deviceHeight * 0.03,
-        // ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    labelText: 'Search',
+                  ),
+                  onSubmitted: (vlaue) {
+                    _source.filterServerSide(_searchController.text);
+                  },
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _searchController.text = '';
+                });
+                _source.filterServerSide(_searchController.text);
+                ;
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            IconButton(
+              onPressed: () => _source.filterServerSide(_searchController.text),
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              onPressed: refreshTable,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.03,
+        ),
         AdvancedPaginatedDataTable(
           addEmptyRows: false,
           source: _source,
@@ -231,11 +194,15 @@ class _Payment_MethodState extends State<Payment_Method> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Id'),
+              label: const Text('Meta'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('Send'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Message'),
               onSort: setSort,
             ),
             DataColumn(
@@ -321,7 +288,7 @@ class _Payment_MethodState extends State<Payment_Method> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<PaymentMethod> {
+class TableSource extends AdvancedDataTableSource<NotificationConfigDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -370,13 +337,14 @@ class TableSource extends AdvancedDataTableSource<PaymentMethod> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final PaymentMethod dataList = lastDetails!.rows[index];
+    final NotificationConfigDataModel dataList = lastDetails!.rows[index];
 
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.id ?? '')),
-        DataCell(Text(dataList.name ?? '')),
+        DataCell(Text(dataList.meta ?? '')),
+        DataCell(Text(dataList.send == '0' ? 'Active' : 'Inactive')),
+        DataCell(Text(dataList.message ?? '')),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -387,66 +355,11 @@ class TableSource extends AdvancedDataTableSource<PaymentMethod> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                        nameController.text = dataList.name ?? '';
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text('Edit Payment Method'),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    controller: nameController,
-                                    decoration: InputDecoration(
-                                      hintText: 'Enter Name',
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
-                                  },
-                                  child: Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .pop(); // Close the dialog
-                                    String newName = nameController.text.trim();
-                                    if (newName.isNotEmpty) {
-                                      updateUserPassword(dataList.id, newName);
-                                    } else {
-                                      Fluttertoast.showToast(
-                                        msg: "Field Is Empty",
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                      );
-                                    }
-                                  },
-                                  child: Text('Update'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      child: Icon(Icons.edit),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
-                        // Handle button pressed
                         if (dataList.id != null) {
-                          deleteUser(dataList.id!);
+                          Get.to(EditNotificationConfig(userId: dataList.id!));
                         }
                       },
-                      child: Icon(Icons.delete),
+                      child: Icon(Icons.edit),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
@@ -482,7 +395,7 @@ class TableSource extends AdvancedDataTableSource<PaymentMethod> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<PaymentMethod>> getNextPage(
+  Future<RemoteDataSourceDetails<NotificationConfigDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -493,27 +406,29 @@ class TableSource extends AdvancedDataTableSource<PaymentMethod> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.paymentMethod}',
+      method: '${Urls.configurationNotification}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
-      int count = dataModel.data.length ?? 0;
+      //int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      print("dynamicData :- $dynamicData");
 
       return RemoteDataSourceDetails(
-        //dataModel.count ?? 0,
-        count,
+        dataModel.count ?? 0,
+        //count,
         dynamicData
-            .map<PaymentMethod>(
-              (item) => PaymentMethod.fromJson(item as Map<String, dynamic>),
+            .map<NotificationConfigDataModel>(
+              (item) => NotificationConfigDataModel.fromJson(
+                  item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<PaymentMethod>(
-                  (item) =>
-                      PaymentMethod.fromJson(item as Map<String, dynamic>),
+                .map<NotificationConfigDataModel>(
+                  (item) => NotificationConfigDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

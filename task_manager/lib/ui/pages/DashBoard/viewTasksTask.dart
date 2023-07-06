@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/API/model/cardDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/viewTasksDataModel.dart';
+
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class ViewPendingTask extends StatefulWidget {
+class ViewTasksTask extends StatefulWidget {
   final String ticketId;
-  const ViewPendingTask({required this.ticketId, Key? key}) : super(key: key);
+  const ViewTasksTask({required this.ticketId, Key? key}) : super(key: key);
 
   @override
-  State<ViewPendingTask> createState() => _ViewPendingTaskState();
+  State<ViewTasksTask> createState() => _ViewTasksTaskState();
 }
 
 late double deviceWidth;
 late double deviceHeight;
+
+// Declare _source here
 
 TextEditingController descriptionController = TextEditingController();
 TextEditingController clientNameController = TextEditingController();
@@ -23,22 +25,23 @@ TextEditingController clientEmailController = TextEditingController();
 TextEditingController startingDateController = TextEditingController();
 TextEditingController deadlineDateController = TextEditingController();
 TextEditingController createdDateController = TextEditingController();
-
+bool isObscurePassword = true;
 String ticketId = "";
 
 String? selectedClientId1;
 
-class _ViewPendingTaskState extends State<ViewPendingTask> {
-  bool isObscurePassword = true;
-
+class _ViewTasksTaskState extends State<ViewTasksTask> {
   @override
   void initState() {
     super.initState();
     ticketId = widget.ticketId; // Store widget.userId in a local variable
     // getUser();
+
     getTaskDetails();
   }
- List<Pending> cardDataList = [];
+
+  List<Subtask> subtaskList = [];
+
   void getTaskDetails() async {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.taskViewTaskDetails}',
@@ -46,7 +49,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
         'id': ticketId.toString(),
       },
     );
-   if (genmodel != null && genmodel.status == true) {
+    if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
 
       final taskData = TasksData.fromJson(data);
@@ -61,32 +64,10 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       setState(() {});
     }
   }
-  // List<Pending> cardDataList = [];
-  // void getTaskDetails() async {
-  //   genModel? genmodel = await Urls.postApiCall(
-  //     method: '${Urls.taskViewTaskDetails}',
-  //     params: {
-  //       'id': ticketId.toString(),
-  //     },
-  //   );
-  //   if (genmodel != null && genmodel.status == true) {
-  //     final data = genmodel.data;
 
-  //     if (data != null && data is Map<String, dynamic>) {
-  //       Pending cardData =
-  //           Pending.fromJson(data['data']);
-  //       cardDataList.add(cardData);
-  //       descriptionController.text = cardDataList[0].description.toString();
-  //       //clientNameController.text = cardDataList[0].clientName.toString();
-  //       // clientNumberController.text = cardDataList[0].clientNumber.toString();
-  //       // clientEmailController.text = cardDataList[0].clientEmail.toString();
-  //       startingDateController.text = cardDataList[0].startingDate.toString();
-  //       deadlineDateController.text = cardDataList[0].deadlineDate.toString();
-  //       createdDateController.text = cardDataList[0].createdOn.toString();
-  //       setState(() {});
-  //     }
-  //   }
-  // }
+  void refreshTable() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +76,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Pending Tasks > View Pending Task",
+          "Dashboard > Today's Tasks > View Task",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -139,7 +120,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _add2(),
+                 _add2(),
                 SizedBox(
                   height: deviceHeight * 0.01,
                 ),
@@ -147,6 +128,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
                 SizedBox(
                   height: deviceHeight * 0.1,
                 ),
+               
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -193,9 +175,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       ],
     );
   }
-
-  
-  Row _add2() {
+Row _add2() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -280,10 +260,10 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
   Row _table() {
     return Row(
       children: [
-       
         SizedBox(
           width: deviceWidth * 0.1,
         ),
+       
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
@@ -426,7 +406,6 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
             hintText: placeholder,
             hintStyle: TextStyle(
               fontSize: 20,
-              
               color: Colors.black,
             )),
       ),

@@ -644,6 +644,7 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
+      print("count ${dataModel.count}");
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
@@ -1077,3 +1078,73 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
 
 
 // }
+///////
+///
+///
+
+  // _table() {
+  //   return Column(
+  //     children: <Widget>[
+  //       SingleChildScrollView(
+  //         scrollDirection: Axis.horizontal,
+  //         child: Row(
+  //           children: [
+  //             DataTable(
+  //               columns: const [
+  //                 DataColumn(label: Text('Sr. No.'), numeric: true),
+  //                 DataColumn(label: Text('User ID')),
+  //                 DataColumn(label: Text('Name')),
+  //                 DataColumn(label: Text('Edit')),
+  //                 DataColumn(label: Text('Delete')),
+  //               ],
+  //               rows: clients.map((birthday) {
+  //                 final index = clients.indexOf(birthday);
+  //                 final srNo = (index + 1).toString();
+  //                 final userId = birthday.id;
+  //                 final name = birthday.name;
+  //                 return DataRow(cells: [
+  //                   DataCell(Text(srNo)),
+  //                   DataCell(Text(userId!)),
+  //                   DataCell(Text(name!)),
+  //                   DataCell(IconButton(
+  //                       onPressed: () {
+  //                         Navigator.pushReplacementNamed(
+  //                             context, '/editPaymentMethod',
+  //                             arguments: {'userId': userId});
+  //                       },
+  //                       icon: Icon(Icons.edit))),
+  //                   DataCell(IconButton(
+  //                       onPressed: () {
+  //                         deleteData(int.parse(userId));
+  //                         paymentTable();
+  //                       },
+  //                       icon: Icon(Icons.delete))),
+  //                 ]);
+  //               }).toList(),
+  //               dataRowHeight: 32.0,
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
+//}
+
+//  void paymentTable() async {
+//     genModel? genmodel = await url.Urls.postApiCall(
+//       method: '${Urls.paymentMethod}',
+//     );
+
+//     if (genmodel != null && genmodel.status == true) {
+//       final data = genmodel.data;
+
+//       if (data != null && data is List) {
+//         clients = data.map((item) => PaymentMethod.fromJson(item)).toList();
+
+//         totalCount = genmodel.count ?? 0;
+
+//         setState(() {});
+//       }
+//     }
+//   }

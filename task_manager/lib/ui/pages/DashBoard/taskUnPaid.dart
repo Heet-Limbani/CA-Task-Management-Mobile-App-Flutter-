@@ -3,17 +3,17 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/taskOnBoardDataModel.dart';
+import 'package:task_manager/API/model/unPaidTaskDataModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
 
-class TaskOnBoard extends StatefulWidget {
-  const TaskOnBoard({Key? key}) : super(key: key);
+class TaskUnPaid extends StatefulWidget {
+  const TaskUnPaid({Key? key}) : super(key: key);
 
   @override
-  State<TaskOnBoard> createState() => _TaskOnBoardState();
+  State<TaskUnPaid> createState() => _TaskUnPaidState();
 }
 
-class _TaskOnBoardState extends State<TaskOnBoard> {
+class _TaskUnPaidState extends State<TaskUnPaid> {
   late TableSource _source;
   String? stringResponse;
 
@@ -57,7 +57,7 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Tasks On Board",
+          "Dashboard > Tasks Unpaid",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -113,7 +113,7 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
     return Row(
       children: [
         Text(
-          "Task On Board",
+          "Task Unpaid",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -231,19 +231,11 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Employee Name'),
-              onSort: setSort,
-            ),
-            DataColumn(
               label: const Text('Department'),
               onSort: setSort,
             ),
             DataColumn(
               label: const Text('Deadline Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Closing Date'),
               onSort: setSort,
             ),
             DataColumn(
@@ -330,10 +322,9 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
     );
   }
 }
-
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<OnBoard> {
+class TableSource extends AdvancedDataTableSource<UnPaid> {
   int startIndex; // Add the startIndex variable
 
   TableSource({required this.startIndex}); // Update the constructor
@@ -346,7 +337,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final OnBoard dataList = lastDetails!.rows[index];
+    final UnPaid dataList = lastDetails!.rows[index];
     //  final Employee dataList1 = lastDetails!.rows[index].employee![index];
     String statusText = '';
     int roundedPercentage = 0;
@@ -380,24 +371,8 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
         DataCell(Text(dataList.title ?? '')),
         DataCell(Text(dataList.ticketId ?? '')),
         DataCell(Text(dataList.clientName ?? '')),
-        DataCell(
-          // New column with employee names (first name and last name)
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: dataList.employee?.map((employee) {
-                    return Text(
-                      '${employee.firstName ?? ''} ${employee.lastName ?? ''}',
-                      style: TextStyle(fontSize: 14),
-                    );
-                  }).toList() ??
-                  [],
-            ),
-          ),
-        ),
         DataCell(Text(dataList.departmentName ?? '')),
         DataCell(Text(dataList.deadlineDate ?? '')),
-        DataCell(Text(dataList.closedOn ?? '')),
         DataCell(Text(statusText)),
         DataCell(
           Container(
@@ -405,170 +380,27 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                if (dataList.status == "0")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.remove_red_eye),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.edit),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.delete),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.close),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "1" ||
-                    dataList.status == "2" ||
-                    dataList.status == "3")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.remove_red_eye),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.edit),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.close),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "4")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.remove_red_eye),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.edit),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.check),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.close),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "5")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.remove_red_eye),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.edit),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.list_alt),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "6")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.remove_red_eye),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.currency_rupee),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "7")
-                  RawMaterialButton(
-                    onPressed: () {
-                      // Handle button pressed
-                    },
-                    child: Icon(Icons.remove_red_eye),
-                    constraints: BoxConstraints.tight(Size(24, 24)),
-                    shape: CircleBorder(),
-                  ),
+                Row(
+                  children: [
+                    RawMaterialButton(
+                      onPressed: () {
+                        // Handle button pressed
+                      },
+                      child: Icon(Icons.remove_red_eye),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        // Handle button pressed
+                      },
+                      child: Icon(Icons.currency_rupee),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                   
+                  ],
+                ),
               ],
             ),
           ),
@@ -599,7 +431,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<OnBoard>> getNextPage(
+  Future<RemoteDataSourceDetails<UnPaid>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -610,24 +442,25 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.loadTaskOnboard}',
+      method: '${Urls.loadTaskUnPaid}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
+      print("dynamicData $dynamicData");
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData
-            .map<OnBoard>(
-              (item) => OnBoard.fromJson(item as Map<String, dynamic>),
+            .map<UnPaid>(
+              (item) => UnPaid.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<OnBoard>(
-                  (item) => OnBoard.fromJson(item as Map<String, dynamic>),
+                .map<UnPaid>(
+                  (item) => UnPaid.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,
@@ -637,3 +470,152 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
     }
   }
 }
+
+// typedef SelectedCallBack = Function(String id, bool newSelectState);
+
+// class TableSource extends AdvancedDataTableSource<UnPaid> {
+//   int startIndex; // Add the startIndex variable
+
+//   TableSource({required this.startIndex}); // Update the constructor
+
+//   List<String> selectedIds = [];
+//   String lastSearchTerm = '';
+
+//   //int startIndex = 0; // Add the startIndex variable
+
+//   @override
+//   DataRow? getRow(int index) {
+//     final srNo = (startIndex + index + 1).toString();
+//     final UnPaid dataList = lastDetails!.rows[index];
+//     //  final Employee dataList1 = lastDetails!.rows[index].employee![index];
+//     String statusText = '';
+//     int roundedPercentage = 0;
+//     if (dataList.status == "0") {
+//       statusText = "Unassigned";
+//     } else if (dataList.status == "1") {
+//       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
+//       String per = dataList.taskCompletePercentage ?? '';
+//       print("percentage2 $per");
+//       roundedPercentage = percentage.toInt();
+//       statusText = "Open $roundedPercentage%";
+//     } else if (dataList.status == "2") {
+//       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
+//       roundedPercentage = percentage.toInt();
+//       statusText = "In Progress $roundedPercentage%";
+//     } else if (dataList.status == "3") {
+//       statusText = "Query Raised";
+//     } else if (dataList.status == "4") {
+//       statusText = "Closed";
+//     } else if (dataList.status == "5") {
+//       statusText = "Completed & Reviewed";
+//     } else if (dataList.status == "6") {
+//       statusText = "Invoice Raised";
+//     } else if (dataList.status == "7") {
+//       statusText = "Paid";
+//     }
+
+//     return DataRow(
+//       cells: [
+//         DataCell(Text(srNo)),
+//         DataCell(Text(dataList.title ?? '')),
+//         DataCell(Text(dataList.ticketId ?? '')),
+//         DataCell(Text(dataList.clientName ?? '')),
+//         DataCell(Text(dataList.departmentName ?? '')),
+//         DataCell(Text(dataList.deadlineDate ?? '')),
+//         DataCell(Text(statusText)),
+//         DataCell(
+//           Container(
+//             margin: EdgeInsets.symmetric(horizontal: 10),
+//             child: Row(
+//               mainAxisAlignment: MainAxisAlignment.start,
+//               children: [
+//                 Row(
+//                   children: [
+//                     RawMaterialButton(
+//                       onPressed: () {
+//                         // Handle button pressed
+//                       },
+//                       child: Icon(Icons.remove_red_eye),
+//                       constraints: BoxConstraints.tight(Size(24, 24)),
+//                       shape: CircleBorder(),
+//                     ),
+//                     RawMaterialButton(
+//                       onPressed: () {
+//                         // Handle button pressed
+//                       },
+//                       child: Icon(Icons.currency_rupee),
+//                       constraints: BoxConstraints.tight(Size(24, 24)),
+//                       shape: CircleBorder(),
+//                     ),
+                   
+//                   ],
+//                 ),
+//               ],
+//             ),
+//           ),
+//         ),
+//       ],
+//       selected: selectedIds.contains(dataList.ticketId),
+//       onSelectChanged: (value) {
+//         selectedRow(dataList.ticketId.toString(), value ?? false);
+//       },
+//     );
+//   }
+
+//   @override
+//   int get selectedRowCount => selectedIds.length;
+
+//   void selectedRow(String id, bool newSelectState) {
+//     if (selectedIds.contains(id)) {
+//       selectedIds.remove(id);
+//     } else {
+//       selectedIds.add(id);
+//     }
+//     notifyListeners();
+//   }
+
+//   void filterServerSide(String filterQuery) {
+//     lastSearchTerm = filterQuery.toLowerCase().trim();
+//     setNextView();
+//   }
+
+//   @override
+//   Future<RemoteDataSourceDetails<UnPaid>> getNextPage(
+//     NextPageRequest pageRequest,
+//   ) async {
+//     startIndex = pageRequest.offset;
+//     final queryParameter = <String, dynamic>{
+//       'offset': pageRequest.offset.toString(),
+//       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+//       'limit': pageRequest.pageSize.toString(),
+//     };
+
+//     genModel? dataModel = await Urls.postApiCall(
+//       method: '${Urls.loadTaskUnPaid}',
+//       params: queryParameter,
+//     );
+
+//     if (dataModel != null && dataModel.status == true) {
+//       final dynamicData = dataModel.data;
+//       print("dynamicData $dynamicData");
+
+//       return RemoteDataSourceDetails(
+//         dataModel.count ?? 0,
+//         dynamicData
+//             .map<UnPaid>(
+//               (item) => UnPaid.fromJson(item as Map<String, dynamic>),
+//             )
+//             .toList(),
+//         filteredRows: lastSearchTerm.isNotEmpty
+//             ? dynamicData
+//                 .map<UnPaid>(
+//                   (item) => UnPaid.fromJson(item as Map<String, dynamic>),
+//                 )
+//                 .length
+//             : null,
+//       );
+//     } else {
+//       throw Exception('Unable to query remote server');
+//     }
+//   }
+// }
