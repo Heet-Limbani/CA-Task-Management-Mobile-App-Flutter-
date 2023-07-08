@@ -28,7 +28,7 @@ class UnPaid {
   String? autoInvoice;
   String? dl;
   String? clientName;
-  Null? taskCompletePercentage;
+  Null taskCompletePercentage;
   String? departmentName;
   String? statusname;
 

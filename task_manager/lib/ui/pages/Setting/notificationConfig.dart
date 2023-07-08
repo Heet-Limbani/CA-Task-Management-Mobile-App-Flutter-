@@ -5,8 +5,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/notificationConficDataModel.dart';
-import 'package:task_manager/API/model/paymentMethodModel.dart';
-import 'package:task_manager/ui/pages/Setting/add_Payment_Method.dart';
 import 'package:task_manager/ui/pages/Setting/editNotificationConfig.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';

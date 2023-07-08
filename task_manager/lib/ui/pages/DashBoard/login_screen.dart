@@ -371,9 +371,7 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
     if (genmodel != null) {
-      //print('Status: ${genmodel?.message}');
       Fluttertoast.showToast(msg: genmodel!.message.toString());
-
       LoginData loginData = LoginData.fromJson(genmodel!.data);
       print("LOgin data ${loginData.toJson()}");
       // Store xtoken in SharedPreferences
@@ -388,16 +386,9 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('password', loginData.password ?? '');
       prefs.setString('sessiontime', loginData.sessionTime ?? '');
       prefs.setString('avatar', loginData.avatar ?? '');
-      // String? storedXType = prefs.getString('type');
-      // if (storedXType != null && storedXType.isNotEmpty) {
-      //   print('xtoken is stored in SharedPreferences: $storedXType');
-      // } else {
-      //   print('xtoken is not available in SharedPreferences');
-      // }
       if (genmodel?.status == true) {
         var sharedPref = await SharedPreferences.getInstance();
         sharedPref.setBool(MyApp.KEYLOGIN, true);
-
         Get.offAll(MyApp());
       }
     }

@@ -26,8 +26,7 @@ class _Payment_MethodState extends State<Payment_Method> {
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
-  TextEditingController _searchController = TextEditingController();
-
+ 
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/genModel.dart';
 
 class Urls {
+
   static String baseUrlMain = "https://task.mysyva.net/backend/";
 
   static String login = "${Urls.baseUrlMain}Login";
@@ -16,14 +17,11 @@ class Urls {
   static String addPaymentMethod = "${Urls.baseUrlMain}AddPaymentMethod";
   static String editPaymentMethod = "${Urls.baseUrlMain}EditPaymentMethod";
   static String deletePaymentMethod = "${Urls.baseUrlMain}DeletePaymentMethod";
-  static String configurationNotification =
-      "${Urls.baseUrlMain}NotificationConfig";
-  static String configurationNotificationEdit =
-      "${Urls.baseUrlMain}EditNotificationConfig";
+  static String configurationNotification ="${Urls.baseUrlMain}NotificationConfig";
+  static String configurationNotificationEdit ="${Urls.baseUrlMain}EditNotificationConfig";
   static String addEmployee = "${Urls.baseUrlMain}Add_Employee";
   static String deleteEmployee = "${Urls.baseUrlMain}Delete_Employee";
-  static String updateEmployeePassword =
-      "${Urls.baseUrlMain}EmployeeResetPassword";
+  static String updateEmployeePassword ="${Urls.baseUrlMain}EmployeeResetPassword";
   static String editEmployee = "${Urls.baseUrlMain}Edit_Employee";
   static String deleteClient = "${Urls.baseUrlMain}Delete_Client";
   static String updateClientPassword = "${Urls.baseUrlMain}ClientResetPassword";
@@ -36,11 +34,14 @@ class Urls {
   static String clientViewLogDetails = "${Urls.baseUrlMain}ClientLogData";
   static String clientViewLogDetailsEdit = "${Urls.baseUrlMain}EditClientLog";
   static String clientViewLoginDetails = "${Urls.baseUrlMain}ClientLoginData";
-  static String clientViewTicketDetails = "${Urls.baseUrlMain}LoadClientTicketDetail";
+  static String clientViewTicketDetails ="${Urls.baseUrlMain}LoadClientTicketDetail";
   static String clientViewInvoiceDetails = "${Urls.baseUrlMain}LoadInvoiceList";
   static String taskViewTaskDetails = "${Urls.baseUrlMain}ViewTask";
   static String loadTaskOnboard = "${Urls.baseUrlMain}LoadTaskOnboard";
-   static String loadTaskUnPaid = "${Urls.baseUrlMain}unpaid_task_board";
+  static String loadTaskUnPaid = "${Urls.baseUrlMain}unpaid_task_board";
+  static String company = "${Urls.baseUrlMain}Company";
+  static String deleteCompany = "${Urls.baseUrlMain}DeleteCompany";
+  static String editCompany = "${Urls.baseUrlMain}EditCompany";
 
   static String profileEmail = "";
   static String profileUserName = "";
@@ -83,11 +84,6 @@ class Urls {
       return {}; // Set xToken to an empty map if xtoken is not available
     }
   }
-//aa corect che ?
-  //  static Map<String, String> xToken = {
-  //   'Xtoken':
-  //       'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6Im1va3NoZXMiLCJwYXNzd29yZCI6IiQyYSQxMiRRem1TZkFZalhGR0E0RzZWREdZblRPM2dXM21xdEJJWnlYM3VhRUNyUW12WGVSN1I0QVNOYSJ9.N9AFKPmku7qScJaRwIBMsiOIyr6Cx6Bfjf_n2Q05Df4',
-  // };
 
   static Future<genModel?> postApiCall({
     required String method,
@@ -103,12 +99,6 @@ class Urls {
       getXTokenHeader().then((value) {
         request.headers.addAll(value);
       });
-      //am thse ok to sir aa na ma
-
-      // request.headers.addAll({
-      //   'Content-Type': 'application/json',
-      //   //xToken  : webToken
-      // });
 
       http.StreamedResponse response = await request.send();
 

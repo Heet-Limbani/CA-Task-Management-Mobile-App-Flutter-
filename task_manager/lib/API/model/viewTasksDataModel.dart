@@ -456,7 +456,7 @@ class Employee {
   String? oauthToken;
   String? oauthSecret;
   String? emailNotification;
-  Null? fcmToken;
+  Null fcmToken;
   String? aboutme;
   String? points;
   String? premiumTime;
@@ -628,8 +628,8 @@ class File {
   String? showToClient;
   String? downloadable;
   String? dl;
-  Null? receiverName;
-  Null? note;
+  Null receiverName;
+  Null note;
   String? outwardBy;
   String? location;
 
