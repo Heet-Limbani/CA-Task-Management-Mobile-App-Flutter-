@@ -367,6 +367,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       padding: EdgeInsets.only(bottom: 30.0),
       child: TextField(
         obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
@@ -403,6 +404,7 @@ class _ViewPendingTaskState extends State<ViewPendingTask> {
       padding: EdgeInsets.only(bottom: 30.0),
       child: TextField(
         obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(

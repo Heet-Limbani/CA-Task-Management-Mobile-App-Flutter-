@@ -91,7 +91,7 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {
-              Get.off(profile1());
+              Get.to(profile1());
             },
           ),
           ListTile(
@@ -108,13 +108,13 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Employee'),
                 onTap: () {
-                  Get.off(Employee());
+                  Get.to(Employee());
                 },
               ),
               ListTile(
                 title: Text('Client'),
                 onTap: () {
-                  Get.off(Client());
+                  Get.to(Client());
                 },
               ),
             ],
@@ -127,25 +127,25 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Payment Method'),
                 onTap: () {
-                  Get.off(Payment_Method());
+                  Get.to(Payment_Method());
                 },
               ),
               ListTile(
                 title: Text('Expensen'),
                 onTap: () {
-                  Get.off(Expenses());
+                  Get.to(Expenses());
                 },
               ),
                ListTile(
                 title: Text('Configure SMS'),
                 onTap: () {
-                  Get.off(Sent());
+                  Get.to(Sent());
                 },
               ),
               ListTile(
                 title: Text('Configure Notification'),
                 onTap: () {
-                  Get.off(NotificationConfig());
+                  Get.to(NotificationConfig());
                 },
               ),
             ],
@@ -154,28 +154,28 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.work_outline),
             title: Text('Company'),
             onTap: () {
-              Get.off(Company());
+              Get.to(Company());
             },
           ),
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Client Manual Payment'),
             onTap: () {
-              Get.off(Manual_Payment());
+              Get.to(Manual_Payment());
             },
           ),
           ListTile(
             leading: Icon(Icons.list_alt_outlined),
             title: Text('Company View'),
             onTap: () {
-              Get.off(Company_View());
+              Get.to(Company_View());
             },
           ),
           ListTile(
             leading: Icon(Icons.workspaces),
             title: Text('Department'),
             onTap: () {
-              Get.off(Department());
+              Get.to(Department());
             },
           ),
           ExpansionTile(
@@ -186,19 +186,19 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Add Task'),
                 onTap: () {
-                  Get.off(Add_Task());
+                  Get.to(Add_Task());
                 },
               ),
               ListTile(
                 title: Text('Task On Board'),
                 onTap: () {
-                  Get.off(Task_On_Board());
+                  Get.to(Task_On_Board());
                 },
               ),
               ListTile(
                 title: Text('Task Report'),
                 onTap: () {
-                  Get.off(Task_Report());
+                  Get.to(Task_Report());
                 },
               ),
             ],
@@ -207,21 +207,21 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.notifications),
             title: Text('Notification'),
             onTap: () {
-              Get.off(Notification1());
+              Get.to(Notification1());
             },
           ),
           ListTile(
             leading: Icon(Icons.folder),
             title: Text('File Manager'),
             onTap: () {
-              Get.off(File_Manager());
+              Get.to(File_Manager());
             },
           ),
           ListTile(
             leading: Icon(Icons.receipt),
             title: Text('Receipt'),
             onTap: () {
-              Get.off(Receipt());
+              Get.to(Receipt());
             },
           ),
           ExpansionTile(
@@ -232,13 +232,13 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Invoice List'),
                 onTap: () {
-                  Get.off(Invoice());
+                  Get.to(Invoice());
                 },
               ),
               ListTile(
                 title: Text('Custom Invoice List'),
                 onTap: () {
-                  Get.off(custom_invoice());
+                  Get.to(custom_invoice());
                 },
               ),
             ],
@@ -247,70 +247,70 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.password),
             title: Text('Password Manager'),
             onTap: () {
-              Get.off(Password_Manager());
+              Get.to(Password_Manager());
             },
           ),
           ListTile(
             leading: Icon(Icons.local_activity),
             title: Text('Activity Log'),
             onTap: () {
-              Get.off(Activity_Log());
+              Get.to(Activity_Log());
             },
           ),
           ListTile(
             leading: Icon(Icons.password),
             title: Text('Client Password'),
             onTap: () {
-              Get.off(Client_Password());
+              Get.to(Client_Password());
             },
           ),
           ListTile(
             leading: Icon(Icons.data_usage),
             title: Text('Client Data'),
             onTap: () {
-              Get.off(Client_Data());
+              Get.to(Client_Data());
             },
           ),
           ListTile(
             leading: Icon(Icons.app_registration),
             title: Text('Appointment'),
             onTap: () {
-              Get.off(Appointment_List());
+              Get.to(Appointment_List());
             },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Employee Leave'),
             onTap: () {
-              Get.off(Employee_Leave());
+              Get.to(Employee_Leave());
             },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Admin Leave'),
             onTap: () {
-              Get.off(Admin_Leave());
+              Get.to(Admin_Leave());
             },
           ),
           ListTile(
             leading: Icon(Icons.manage_accounts_sharp),
             title: Text('Manage Holiday'),
             onTap: () {
-              Get.off(Holiday());
+              Get.to(Holiday());
             },
           ),
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Employee Login'),
             onTap: () {
-              Get.off(Employee_Login());
+              Get.to(Employee_Login());
             },
           ),
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Client Login'),
             onTap: () {
-              Get.off(Client_Login());
+              Get.to(Client_Login());
             },
           ),
           ExpansionTile(
@@ -321,31 +321,31 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Performance Report'),
                 onTap: () {
-                  Get.off(Performance_Report());
+                  Get.to(Performance_Report());
                 },
               ),
               ListTile(
                 title: Text('Due Report'),
                 onTap: () {
-                  Get.off(Due_Report());
+                  Get.to(Due_Report());
                 },
               ),
               ListTile(
                 title: Text('Attendance Log'),
                 onTap: () {
-                  Get.off(Attendance_Log());
+                  Get.to(Attendance_Log());
                 },
               ),
               ListTile(
                 title: Text('Attendance Report'),
                 onTap: () {
-                  Get.off(Attendance_Report());
+                  Get.to(Attendance_Report());
                 },
               ),
               ListTile(
                 title: Text('GST Report'),
                 onTap: () {
-                  Get.off(Gst_Report());
+                  Get.to(Gst_Report());
                 },
               ),
             ],

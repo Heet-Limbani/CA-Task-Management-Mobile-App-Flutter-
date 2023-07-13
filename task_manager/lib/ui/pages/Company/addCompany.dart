@@ -1,30 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/companyDataModel2.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
+import 'package:task_manager/ui/pages/Users/addClientForm.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:collection/collection.dart'; // Import the 'collection' package for the 'firstWhereOrNull' method
 
-class EditCompany extends StatefulWidget {
-  final String userId;
-
-  const EditCompany({required this.userId, Key? key}) : super(key: key);
+class AddCompany extends StatefulWidget {
+  const AddCompany({Key? key}) : super(key: key);
 
   @override
-  State<EditCompany> createState() => _EditCompanyState();
+  State<AddCompany> createState() => _AddCompanyState();
 }
 
-class _EditCompanyState extends State<EditCompany> {
+class _AddCompanyState extends State<AddCompany> {
   late double deviceWidth;
   late double deviceHeight;
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _EditCompanyKey = GlobalKey<FormState>();
-  TextEditingController clientName = TextEditingController();
-  TextEditingController companyName = TextEditingController();
+  final GlobalKey<FormState> _AddCompanyKey = GlobalKey<FormState>();
+  TextEditingController client = TextEditingController();
+  TextEditingController name = TextEditingController();
   TextEditingController startingDate = TextEditingController();
   TextEditingController proprietorName = TextEditingController();
   TextEditingController gstNumber = TextEditingController();
@@ -35,7 +36,9 @@ class _EditCompanyState extends State<EditCompany> {
   TextEditingController district = TextEditingController();
   TextEditingController reference = TextEditingController();
   TextEditingController contactNumber = TextEditingController();
-  TextEditingController emailId = TextEditingController();
+  TextEditingController email = TextEditingController();
+
+  //TextEditingController contact2 = TextEditingController();
 
   bool isActive = true;
   bool checkSMS = true;
@@ -43,38 +46,28 @@ class _EditCompanyState extends State<EditCompany> {
   String isActiveValue = "";
   String checkSMSValue = "";
   String checkEmailValue = "";
-  String userId = "";
   String? selectedClientId1;
 
   @override
   void dispose() {
-    clientName.dispose();
-    companyName.dispose();
+    client.dispose();
+    name.dispose();
     startingDate.dispose();
     proprietorName.dispose();
     gstNumber.dispose();
     panNumber.dispose();
     add1.dispose();
     add2.dispose();
-    state.dispose();
     district.dispose();
     reference.dispose();
     contactNumber.dispose();
-    emailId.dispose();
-
+    email.dispose();
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    userId = widget.userId; // Store widget.userId in a local variable
-    getUser();
-  }
-
   void clearField() {
-    clientName.clear();
-    companyName.clear();
+    client.clear();
+    name.clear();
     startingDate.clear();
     proprietorName.clear();
     gstNumber.clear();
@@ -85,54 +78,49 @@ class _EditCompanyState extends State<EditCompany> {
     district.clear();
     reference.clear();
     contactNumber.clear();
-    emailId.clear();
+    email.clear();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUser();
   }
 
   List<CompanyDataModel2> clientType = [];
+
   void getUser() async {
-    print("id :- $userId");
-    genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.editCompany}',
-      params: {
-        'id': userId.toString(),
-      },
-    );
-
-    if (genmodel != null && genmodel.status == true) {
-      final data = genmodel.data;
-
-      final companyData = CompanyDataModel2.fromJson(data);
-
-      //clientName.text = companyData.company!.name.toString();
-      companyName.text = companyData.company!.name.toString();
-      startingDate.text = companyData.company!.startingDate.toString();
-      proprietorName.text = companyData.company!.proprietorName.toString();
-      gstNumber.text = companyData.company!.gstno.toString();
-      panNumber.text = companyData.company!.panno.toString();
-      add1.text = companyData.company!.add1.toString();
-      add2.text = companyData.company!.add2.toString();
-      state.text = companyData.company!.state.toString();
-      district.text = companyData.company!.dist.toString();
-      reference.text = companyData.company!.ref.toString();
-      contactNumber.text = companyData.company!.mobile.toString();
-      emailId.text = companyData.company!.email.toString();
-
-      selectedClientId1 = companyData.company!.clientId.toString();
-      clientType.add(companyData); // Add the companyData to clientType list
-
-      setState(() {});
-    }
-  }
-
-  void clientEdit() async {
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.editCompany}',
         params: {
-          "save": "save",
-          "id": userId.toString(),
+          "id": "1",
+        },
+      );
+
+      if (genmodel != null &&
+          genmodel.status == true &&
+          genmodel.data != null) {
+        final data = genmodel.data!;
+
+        final companyData = CompanyDataModel2.fromJson(data);
+        selectedClientId1 = companyData.company?.clientId?.toString() ?? '';
+        clientType.add(companyData);
+
+        setState(() {});
+      }
+    } catch (e) {
+      print('Error retrieving client data: $e');
+    }
+  }
+
+  void clientAdd() async {
+    try {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.addCompany}',
+        params: {
           "Employee": selectedClientId1.toString(),
-          "name": companyName.text.toString(),
+          "name": name.text.toString(),
           "sdate": startingDate.text.toString(),
           "pname": proprietorName.text.toString(),
           "gstno": gstNumber.text.toString(),
@@ -140,13 +128,14 @@ class _EditCompanyState extends State<EditCompany> {
           "add1": add1.text.toString(),
           "add2": add2.text.toString(),
           "state": state.text.toString(),
-          "dist": district.text.toString(),
+          "district": district.text.toString(),
           "ref": reference.text.toString(),
           "number": contactNumber.text.toString(),
-          "email": emailId.text.toString(),
+          "email": email.text.toString(),
         },
       );
       if (genmodel != null) {
+        print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -163,18 +152,16 @@ class _EditCompanyState extends State<EditCompany> {
     } catch (e) {
       // Handle the exception
     }
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Company > Edit Company",
+          "Menu > Company > Add Company",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -209,7 +196,11 @@ class _EditCompanyState extends State<EditCompany> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _EditCompany(),
+                _add(),
+                SizedBox(
+                  height: deviceHeight * 0.05,
+                ),
+                _AddCompany(),
               ],
             ),
           ),
@@ -222,7 +213,7 @@ class _EditCompanyState extends State<EditCompany> {
     return Row(
       children: [
         Text(
-          "Edit Company",
+          "Add Company",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -233,9 +224,37 @@ class _EditCompanyState extends State<EditCompany> {
     );
   }
 
-  Form _EditCompany() {
+  Row _add() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        OutlinedButton(
+          onPressed: () {
+            Get.to(AddClientForm());
+          },
+          child: Text(
+            "Add New Client",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Form _AddCompany() {
     return Form(
-      key: _EditCompanyKey,
+      key: _AddCompanyKey,
       child: Column(
         children: <Widget>[
           DropdownButtonFormField<String>(
@@ -251,20 +270,37 @@ class _EditCompanyState extends State<EditCompany> {
             onChanged: (String? newValue) {
               setState(() {
                 selectedClientId1 = newValue;
-                clientName.text = selectedClientId1 ?? '';
+                client.text = selectedClientId1 ?? '';
+
+                // Find the selected client in the clientType list
+                final selectedClient = clientType
+                    .expand((dataModel) => dataModel.client ?? [])
+                    .firstWhereOrNull(
+                        (client) => client.iD == selectedClientId1);
+
+                if (selectedClient != null) {
+                  contactNumber.text = selectedClient.contactNumber ?? '';
+                  email.text = selectedClient.email ?? '';
+                } else {
+                  contactNumber.text = '';
+                  email.text = '';
+                }
               });
             },
-            items: clientType.expand<DropdownMenuItem<String>>(
-                (CompanyDataModel2 dataModel) {
-              return dataModel.client
-                      ?.map<DropdownMenuItem<String>>((Client client) {
-                    return DropdownMenuItem<String>(
-                      value: client.iD ?? '',
-                      child: Text('${client.firstName} ${client.lastName}'),
-                    );
-                  }).toList() ??
-                  [];
-            }).toList(),
+            items: clientType.isNotEmpty
+                ? clientType.expand<DropdownMenuItem<String>>(
+                    (CompanyDataModel2 dataModel) {
+                    return dataModel.client
+                            ?.map<DropdownMenuItem<String>>((Client client) {
+                          return DropdownMenuItem<String>(
+                            value: client.iD ?? '',
+                            child:
+                                Text('${client.firstName} ${client.lastName}'),
+                          );
+                        }).toList() ??
+                        [];
+                  }).toList()
+                : [],
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please select a client';
@@ -276,11 +312,11 @@ class _EditCompanyState extends State<EditCompany> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: companyName,
+            controller: name,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'Company Name',
+              labelText: 'Name',
               suffixIcon: Icon(Icons.keyboard),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -297,10 +333,10 @@ class _EditCompanyState extends State<EditCompany> {
             ),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Company Name';
+                return 'Please Enter Name';
               }
               if (value.length < 3) {
-                return 'Company Name must be at least 3 characters long';
+                return 'Name must be at least 3 characters long';
               }
               return null; // Return null if the input is valid
             },
@@ -358,12 +394,11 @@ class _EditCompanyState extends State<EditCompany> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: proprietorName,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: ' Proprietor Name',
+              labelText: 'Proprietor Name',
               suffixIcon: Icon(Icons.person),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -392,13 +427,12 @@ class _EditCompanyState extends State<EditCompany> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: gstNumber,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'GST Number',
-              suffixIcon: Icon(Icons.currency_rupee),
+              suffixIcon: Icon(Icons.g_mobiledata),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
@@ -412,27 +446,17 @@ class _EditCompanyState extends State<EditCompany> {
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter GST Number';
-              }
-              if (value.length < 3) {
-                return 'GST Number must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: panNumber,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'Pan Number',
-              suffixIcon: Icon(Icons.payment),
+              labelText: 'PAN Number',
+              suffixIcon: Icon(Icons.pan_tool_outlined),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
@@ -446,27 +470,17 @@ class _EditCompanyState extends State<EditCompany> {
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Pan Number';
-              }
-              if (value.length < 3) {
-                return 'Pan Number must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: add1,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Address 1',
-              suffixIcon: Icon(Icons.house),
+              suffixIcon: Icon(Icons.location_on_outlined),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
@@ -480,27 +494,17 @@ class _EditCompanyState extends State<EditCompany> {
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Address';
-              }
-              if (value.length < 3) {
-                return 'Address must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: add2,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Address 2',
-              suffixIcon: Icon(Icons.house_outlined),
+              suffixIcon: Icon(Icons.location_on_outlined),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
@@ -510,121 +514,90 @@ class _EditCompanyState extends State<EditCompany> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                borderSide: BorderSide(
+                  color: AppTheme.colors.lightBlue,
+                ),
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Address';
-              }
-              if (value.length < 3) {
-                return 'Address must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: state,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'State',
-              suffixIcon: Icon(Icons.location_pin),
+              suffixIcon: Icon(Icons.location_on_outlined),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(28.0),
                 borderSide: BorderSide(color: AppTheme.colors.grey),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                borderRadius: BorderRadius.circular(28.0),
+                borderSide: BorderSide(
+                  color: AppTheme.colors.lightBlue,
+                ),
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter State';
-              }
-              if (value.length < 3) {
-                return 'State must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: district,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'District Name',
-              suffixIcon: Icon(Icons.location_searching),
+              labelText: 'District',
+              suffixIcon: Icon(Icons.location_on_outlined),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(28.0),
                 borderSide: BorderSide(color: AppTheme.colors.grey),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                borderRadius: BorderRadius.circular(28.0),
+                borderSide: BorderSide(
+                  color: AppTheme.colors.lightBlue,
+                ),
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter District';
-              }
-              if (value.length < 3) {
-                return 'District Name must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            readOnly: true,
             controller: reference,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
               labelText: 'Reference',
-              suffixIcon: Icon(Icons.person),
+              suffixIcon: Icon(Icons.location_on_outlined),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(28.0),
                 borderSide: BorderSide(color: AppTheme.colors.grey),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                borderRadius: BorderRadius.circular(28.0),
+                borderSide: BorderSide(
+                  color: AppTheme.colors.lightBlue,
+                ),
                 gapPadding: 10,
               ),
             ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Reference';
-              }
-              if (value.length < 3) {
-                return 'Reference must be at least 3 characters long';
-              }
-              return null; // Return null if the input is valid
-            },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
@@ -665,7 +638,7 @@ class _EditCompanyState extends State<EditCompany> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: emailId,
+            controller: email,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
@@ -713,12 +686,13 @@ class _EditCompanyState extends State<EditCompany> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              if (_EditCompanyKey.currentState!.validate()) {
-                clientEdit();
+              if (_AddCompanyKey.currentState!.validate()) {
+                clientAdd();
+                clearField();
               }
             },
             child: Text(
-              "Update",
+              "Add Company",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,

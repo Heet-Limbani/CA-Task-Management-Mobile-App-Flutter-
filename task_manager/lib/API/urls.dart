@@ -40,8 +40,20 @@ class Urls {
   static String loadTaskOnboard = "${Urls.baseUrlMain}LoadTaskOnboard";
   static String loadTaskUnPaid = "${Urls.baseUrlMain}unpaid_task_board";
   static String company = "${Urls.baseUrlMain}Company";
+  static String addCompany = "${Urls.baseUrlMain}AddCompany";
   static String deleteCompany = "${Urls.baseUrlMain}DeleteCompany";
   static String editCompany = "${Urls.baseUrlMain}EditCompany";
+  static String companyLog = "${Urls.baseUrlMain}LoadLogDetail";
+  static String companyTicket = "${Urls.baseUrlMain}LoadCompanyTicketDetail";
+  static String companyFile = "${Urls.baseUrlMain}LoadCompanyFileDetail";
+  static String companyPermission = "${Urls.baseUrlMain}LoadCompanyEmpPermission";
+  static String companyGroup = "${Urls.baseUrlMain}ManageCompanyGroup";
+  static String deleteCompanyGroup = "${Urls.baseUrlMain}DeleteCompanyGroup";
+  static String manageCompanyGroup = "${Urls.baseUrlMain}ManageCompanyGroup";
+  static String editCompanyGroup = "${Urls.baseUrlMain}EditCompanyGroup";
+  static String manageCompanyComment = "${Urls.baseUrlMain}ManageComments";
+  static String editCompanyComment = "${Urls.baseUrlMain}EditComments";
+
 
   static String profileEmail = "";
   static String profileUserName = "";

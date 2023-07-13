@@ -1,268 +1,29 @@
-// import 'package:flutter/material.dart';
-// import '../DashBoard/sidebarAdmin.dart';
-// class Company extends StatefulWidget {
-//   const Company({super.key});
-//   @override
-//   State<Company> createState() => _CompanyState();
-// }
-// class _CompanyState extends State<Company> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "Menu > Company",
-//           style: Theme.of(context)
-//               .textTheme
-//               .bodySmall!
-//               .copyWith(fontWeight: FontWeight.bold),
-//         ),
-//         elevation: 0,
-//         foregroundColor: Colors.grey,
-//         backgroundColor: Colors.transparent,
-//       ),
-//       drawer:  SideBarAdmin(),
-//       extendBody: true,
-//       body: _buildBody(),
-//     );
-//   }
-//   Stack _buildBody() {
-//     return Stack(
-//       children: [
-//         SingleChildScrollView(
-//           child: Container(
-//             margin: const EdgeInsets.symmetric(
-//               horizontal: 15,
-//               vertical: 0,
-//             ),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 const SizedBox(
-//                   height: 40,
-//                 ),
-//                 _header(),
-//                 const SizedBox(
-//                   height: 10,
-//                 ),
-//                 _search(),
-//                 const SizedBox(
-//                   height: 30,
-//                 ),
-//                 _add(),
-//                 const SizedBox(
-//                   height: 0,
-//                 ),
-//                 _table(),
-//                 const SizedBox(
-//                   height: 100,
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-//   Row _header() {
-//     return Row(
-//       mainAxisAlignment: MainAxisAlignment.center,
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       children: [
-//         Text(
-//           "Company List",
-//           style: TextStyle(
-//             color: Colors.blueGrey[900],
-//             fontWeight: FontWeight.w700,
-//             fontSize: 22,
-//           ),
-//         ),
-//         SizedBox(
-//           width: 30,
-//         ),
-//         const Spacer(),
-//       ],
-//     );
-//   }
-//   Row _search() {
-//     return Row(
-//       children: [
-//         Expanded(
-//           child: TextField(
-//             decoration: InputDecoration(
-//                 contentPadding:
-//                     EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-//                 hintText: 'Search',
-//                 suffixIcon: Icon(Icons.search),
-//                 border: OutlineInputBorder(
-//                     borderRadius: BorderRadius.circular(30),
-//                     borderSide: const BorderSide())),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-//   Row _add() {
-//     return Row(
-//       children: [
-//         OutlinedButton(
-//           onPressed: () {},
-//           child: Text(
-//             "Add New",
-//             style: TextStyle(
-//               fontSize: 12,
-//               letterSpacing: 0,
-//               color: Colors.blue,
-//             ),
-//           ),
-//           style: OutlinedButton.styleFrom(
-//             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-//             shape: RoundedRectangleBorder(
-//               borderRadius: BorderRadius.circular(10),
-//             ),
-//           ),
-//         ),
-//         SizedBox(
-//           width: 20,
-//         ),
-//         OutlinedButton(
-//           onPressed: () {},
-//           child: Text(
-//             "Manage Group",
-//             style: TextStyle(
-//               fontSize: 12,
-//               letterSpacing: 0,
-//               color: Colors.blue,
-//             ),
-//           ),
-//           style: OutlinedButton.styleFrom(
-//             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-//             shape: RoundedRectangleBorder(
-//               borderRadius: BorderRadius.circular(10),
-//             ),
-//           ),
-//         ),
-//         SizedBox(
-//           width: 20,
-//         ),
-//         OutlinedButton(
-//           onPressed: () {},
-//           child: Text(
-//             "Manage Comments",
-//             style: TextStyle(
-//               fontSize: 12,
-//               letterSpacing: 0,
-//               color: Colors.blue,
-//             ),
-//           ),
-//           style: OutlinedButton.styleFrom(
-//             padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-//             shape: RoundedRectangleBorder(
-//               borderRadius: BorderRadius.circular(10),
-//             ),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-//   Column _table() {
-//     return Column(
-//       children: <Widget>[
-//         SingleChildScrollView(
-//           scrollDirection: Axis.horizontal,
-//           child: Row(
-//             children: [
-//               DataTable(
-//                 columns: const [
-//                   DataColumn(label: Text('Sr.No.'), numeric: true),
-//                   DataColumn(label: Text(' Client Name')),
-//                   DataColumn(label: Text('Comapany Name')),
-//                   DataColumn(label: Text('Property Name')),
-//                   DataColumn(label: Text('Mobile')),
-//                   DataColumn(label: Text('Email')),
-//                   DataColumn(label: Text('Edit')),
-//                   DataColumn(label: Text('View')),
-//                   DataColumn(label: Text('Delete')),
-//                 ],
-//                 rows: const [
-//                   DataRow(cells: [
-//                     DataCell(Text('1')),
-//                     DataCell(Text('Roy')),
-//                     DataCell(Text('ABC')),
-//                     DataCell(Text('New')),
-//                     DataCell(Text('1234567890')),
-//                     DataCell(Text('try@gmail')),
-//                     DataCell(
-//                         IconButton(onPressed: null, icon: Icon(Icons.edit))),
-//                     DataCell(IconButton(
-//                         onPressed: null, icon: Icon(Icons.view_list))),
-//                     DataCell(
-//                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
-//                   ]),
-//                   DataRow(cells: [
-//                     DataCell(Text('2')),
-//                     DataCell(Text('Roy')),
-//                     DataCell(Text('ABC')),
-//                     DataCell(Text('New')),
-//                     DataCell(Text('1234567890')),
-//                     DataCell(Text('try@gmail')),
-//                     DataCell(
-//                         IconButton(onPressed: null, icon: Icon(Icons.edit))),
-//                     DataCell(IconButton(
-//                         onPressed: null, icon: Icon(Icons.view_list))),
-//                     DataCell(
-//                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
-//                   ]),
-//                   DataRow(cells: [
-//                     DataCell(Text('3')),
-//                     DataCell(Text('Roy')),
-//                     DataCell(Text('ABC')),
-//                     DataCell(Text('New')),
-//                     DataCell(Text('1234567890')),
-//                     DataCell(Text('try@gmail')),
-//                     DataCell(
-//                         IconButton(onPressed: null, icon: Icon(Icons.edit))),
-//                     DataCell(IconButton(
-//                         onPressed: null, icon: Icon(Icons.view_list))),
-//                     DataCell(
-//                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
-//                   ]),
-//                 ],
-//                 dataRowHeight: 32.0,
-//               ),
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/API/model/companyDataModel.dart';
+import 'package:intl/intl.dart';
+import 'package:task_manager/API/model/companyGroupDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/ui/pages/Company/addCompany.dart';
-import 'package:task_manager/ui/pages/Company/companyGroup.dart.dart';
-import 'package:task_manager/ui/pages/Company/companyManageComments.dart';
-import 'package:task_manager/ui/pages/Company/editCompany.dart';
-import 'package:task_manager/ui/pages/Company/viewCompany.dart';
-import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/pages/Company/addCompanyGroup.dart';
+import 'package:task_manager/ui/pages/Company/company.dart';
+import 'package:task_manager/ui/pages/Company/editCompanyGroup.dart';
+import 'package:task_manager/ui/pages/Company/viewCompanyGroup.dart';
+import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 
-class Company extends StatefulWidget {
-  const Company({super.key});
+class CompanyGroup extends StatefulWidget {
+  const CompanyGroup({super.key});
 
   @override
-  State<Company> createState() => _CompanyState();
+  State<CompanyGroup> createState() => _CompanyGroupState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
-class _CompanyState extends State<Company> {
+class _CompanyGroupState extends State<CompanyGroup> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -301,7 +62,7 @@ class _CompanyState extends State<Company> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Setting > SMS Company",
+          "Menu > Setting > SMS CompanyGroup",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -357,7 +118,7 @@ class _CompanyState extends State<Company> {
     return Row(
       children: [
         Text(
-          "Company List",
+          "CompanyGroup List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -370,12 +131,12 @@ class _CompanyState extends State<Company> {
 
   Row _add() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         OutlinedButton(
           onPressed: () {
-            Get.to(AddCompany());
+            Get.to(AddCompanyGroup());
           },
           child: Text(
             "Add New",
@@ -393,37 +154,15 @@ class _CompanyState extends State<Company> {
           ),
         ),
         SizedBox(
-          width: 30,
+          width: deviceWidth * 0.02,
         ),
         //const Spacer(),
         OutlinedButton(
           onPressed: () {
-            Get.to(CompanyGroup());
+            Get.to(Company());
           },
           child: Text(
-            "Manage Group",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        OutlinedButton(
-          onPressed: () {
-            Get.to(CompanyManageComments());
-          },
-          child: Text(
-            "Manage Comments",
+            "Company List",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,
@@ -512,23 +251,23 @@ class _CompanyState extends State<Company> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Client Name'),
+              label: const Text('Group Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Company Name'),
+              label: const Text('Companies'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Property Name'),
+              label: const Text('Message'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Mobile'),
+              label: const Text('Interval'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Email'),
+              label: const Text('Start Date'),
               onSort: setSort,
             ),
             DataColumn(
@@ -614,7 +353,7 @@ class _CompanyState extends State<Company> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
+class TableSource extends AdvancedDataTableSource<CompanyGroupDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -627,7 +366,7 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
   void deleteUser(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.deleteCompany}',
+        method: '${Urls.deleteCompanyGroup}',
         params: {'id': id},
       );
 
@@ -642,19 +381,48 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
     }
   }
 
+  
+  int countIds(String ids) {
+    if (ids.isEmpty) {
+      return 0;
+    }
+
+    List<String> idList = ids.split(',');
+    return idList.length;
+  }
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final CompanyDataModel dataList = lastDetails!.rows[index];
+    final CompanyGroupDataModel dataList = lastDetails!.rows[index];
+    final companyId = countIds(dataList.companyId ?? '').toString();
+    String interval = '';
+    if (dataList.timeInterval == "0") {
+      interval = "Week";
+    } else if (dataList.timeInterval == "1") {
+      interval = "Half - Month";
+    } else if (dataList.timeInterval == "2") {
+      interval = "Month";
+    } else if (dataList.timeInterval == "3") {
+      interval = "Quarter";
+    } else if (dataList.timeInterval == "4") {
+      interval = "Half - Year";
+    } else if (dataList.timeInterval == "5") {
+      interval = "Year";
+    }
+
+    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.startDate ?? '0') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
 
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.cname ?? '')),
         DataCell(Text(dataList.name ?? '')),
-        DataCell(Text(dataList.proprietorName ?? '')),
-        DataCell(Text(dataList.mobile ?? '')),
-        DataCell(Text(dataList.email ?? '')),
+        DataCell(Text(companyId)),
+        DataCell(Text(dataList.message ?? '')),
+        DataCell(Text(interval)),
+        DataCell(Text(formattedDate)),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -666,28 +434,27 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          Get.to(EditCompany(userId: dataList.id!));
-                        }
-                      },
-                      child: Icon(Icons.edit),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                     RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.id != null) {
-                          Get.to(ViewCompany(id: dataList.id!));
+                           Get.to(ViewCompanyGroup(id: dataList.id!));
                         }
                       },
                       child: Icon(Icons.remove_red_eye),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
-                     RawMaterialButton(
+                    RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          //Get.to(EditNotificationConfig(userId: dataList.id!));
-                           deleteUser(dataList.id!);
+                          Get.to(EditCompanyGroup(id: dataList.id!));
+                        }
+                      },
+                      child: Icon(Icons.edit),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (dataList.id != null) {
+                          deleteUser(dataList.id!);
                         }
                       },
                       child: Icon(Icons.delete),
@@ -726,7 +493,7 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<CompanyDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<CompanyGroupDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -737,28 +504,28 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.company}',
+      method: '${Urls.companyGroup}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
       //int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-      
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<CompanyDataModel>(
-              (item) => CompanyDataModel.fromJson(item as Map<String, dynamic>),
+            .map<CompanyGroupDataModel>(
+              (item) =>
+                  CompanyGroupDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<CompanyDataModel>(
-                  (item) =>
-                      CompanyDataModel.fromJson(item as Map<String, dynamic>),
+                .map<CompanyGroupDataModel>(
+                  (item) => CompanyGroupDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

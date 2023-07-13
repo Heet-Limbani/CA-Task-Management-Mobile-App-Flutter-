@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/API/model/companyDataModel2.dart';
+import 'package:intl/intl.dart';
+import 'package:task_manager/API/model/companyGroupEditDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/ui/pages/Company/companyFile.dart';
-import 'package:task_manager/ui/pages/Company/companyLog.dart';
-import 'package:task_manager/ui/pages/Company/companyPermission.dart';
-import 'package:task_manager/ui/pages/Company/companyTicket.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class ViewCompany extends StatefulWidget {
+class ViewCompanyGroup extends StatefulWidget {
   final String id;
-  const ViewCompany({required this.id, Key? key}) : super(key: key);
+  const ViewCompanyGroup({required this.id, Key? key}) : super(key: key);
 
   @override
-  State<ViewCompany> createState() => _ViewCompanyState();
+  State<ViewCompanyGroup> createState() => _ViewCompanyGroupState();
 }
 
 late double deviceWidth;
 late double deviceHeight;
 
-TextEditingController companyNameController = TextEditingController();
-TextEditingController clientNameController = TextEditingController();
-TextEditingController mobileNumberController = TextEditingController();
-TextEditingController emailController = TextEditingController();
-TextEditingController gstNumberController = TextEditingController();
+TextEditingController groupNameController = TextEditingController();
+TextEditingController messageController = TextEditingController();
+TextEditingController intervalController = TextEditingController();
+TextEditingController startingDate = TextEditingController();
 
 String id = "";
 
 String? selectedClientId1;
 
-class _ViewCompanyState extends State<ViewCompany> {
+class _ViewCompanyGroupState extends State<ViewCompanyGroup> {
   bool isObscurePassword = true;
 
   @override
@@ -39,11 +35,13 @@ class _ViewCompanyState extends State<ViewCompany> {
     getUser();
   }
 
-  List<CompanyDataModel2> clientType = [];
+  List<CompanyGroupEditDataModel> clientType = [];
+  CompanyGroupEditDataModel? selected;
+
   void getUser() async {
     print("id :- $id");
     genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.editCompany}',
+      method: '${Urls.manageCompanyGroup}',
       params: {
         'id': id.toString(),
       },
@@ -52,17 +50,36 @@ class _ViewCompanyState extends State<ViewCompany> {
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
 
-      final companyData = CompanyDataModel2.fromJson(data);
+      final companyData = CompanyGroupEditDataModel.fromJson(data);
+      clientType.add(CompanyGroupEditDataModel.fromJson(data));
+      selected = CompanyGroupEditDataModel.fromJson(data);
+      
 
       //clientName.text = companyData.company!.name.toString();
-      companyNameController.text = companyData.company!.name.toString();
-      clientNameController.text =
-          companyData.company!.proprietorName.toString();
-      gstNumberController.text = companyData.company!.gstno.toString();
-      mobileNumberController.text = companyData.company!.mobile.toString();
-      emailController.text = companyData.company!.email.toString();
+      groupNameController.text = companyData.group!.name.toString();
+      messageController.text = companyData.group!.message.toString();
 
-      selectedClientId1 = companyData.company!.clientId.toString();
+      String intervalValue = '';
+      if (clientType[0].group!.timeInterval.toString() == "0") {
+        intervalValue = "Week";
+      } else if (clientType[0].group!.timeInterval.toString() == "1") {
+        intervalValue = "Half - Month";
+      } else if (clientType[0].group!.timeInterval.toString() == "2") {
+        intervalValue = "Month";
+      } else if (clientType[0].group!.timeInterval.toString() == "3") {
+        intervalValue = "Quarter";
+      } else if (clientType[0].group!.timeInterval.toString() == "4") {
+        intervalValue = "Half - Year";
+      } else if (clientType[0].group!.timeInterval.toString() == "5") {
+        intervalValue = "Year";
+      }
+      intervalController.text = intervalValue;
+
+      startingDate.text = DateFormat('yyyy-MM-dd').format(
+        DateTime.fromMillisecondsSinceEpoch(
+            int.parse(clientType[0].group!.startDate!) * 1000),
+      );
+
       clientType.add(companyData); // Add the companyData to clientType list
 
       setState(() {});
@@ -137,7 +154,7 @@ class _ViewCompanyState extends State<ViewCompany> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Company Details",
+          "Group Details",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -155,11 +172,10 @@ class _ViewCompanyState extends State<ViewCompany> {
   Column _detail1() {
     return Column(
       children: [
-        buildTextField1("Company Name", companyNameController.text, false),
-        buildTextField1("Client Name", clientNameController.text, false),
-        buildTextField1("Mobile", mobileNumberController.text, false),
-        buildTextField1("Email", emailController.text, false),
-        buildTextField1("GST No.", gstNumberController.text, false),
+        buildTextField1("Group Name", groupNameController.text, false),
+        buildTextField1("Message", messageController.text, false),
+        buildTextField1("Interval", intervalController.text, false),
+        buildTextField1("Starting Date", startingDate.text, false),
       ],
     );
   }
@@ -170,7 +186,7 @@ class _ViewCompanyState extends State<ViewCompany> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Details",
+          "Company Details",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -185,113 +201,37 @@ class _ViewCompanyState extends State<ViewCompany> {
     );
   }
 
-  Row _table() {
-    return Row(
-      children: [
-        SizedBox(
-          width: deviceWidth * 0.02,
+ Column _table() {
+  return Column(
+    children: <Widget>[
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            DataTable(
+              columns: const [
+                DataColumn(label: Text('Sr. No.'), numeric: true),
+                DataColumn(label: Text('Name')),
+              ],
+              rows: (selected?.selected ?? []).map((selectedd) {
+                final index = selected?.selected?.indexOf(selectedd) ?? -1;
+                final srNo = (index + 1).toString();
+                final title = selectedd.name ?? '';
+
+                return DataRow(cells: [
+                  DataCell(Text(srNo)),
+                  DataCell(Text(title)),
+                ]);
+              }).toList(),
+              dataRowHeight: 32.0,
+            ),
+          ],
         ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    CompanyLog(id: id),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'Log',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        // Add more buttons for additional tables
-        SizedBox(
-          width: deviceWidth * 0.02,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    CompanyTicket(id: id),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'Ticket',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        SizedBox(
-          width: deviceWidth * 0.02,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    CompanyPermission(id: id),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'Permission',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-         SizedBox(
-          width: deviceWidth * 0.02,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    CompanyFile(id: id),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'File',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
+
 
   Widget buildTextField(
       String labelText, String placeholder, bool isPasswordTextField) {

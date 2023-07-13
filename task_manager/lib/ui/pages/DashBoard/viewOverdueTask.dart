@@ -365,6 +365,7 @@ Row _add2() {
       padding: EdgeInsets.only(bottom: 30.0),
       child: TextField(
         obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
@@ -401,6 +402,7 @@ Row _add2() {
       padding: EdgeInsets.only(bottom: 30.0),
       child: TextField(
         obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
                 ? IconButton(
