@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/taskOnBoardDataModel.dart';
+import 'package:task_manager/API/model/LoadTask.dart';
 import 'package:task_manager/ui/pages/Task/addTask.dart';
 import '../DashBoard/sidebarAdmin.dart';
 
-class TaskOnBoard extends StatefulWidget {
-  const TaskOnBoard({Key? key}) : super(key: key);
+class TaskReport extends StatefulWidget {
+  const TaskReport({Key? key}) : super(key: key);
 
   @override
-  State<TaskOnBoard> createState() => _TaskOnBoardState();
+  State<TaskReport> createState() => _TaskReportState();
 }
 
-class _TaskOnBoardState extends State<TaskOnBoard> {
+class _TaskReportState extends State<TaskReport> {
   late TableSource _source;
   String? stringResponse;
 
@@ -59,7 +59,7 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Tasks On Board",
+          "Dashboard > Tasks > Task Report",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -115,7 +115,7 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
     return Row(
       children: [
         Text(
-          "Task On Board",
+          "Task List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -235,19 +235,11 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Employee Name'),
-              onSort: setSort,
-            ),
-            DataColumn(
               label: const Text('Department'),
               onSort: setSort,
             ),
             DataColumn(
               label: const Text('Deadline Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Closing Date'),
               onSort: setSort,
             ),
             DataColumn(
@@ -337,7 +329,7 @@ class _TaskOnBoardState extends State<TaskOnBoard> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<OnBoard> {
+class TableSource extends AdvancedDataTableSource<LoadTask> {
   int startIndex; // Add the startIndex variable
 
   TableSource({required this.startIndex}); // Update the constructor
@@ -350,7 +342,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final OnBoard dataList = lastDetails!.rows[index];
+    final LoadTask dataList = lastDetails!.rows[index];
     //  final Employee dataList1 = lastDetails!.rows[index].employee![index];
     String statusText = '';
     int roundedPercentage = 0;
@@ -383,25 +375,9 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
         DataCell(Text(srNo)),
         DataCell(Text(dataList.title ?? '')),
         DataCell(Text(dataList.ticketId ?? '')),
-        DataCell(Text(dataList.clientName ?? '')),
-        DataCell(
-          // New column with employee names (first name and last name)
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: dataList.employee?.map((employee) {
-                    return Text(
-                      '${employee.firstName ?? ''} ${employee.lastName ?? ''}',
-                      style: TextStyle(fontSize: 14),
-                    );
-                  }).toList() ??
-                  [],
-            ),
-          ),
-        ),
+        DataCell(Text(dataList.clientName ?? '')),      
         DataCell(Text(dataList.departmentName ?? '')),
-        DataCell(Text(dataList.deadlineDate ?? '')),
-        DataCell(Text(dataList.closedOn ?? '')),
+        DataCell(Text(dataList.deadlineDate ?? '')),      
         DataCell(Text(statusText)),
         DataCell(
           Container(
@@ -603,7 +579,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<OnBoard>> getNextPage(
+  Future<RemoteDataSourceDetails<LoadTask>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -614,7 +590,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.loadTaskOnboard}',
+      method: '${Urls.loadTask}',
       params: queryParameter,
     );
 
@@ -624,14 +600,14 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData
-            .map<OnBoard>(
-              (item) => OnBoard.fromJson(item as Map<String, dynamic>),
+            .map<LoadTask>(
+              (item) => LoadTask.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<OnBoard>(
-                  (item) => OnBoard.fromJson(item as Map<String, dynamic>),
+                .map<LoadTask>(
+                  (item) => LoadTask.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

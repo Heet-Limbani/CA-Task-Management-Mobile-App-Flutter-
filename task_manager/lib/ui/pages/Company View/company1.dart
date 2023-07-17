@@ -1,25 +1,30 @@
+
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/API/model/companyCommentDataModel.dart';
+import 'package:task_manager/API/model/companyDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/ui/pages/Company/addCompanyComment.dart';
-import 'package:task_manager/ui/pages/Company/editCompanyComment.dart';
+import 'package:task_manager/ui/pages/Company/addCompany.dart';
+import 'package:task_manager/ui/pages/Company/companyGroup.dart.dart';
+import 'package:task_manager/ui/pages/Company/companyManageComments.dart';
+import 'package:task_manager/ui/pages/Company/editCompany.dart';
+import 'package:task_manager/ui/pages/Company/viewCompany.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class CompanyManageComments extends StatefulWidget {
-  const CompanyManageComments({super.key});
+class Company1 extends StatefulWidget {
+  const Company1({super.key});
 
   @override
-  State<CompanyManageComments> createState() => _CompanyManageCommentsState();
+  State<Company1> createState() => _Company1State();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
-class _CompanyManageCommentsState extends State<CompanyManageComments> {
+class _Company1State extends State<Company1> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -58,7 +63,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Setting > SMS CompanyManageComments",
+          "Menu > Setting > SMS Company",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -93,10 +98,6 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                _add(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -114,7 +115,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
     return Row(
       children: [
         Text(
-          "Comment List",
+          "Company List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -125,33 +126,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
     );
   }
 
-  Row _add() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        OutlinedButton(
-          onPressed: () {
-            Get.to(AddCompanyComments());
-          },
-          child: Text(
-            "Add New",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  
 
   Column _table() {
     return Column(
@@ -224,19 +199,23 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('Client Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Title'),
+              label: const Text('Company Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Data'),
+              label: const Text('Property Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Date'),
+              label: const Text('Mobile'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Email'),
               onSort: setSort,
             ),
             DataColumn(
@@ -322,7 +301,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
+class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -332,18 +311,37 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
 
   int startIndex = 0; // Add the startIndex variable
 
+  void deleteUser(String? id) async {
+    if (id != null) {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.deleteCompany}',
+        params: {'id': id},
+      );
+
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+      }
+    }
+  }
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final CompanyCommentDataModel dataList = lastDetails!.rows[index];
+    final CompanyDataModel dataList = lastDetails!.rows[index];
 
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
+        DataCell(Text(dataList.cname ?? '')),
         DataCell(Text(dataList.name ?? '')),
-        DataCell(Text(dataList.title ?? '')),
-        DataCell(Text(dataList.data ?? '')),
-        DataCell(Text(dataList.date ?? '')),
+        DataCell(Text(dataList.proprietorName ?? '')),
+        DataCell(Text(dataList.mobile ?? '')),
+        DataCell(Text(dataList.email ?? '')),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -352,16 +350,18 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
               children: [
                 Row(
                   children: [
-                    RawMaterialButton(
+                   
+                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          Get.to(EditCompanyComments(id: dataList.id!));
+                          Get.to(ViewCompany(id: dataList.id!));
                         }
                       },
-                      child: Icon(Icons.edit),
+                      child: Icon(Icons.remove_red_eye),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
+                    
                   ],
                 ),
               ],
@@ -394,7 +394,7 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<CompanyCommentDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<CompanyDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -405,28 +405,28 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.manageCompanyComment}',
+      method: '${Urls.company}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
       //int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<CompanyCommentDataModel>(
-              (item) => CompanyCommentDataModel.fromJson(
-                  item as Map<String, dynamic>),
+            .map<CompanyDataModel>(
+              (item) => CompanyDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<CompanyCommentDataModel>(
-                  (item) => CompanyCommentDataModel.fromJson(
-                      item as Map<String, dynamic>),
+                .map<CompanyDataModel>(
+                  (item) =>
+                      CompanyDataModel.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

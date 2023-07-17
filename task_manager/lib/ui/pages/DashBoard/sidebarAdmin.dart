@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -7,9 +6,11 @@ import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
-import 'package:task_manager/ui/pages/ClientManualPayment/manual_payment.dart';
+import 'package:task_manager/ui/pages/ClientManualPayment/clientManualPayment.dart';
 import 'package:task_manager/ui/pages/Client_Data/client_data.dart';
 import 'package:task_manager/ui/pages/Client_Password/client_password.dart';
+import 'package:task_manager/ui/pages/Company%20View/company1.dart';
+import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
 import 'package:task_manager/ui/pages/File_Manager/file_manager.dart';
 import 'package:task_manager/ui/pages/Holiday/holiday.dart';
@@ -23,22 +24,20 @@ import 'package:task_manager/ui/pages/Reports/performance_report.dart';
 import 'package:task_manager/ui/pages/Setting/notificationConfig.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
 import 'package:task_manager/ui/pages/Setting/msgConfig.dart';
-import 'package:task_manager/ui/pages/Task/add_task.dart';
-import 'package:task_manager/ui/pages/Task/task_report.dart';
+import 'package:task_manager/ui/pages/Task/addTask.dart';
+import 'package:task_manager/ui/pages/Task/taskReport.dart';
 import 'package:task_manager/ui/pages/Users/employee.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/pages/Profile/profile1.dart';
 import '../../../API/model/loginDataModel.dart';
 import '../Admin_Leave/admin_leave.dart';
 import '../Client_Login/client_login.dart';
-import '../Company/company_view.dart';
 import '../Department/department.dart';
 import '../Employee_Login/employee_login.dart';
 import '../Reports/attendance_log.dart';
 import '../Reports/attendance_report.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';
-import '../Task/task_on_board.dart';
 import '../Users/client.dart';
 import 'package:task_manager/ui/pages/Notification/notification1.dart';
 
@@ -161,14 +160,14 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.payment),
             title: Text('Client Manual Payment'),
             onTap: () {
-              Get.to(Manual_Payment());
+              Get.to(ClientManualPayment());
             },
           ),
           ListTile(
             leading: Icon(Icons.list_alt_outlined),
             title: Text('Company View'),
             onTap: () {
-              Get.to(Company_View());
+              Get.to(Company1());
             },
           ),
           ListTile(
@@ -186,19 +185,19 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Add Task'),
                 onTap: () {
-                  Get.to(Add_Task());
+                  Get.to(AddTask());
                 },
               ),
               ListTile(
                 title: Text('Task On Board'),
                 onTap: () {
-                  Get.to(Task_On_Board());
+                  Get.to(TaskOnBoard());
                 },
               ),
               ListTile(
                 title: Text('Task Report'),
                 onTap: () {
-                  Get.to(Task_Report());
+                  Get.to(()=>TaskReport());
                 },
               ),
             ],

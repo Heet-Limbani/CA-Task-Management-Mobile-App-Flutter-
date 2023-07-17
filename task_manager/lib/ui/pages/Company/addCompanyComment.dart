@@ -5,34 +5,24 @@ import 'package:task_manager/API/model/genModel.dart';
 import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class EditCompanyComments extends StatefulWidget {
-  final String id;
-
-  const EditCompanyComments({required this.id, Key? key}) : super(key: key);
-
+class AddCompanyComments extends StatefulWidget {
+  const AddCompanyComments({super.key});
   @override
-  State<EditCompanyComments> createState() => _EditCompanyCommentsState();
+  State<AddCompanyComments> createState() => _AddCompanyCommentsState();
 }
 
-class _EditCompanyCommentsState extends State<EditCompanyComments> {
+class _AddCompanyCommentsState extends State<AddCompanyComments> {
   late double deviceWidth;
   late double deviceHeight;
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _EditCompanyCommentsKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _AddCompanyCommentsKey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
   TextEditingController data = TextEditingController();
     TextEditingController clientName = TextEditingController();
 
 
-  bool isActive = true;
-  bool checkSMS = true;
-  bool checkEmail = true;
-  String isActiveValue = "";
-  String checkSMSValue = "";
-  String checkEmailValue = "";
-  String userId = "";
   String? selectedClientId1;
 
   @override
@@ -48,8 +38,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
 
   @override
   void initState() {
-    super.initState();
-    userId = widget.id; // Store widget.userId in a local variable
+    super.initState(); 
     getUser();
   }
 
@@ -62,12 +51,13 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
 
   List<CompanyCommentEditDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
+   
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.manageCompanyComment}',
       params: {
-        'id': userId.toString(),
-      },
+        "id": "1",
+      }
+     
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -75,11 +65,6 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
 
       final companyData = CompanyCommentEditDataModel.fromJson(dataa);
 
-      //clientName.text = companyData.company!.name.toString();
-    title.text = companyData.data!.title.toString();
-    data.text = companyData.data!.data.toString();
-    
-      selectedClientId1 = companyData.data!.clientId.toString();
       clientType.add(companyData); // Add the companyData to clientType list
 
       setState(() {});
@@ -91,8 +76,6 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.editCompanyComment}',
         params: {
-         
-          "id": userId.toString(),
           "company": selectedClientId1.toString(),
           "title": title.text.toString(),
           "data": data.text.toString(),
@@ -127,7 +110,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Company > Comments > Edit",
+          "Menu > Company > Add Comments",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -162,7 +145,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _EditCompanyComments(),
+                _AddCompanyComments(),
               ],
             ),
           ),
@@ -175,7 +158,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
     return Row(
       children: [
         Text(
-          "Edit Company Comments",
+          "Add Company Comments",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -186,9 +169,9 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
     );
   }
 
-  Form _EditCompanyComments() {
+  Form _AddCompanyComments() {
     return Form(
-      key: _EditCompanyCommentsKey,
+      key: _AddCompanyCommentsKey,
       child: Column(
         children: <Widget>[
           DropdownButtonFormField<String>(
@@ -281,12 +264,13 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              if (_EditCompanyCommentsKey.currentState!.validate()) {
+              if (_AddCompanyCommentsKey.currentState!.validate()) {
                 clientEdit();
+                clearField();
               }
             },
             child: Text(
-              "Update",
+              "Add",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,

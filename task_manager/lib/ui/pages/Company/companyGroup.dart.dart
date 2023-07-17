@@ -62,7 +62,7 @@ class _CompanyGroupState extends State<CompanyGroup> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Setting > SMS CompanyGroup",
+          "Menu > Company > Company Group",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -118,7 +118,7 @@ class _CompanyGroupState extends State<CompanyGroup> {
     return Row(
       children: [
         Text(
-          "CompanyGroup List",
+          "Company Group List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,

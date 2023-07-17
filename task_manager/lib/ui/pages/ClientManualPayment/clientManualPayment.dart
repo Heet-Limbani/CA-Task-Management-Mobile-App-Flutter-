@@ -1,30 +1,27 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:task_manager/API/model/companyCommentDataModel.dart';
+import 'package:task_manager/API/model/ClientManualPaymentDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/ui/pages/Company/addCompanyComment.dart';
-import 'package:task_manager/ui/pages/Company/editCompanyComment.dart';
-import '../DashBoard/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
 
-class CompanyManageComments extends StatefulWidget {
-  const CompanyManageComments({super.key});
+class ClientManualPayment extends StatefulWidget {
+  const ClientManualPayment({super.key});
 
   @override
-  State<CompanyManageComments> createState() => _CompanyManageCommentsState();
+  State<ClientManualPayment> createState() => _ClientManualPaymentState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
-class _CompanyManageCommentsState extends State<CompanyManageComments> {
+class _ClientManualPaymentState extends State<ClientManualPayment> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
-  late double deviceWidth;
-  late double deviceHeight;
+  double deviceWidth = 1.0;
+  double deviceHeight = 1.0;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
 
@@ -42,7 +39,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
   @override
   void initState() {
     super.initState();
-    _source = TableSource(context); // Initialize _source here
+    _source = TableSource(context);
   }
 
   void refreshTable() {
@@ -58,7 +55,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Setting > SMS CompanyManageComments",
+          "Menu > Client Manual Payment",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -93,10 +90,6 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                _add(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -114,39 +107,11 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
     return Row(
       children: [
         Text(
-          "Comment List",
+          "Manual Payment List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row _add() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        OutlinedButton(
-          onPressed: () {
-            Get.to(AddCompanyComments());
-          },
-          child: Text(
-            "Add New",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
           ),
         ),
       ],
@@ -224,7 +189,7 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('Client Name'),
               onSort: setSort,
             ),
             DataColumn(
@@ -232,15 +197,19 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Data'),
+              label: const Text('Image'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Date'),
+              label: const Text('Amount'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Action'),
+              label: const Text('Description'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Requested On'),
               onSort: setSort,
             ),
           ],
@@ -322,52 +291,63 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
+class TableSource
+    extends AdvancedDataTableSource<ClientManualPaymentDataModel> {
   final BuildContext context; // Add the context parameter
 
-  TableSource(this.context);
+  TableSource(this.context); // Add the context parameter
+
+ 
+  double get deviceWidth => MediaQuery.of(context).size.width;
+  double get deviceHeight => MediaQuery.of(context).size.height;
+
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
 
-  int startIndex = 0; // Add the startIndex variable
+  int startIndex = 0;
+  int countIds(String ids) {
+    if (ids.isEmpty) {
+      return 0;
+    }
 
+    List<String> idList = ids.split(',');
+    return idList.length;
+  }
+ void showImage(String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialog(
+        child: Image.network(imageUrl),
+      ),
+    );
+  }
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final CompanyCommentDataModel dataList = lastDetails!.rows[index];
-
+    final ClientManualPaymentDataModel dataList = lastDetails!.rows[index];
+    String img = Urls.baseUrlMain + Urls.manualPayment + dataList.image!;
+    print("img: $img");
+    //output :-img: https://task.mysyva.net/backend/assets/client_receipt/Screenshot_from_2023-04-27_16-52-07.png
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.name ?? '')),
+        DataCell(Text(dataList.clientFirstName ?? '')),
         DataCell(Text(dataList.title ?? '')),
-        DataCell(Text(dataList.data ?? '')),
-        DataCell(Text(dataList.date ?? '')),
-        DataCell(
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.id != null) {
-                          Get.to(EditCompanyComments(id: dataList.id!));
-                        }
-                      },
-                      child: Icon(Icons.edit),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                  ],
-                ),
-              ],
+         DataCell(
+          GestureDetector(
+            onTap: () => showImage(img), // Show the image on tap
+            child: Image.network(
+              img,
+              width: deviceWidth * 0.1, // Set the desired width
+              height: deviceHeight * 1, // Set the desired height
+              fit: BoxFit.contain, // Adjust the image within the specified size
             ),
           ),
         ),
+        DataCell(Text(dataList.amount ?? '')),
+        DataCell(Text(dataList.description ?? '')),
+        DataCell(Text(dataList.createdOn ?? '')),
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
@@ -394,7 +374,7 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<CompanyCommentDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ClientManualPaymentDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -405,7 +385,7 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.manageCompanyComment}',
+      method: '${Urls.clientManualPayment}',
       params: queryParameter,
     );
 
@@ -417,15 +397,15 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<CompanyCommentDataModel>(
-              (item) => CompanyCommentDataModel.fromJson(
+            .map<ClientManualPaymentDataModel>(
+              (item) => ClientManualPaymentDataModel.fromJson(
                   item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<CompanyCommentDataModel>(
-                  (item) => CompanyCommentDataModel.fromJson(
+                .map<ClientManualPaymentDataModel>(
+                  (item) => ClientManualPaymentDataModel.fromJson(
                       item as Map<String, dynamic>),
                 )
                 .length

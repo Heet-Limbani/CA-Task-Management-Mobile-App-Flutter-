@@ -1,28 +1,61 @@
-class CompanyDataModel3 {
+class TaskDataModel {
+  List<Company>? company;
   List<Employee>? employee;
-  Company? company;
+  List<Department>? department;
 
-  CompanyDataModel3({this.employee, this.company});
+  TaskDataModel({this.company, this.employee, this.department});
 
-  CompanyDataModel3.fromJson(Map<String, dynamic> json) {
+  TaskDataModel.fromJson(Map<String, dynamic> json) {
+    if (json['company'] != null) {
+      company = <Company>[];
+      json['company'].forEach((v) {
+        company!.add(new Company.fromJson(v));
+      });
+    }
     if (json['employee'] != null) {
       employee = <Employee>[];
       json['employee'].forEach((v) {
         employee!.add(new Employee.fromJson(v));
       });
     }
-    company =
-        json['company'] != null ? new Company.fromJson(json['company']) : null;
+    if (json['department'] != null) {
+      department = <Department>[];
+      json['department'].forEach((v) {
+        department!.add(new Department.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.company != null) {
+      data['company'] = this.company!.map((v) => v.toJson()).toList();
+    }
     if (this.employee != null) {
       data['employee'] = this.employee!.map((v) => v.toJson()).toList();
     }
-    if (this.company != null) {
-      data['company'] = this.company!.toJson();
+    if (this.department != null) {
+      data['department'] = this.department!.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Company {
+  String? id;
+  String? text;
+
+  Company({this.id, this.text});
+
+  Company.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    text = json['text'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['text'] = this.text;
     return data;
   }
 }
@@ -176,86 +209,23 @@ class Employee {
   }
 }
 
-class Company {
+class Department {
   String? id;
-  String? userId;
-  String? employeeId;
-  String? clientId;
   String? name;
-  String? startingDate;
-  String? proprietorName;
-  String? mobile;
-  String? email;
-  String? add1;
-  String? add2;
-  String? state;
-  String? dist;
-  String? groupId;
-  String? gstno;
-  String? panno;
-  String? ref;
   String? dl;
 
-  Company(
-      {this.id,
-      this.userId,
-      this.employeeId,
-      this.clientId,
-      this.name,
-      this.startingDate,
-      this.proprietorName,
-      this.mobile,
-      this.email,
-      this.add1,
-      this.add2,
-      this.state,
-      this.dist,
-      this.groupId,
-      this.gstno,
-      this.panno,
-      this.ref,
-      this.dl});
+  Department({this.id, this.name, this.dl});
 
-  Company.fromJson(Map<String, dynamic> json) {
+  Department.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['user_id'];
-    employeeId = json['employee_id'];
-    clientId = json['client_id'];
     name = json['name'];
-    startingDate = json['starting_date'];
-    proprietorName = json['proprietor_name'];
-    mobile = json['mobile'];
-    email = json['email'];
-    add1 = json['add1'];
-    add2 = json['add2'];
-    state = json['state'];
-    dist = json['dist'];
-    groupId = json['group_id'];
-    gstno = json['gstno'];
-    panno = json['panno'];
-    ref = json['ref'];
     dl = json['dl'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['employee_id'] = this.employeeId;
-    data['client_id'] = this.clientId;
     data['name'] = this.name;
-    data['starting_date'] = this.startingDate;
-    data['proprietor_name'] = this.proprietorName;
-    data['mobile'] = this.mobile;
-    data['email'] = this.email;
-    data['add1'] = this.add1;
-    data['add2'] = this.add2;
-    data['state'] = this.state;
-    data['dist'] = this.dist;
-    data['group_id'] = this.groupId;
-    data['gstno'] = this.gstno;
-    data['panno'] = this.panno;
-    data['ref'] = this.ref;
     data['dl'] = this.dl;
     return data;
   }

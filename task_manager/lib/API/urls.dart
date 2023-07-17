@@ -7,6 +7,7 @@ import 'package:task_manager/API/model/genModel.dart';
 class Urls {
 
   static String baseUrlMain = "https://task.mysyva.net/backend/";
+  static String manualPayment = "assets/client_receipt/";
 
   static String login = "${Urls.baseUrlMain}Login";
   static String adminDashBoard = "${Urls.baseUrlMain}AdminDashboard";
@@ -38,6 +39,7 @@ class Urls {
   static String clientViewInvoiceDetails = "${Urls.baseUrlMain}LoadInvoiceList";
   static String taskViewTaskDetails = "${Urls.baseUrlMain}ViewTask";
   static String loadTaskOnboard = "${Urls.baseUrlMain}LoadTaskOnboard";
+  static String loadTask = "${Urls.baseUrlMain}LoadTask";
   static String loadTaskUnPaid = "${Urls.baseUrlMain}unpaid_task_board";
   static String company = "${Urls.baseUrlMain}Company";
   static String addCompany = "${Urls.baseUrlMain}AddCompany";
@@ -53,6 +55,14 @@ class Urls {
   static String editCompanyGroup = "${Urls.baseUrlMain}EditCompanyGroup";
   static String manageCompanyComment = "${Urls.baseUrlMain}ManageComments";
   static String editCompanyComment = "${Urls.baseUrlMain}EditComments";
+  static String clientManualPayment = "${Urls.baseUrlMain}Client_Manual_Payment";
+  static String department = "${Urls.baseUrlMain}Department";
+  static String editDepartment = "${Urls.baseUrlMain}EditDepartment";
+  static String addDepartment = "${Urls.baseUrlMain}AddDepartment";
+  static String deleteDepartment = "${Urls.baseUrlMain}DeleteDepartment";
+  static String addTask = "${Urls.baseUrlMain}AddTask";
+  static String fileForTask = "${Urls.baseUrlMain}GetAllFileforTask";
+  static String addFileForTask = "${Urls.baseUrlMain}InsertDataintoFile";
 
 
   static String profileEmail = "";
