@@ -101,6 +101,7 @@ class _EditCompanyState extends State<EditCompany> {
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
 
+
       final companyData = CompanyDataModel2.fromJson(data);
 
       //clientName.text = companyData.company!.name.toString();
@@ -130,6 +131,7 @@ class _EditCompanyState extends State<EditCompany> {
         method: '${Urls.editCompany}',
         params: {
           "save": "save",
+
           "id": userId.toString(),
           "Employee": selectedClientId1.toString(),
           "name": companyName.text.toString(),

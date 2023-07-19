@@ -578,10 +578,10 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
           ),
         ),
       ],
-      selected: selectedIds.contains(dataList.ticketId),
-      onSelectChanged: (value) {
-        selectedRow(dataList.ticketId.toString(), value ?? false);
-      },
+      // selected: selectedIds.contains(dataList.ticketId),
+      // onSelectChanged: (value) {
+      //   selectedRow(dataList.ticketId.toString(), value ?? false);
+      // },
     );
   }
 

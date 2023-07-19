@@ -571,10 +571,10 @@ class ClientSource extends AdvancedDataTableSource<Client> {
           icon: Icon(Icons.delete),
         )),
       ],
-      selected: selectedIds.contains(log.id),
-      onSelectChanged: (value) {
-        selectedRow(log.id.toString(), value ?? false);
-      },
+      // selected: selectedIds.contains(log.id),
+      // onSelectChanged: (value) {
+      //   selectedRow(log.id.toString(), value ?? false);
+      // },
     );
   }
 

@@ -430,10 +430,10 @@ class ClientSource extends AdvancedDataTableSource<Ticket> {
         DataCell(Text(ticket.amount ?? "")),
         DataCell(Text(statusText)),
       ],
-      selected: selectedIds.contains(ticket.ticketId),
-      onSelectChanged: (value) {
-        selectedRow(ticket.ticketId.toString(), value ?? false);
-      },
+      // selected: selectedIds.contains(ticket.ticketId),
+      // onSelectChanged: (value) {
+      //   selectedRow(ticket.ticketId.toString(), value ?? false);
+      // },
     );
   }
 

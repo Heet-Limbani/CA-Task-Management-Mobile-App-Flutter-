@@ -12,6 +12,7 @@ import 'package:task_manager/ui/pages/Client_Password/client_password.dart';
 import 'package:task_manager/ui/pages/Company%20View/company1.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
+import 'package:task_manager/ui/pages/File_Manager/fileManager.dart';
 import 'package:task_manager/ui/pages/File_Manager/file_manager.dart';
 import 'package:task_manager/ui/pages/Holiday/holiday.dart';
 import 'package:task_manager/ui/pages/Invoice/custom_Invoice.dart';
@@ -213,7 +214,7 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.folder),
             title: Text('File Manager'),
             onTap: () {
-              Get.to(File_Manager());
+              Get.to(FileManager());
             },
           ),
           ListTile(

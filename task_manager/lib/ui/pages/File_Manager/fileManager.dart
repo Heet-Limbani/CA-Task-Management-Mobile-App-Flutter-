@@ -1,54 +1,72 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/clientLoginDataModel.dart';
+import 'package:task_manager/API/model/fileGetDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/API/model/logModel.dart';
-import 'package:task_manager/ui/pages/Users/editClientForm.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/File_Manager/addFile.dart';
+import 'package:task_manager/ui/pages/File_Manager/dispatchFile.dart';
+import 'package:task_manager/ui/pages/File_Manager/editFile.dart';
+import 'package:task_manager/ui/pages/File_Manager/manageLocation.dart';
+import 'package:task_manager/ui/pages/File_Manager/viewDispatchFile.dart';
 
-class ClientLoginDetails extends StatefulWidget {
-  final String userId;
-  const ClientLoginDetails({required this.userId, Key? key}) : super(key: key);
+class FileManager extends StatefulWidget {
+  const FileManager({super.key});
+
   @override
-  State<ClientLoginDetails> createState() => _ClientLoginDetailsState();
+  State<FileManager> createState() => _FileManagerState();
 }
 
-String userId = '';
+TextEditingController nameController =
+    TextEditingController(); // Define the TextEditingController
 
-late double deviceWidth;
-late double deviceHeight;
-late ClientSource _source; // Declare _source here
+TextEditingController nameController1 = TextEditingController();
 
-//final _source = ClientSource(context);
-var _sortIndex = 0;
-var _sortAsc = true;
-var _customFooter = false;
-var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
-TextEditingController _searchController = TextEditingController();
+class _FileManagerState extends State<FileManager> {
+  late TableSource _source; // Declare _source here
 
-class _ClientLoginDetailsState extends State<ClientLoginDetails> {
+  String? stringResponse;
+  late double deviceWidth;
+  late double deviceHeight;
+  TextEditingController searchLogController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
+
+  var _sortIndex = 0;
+  var _sortAsc = true;
+  var _customFooter = false;
+  var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
+
+  // ignore: avoid_positional_boolean_parameters
+  void setSort(int i, bool asc) => setState(() {
+        _sortIndex = i;
+        _sortAsc = asc;
+      });
+
   @override
   void initState() {
     super.initState();
-    _source = ClientSource(context); // Initialize _source here
-
-    userId = widget.userId; // Store widget.userId in a local variable
-    print("userId :- $userId");
+    _source = TableSource(context); // Initialize _source here
+    refreshTable();
   }
 
-  @override
+  void refreshTable() {
+    setState(() {
+      _source.startIndex = 0;
+      _source.setNextView();
+    });
+  }
+
+ 
+
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Users > Client > viewClient > Login",
+          "Menu > File Manager",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -64,22 +82,6 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
     );
   }
 
-  void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
-    setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
-      _source.startIndex = 0;
-      _source.setNextView();
-    });
-  }
-
-  void setSort(int i, bool asc) => setState(() {
-        _sortIndex = i;
-        _sortAsc = asc;
-      });
-
   Stack _buildBody() {
     return Stack(
       children: [
@@ -93,11 +95,15 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                 height: deviceHeight * 0.04,
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
                 SizedBox(
-                  height: deviceHeight * 0.01,
+                  height: deviceHeight * 0.02,
+                ),
+                _add(),
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
                 _table(),
                 SizedBox(
@@ -111,27 +117,94 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
     );
   }
 
+  // Table heading
   Row _header() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Client Login Details",
+          "Manage File",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
           ),
         ),
-        SizedBox(
-          width: 30,
-        ),
-        const Spacer(),
       ],
     );
   }
 
+   Row _add() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        OutlinedButton(
+          onPressed: () {
+            Get.to(ViewDispatchFile());
+          },
+          child: Text(
+            "View Dispatch File",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        //const Spacer(),
+        OutlinedButton(
+          onPressed: () {
+            Get.to(ManageLocation());
+          },
+          child: Text(
+            "Manage Location",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        OutlinedButton(
+          onPressed: () {
+            Get.to(AddFile());
+          },
+          child: Text(
+            "Add File",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
   Column _table() {
     return Column(
       children: <Widget>[
@@ -147,7 +220,7 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
                 child: TextField(
                   controller: _searchController,
                   decoration: const InputDecoration(
-                    labelText: 'Search by User Name',
+                    labelText: 'Search',
                   ),
                   onSubmitted: (vlaue) {
                     _source.filterServerSide(_searchController.text);
@@ -189,7 +262,6 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
           showFirstLastButtons: true,
           rowsPerPage: _rowsPerPage,
           availableRowsPerPage: const [10, 20, 50, 100, 200],
-
           onRowsPerPageChanged: (newRowsPerPage) {
             if (newRowsPerPage != null) {
               setState(() {
@@ -203,25 +275,33 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
               numeric: true,
               onSort: setSort,
             ),
-            // DataColumn(
-            //   label: const Text('Client Name'),
-            //   onSort: setSort,
-            // ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('File Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Login'),
+              label: const Text('Client Name'),
               onSort: setSort,
             ),
-            DataColumn(
-              label: const Text('Logout'),
+              DataColumn(
+              label: const Text('Location'),
               onSort: setSort,
             ),
+              DataColumn(
+              label: const Text('File Number'),
+              onSort: setSort,
+            ),
+              DataColumn(
+              label: const Text('Inward Date'),
+              onSort: setSort,
+            ),
+              DataColumn(
+              label: const Text('Action'),
+              onSort: setSort,
+            ),  
+
           ],
           //Optianl override to support custom data row text / translation
-
           getFooterRowText:
               (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
             final localizations = MaterialLocalizations.of(context);
@@ -297,121 +377,80 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
   }
 }
 
-class ClientDataSource extends DataTableSource {
-  final List<Log> log;
-  final int totalCount;
-  final int startIndex;
-
-  ClientDataSource(this.log, this.totalCount, this.startIndex);
-
-  @override
-  DataRow getRow(int index) {
-    final clientIndex = startIndex + index;
-    if (clientIndex >= log.length) {
-      return DataRow(cells: [
-        DataCell(Text('')),
-        //DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-      ]);
-    }
-    void deleteUser(String? clientId) async {
-      if (clientId != null) {
-        print("clientId :- $clientId");
-        genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.clientViewLogDetailsEdit}',
-          params: {'id': clientId, 'delete': "delete"},
-        );
-
-        if (genmodel != null && genmodel.status == true) {
-          Fluttertoast.showToast(
-            msg: "${genmodel.message.toString()}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
-        }
-      }
-    }
-
-    final client = log[clientIndex];
-
-    return DataRow(cells: [
-      DataCell(Text((clientIndex + 1).toString())),
-      //DataCell(Text(client.client ?? "")),
-      DataCell(Text(client.message ?? "")),
-      DataCell(Text(client.description ?? "")),
-      DataCell(Text(client.onDate.toString())),
-      DataCell(Text(client.createdOn ?? "")),
-      DataCell(
-        IconButton(
-          onPressed: () {
-            Get.to(EditClientForm(userId: client.id!));
-          },
-          icon: Icon(Icons.edit),
-        ),
-      ),
-      DataCell(IconButton(
-        onPressed: () {
-          print("client.id :- ${client.id}");
-          deleteUser(client.id!);
-        },
-        icon: Icon(Icons.delete),
-      )),
-    ]);
-  }
-
-  @override
-  int get rowCount => totalCount;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-/////////////
-///
-///////
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class ClientSource extends AdvancedDataTableSource<Login> {
+class TableSource extends AdvancedDataTableSource<FileGetDataModel> {
   final BuildContext context; // Add the context parameter
-  ClientSource(this.context);
+
+  TableSource(this.context);
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
 
   int startIndex = 0; // Add the startIndex variable
 
+
+  
+  int countIds(String ids) {
+    if (ids.isEmpty) {
+      return 0;
+    }
+
+    List<String> idList = ids.split(',');
+    return idList.length;
+  }
+
   @override
   DataRow? getRow(int index) {
-    final int srNo = startIndex + index + 1;
-    final login = lastDetails!.rows[index];
-    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(login.loginTime ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd  HH:mm:ss').format(parsedDate);
-    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(login.logoutTime ?? '0') * 1000);
-    final formattedDate1 = DateFormat('yyyy-MM-dd  HH:mm:ss').format(parsedDate1);
-    //print("parsedDate $parsedDate");
+    final srNo = (startIndex + index + 1).toString();
+    final FileGetDataModel dataList = lastDetails!.rows[index];
 
     return DataRow(
       cells: [
-        DataCell(Text(srNo.toString())),
-        //DataCell(Text(client.client ?? "")),
-        DataCell(Text(login.userName ?? "")),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(formattedDate1)),
+        DataCell(Text(srNo)),
+        DataCell(Text(dataList.name ?? '')),
+        DataCell(Text(dataList.company ?? '')),
+        DataCell(Text(dataList.location ?? '')),
+        DataCell(Text(dataList.locationNum ?? '')),
+        DataCell(Text(dataList.inwardTime ?? '')),
+        DataCell(
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (dataList.id != null) {
+                         Get.to(EditFile(userId: dataList.id!) );
+                        }
+                      },
+                      child: Icon(Icons.edit),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (dataList.id != null) {
+                         Get.to(DispatchFile(userId: dataList.id!) );
+                        }
+                      },
+                      child: Icon(Icons.ios_share),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
       ],
-      // selected: selectedIds.contains(login.id),
+      // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
-      //   selectedRow(login.id.toString(), value ?? false);
+      //   selectedRow(dataList.id.toString(), value ?? false);
       // },
     );
   }
@@ -419,55 +458,54 @@ class ClientSource extends AdvancedDataTableSource<Login> {
   @override
   int get selectedRowCount => selectedIds.length;
 
-  void selectedRow(String id, bool newSelectState) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
-    } else {
-      selectedIds.add(id);
-    }
-    notifyListeners();
-  }
+  // void selectedRow(String id, bool newSelectState) {
+  //   if (selectedIds.contains(id)) {
+  //     selectedIds.remove(id);
+  //   } else {
+  //     selectedIds.add(id);
+  //   }
+  //   notifyListeners();
+  // }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
     setNextView();
   }
 
-  void refresh() {
-    setNextView();
-  }
-
   @override
-  Future<RemoteDataSourceDetails<Login>> getNextPage(
+  Future<RemoteDataSourceDetails<FileGetDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
     final queryParameter = <String, dynamic>{
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
-      'id': userId,
+      'limit': pageRequest.pageSize.toString()
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientViewLoginDetails}',
+      method: '${Urls.getFile}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
 
       return RemoteDataSourceDetails(
-        dataModel.count ?? 0,
+        //dataModel.count ?? 0,
+        count,
         dynamicData
-            .map<Login>(
-              (item) => Login.fromJson(item as Map<String, dynamic>),
+            .map<FileGetDataModel>(
+              (item) =>
+                  FileGetDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<Login>(
-                  (item) => Login.fromJson(item as Map<String, dynamic>),
+                .map<FileGetDataModel>(
+                  (item) => FileGetDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

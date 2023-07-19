@@ -43,6 +43,30 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         _sortAsc = asc;
       });
 
+  final _source1 = TableSource();
+  var _sortIndex1 = 0;
+  var _sortAsc1 = true;
+  var _customFooter1 = false;
+  var _rowsPerPage1 = AdvancedPaginatedDataTable.defaultRowsPerPage;
+  TextEditingController _searchController1 = TextEditingController();
+
+  void setSort1(int i, bool asc) => setState(() {
+        _sortIndex1 = i;
+        _sortAsc1 = asc;
+      });
+
+  final _source2 = TableSource2();
+  var _sortIndex2 = 0;
+  var _sortAsc2 = true;
+  var _customFooter2 = false;
+  var _rowsPerPage2 = AdvancedPaginatedDataTable.defaultRowsPerPage;
+  TextEditingController _searchController2 = TextEditingController();
+
+  void setSort2(int i, bool asc) => setState(() {
+        _sortIndex1 = i;
+        _sortAsc1 = asc;
+      });
+
 // end here
 
   List<GetUser> clientType = [];
@@ -140,6 +164,20 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     setState(() {
       _source.startIndex = 0;
       _source.setNextView();
+    });
+  }
+
+  void refreshTable1() {
+    setState(() {
+      _source1.startIndex = 0;
+      _source1.setNextView();
+    });
+  }
+
+  void refreshTable2() {
+    setState(() {
+      _source2.startIndex = 0;
+      _source2.setNextView();
     });
   }
 
@@ -787,7 +825,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.unpaidTaskBoardCount ?? '0') != 0) {
-                     Get.to(
+                    Get.to(
                       TaskUnPaid(),
                     );
                   } else {
@@ -1554,6 +1592,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //     ),
         //   ],
         // ),
+
         Row(
           children: [
             Text(
@@ -1570,42 +1609,194 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-        Column(
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Sr. No.'), numeric: true),
-                      DataColumn(label: Text('User ID')),
-                      DataColumn(label: Text('Name')),
-                      DataColumn(label: Text('Birth Date')),
-                    ],
-                    rows: dataBirthdayList?.birthday?.map((birthday) {
-                          final index =
-                              dataBirthdayList?.birthday?.indexOf(birthday) ??
-                                  -1;
-                          final srNo = (index + 1).toString();
-                          final userId = birthday.userId;
-                          final name = birthday.userName;
-
-                          return DataRow(cells: [
-                            DataCell(Text(srNo)),
-                            DataCell(Text(userId!)),
-                            DataCell(Text(name!)),
-                            DataCell(Text('')),
-                          ]);
-                        }).toList() ??
-                        [],
-                    dataRowHeight: 32.0,
+         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _searchController2,
+                  decoration: const InputDecoration(
+                    labelText: 'Search by User Name',
                   ),
-                ],
+                  onSubmitted: (vlaue) {
+                    _source2.filterServerSide(_searchController2.text);
+                  },
+                ),
               ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _searchController2.text = '';
+                });
+                _source2.filterServerSide(_searchController2.text);
+                ;
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            IconButton(
+              onPressed: () =>
+                  _source2.filterServerSide(_searchController2.text),
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              onPressed: refreshTable2,
             ),
           ],
         ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+
+        AdvancedPaginatedDataTable(
+          addEmptyRows: false,
+          source: _source2,
+          showHorizontalScrollbarAlways: true,
+          sortAscending: _sortAsc2,
+          sortColumnIndex: _sortIndex2,
+          showFirstLastButtons: true,
+          rowsPerPage: _rowsPerPage2,
+          availableRowsPerPage: const [10, 20, 50, 100, 200],
+
+          onRowsPerPageChanged: (newRowsPerPage) {
+            if (newRowsPerPage != null) {
+              setState(() {
+                _rowsPerPage2 = newRowsPerPage;
+              });
+            }
+          },
+          columns: [
+            DataColumn(
+              label: const Text('Sr. No.'),
+              numeric: true,
+              onSort: setSort2,
+            ),
+            DataColumn(
+              label: const Text('ID'),
+              onSort: setSort2,
+            ),
+            DataColumn(
+              label: const Text('Name'),
+              onSort: setSort2,
+            ),
+            DataColumn(
+              label: const Text('Birth Date'),
+              onSort: setSort2,
+            ),
+          ],
+          //Optianl override to support custom data row text / translation
+
+          getFooterRowText:
+              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
+            final localizations = MaterialLocalizations.of(context);
+            var amountText = localizations.pageRowsInfoTitle(
+              startRow,
+              pageSize,
+              totalFilter ?? totalRowsWithoutFilter,
+              false,
+            );
+
+            if (totalFilter != null) {
+              //Filtered data source show addtional information
+              amountText += ' filtered from ($totalRowsWithoutFilter)';
+            }
+
+            return amountText;
+          },
+          customTableFooter: _customFooter2
+              ? (source1, offset) {
+                  const maxPagesToShow = 6;
+                  const maxPagesBeforeCurrent = 3;
+                  final lastRequestDetails = source1.lastDetails!;
+                  final rowsForPager = lastRequestDetails.filteredRows ??
+                      lastRequestDetails.totalRows;
+                  final totalPages = rowsForPager ~/ _rowsPerPage2;
+                  final currentPage = (offset ~/ _rowsPerPage2) + 1;
+                  final List<int> pageList = [];
+                  if (currentPage > 1) {
+                    pageList.addAll(
+                      List.generate(currentPage - 1, (index) => index + 1),
+                    );
+                    //Keep up to 3 pages before current in the list
+                    pageList.removeWhere(
+                      (element) =>
+                          element < currentPage - maxPagesBeforeCurrent,
+                    );
+                  }
+                  pageList.add(currentPage);
+                  //Add reminding pages after current to the list
+                  pageList.addAll(
+                    List.generate(
+                      maxPagesToShow - (pageList.length - 1),
+                      (index) => (currentPage + 1) + index,
+                    ),
+                  );
+                  pageList.removeWhere((element) => element > totalPages);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: pageList
+                        .map(
+                          (e) => TextButton(
+                            onPressed: e != currentPage
+                                ? () {
+                                    //Start index is zero based
+                                    source1.setNextView(
+                                      startIndex: (e - 1) * _rowsPerPage1,
+                                    );
+                                  }
+                                : null,
+                            child: Text(
+                              e.toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+              : null,
+        ),
+        // Column(
+        //   children: <Widget>[
+        //     SingleChildScrollView(
+        //       scrollDirection: Axis.horizontal,
+        //       child: Row(
+        //         children: [
+        //           DataTable(
+        //             columns: const [
+        //               DataColumn(label: Text('Sr. No.'), numeric: true),
+        //               DataColumn(label: Text('User ID')),
+        //               DataColumn(label: Text('Name')),
+        //               DataColumn(label: Text('Birth Date')),
+        //             ],
+        //             rows: dataBirthdayList?.birthday?.map((birthday) {
+        //                   final index =
+        //                       dataBirthdayList?.birthday?.indexOf(birthday) ??
+        //                           -1;
+        //                   final srNo = (index + 1).toString();
+        //                   final userId = birthday.userId;
+        //                   final name = birthday.userName;
+
+        //                   return DataRow(cells: [
+        //                     DataCell(Text(srNo)),
+        //                     DataCell(Text(userId!)),
+        //                     DataCell(Text(name!)),
+        //                     DataCell(Text('')),
+        //                   ]);
+        //                 }).toList() ??
+        //                 [],
+        //             dataRowHeight: 32.0,
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   ],
+        // ),
         SizedBox(
           height: deviceHeight * 0.1,
         ),
@@ -1625,48 +1816,201 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-        Column(
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  DataTable(
-                    columns: const [
-                      DataColumn(label: Text('Sr. No.'), numeric: true),
-                      DataColumn(label: Text('Title')),
-                      DataColumn(label: Text('Description')),
-                      DataColumn(label: Text('Date')),
-                    ],
-                    rows: dataHolidayList?.holiday?.map((holiday) {
-                          final index =
-                              dataHolidayList?.holiday?.indexOf(holiday) ?? -1;
-                          final srNo = (index + 1).toString();
-                          final title = holiday.title ?? '';
-                          final description = holiday.description ?? '';
-                          final date = DateTime.fromMillisecondsSinceEpoch(
-                              (int.tryParse(holiday.date!.toString()) ?? 0) *
-                                  1000);
-                          final formattedDate =
-                              DateFormat('dd/MM/yyyy').format(date);
-                          return DataRow(cells: [
-                            DataCell(Text(srNo)),
-                            DataCell(Text(title)),
-                            DataCell(Text(description)),
-                            DataCell(Text(formattedDate.toString())),
-                          ]);
-                        }).toList() ??
-                        [],
-                    dataRowHeight: 32.0,
-                  )
-                ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _searchController1,
+                  decoration: const InputDecoration(
+                    labelText: 'Search by User Name',
+                  ),
+                  onSubmitted: (vlaue) {
+                    _source1.filterServerSide(_searchController1.text);
+                  },
+                ),
               ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _searchController1.text = '';
+                });
+                _source1.filterServerSide(_searchController1.text);
+                ;
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            IconButton(
+              onPressed: () =>
+                  _source1.filterServerSide(_searchController1.text),
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              onPressed: refreshTable1,
             ),
           ],
         ),
         SizedBox(
-          height: deviceHeight * 0.2,
+          height: deviceHeight * 0.02,
         ),
+
+        AdvancedPaginatedDataTable(
+          addEmptyRows: false,
+          source: _source1,
+          showHorizontalScrollbarAlways: true,
+          sortAscending: _sortAsc1,
+          sortColumnIndex: _sortIndex1,
+          showFirstLastButtons: true,
+          rowsPerPage: _rowsPerPage1,
+          availableRowsPerPage: const [10, 20, 50, 100, 200],
+
+          onRowsPerPageChanged: (newRowsPerPage) {
+            if (newRowsPerPage != null) {
+              setState(() {
+                _rowsPerPage1 = newRowsPerPage;
+              });
+            }
+          },
+          columns: [
+            DataColumn(
+              label: const Text('Sr. No.'),
+              numeric: true,
+              onSort: setSort1,
+            ),
+            DataColumn(
+              label: const Text('Title'),
+              onSort: setSort1,
+            ),
+            DataColumn(
+              label: const Text('Description'),
+              onSort: setSort1,
+            ),
+            DataColumn(
+              label: const Text('Date'),
+              onSort: setSort1,
+            ),
+          ],
+          //Optianl override to support custom data row text / translation
+
+          getFooterRowText:
+              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
+            final localizations = MaterialLocalizations.of(context);
+            var amountText = localizations.pageRowsInfoTitle(
+              startRow,
+              pageSize,
+              totalFilter ?? totalRowsWithoutFilter,
+              false,
+            );
+
+            if (totalFilter != null) {
+              //Filtered data source show addtional information
+              amountText += ' filtered from ($totalRowsWithoutFilter)';
+            }
+
+            return amountText;
+          },
+          customTableFooter: _customFooter1
+              ? (source1, offset) {
+                  const maxPagesToShow = 6;
+                  const maxPagesBeforeCurrent = 3;
+                  final lastRequestDetails = source1.lastDetails!;
+                  final rowsForPager = lastRequestDetails.filteredRows ??
+                      lastRequestDetails.totalRows;
+                  final totalPages = rowsForPager ~/ _rowsPerPage1;
+                  final currentPage = (offset ~/ _rowsPerPage1) + 1;
+                  final List<int> pageList = [];
+                  if (currentPage > 1) {
+                    pageList.addAll(
+                      List.generate(currentPage - 1, (index) => index + 1),
+                    );
+                    //Keep up to 3 pages before current in the list
+                    pageList.removeWhere(
+                      (element) =>
+                          element < currentPage - maxPagesBeforeCurrent,
+                    );
+                  }
+                  pageList.add(currentPage);
+                  //Add reminding pages after current to the list
+                  pageList.addAll(
+                    List.generate(
+                      maxPagesToShow - (pageList.length - 1),
+                      (index) => (currentPage + 1) + index,
+                    ),
+                  );
+                  pageList.removeWhere((element) => element > totalPages);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: pageList
+                        .map(
+                          (e) => TextButton(
+                            onPressed: e != currentPage
+                                ? () {
+                                    //Start index is zero based
+                                    source1.setNextView(
+                                      startIndex: (e - 1) * _rowsPerPage1,
+                                    );
+                                  }
+                                : null,
+                            child: Text(
+                              e.toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+              : null,
+        ),
+        SizedBox(
+          height: deviceHeight * 0.1,
+        ),
+
+    //     Column(
+    //       children: <Widget>[
+    //         SingleChildScrollView(
+    //           scrollDirection: Axis.horizontal,
+    //           child: Row(
+    //             children: [
+    //               DataTable(
+    //                 columns: const [
+    //                   DataColumn(label: Text('Sr. No.'), numeric: true),
+    //                   DataColumn(label: Text('Title')),
+    //                   DataColumn(label: Text('Description')),
+    //                   DataColumn(label: Text('Date')),
+    //                 ],
+    //                 rows: dataHolidayList?.holiday?.map((holiday) {
+    //                       final index =
+    //                           dataHolidayList?.holiday?.indexOf(holiday) ?? -1;
+    //                       final srNo = (index + 1).toString();
+    //                       final title = holiday.title ?? '';
+    //                       final description = holiday.description ?? '';
+    //                       final date = DateTime.fromMillisecondsSinceEpoch(
+    //                           (int.tryParse(holiday.date!.toString()) ?? 0) *
+    //                               1000);
+    //                       final formattedDate =
+    //                           DateFormat('dd/MM/yyyy').format(date);
+    //                       return DataRow(cells: [
+    //                         DataCell(Text(srNo)),
+    //                         DataCell(Text(title)),
+    //                         DataCell(Text(description)),
+    //                         DataCell(Text(formattedDate.toString())),
+    //                       ]);
+    //                     }).toList() ??
+    //                     [],
+    //                 dataRowHeight: 32.0,
+    //               )
+    //             ],
+    //           ),
+    //         ),
+    //       ],
+    //     ),
       ],
     );
   }
@@ -1793,10 +2137,10 @@ class ClientSource extends AdvancedDataTableSource<Client> {
         DataCell(Text(formattedDate)),
         DataCell(Text(client.createdOn ?? "")),
       ],
-      selected: selectedIds.contains(client.id),
-      onSelectChanged: (value) {
-        selectedRow(client.id.toString(), value ?? false);
-      },
+      // selected: selectedIds.contains(client.id),
+      // onSelectChanged: (value) {
+      //   selectedRow(client.id.toString(), value ?? false);
+      // },
     );
   }
 
@@ -1855,6 +2199,186 @@ class ClientSource extends AdvancedDataTableSource<Client> {
                 .length
             : null,
       );
+    } else {
+      throw Exception('Unable to query remote server');
+    }
+  }
+}
+
+typedef SelectedCallBack1 = Function(String id, bool newSelectState);
+
+class TableSource extends AdvancedDataTableSource<HolidayList> {
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+  int startIndex = 0;
+  RemoteDataSourceDetails<HolidayList>? lastDetails;
+
+  @override
+  DataRow? getRow(int index) {
+    final srNo = (startIndex + index + 1).toString();
+    final List<HolidayList> rows = lastDetails!.rows;
+    if (index >= 0 && index < rows.length) {
+      final HolidayList dataList = rows[index];
+      final List<Holiday>? holidays = dataList.holiday;
+
+      if (holidays != null && holidays.isNotEmpty) {
+        final Holiday holiday = holidays.first;
+        return DataRow(
+          cells: [
+            DataCell(Text(srNo)),
+            DataCell(Text(holiday.title ?? '')),
+            DataCell(Text(holiday.description ?? '')),
+            DataCell(Text(holiday.date ?? '')),
+          ],
+        );
+      }
+    }
+    return null;
+  }
+
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.toLowerCase().trim();
+    setNextView();
+  }
+
+  @override
+  Future<RemoteDataSourceDetails<HolidayList>> getNextPage(
+    NextPageRequest pageRequest,
+  ) async {
+    startIndex = pageRequest.offset;
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+      'limit': pageRequest.pageSize.toString(),
+      'fromdt': '2020-07-18',
+      'todt': '2023-07-18',
+      'submit': 'submit',
+    };
+
+    genModel? dataModel = await Urls.postApiCall(
+      method: '${Urls.adminDashBoard}',
+      //params: queryParameter,
+    );
+
+    if (dataModel != null && dataModel.status == true) {
+      print("data model ${dataModel.data}");
+      final dynamicData = dataModel.data;
+      final holidayList = dynamicData['holiday'];
+      int count = holidayList.length ?? 0;
+
+      if (dynamicData is Map<String, dynamic> &&
+          dynamicData.containsKey('holiday')) {
+        final dynamicList = dynamicData['holiday'] as List<dynamic>?;
+        final List<HolidayList> dataList = dynamicList
+                ?.map<HolidayList>(
+                    (item) => HolidayList(holiday: [Holiday.fromJson(item)]))
+                .toList() ??
+            [];
+
+        lastDetails = RemoteDataSourceDetails<HolidayList>(
+          // dataModel.count ?? 0,
+          count,
+          dataList,
+          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
+        );
+      } else {
+        throw Exception('Invalid dynamicData format');
+      }
+
+      return lastDetails!;
+    } else {
+      throw Exception('Unable to query remote server');
+    }
+  }
+}
+
+typedef SelectedCallBack2 = Function(String id, bool newSelectState);
+
+class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+  int startIndex = 0;
+  RemoteDataSourceDetails<BirthDayList>? lastDetails;
+
+  @override
+  DataRow? getRow(int index) {
+    final srNo = (startIndex + index + 1).toString();
+    final List<BirthDayList> rows = lastDetails!.rows;
+    if (index >= 0 && index < rows.length) {
+      final BirthDayList dataList = rows[index];
+      final List<Birthday>? birthdays = dataList.birthday;
+
+      if (birthdays != null && birthdays.isNotEmpty) {
+        final Birthday birthday = birthdays.first;
+        return DataRow(
+          cells: [
+            DataCell(Text(srNo)),
+            DataCell(Text(birthday.id ?? '')),
+            DataCell(Text(birthday.userName ?? '')),
+            DataCell(Text("")),
+          ],
+        );
+      }
+    }
+    return null;
+  }
+
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.toLowerCase().trim();
+    setNextView();
+  }
+
+  @override
+  Future<RemoteDataSourceDetails<BirthDayList>> getNextPage(
+    NextPageRequest pageRequest,
+  ) async {
+    startIndex = pageRequest.offset;
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+      'limit': pageRequest.pageSize.toString(),
+      'fromdt': '2020-07-18',
+      'todt': '2023-07-18',
+      'submit': 'submit',
+    };
+
+    genModel? dataModel = await Urls.postApiCall(
+      method: '${Urls.adminDashBoard}',
+      //params: queryParameter,
+    );
+
+    if (dataModel != null && dataModel.status == true) {
+      print("data model ${dataModel.data}");
+      final dynamicData = dataModel.data;
+      final birthdayList = dynamicData['birthday_list'];
+      int count = birthdayList.length ?? 0;
+
+      if (dynamicData is Map<String, dynamic> &&
+          dynamicData.containsKey('birthday_list')) {
+        final dynamicList = dynamicData['birthday_list'] as List<dynamic>?;
+        final List<BirthDayList> dataList = dynamicList
+                ?.map<BirthDayList>(
+                    (item) => BirthDayList(birthday: [Birthday.fromJson(item)]))
+                .toList() ??
+            [];
+
+        lastDetails = RemoteDataSourceDetails<BirthDayList>(
+          // dataModel.count ?? 0,
+          count,
+          dataList,
+          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
+        );
+      } else {
+        throw Exception('Invalid dynamicData format');
+      }
+
+      return lastDetails!;
     } else {
       throw Exception('Unable to query remote server');
     }

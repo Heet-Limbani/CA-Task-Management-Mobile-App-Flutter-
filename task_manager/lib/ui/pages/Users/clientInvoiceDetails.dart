@@ -454,10 +454,10 @@ class ClientSource extends AdvancedDataTableSource<Invoice> {
       ),
     ),
   ],
-  selected: selectedIds.contains(invoice.id),
-  onSelectChanged: (value) {
-    selectedRow(invoice.id.toString(), value ?? false);
-  },
+  // selected: selectedIds.contains(invoice.id),
+  // onSelectChanged: (value) {
+  //   selectedRow(invoice.id.toString(), value ?? false);
+  // },
 );
 
 

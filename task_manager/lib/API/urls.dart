@@ -5,7 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/genModel.dart';
 
 class Urls {
-
   static String baseUrlMain = "https://task.mysyva.net/backend/";
   static String manualPayment = "assets/client_receipt/";
 
@@ -18,11 +17,14 @@ class Urls {
   static String addPaymentMethod = "${Urls.baseUrlMain}AddPaymentMethod";
   static String editPaymentMethod = "${Urls.baseUrlMain}EditPaymentMethod";
   static String deletePaymentMethod = "${Urls.baseUrlMain}DeletePaymentMethod";
-  static String configurationNotification ="${Urls.baseUrlMain}NotificationConfig";
-  static String configurationNotificationEdit ="${Urls.baseUrlMain}EditNotificationConfig";
+  static String configurationNotification =
+      "${Urls.baseUrlMain}NotificationConfig";
+  static String configurationNotificationEdit =
+      "${Urls.baseUrlMain}EditNotificationConfig";
   static String addEmployee = "${Urls.baseUrlMain}Add_Employee";
   static String deleteEmployee = "${Urls.baseUrlMain}Delete_Employee";
-  static String updateEmployeePassword ="${Urls.baseUrlMain}EmployeeResetPassword";
+  static String updateEmployeePassword =
+      "${Urls.baseUrlMain}EmployeeResetPassword";
   static String editEmployee = "${Urls.baseUrlMain}Edit_Employee";
   static String deleteClient = "${Urls.baseUrlMain}Delete_Client";
   static String updateClientPassword = "${Urls.baseUrlMain}ClientResetPassword";
@@ -35,7 +37,8 @@ class Urls {
   static String clientViewLogDetails = "${Urls.baseUrlMain}ClientLogData";
   static String clientViewLogDetailsEdit = "${Urls.baseUrlMain}EditClientLog";
   static String clientViewLoginDetails = "${Urls.baseUrlMain}ClientLoginData";
-  static String clientViewTicketDetails ="${Urls.baseUrlMain}LoadClientTicketDetail";
+  static String clientViewTicketDetails =
+      "${Urls.baseUrlMain}LoadClientTicketDetail";
   static String clientViewInvoiceDetails = "${Urls.baseUrlMain}LoadInvoiceList";
   static String taskViewTaskDetails = "${Urls.baseUrlMain}ViewTask";
   static String loadTaskOnboard = "${Urls.baseUrlMain}LoadTaskOnboard";
@@ -48,14 +51,16 @@ class Urls {
   static String companyLog = "${Urls.baseUrlMain}LoadLogDetail";
   static String companyTicket = "${Urls.baseUrlMain}LoadCompanyTicketDetail";
   static String companyFile = "${Urls.baseUrlMain}LoadCompanyFileDetail";
-  static String companyPermission = "${Urls.baseUrlMain}LoadCompanyEmpPermission";
+  static String companyPermission =
+      "${Urls.baseUrlMain}LoadCompanyEmpPermission";
   static String companyGroup = "${Urls.baseUrlMain}ManageCompanyGroup";
   static String deleteCompanyGroup = "${Urls.baseUrlMain}DeleteCompanyGroup";
   static String manageCompanyGroup = "${Urls.baseUrlMain}ManageCompanyGroup";
   static String editCompanyGroup = "${Urls.baseUrlMain}EditCompanyGroup";
   static String manageCompanyComment = "${Urls.baseUrlMain}ManageComments";
   static String editCompanyComment = "${Urls.baseUrlMain}EditComments";
-  static String clientManualPayment = "${Urls.baseUrlMain}Client_Manual_Payment";
+  static String clientManualPayment =
+      "${Urls.baseUrlMain}Client_Manual_Payment";
   static String department = "${Urls.baseUrlMain}Department";
   static String editDepartment = "${Urls.baseUrlMain}EditDepartment";
   static String addDepartment = "${Urls.baseUrlMain}AddDepartment";
@@ -63,7 +68,16 @@ class Urls {
   static String addTask = "${Urls.baseUrlMain}AddTask";
   static String fileForTask = "${Urls.baseUrlMain}GetAllFileforTask";
   static String addFileForTask = "${Urls.baseUrlMain}InsertDataintoFile";
-
+  static String getFile = "${Urls.baseUrlMain}Get_File";
+  static String editFile = "${Urls.baseUrlMain}edit_file_manage";
+  static String dispatchFile = "${Urls.baseUrlMain}update_dispatech_file";
+  static String viewDispatchFile = "${Urls.baseUrlMain}view_dispatch_file";
+  static String manageLocation = "${Urls.baseUrlMain}getdata_file_location";
+  static String editLocation = "${Urls.baseUrlMain}edit_location";
+  static String deleteLocation = "${Urls.baseUrlMain}delete_location";
+  static String defaultLocation = "${Urls.baseUrlMain}SetDefault_location";
+  static String addLocation = "${Urls.baseUrlMain}add_location";
+  static String addFile = "${Urls.baseUrlMain}Add_File";
 
   static String profileEmail = "";
   static String profileUserName = "";

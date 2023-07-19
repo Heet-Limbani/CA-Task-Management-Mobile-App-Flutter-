@@ -757,10 +757,10 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
           icon: Icon(Icons.chat),
         )),
       ],
-      selected: selectedIds.contains(dataList.iD),
-      onSelectChanged: (value) {
-        selectedRow(dataList.iD.toString(), value ?? false);
-      },
+      // selected: selectedIds.contains(dataList.iD),
+      // onSelectChanged: (value) {
+      //   selectedRow(dataList.iD.toString(), value ?? false);
+      // },
     );
   }
 
