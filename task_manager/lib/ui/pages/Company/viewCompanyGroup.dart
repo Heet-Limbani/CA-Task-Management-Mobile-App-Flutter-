@@ -223,7 +223,7 @@ class _ViewCompanyGroupState extends State<ViewCompanyGroup> {
                   DataCell(Text(title)),
                 ]);
               }).toList(),
-              dataRowHeight: 32.0,
+              dataRowMinHeight: 32.0,
             ),
           ],
         ),

@@ -189,7 +189,7 @@ class _Password_ManagerState extends State<Password_Manager> {
                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

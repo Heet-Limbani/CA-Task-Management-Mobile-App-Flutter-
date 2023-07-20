@@ -154,7 +154,7 @@ class _Company_ViewState extends State<Company_View> {
                         onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

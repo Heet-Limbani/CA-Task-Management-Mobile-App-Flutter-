@@ -525,7 +525,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-              primary: Colors.white, // Set the text color
+             
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -558,48 +558,9 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
 
 // Table heading
 
-Row _search() {
-  return Row(
-    children: [
-      Expanded(
-        child: TextField(
-          decoration: InputDecoration(
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              hintText: 'Search',
-              suffixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: const BorderSide())),
-        ),
-      ),
-    ],
-  );
-}
 
-Row _add() {
-  return Row(
-    children: [
-      OutlinedButton(
-        onPressed: () {},
-        child: Text(
-          "Add New AddEmployeeForm",
-          style: TextStyle(
-            fontSize: 12,
-            letterSpacing: 0,
-            color: Colors.blue,
-          ),
-        ),
-        style: OutlinedButton.styleFrom(
-          padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-      ),
-    ],
-  );
-}
+
+
 
 // Row _test() {
 //   return Row(
@@ -625,82 +586,3 @@ Row _add() {
 // }
 
 // Table contents
-Column _table() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr. No.'), numeric: true),
-                DataColumn(label: Text('User Name')),
-                DataColumn(label: Text('First Name')),
-                DataColumn(label: Text('Last Name')),
-                DataColumn(label: Text('Email ID')),
-                DataColumn(label: Text('Status')),
-                DataColumn(label: Text('Edit')),
-                DataColumn(label: Text('Delete')),
-                DataColumn(label: Text('Reset Password')),
-                DataColumn(label: Text('Permission')),
-                DataColumn(label: Text('Chat')),
-              ],
-              rows: const [
-                DataRow(cells: [
-                  DataCell(Text('1')),
-                  DataCell(Text('John')),
-                  DataCell(Text('John ')),
-                  DataCell(Text('Cena')),
-                  DataCell(Text('john@gmail.com')),
-                  DataCell(Text('Active')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.password))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.check))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.chat))),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('2')),
-                  DataCell(Text('Jane')),
-                  DataCell(Text('Jane')),
-                  DataCell(Text('Doe')),
-                  DataCell(Text('jane@gmail.com')),
-                  DataCell(Text('Active')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.password))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.check))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.chat))),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('3')),
-                  DataCell(Text('Bob')),
-                  DataCell(Text('Bob')),
-                  DataCell(Text('Charley')),
-                  DataCell(Text('bob@gmail.com')),
-                  DataCell(Text('Inactive')),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.delete))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.password))),
-                  DataCell(
-                      IconButton(onPressed: null, icon: Icon(Icons.check))),
-                  DataCell(IconButton(onPressed: null, icon: Icon(Icons.chat))),
-                ]),
-              ],
-              dataRowHeight: 32.0,
-            ),
-          ],
-        ),
-      ),
-    ],
-  );
-}

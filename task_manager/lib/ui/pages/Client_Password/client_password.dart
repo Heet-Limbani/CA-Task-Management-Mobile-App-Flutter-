@@ -185,7 +185,7 @@ class _Client_PasswordState extends State<Client_Password> {
                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

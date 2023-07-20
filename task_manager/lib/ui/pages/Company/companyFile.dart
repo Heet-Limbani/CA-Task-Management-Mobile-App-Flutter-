@@ -147,34 +147,6 @@ class _CompanyFileState extends State<CompanyFile> {
     );
   }
 
-  Row _add() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            // Add your onPressed logic here
-          },
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            primary: Colors.blue,
-            onPrimary: Colors.white,
-          ),
-          child: Text(
-            "Upload",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Column _table() {
     return Column(
       children: <Widget>[

@@ -220,7 +220,7 @@ class _ExpensesState extends State<Expenses> {
                         icon: Icon(Icons.delete))),
                   ]);
                 }).toList(),
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               )
             ],
           ),

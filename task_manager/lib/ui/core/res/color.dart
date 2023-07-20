@@ -20,6 +20,7 @@ class AppColors {
           foregroundColor: Colors.grey[600],
         ),
         colorScheme: const ColorScheme.light(),
+        // ignore: deprecated_member_use
         backgroundColor: bgColor,
         textTheme: TextTheme(
           displayMedium: TextStyle(

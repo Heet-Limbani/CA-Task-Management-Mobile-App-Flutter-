@@ -215,7 +215,7 @@ class _Task_On_BoardState extends State<Task_On_Board> {
                         IconButton(onPressed: null, icon: Icon(Icons.close))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

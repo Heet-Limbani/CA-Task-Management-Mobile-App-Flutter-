@@ -185,7 +185,7 @@ class _HolidayState extends State<Holiday> {
                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

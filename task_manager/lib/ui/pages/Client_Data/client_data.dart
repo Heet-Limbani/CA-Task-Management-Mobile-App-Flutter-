@@ -182,7 +182,7 @@ class _Client_DataState extends State<Client_Data> {
                         IconButton(onPressed: null, icon: Icon(Icons.upload))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

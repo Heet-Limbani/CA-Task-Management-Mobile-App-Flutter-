@@ -327,7 +327,7 @@ class _EditFileState extends State<EditFile> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-              primary: Colors.white, // Set the text color
+             
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

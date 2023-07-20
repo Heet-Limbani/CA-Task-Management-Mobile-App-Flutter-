@@ -229,7 +229,7 @@ class _File_ManagerState extends State<File_Manager> {
                         onPressed: null, icon: Icon(Icons.share_location))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

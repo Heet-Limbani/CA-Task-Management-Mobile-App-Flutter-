@@ -139,7 +139,7 @@ class _Client_LoginState extends State<Client_Login> {
                     DataCell(Text('04/05/2022 14:55:22')),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

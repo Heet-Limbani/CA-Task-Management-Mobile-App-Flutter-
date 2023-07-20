@@ -175,7 +175,7 @@ class _Appointment_ListState extends State<Appointment_List> {
                         IconButton(onPressed: null, icon: Icon(Icons.mail))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

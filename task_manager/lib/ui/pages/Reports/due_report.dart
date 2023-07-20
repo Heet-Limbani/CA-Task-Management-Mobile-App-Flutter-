@@ -147,7 +147,7 @@ class _Due_ReportState extends State<Due_Report> {
                     DataCell(Text('4108')),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

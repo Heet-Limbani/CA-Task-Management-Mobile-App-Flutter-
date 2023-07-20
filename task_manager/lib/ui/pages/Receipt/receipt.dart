@@ -187,7 +187,7 @@ class _ReceiptState extends State<Receipt> {
                         onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

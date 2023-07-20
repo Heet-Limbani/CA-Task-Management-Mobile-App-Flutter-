@@ -304,7 +304,7 @@ class _Notification1State extends State<Notification1> {
                     DataCell(Text('Response2')),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

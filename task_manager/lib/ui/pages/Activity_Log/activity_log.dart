@@ -143,7 +143,7 @@ class _Activity_LogState extends State<Activity_Log> {
                     DataCell(Text('02/06/2020')),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMaxHeight: 32.0,
               ),
             ],
           ),

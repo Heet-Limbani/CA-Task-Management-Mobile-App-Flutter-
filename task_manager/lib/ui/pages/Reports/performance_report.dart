@@ -150,7 +150,7 @@ class _Performance_ReportState extends State<Performance_Report> {
                         onPressed: null, icon: Icon(Icons.remove_red_eye))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

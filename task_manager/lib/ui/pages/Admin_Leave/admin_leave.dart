@@ -189,7 +189,7 @@ class _Admin_LeaveState extends State<Admin_Leave> {
                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

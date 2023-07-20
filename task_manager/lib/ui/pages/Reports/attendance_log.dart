@@ -178,7 +178,7 @@ class _Attendance_LogState extends State<Attendance_Log> {
                         onPressed: null, icon: Icon(Icons.remove_red_eye))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

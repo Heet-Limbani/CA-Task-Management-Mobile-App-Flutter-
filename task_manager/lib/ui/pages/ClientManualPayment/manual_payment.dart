@@ -153,7 +153,7 @@ class _Manual_PaymentState extends State<Manual_Payment> {
                     DataCell(Text('23/07/2020')),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

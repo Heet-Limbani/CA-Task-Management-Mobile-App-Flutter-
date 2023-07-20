@@ -446,10 +446,10 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                 fontWeight: FontWeight.w700,
                 fontSize: 24,
               ),
-              toolbarOptions: const ToolbarOptions(
-                copy: true,
-                selectAll: true,
-              ),
+              // toolbarOptions: const ToolbarOptions(
+              //   copy: true,
+              //   selectAll: true,
+              // ),
             ),
           ],
         ),
@@ -997,7 +997,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                 },
                               ).toList() ??
                               [],
-                          dataRowHeight: 32.0,
+                          dataRowMinHeight: 32.0,
                         ),
                       ],
                     ),
@@ -1089,7 +1089,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                 },
                               ).toList() ??
                               [],
-                          dataRowHeight: 32.0,
+                          dataRowMinHeight: 32.0,
                         ),
                       ],
                     ),
@@ -1181,7 +1181,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                 },
                               ).toList() ??
                               [],
-                          dataRowHeight: 32.0,
+                          dataRowMinHeight: 32.0,
                         ),
                       ],
                     ),
@@ -2249,18 +2249,11 @@ class TableSource extends AdvancedDataTableSource<HolidayList> {
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
-    final queryParameter = <String, dynamic>{
-      'offset': pageRequest.offset.toString(),
-      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
-      'fromdt': '2020-07-18',
-      'todt': '2023-07-18',
-      'submit': 'submit',
-    };
+   
 
     genModel? dataModel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-      //params: queryParameter,
+     
     );
 
     if (dataModel != null && dataModel.status == true) {
@@ -2339,18 +2332,11 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
-    final queryParameter = <String, dynamic>{
-      'offset': pageRequest.offset.toString(),
-      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
-      'fromdt': '2020-07-18',
-      'todt': '2023-07-18',
-      'submit': 'submit',
-    };
+   
 
     genModel? dataModel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-      //params: queryParameter,
+      
     );
 
     if (dataModel != null && dataModel.status == true) {

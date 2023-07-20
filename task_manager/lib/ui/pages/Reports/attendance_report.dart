@@ -178,7 +178,7 @@ class _Attendance_ReportState extends State<Attendance_Report> {
                         onPressed: null, icon: Icon(Icons.remove_red_eye))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

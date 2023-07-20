@@ -127,7 +127,7 @@ class _SentState extends State<Sent> {
                         IconButton(onPressed: null, icon: Icon(Icons.check))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

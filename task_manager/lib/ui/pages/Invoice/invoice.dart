@@ -192,7 +192,7 @@ class _InvoiceState extends State<Invoice> {
                         IconButton(onPressed: null, icon: Icon(Icons.mail))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

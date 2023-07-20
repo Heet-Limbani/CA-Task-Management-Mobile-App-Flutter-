@@ -197,7 +197,7 @@ class _Task_ReportState extends State<Task_Report> {
                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

@@ -172,7 +172,7 @@ class _Employee_LeaveState extends State<Employee_Leave> {
                         IconButton(onPressed: null, icon: Icon(Icons.delete))),
                   ]),
                 ],
-                dataRowHeight: 32.0,
+                dataRowMinHeight: 32.0,
               ),
             ],
           ),

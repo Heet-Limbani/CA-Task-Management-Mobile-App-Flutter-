@@ -142,7 +142,7 @@ class _Employee_LoginState extends State<Employee_Login> {
                 ]),
                 
               ],
-              dataRowHeight: 32.0,
+              dataRowMinHeight: 32.0,
             ),
           ],
         ),
