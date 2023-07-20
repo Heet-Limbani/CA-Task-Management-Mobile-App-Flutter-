@@ -135,7 +135,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
-    print("row per page $rowsPerPage");
+   
     dataModel = await Urls.postApiCall(
       method: '${Urls.clientLog}',
       params: {
@@ -2257,7 +2257,7 @@ class TableSource extends AdvancedDataTableSource<HolidayList> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      print("data model ${dataModel.data}");
+     
       final dynamicData = dataModel.data;
       final holidayList = dynamicData['holiday'];
       int count = holidayList.length ?? 0;
@@ -2340,7 +2340,7 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      print("data model ${dataModel.data}");
+     
       final dynamicData = dataModel.data;
       final birthdayList = dynamicData['birthday_list'];
       int count = birthdayList.length ?? 0;

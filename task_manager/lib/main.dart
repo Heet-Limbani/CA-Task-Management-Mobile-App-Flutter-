@@ -7,19 +7,12 @@ import 'package:task_manager/ui/pages/DashBoard/homeClient.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeEmployee.dart';
 import 'package:task_manager/ui/pages/DashBoard/login_screen.dart';
 import 'package:task_manager/ui/core/res/color.dart';
-import 'package:task_manager/ui/pages/Setting/add_payment_method.dart';
-import 'package:task_manager/ui/pages/Setting/edit_payment_method.dart';
 
 import 'ui/pages/DashBoard/homeAdmin.dart';
 
 void main() {
   runApp(GetMaterialApp(
     home: MyApp(),
-    routes: {
-
-      '/addPaymentMethod':(context)=>AddPaymentMethod(),
-      '/editPaymentMethod':(context)=>EditPaymentMethod(),
-    }
   ),);
 }
 

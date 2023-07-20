@@ -11,6 +11,8 @@ import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeClient.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeEmployee.dart';
 
+
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -29,6 +31,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailControllerC = TextEditingController();
   final passwordControllerA = TextEditingController();
   final emailControllerA = TextEditingController();
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -363,6 +367,7 @@ class _LoginScreenState extends State<LoginScreen> {
   genModel? genmodel;
   LoginData logindata = LoginData();
   void loginAdmin() async {
+  try {
     genmodel = await Urls.postApiCall(
       method: '${Urls.login}',
       params: {
@@ -370,11 +375,10 @@ class _LoginScreenState extends State<LoginScreen> {
         "password": passwordControllerA.text,
       },
     );
+
     if (genmodel != null) {
       Fluttertoast.showToast(msg: genmodel!.message.toString());
       LoginData loginData = LoginData.fromJson(genmodel!.data);
-      print("LOgin data ${loginData.toJson()}");
-      // Store xtoken in SharedPreferences
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('xtoken', loginData.xtoken ?? '');
       prefs.setString('email', loginData.email ?? '');
@@ -386,13 +390,20 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('password', loginData.password ?? '');
       prefs.setString('sessiontime', loginData.sessionTime ?? '');
       prefs.setString('avatar', loginData.avatar ?? '');
+      
       if (genmodel?.status == true) {
         var sharedPref = await SharedPreferences.getInstance();
         sharedPref.setBool(MyApp.KEYLOGIN, true);
         Get.offAll(MyApp());
       }
     }
+  } catch (e) {
+    // Print the exception message to the console
+    print('Exception: $e');
+    // Show the exception message in a toast
+    Fluttertoast.showToast(msg: 'An error occurred: $e');
   }
+}
 
   TextFormField buildEmailFormFieldClient() {
     return TextFormField(
