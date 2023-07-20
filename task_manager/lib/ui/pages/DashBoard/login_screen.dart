@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/loginDataModel.dart';
 import 'package:task_manager/main.dart';
-import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/pages/DashBoard/homeClient.dart';
-import 'package:task_manager/ui/pages/DashBoard/homeEmployee.dart';
-
-
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,17 +17,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   int index = 0;
-  final _clientFormKey = GlobalKey<FormState>();
-  final _employeeFormKey = GlobalKey<FormState>();
   final _adminFormKey = GlobalKey<FormState>();
-  final passwordControllerE = TextEditingController();
-  final emailControllerE = TextEditingController();
-  final passwordControllerC = TextEditingController();
-  final emailControllerC = TextEditingController();
   final passwordControllerA = TextEditingController();
   final emailControllerA = TextEditingController();
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -96,137 +83,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             // Login Button for Employee
                             loginButtonAdmin(deviceHeight)
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: deviceHeight * 0.30,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/28_generated1.png',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppTheme.colors.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(50.0),
-                        topRight: Radius.circular(50.0))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: deviceHeight * 0.04,
-                      ),
-                      Text(
-                        'Client Login',
-                        style: TextStyle(
-                            fontSize: 34, fontWeight: FontWeight.bold),
-                      ),
-                      Form(
-                        key: _clientFormKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 30, left: 25, right: 25, bottom: 8),
-                              // Email Text Field for Client
-                              child: buildEmailFormFieldClient(),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 25, right: 25, bottom: 25, top: 8),
-                              // Password Text Field for Client
-                              child: buildPasswordFormFieldClient(),
-                            ),
-                            // Login Button for Client
-                            loginButtonClient(deviceHeight)
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-      // Employee Login Screen
-      SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: deviceHeight * 0.30,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/images/28_generated1.png',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: double.infinity,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    color: AppTheme.colors.white,
-                    borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(50.0),
-                        topRight: Radius.circular(50.0))),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: deviceHeight * 0.04,
-                      ),
-                      Text(
-                        'Employee Login',
-                        style: TextStyle(
-                            fontSize: 34, fontWeight: FontWeight.bold),
-                      ),
-                      Form(
-                        key: _employeeFormKey,
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 30, left: 25, right: 25, bottom: 8),
-                              // Email Text Field for Employee
-                              child: buildEmailFormFieldEmployee(),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 25, right: 25, bottom: 25, top: 8),
-                              // Password Text Field for Employee
-                              child: buildPasswordFormFieldEmployee(),
-                            ),
-                            // Login Button for Employee
-                            loginButtonEmployee(deviceHeight)
                           ],
                         ),
                       )
@@ -335,7 +191,6 @@ class _LoginScreenState extends State<LoginScreen> {
         if (_adminFormKey.currentState!.validate()) {
           loginAdmin();
         }
-        //Get.off(() => HomeAdminScreen());
       },
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -367,17 +222,28 @@ class _LoginScreenState extends State<LoginScreen> {
   genModel? genmodel;
   LoginData logindata = LoginData();
   void loginAdmin() async {
-  try {
-    genmodel = await Urls.postApiCall(
-      method: '${Urls.login}',
-      params: {
-        "email": emailControllerA.text,
-        "password": passwordControllerA.text,
-      },
-    );
+    try {
+      genmodel = await Urls.postApiCall(
+        method: '${Urls.login}',
+        params: {
+          "email": emailControllerA.text,
+          "password": passwordControllerA.text,
+        },
+      );
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Inside Login Admin and inside catch');
+      Fluttertoast.showToast(msg: 'An error occurred: ' + e.toString());
+    }
+    Fluttertoast.showToast(msg: 'genmodel :-  ' + genmodel.toString());
+    Fluttertoast.showToast(msg: 'Test');
+
+    if (genmodel == null) {
+      Fluttertoast.showToast(msg: 'API response is null');
+      return;
+    }
 
     if (genmodel != null) {
-      Fluttertoast.showToast(msg: genmodel!.message.toString());
+      Fluttertoast.showToast(msg: 'message ' + genmodel!.message.toString());
       LoginData loginData = LoginData.fromJson(genmodel!.data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('xtoken', loginData.xtoken ?? '');
@@ -390,251 +256,16 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('password', loginData.password ?? '');
       prefs.setString('sessiontime', loginData.sessionTime ?? '');
       prefs.setString('avatar', loginData.avatar ?? '');
-      
+
       if (genmodel?.status == true) {
+        Fluttertoast.showToast(
+            msg: 'Inside Login Admin and inside if of status');
         var sharedPref = await SharedPreferences.getInstance();
         sharedPref.setBool(MyApp.KEYLOGIN, true);
         Get.offAll(MyApp());
       }
-    }
-  } catch (e) {
-    // Print the exception message to the console
-    print('Exception: $e');
-    // Show the exception message in a toast
-    Fluttertoast.showToast(msg: 'An error occurred: $e');
-  }
-}
-
-  TextFormField buildEmailFormFieldClient() {
-    return TextFormField(
-      controller: emailControllerC,
-      decoration: InputDecoration(
-        labelText: "Email",
-        //hintText: "Email or Username",
-        suffixIcon: Icon(Icons.email_rounded),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 10,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 2,
-        ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter an email';
-        }
-
-        final emailRegex = r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
-        if (!RegExp(emailRegex).hasMatch(value)) {
-          return 'Please enter a valid email';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField buildPasswordFormFieldClient() {
-    return TextFormField(
-      controller: passwordControllerC,
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: "Password",
-        // hintText: "Password",
-        suffixIcon: Icon(Icons.lock_rounded),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 10,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 2,
-        ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a password';
-        }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters long';
-        }
-        return null; // Return null if the input is valid
-      },
-    );
-  }
-
-  GestureDetector loginButtonClient(double deviceHeight) {
-    return GestureDetector(
-      onTap: () {
-        // if (_clientFormKey.currentState!.validate()) {
-        //  loginClient();}
-        Get.off(() => HomeClientScreen());
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 10,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            color: AppTheme.colors.lightBlue,
-          ),
-          width: double.infinity,
-          height: deviceHeight * 0.07,
-          child: Center(
-            child: Text(
-              "Login",
-              style: TextStyle(
-                color: AppTheme.colors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void loginClient() async {
-    genmodel = await Urls.postApiCall(
-      method: '${Urls.login}',
-      params: {
-        "email": emailControllerC.text,
-        "password": passwordControllerC.text,
-      },
-    );
-    if (genmodel != null) {
-     // print('Status: ${genmodel?.message}');
-      Fluttertoast.showToast(msg: genmodel!.message.toString());
-      if (genmodel?.status == true) {
-        Get.off(() => HomeAdminScreen());
-      }
-    }
-  }
-
-  TextFormField buildEmailFormFieldEmployee() {
-    return TextFormField(
-      controller: emailControllerE,
-      decoration: InputDecoration(
-        labelText: "Email",
-        // hintText: "Email or Username",
-        suffixIcon: Icon(Icons.email_rounded),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 10,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 2,
-        ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter an email';
-        }
-
-        final emailRegex = r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
-        if (!RegExp(emailRegex).hasMatch(value)) {
-          return 'Please enter a valid email';
-        }
-        return null;
-      },
-    );
-  }
-
-  TextFormField buildPasswordFormFieldEmployee() {
-    return TextFormField(
-      controller: passwordControllerE,
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: "Password",
-        // hintText: "Password",
-        suffixIcon: Icon(Icons.lock_rounded),
-        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 10,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(28),
-          borderSide: BorderSide(color: AppTheme.colors.black),
-          gapPadding: 2,
-        ),
-      ),
-      validator: (value) {
-        if (value!.isEmpty) {
-          return 'Please enter a password';
-        }
-        if (value.length < 6) {
-          return 'Password must be at least 6 characters long';
-        }
-        return null; // Return null if the input is valid
-      },
-    );
-  }
-
-  GestureDetector loginButtonEmployee(double deviceHeight) {
-    return GestureDetector(
-      onTap: () {
-        // if (_employeeFormKey.currentState!.validate()) {
-        //   loginEmployee();
-        // }
-        Get.off(() => HomeEmployeeScreen());
-      },
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: 25,
-          vertical: 10,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(28),
-            color: AppTheme.colors.lightBlue,
-          ),
-          width: double.infinity,
-          height: deviceHeight * 0.07,
-          child: Center(
-            child: Text(
-              "Login",
-              style: TextStyle(
-                color: AppTheme.colors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void loginEmployee() async {
-    genmodel = await Urls.postApiCall(
-      method: '${Urls.login}',
-      params: {
-        "email": emailControllerE.text,
-        "password": passwordControllerE.text,
-      },
-    );
-    if (genmodel != null) {
-     // print('Status: ${genmodel?.message}');
-      Fluttertoast.showToast(msg: genmodel!.message.toString());
-      if (genmodel?.status == true) {
-        Get.off(() => HomeAdminScreen());
-      }
+    } else {
+      Fluttertoast.showToast(msg: 'null genmodel');
     }
   }
 }
