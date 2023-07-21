@@ -8,7 +8,7 @@ import 'package:task_manager/API/model/clientInvoiceDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/logModel.dart';
 import 'package:task_manager/ui/pages/Users/editClientForm.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 
 class ClientInvoiceDetails extends StatefulWidget {
   final String userId;

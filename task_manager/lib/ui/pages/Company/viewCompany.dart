@@ -5,7 +5,7 @@ import 'package:task_manager/ui/pages/Company/companyFile.dart';
 import 'package:task_manager/ui/pages/Company/companyLog.dart';
 import 'package:task_manager/ui/pages/Company/companyPermission.dart';
 import 'package:task_manager/ui/pages/Company/companyTicket.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class ViewCompany extends StatefulWidget {

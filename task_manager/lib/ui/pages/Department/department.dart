@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/model/departmentDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
 class Department extends StatefulWidget {
   const Department({super.key});

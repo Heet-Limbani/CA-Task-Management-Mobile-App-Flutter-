@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/API/model/CompanyDataModel2.dart';
 import 'package:task_manager/API/model/companyDataModel3.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class CompanyPermission extends StatefulWidget {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
 class Client_Password extends StatefulWidget {
   const Client_Password({super.key});

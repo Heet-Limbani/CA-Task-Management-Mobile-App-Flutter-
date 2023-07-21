@@ -11,7 +11,7 @@ import 'package:task_manager/ui/pages/Company/addCompanyGroup.dart';
 import 'package:task_manager/ui/pages/Company/company.dart';
 import 'package:task_manager/ui/pages/Company/editCompanyGroup.dart';
 import 'package:task_manager/ui/pages/Company/viewCompanyGroup.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
 class CompanyGroup extends StatefulWidget {
   const CompanyGroup({super.key});

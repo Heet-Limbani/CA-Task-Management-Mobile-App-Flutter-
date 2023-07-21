@@ -1,5 +1,13 @@
+import 'package:advanced_datatable/advanced_datatable_source.dart';
+import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/API/model/invoiceDataModel.dart';
+import 'package:task_manager/ui/pages/Invoice/addInvoice.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
 class Invoice extends StatefulWidget {
   const Invoice({super.key});
@@ -8,9 +16,48 @@ class Invoice extends StatefulWidget {
   State<Invoice> createState() => _InvoiceState();
 }
 
+TextEditingController nameController =
+    TextEditingController(); // Define the TextEditingController
+
+TextEditingController nameController1 = TextEditingController();
+
 class _InvoiceState extends State<Invoice> {
+  late TableSource _source; // Declare _source here
+
+  String? stringResponse;
+  late double deviceWidth;
+  late double deviceHeight;
+  TextEditingController searchLogController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
+
+  var _sortIndex = 0;
+  var _sortAsc = true;
+  var _customFooter = false;
+  var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
+
+  // ignore: avoid_positional_boolean_parameters
+  void setSort(int i, bool asc) => setState(() {
+        _sortIndex = i;
+        _sortAsc = asc;
+      });
+
   @override
+  void initState() {
+    super.initState();
+    _source = TableSource(context); // Initialize _source here
+    refreshTable();
+  }
+
+  void refreshTable() {
+    setState(() {
+      _source.startIndex = 0;
+      _source.setNextView();
+    });
+  }
+
   Widget build(BuildContext context) {
+    deviceWidth = MediaQuery.of(context).size.width;
+    deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,7 +71,7 @@ class _InvoiceState extends State<Invoice> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer:  SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );
@@ -42,24 +89,20 @@ class _InvoiceState extends State<Invoice> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 40,
+                SizedBox(
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
-                const SizedBox(
-                  height: 10,
-                ),
-                _search(),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
                 _add(),
-                const SizedBox(
-                  height: 10,
+                SizedBox(
+                  height: deviceHeight * 0.02,
                 ),
                 _table(),
-                const SizedBox(
-                  height: 100,
+                SizedBox(
+                  height: deviceHeight * 0.1,
                 ),
               ],
             ),
@@ -69,10 +112,9 @@ class _InvoiceState extends State<Invoice> {
     );
   }
 
+  // Table heading
   Row _header() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
           "Invoice List",
@@ -82,40 +124,21 @@ class _InvoiceState extends State<Invoice> {
             fontSize: 22,
           ),
         ),
-        SizedBox(
-          width: 30,
-        ),
-        const Spacer(),
-      ],
-    );
-  }
-
-  Row _search() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            decoration: InputDecoration(
-                contentPadding:
-                    EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                hintText: 'Search',
-                suffixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: const BorderSide())),
-          ),
-        ),
       ],
     );
   }
 
   Row _add() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(AddInvoice());
+          },
           child: Text(
-            "Add Invoice",
+            "Add",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,
@@ -136,68 +159,315 @@ class _InvoiceState extends State<Invoice> {
   Column _table() {
     return Column(
       children: <Widget>[
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              DataTable(
-                columns: const [
-                  DataColumn(label: Text('Sr.No.'), numeric: true),
-                  DataColumn(label: Text(' Invoice No.')),
-                  DataColumn(label: Text('Client Name')),
-                  DataColumn(label: Text('Amount')),
-                  DataColumn(label: Text('Details')),
-                  DataColumn(label: Text('Show')),
-                  DataColumn(label: Text('View')),
-                  DataColumn(label: Text('Message Invoice')),
-                ],
-                rows: const [
-                  DataRow(cells: [
-                    DataCell(Text('1')),
-                    DataCell(Text('Invoic no. 1')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('4500')),
-                    DataCell(Text('Customer')),
-                    DataCell(IconButton(
-                        onPressed: null, icon: Icon(Icons.view_list))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.mail))),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('2')),
-                    DataCell(Text('Invoic no. 2')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('2200')),
-                    DataCell(Text('Customer 2')),
-                    DataCell(IconButton(
-                        onPressed: null, icon: Icon(Icons.view_list))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.mail))),
-                  ]),
-                  DataRow(cells: [
-                    DataCell(Text('3')),
-                    DataCell(Text('Invoic no. 3')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('5800')),
-                    DataCell(Text('Customer 3')),
-                    DataCell(IconButton(
-                        onPressed: null, icon: Icon(Icons.view_list))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.mail))),
-                  ]),
-                ],
-                dataRowMinHeight: 32.0,
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    labelText: 'Search',
+                  ),
+                  onSubmitted: (vlaue) {
+                    _source.filterServerSide(_searchController.text);
+                  },
+                ),
               ),
-            ],
-          ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _searchController.text = '';
+                });
+                _source.filterServerSide(_searchController.text);
+                ;
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            IconButton(
+              onPressed: () => _source.filterServerSide(_searchController.text),
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              onPressed: refreshTable,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.03,
+        ),
+        AdvancedPaginatedDataTable(
+          addEmptyRows: false,
+          source: _source,
+          showHorizontalScrollbarAlways: true,
+          sortAscending: _sortAsc,
+          sortColumnIndex: _sortIndex,
+          showFirstLastButtons: true,
+          rowsPerPage: _rowsPerPage,
+          availableRowsPerPage: const [10, 20, 50, 100, 200],
+          onRowsPerPageChanged: (newRowsPerPage) {
+            if (newRowsPerPage != null) {
+              setState(() {
+                _rowsPerPage = newRowsPerPage;
+              });
+            }
+          },
+          columns: [
+            DataColumn(
+              label: const Text('Sr. No.'),
+              numeric: true,
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Invoice No.'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Client Name'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Amount'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Details'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Action'),
+              onSort: setSort,
+            ),
+          ],
+          //Optianl override to support custom data row text / translation
+          getFooterRowText:
+              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
+            final localizations = MaterialLocalizations.of(context);
+            var amountText = localizations.pageRowsInfoTitle(
+              startRow,
+              pageSize,
+              totalFilter ?? totalRowsWithoutFilter,
+              false,
+            );
+
+            if (totalFilter != null) {
+              //Filtered data source show addtional information
+              amountText += ' filtered from ($totalRowsWithoutFilter)';
+            }
+
+            return amountText;
+          },
+          customTableFooter: _customFooter
+              ? (source, offset) {
+                  const maxPagesToShow = 6;
+                  const maxPagesBeforeCurrent = 3;
+                  final lastRequestDetails = source.lastDetails!;
+                  final rowsForPager = lastRequestDetails.filteredRows ??
+                      lastRequestDetails.totalRows;
+                  final totalPages = rowsForPager ~/ _rowsPerPage;
+                  final currentPage = (offset ~/ _rowsPerPage) + 1;
+                  final List<int> pageList = [];
+                  if (currentPage > 1) {
+                    pageList.addAll(
+                      List.generate(currentPage - 1, (index) => index + 1),
+                    );
+                    //Keep up to 3 pages before current in the list
+                    pageList.removeWhere(
+                      (element) =>
+                          element < currentPage - maxPagesBeforeCurrent,
+                    );
+                  }
+                  pageList.add(currentPage);
+                  //Add reminding pages after current to the list
+                  pageList.addAll(
+                    List.generate(
+                      maxPagesToShow - (pageList.length - 1),
+                      (index) => (currentPage + 1) + index,
+                    ),
+                  );
+                  pageList.removeWhere((element) => element > totalPages);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: pageList
+                        .map(
+                          (e) => TextButton(
+                            onPressed: e != currentPage
+                                ? () {
+                                    //Start index is zero based
+                                    source.setNextView(
+                                      startIndex: (e - 1) * _rowsPerPage,
+                                    );
+                                  }
+                                : null,
+                            child: Text(
+                              e.toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+              : null,
         ),
       ],
     );
+  }
+}
+
+typedef SelectedCallBack = Function(String id, bool newSelectState);
+
+class TableSource extends AdvancedDataTableSource<InvoiceDataModel> {
+  final BuildContext context; // Add the context parameter
+
+  TableSource(this.context);
+
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+
+  int startIndex = 0; // Add the startIndex variable
+
+  int countIds(String ids) {
+    if (ids.isEmpty) {
+      return 0;
+    }
+
+    List<String> idList = ids.split(',');
+    return idList.length;
+  }
+
+  @override
+  DataRow? getRow(int index) {
+    final srNo = (startIndex + index + 1).toString();
+    final InvoiceDataModel dataList = lastDetails!.rows[index];
+
+    void message(String? id) async {
+      if (id != null) {
+        genModel? genmodel = await Urls.postApiCall(
+          method: '${Urls.invoiceMessage}',
+          params: {'id': id},
+        );
+
+        if (genmodel != null && genmodel.status == true) {
+          Fluttertoast.showToast(
+            msg: "${genmodel.message.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+          );
+        }
+      }
+    }
+
+    return DataRow(
+      cells: [
+        DataCell(Text(srNo)),
+        DataCell(Text(dataList.invoiceNo ?? '')),
+        DataCell(Text(dataList.company ?? '')),
+        DataCell(Text(dataList.total ?? '')),
+        DataCell(Text(dataList.otherDetails ?? '')),
+        DataCell(
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    RawMaterialButton(
+                      onPressed: () {},
+                      child: Icon(Icons.remove_red_eye_outlined),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (dataList.id != null) {
+                          message(dataList.id!);
+                        }
+                      },
+                      child: Icon(Icons.mail_outline),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      // selected: selectedIds.contains(dataList.id),
+      // onSelectChanged: (value) {
+      //   selectedRow(dataList.id.toString(), value ?? false);
+      // },
+    );
+  }
+
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  // void selectedRow(String id, bool newSelectState) {
+  //   if (selectedIds.contains(id)) {
+  //     selectedIds.remove(id);
+  //   } else {
+  //     selectedIds.add(id);
+  //   }
+  //   notifyListeners();
+  // }
+
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.toLowerCase().trim();
+    setNextView();
+  }
+
+  @override
+  Future<RemoteDataSourceDetails<InvoiceDataModel>> getNextPage(
+    NextPageRequest pageRequest,
+  ) async {
+    startIndex = pageRequest.offset;
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+      'limit': pageRequest.pageSize.toString()
+    };
+
+    genModel? dataModel = await Urls.postApiCall(
+      method: '${Urls.invoice}',
+      params: queryParameter,
+    );
+
+    if (dataModel != null && dataModel.status == true) {
+      //int count = dataModel.data.length ?? 0;
+      final dynamicData = dataModel.data;
+
+      return RemoteDataSourceDetails(
+        dataModel.count ?? 0,
+        //count,
+        dynamicData
+            .map<InvoiceDataModel>(
+              (item) => InvoiceDataModel.fromJson(item as Map<String, dynamic>),
+            )
+            .toList(),
+        filteredRows: lastSearchTerm.isNotEmpty
+            ? dynamicData
+                .map<InvoiceDataModel>(
+                  (item) =>
+                      InvoiceDataModel.fromJson(item as Map<String, dynamic>),
+                )
+                .length
+            : null,
+      );
+    } else {
+      throw Exception('Unable to query remote server');
+    }
   }
 }

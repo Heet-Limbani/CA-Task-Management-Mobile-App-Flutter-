@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/viewDispatchFileDataModel.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
 class ViewDispatchFile extends StatefulWidget {
   const ViewDispatchFile({super.key});

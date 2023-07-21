@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/companyDataModel2.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditCompany extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/model/companyCommentEditDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AddCompanyComments extends StatefulWidget {

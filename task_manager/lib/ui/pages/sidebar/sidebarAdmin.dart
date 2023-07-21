@@ -14,7 +14,7 @@ import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
 import 'package:task_manager/ui/pages/File_Manager/fileManager.dart';
 import 'package:task_manager/ui/pages/Holiday/holiday.dart';
-import 'package:task_manager/ui/pages/Invoice/custom_Invoice.dart';
+import 'package:task_manager/ui/pages/Invoice/customInvoice.dart';
 import 'package:task_manager/ui/pages/Invoice/invoice.dart';
 import 'package:task_manager/ui/pages/Password/password_manager.dart';
 import 'package:task_manager/ui/pages/Receipt/receipt.dart';
@@ -237,7 +237,7 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Custom Invoice List'),
                 onTap: () {
-                  Get.to(custom_invoice());
+                  Get.to(CustomInvoice());
                 },
               ),
             ],

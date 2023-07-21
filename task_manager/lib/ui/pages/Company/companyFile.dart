@@ -5,7 +5,7 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/API/model/companyFileDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class CompanyFile extends StatefulWidget {

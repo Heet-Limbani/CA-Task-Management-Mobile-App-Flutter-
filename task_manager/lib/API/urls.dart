@@ -78,6 +78,15 @@ class Urls {
   static String defaultLocation = "${Urls.baseUrlMain}SetDefault_location";
   static String addLocation = "${Urls.baseUrlMain}add_location";
   static String addFile = "${Urls.baseUrlMain}Add_File";
+  static String invoice = "${Urls.baseUrlMain}Invoice";
+  static String receipt = "${Urls.baseUrlMain}Payment";
+  static String viewReceipt = "${Urls.baseUrlMain}view_payment";
+  static String invoiceMessage = "${Urls.baseUrlMain}generate_pay_message";
+  static String companyList = "${Urls.baseUrlMain}Add_Invoice";
+  static String addInvoice = "${Urls.baseUrlMain}Add_Invoice";
+  static String customInvoice = "${Urls.baseUrlMain}custom_invoice_load";
+  static String editCustomInvoice = "${Urls.baseUrlMain}edit_custom_invoice";
+  static String deleteCustomInvoice = "${Urls.baseUrlMain}delete_custom_invoice";
 
   static String profileEmail = "";
   static String profileUserName = "";

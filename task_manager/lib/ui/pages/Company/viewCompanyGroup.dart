@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/companyGroupEditDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class ViewCompanyGroup extends StatefulWidget {

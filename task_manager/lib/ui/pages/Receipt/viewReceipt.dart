@@ -1,68 +1,127 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+import 'package:task_manager/API/model/cardDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/model/receiptViewDataModel.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/ReceiptDataModel.dart';
-import 'package:task_manager/ui/pages/Receipt/viewReceipt.dart';
-import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class Receipt extends StatefulWidget {
-  const Receipt({super.key});
+class ViewReceipt extends StatefulWidget {
+  final String id;
+  const ViewReceipt({required this.id, Key? key}) : super(key: key);
 
   @override
-  State<Receipt> createState() => _ReceiptState();
+  State<ViewReceipt> createState() => _ViewReceiptState();
 }
 
-TextEditingController nameController =
-    TextEditingController(); // Define the TextEditingController
+late double deviceWidth;
+late double deviceHeight;
 
-TextEditingController nameController1 = TextEditingController();
+TextEditingController clientNameController = TextEditingController();
+TextEditingController clientNumberController = TextEditingController();
+TextEditingController clientEmailController = TextEditingController();
+TextEditingController amountController = TextEditingController();
+TextEditingController dateController = TextEditingController();
+TextEditingController statusController = TextEditingController();
+TextEditingController referenceController = TextEditingController();
+TextEditingController descriptionController = TextEditingController();
+TextEditingController _searchController = TextEditingController();
 
-class _ReceiptState extends State<Receipt> {
-  late TableSource _source; // Declare _source here
 
-  String? stringResponse;
-  late double deviceWidth;
-  late double deviceHeight;
-  TextEditingController searchLogController = TextEditingController();
-  TextEditingController _searchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
 
-  var _sortIndex = 0;
+String id = "";
+
+String? selectedClientId1;
+
+class _ViewReceiptState extends State<ViewReceipt> {
+  bool isObscurePassword = true;
+
+var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
+   late TableSource _source;
 
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
       });
-
-  @override
-  void initState() {
-    super.initState();
-    _source = TableSource(context);
-    _source.setNextView();
-  }
-
-  void refreshTable() {
+void refreshTable() {
     setState(() {
       _source.startIndex = 0;
       _source.setNextView();
     });
   }
 
+  @override
+  void initState() {
+    super.initState();
+    id = widget.id; // Store widget.userId in a local variable
+    getReceiptDetails();
+      _source = TableSource(context);
+    _source.setNextView();
+  }
+
+  List<Pending> cardDataList = [];
+  void getReceiptDetails() async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.viewReceipt}',
+      params: {
+        'id': id.toString(),
+      },
+    );
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+
+      final taskData = ReceiptViewDataModel.fromJson(data);
+
+      clientNameController.text = taskData.company!.name.toString();
+      clientNumberController.text = taskData.company!.mobile.toString();
+      clientEmailController.text = taskData.company!.email.toString();
+      amountController.text = taskData.data!.amount.toString();
+      dateController.text = taskData.data!.date.toString();
+      statusController.text = taskData.data!.status.toString();
+      referenceController.text = taskData.data!.referenceNumber.toString();
+      descriptionController.text = taskData.data!.description.toString();
+      setState(() {});
+    }
+  }
+  // List<Pending> cardDataList = [];
+  // void getTaskDetails() async {
+  //   genModel? genmodel = await Urls.postApiCall(
+  //     method: '${Urls.taskViewTaskDetails}',
+  //     params: {
+  //       'id': ticketId.toString(),
+  //     },
+  //   );
+  //   if (genmodel != null && genmodel.status == true) {
+  //     final data = genmodel.data;
+
+  //     if (data != null && data is Map<String, dynamic>) {
+  //       Pending cardData =
+  //           Pending.fromJson(data['data']);
+  //       cardDataList.add(cardData);
+  //       descriptionController.text = cardDataList[0].description.toString();
+  //       //clientNameController.text = cardDataList[0].clientName.toString();
+  //       // clientNumberController.text = cardDataList[0].clientNumber.toString();
+  //       // clientEmailController.text = cardDataList[0].clientEmail.toString();
+  //       startingDateController.text = cardDataList[0].startingDate.toString();
+  //       deadlineDateController.text = cardDataList[0].deadlineDate.toString();
+  //       createdDateController.text = cardDataList[0].createdOn.toString();
+  //       setState(() {});
+  //     }
+  //   }
+  // }
+
+  @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Receipt",
+          "Dashboard > Receipt > View Receipt",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -91,25 +150,21 @@ class _ReceiptState extends State<Receipt> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: deviceHeight * 0.04,
+                  height: deviceHeight * 0.05,
+                ),
+                _header1(),
+                SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
+                _detail1(),
+                SizedBox(
+                  height: deviceHeight * 0.05,
                 ),
                 _header(),
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                buildStartDate(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
-                buildEndDate(),
-                SizedBox(
-                  height: deviceHeight * 0.01,
-                ),
-                _add1(),
-                SizedBox(
-                  height: deviceHeight * 0.03,
-                ),
-                _table(),
+                _table1(),
                 SizedBox(
                   height: deviceHeight * 0.1,
                 ),
@@ -121,116 +176,138 @@ class _ReceiptState extends State<Receipt> {
     );
   }
 
-  // Table heading
-  Row _header() {
+  Row _header1() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Receipt List",
+          "View Receipt",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
           ),
         ),
+        SizedBox(
+          width: 30,
+        ),
+        const Spacer(),
       ],
     );
   }
 
-  Widget buildStartDate() => TextField(
-        onTap: () async {
-          DateTime? datePicked = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(3000),
-          );
-          if (datePicked != null) {
-            final formattedDate = DateFormat('yyyy/MM/dd').format(datePicked);
-            setState(() {
-              startDateController.text = formattedDate;
-            });
-          }
-        },
-        controller: startDateController,
-        textInputAction: TextInputAction.next,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelText: 'From',
-          //hintText: 'Enter Starting Date',
-          suffixIcon: startDateController.text.isEmpty
-              ? Container(
-                  width: 0,
-                )
-              : IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () => startDateController.clear(),
-                ),
-          prefixIcon: Icon(Icons.calendar_month),
-          border: OutlineInputBorder(),
-        ),
-      );
-  Widget buildEndDate() => TextField(
-        onTap: () async {
-          DateTime? datePicked = await showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2000),
-            lastDate: DateTime(3000),
-          );
-          if (datePicked != null) {
-            final formattedDate = DateFormat('yyyy/MM/dd').format(datePicked);
-            setState(() {
-              endDateController.text = formattedDate;
-            });
-          }
-        },
-        controller: endDateController,
-        textInputAction: TextInputAction.next,
-        keyboardType: TextInputType.text,
-        decoration: InputDecoration(
-          labelText: 'To',
-          //hintText: 'Enter DeadLine Date',
-          suffixIcon: endDateController.text.isEmpty
-              ? Container(
-                  width: 0,
-                )
-              : IconButton(
-                  icon: Icon(Icons.close),
-                  onPressed: () => endDateController.clear(),
-                ),
-          prefixIcon: Icon(Icons.calendar_month),
-          border: OutlineInputBorder(),
-        ),
-      );
-  Row _add1() {
-    return Row(
+  Column _detail1() {
+    return Column(
       children: [
-        OutlinedButton(
-          onPressed: () {
-            refreshTable();
-          },
-          child: Text(
-            "Submit",
-            style: TextStyle(
-              fontSize: 14,
-              letterSpacing: 0,
-              color: Colors.white,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            backgroundColor: Colors.blue,
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
+        buildTextField1("Client Name", clientNameController.text, false),
+        buildTextField1("Client Number", clientNumberController.text, false),
+        buildTextField1("Client Email", clientEmailController.text, false),
+        buildTextField1("Amount", amountController.text, false),
+        buildTextField1("Date", dateController.text, false),
+        buildTextField1("Status", statusController.text, false),
+        buildTextField1("Reference Number", referenceController.text, false),
+        buildTextField1("Description", descriptionController.text, false),
       ],
     );
   }
 
-  Column _table() {
+  Row _header() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Invoice List",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
+          ),
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        const Spacer(),
+      ],
+    );
+  }
+
+  
+  Widget buildTextField(
+      String labelText, String placeholder, bool isPasswordTextField) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: TextField(
+        obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
+        decoration: InputDecoration(
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isObscurePassword = !isObscurePassword;
+                      });
+                    },
+                  )
+                : null,
+            contentPadding: EdgeInsets.only(bottom: 3),
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontSize: 16,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            )),
+      ),
+    );
+  }
+
+  Widget buildTextField1(
+      String labelText, String placeholder, bool isPasswordTextField) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: TextField(
+        obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
+        decoration: InputDecoration(
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isObscurePassword = !isObscurePassword;
+                      });
+                    },
+                  )
+                : null,
+            contentPadding: EdgeInsets.only(bottom: 3),
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontSize: 16,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            )),
+      ),
+    );
+  }
+
+  Column _table1() {
     return Column(
       children: <Widget>[
         SizedBox(
@@ -301,33 +378,18 @@ class _ReceiptState extends State<Receipt> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('ID'),
+              label: const Text('Invoice No.'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Client Name'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Amount'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Description'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Reference No.'),
+              label: const Text('Paid Amount'),
               onSort: setSort,
             ),
             DataColumn(
               label: const Text('Action'),
               onSort: setSort,
             ),
+           
           ],
           //Optianl override to support custom data row text / translation
           getFooterRowText:
@@ -404,10 +466,9 @@ class _ReceiptState extends State<Receipt> {
     );
   }
 }
-
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
+class TableSource extends AdvancedDataTableSource<ReceiptViewDataModel> {
   final BuildContext context;
 
   TableSource(this.context);
@@ -415,27 +476,23 @@ class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
   List<String> selectedIds = [];
   String lastSearchTerm = '';
   int startIndex = 0;
-  RemoteDataSourceDetails<ReceiptDataModel>? lastDetails;
+  RemoteDataSourceDetails<ReceiptViewDataModel>? lastDetails;
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final List<ReceiptDataModel> rows = lastDetails!.rows;
+    final List<ReceiptViewDataModel> rows = lastDetails!.rows;
     if (index >= 0 && index < rows.length) {
-      final ReceiptDataModel dataList = rows[index];
-      final List<File>? files = dataList.file;
+      final ReceiptViewDataModel dataList = rows[index];
+      final List<InvoicePaymentId>? files = dataList.invoicePaymentId;
 
       if (files != null && files.isNotEmpty) {
-        final File file = files.first;
+        final InvoicePaymentId file = files.first;
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
-            DataCell(Text(file.id ?? '')),
-            DataCell(Text(file.clientName ?? '')),
+            DataCell(Text(file.invoiceId ?? '')),
             DataCell(Text(file.amount ?? '')),
-            DataCell(Text(file.date ?? '')),
-            DataCell(Text(file.description ?? '')),
-            DataCell(Text(file.referenceNumber ?? '')),
             DataCell(
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -446,9 +503,9 @@ class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                            if (file.id != null) {
-                             Get.to(ViewReceipt(id: file.id!) );
-                            }
+                            // if (file.id != null) {
+                            //  Get.to(ViewReceipt(id: file.id!) );
+                            // }
                           },
                           child: Icon(Icons.remove_red_eye_outlined),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -476,7 +533,7 @@ class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<ReceiptDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ReceiptViewDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -484,30 +541,29 @@ class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
       'limit': pageRequest.pageSize.toString(),
-      'fromdt': '2020-07-18',
-      'todt': '2023-07-18',
-      'submit': 'submit',
+      'id': id.toString(),
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.receipt}',
+      method: '${Urls.viewReceipt}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
+      
       if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('file')) {
-        final dynamicList = dynamicData['file'] as List<dynamic>?;
-        final List<ReceiptDataModel> dataList = dynamicList
-                ?.map<ReceiptDataModel>(
-                    (item) => ReceiptDataModel(file: [File.fromJson(item)]))
+          dynamicData.containsKey('invoice_payment_id')) {
+        final dynamicList = dynamicData['invoice_payment_id'] as List<dynamic>?;
+        final List<ReceiptViewDataModel> dataList = dynamicList
+                ?.map<ReceiptViewDataModel>(
+                    (item) => ReceiptViewDataModel(invoicePaymentId: [InvoicePaymentId.fromJson(item)]))
                 .toList() ??
             [];
-
-        lastDetails = RemoteDataSourceDetails<ReceiptDataModel>(
-          dataModel.count ?? 0,
+        int count = dynamicList?.length ?? 0;
+        lastDetails = RemoteDataSourceDetails<ReceiptViewDataModel>(
+          //dataModel.count ?? 0,
+          count,
           dataList,
           filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
         );

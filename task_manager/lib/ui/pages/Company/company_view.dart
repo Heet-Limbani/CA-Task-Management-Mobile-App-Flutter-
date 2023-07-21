@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
+
 
 class Company_View extends StatefulWidget {
   const Company_View({super.key});

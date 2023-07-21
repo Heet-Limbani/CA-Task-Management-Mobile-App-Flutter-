@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/API/Urls.dart' as url;
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import '../../../API/model/genModel.dart';
 
 class EditPaymentMethod extends StatefulWidget {

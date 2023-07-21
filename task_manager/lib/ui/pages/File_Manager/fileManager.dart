@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/model/fileGetDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/pages/File_Manager/addFile.dart';
 import 'package:task_manager/ui/pages/File_Manager/dispatchFile.dart';
 import 'package:task_manager/ui/pages/File_Manager/editFile.dart';

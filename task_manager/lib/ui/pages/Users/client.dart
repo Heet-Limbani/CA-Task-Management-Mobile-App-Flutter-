@@ -8,7 +8,7 @@ import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/ui/pages/Users/addClientForm.dart';
 import 'package:task_manager/ui/pages/Users/editClientForm.dart';
 import 'package:task_manager/ui/pages/Users/viewClient.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class Client extends StatefulWidget {

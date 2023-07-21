@@ -8,7 +8,7 @@ import 'package:task_manager/ui/pages/Users/clientLogDetails.dart';
 import 'package:task_manager/ui/pages/Users/clientLoginDetails.dart';
 import 'package:task_manager/ui/pages/Users/clientTicketDetails.dart';
 import '../../core/res/color.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class viewClient1 extends StatefulWidget {

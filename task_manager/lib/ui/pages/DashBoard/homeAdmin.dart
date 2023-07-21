@@ -11,7 +11,7 @@ import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
 import 'package:task_manager/ui/core/res/color.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskUnPaid.dart';
 import 'package:task_manager/ui/pages/DashBoard/viewOverdueTask.dart';
@@ -135,7 +135,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   Future<void> fetchData() async {
     int offset = currentPage * rowsPerPage;
-   
+
     dataModel = await Urls.postApiCall(
       method: '${Urls.clientLog}',
       params: {
@@ -1609,7 +1609,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.02,
         ),
-         Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
@@ -1972,45 +1972,45 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           height: deviceHeight * 0.1,
         ),
 
-    //     Column(
-    //       children: <Widget>[
-    //         SingleChildScrollView(
-    //           scrollDirection: Axis.horizontal,
-    //           child: Row(
-    //             children: [
-    //               DataTable(
-    //                 columns: const [
-    //                   DataColumn(label: Text('Sr. No.'), numeric: true),
-    //                   DataColumn(label: Text('Title')),
-    //                   DataColumn(label: Text('Description')),
-    //                   DataColumn(label: Text('Date')),
-    //                 ],
-    //                 rows: dataHolidayList?.holiday?.map((holiday) {
-    //                       final index =
-    //                           dataHolidayList?.holiday?.indexOf(holiday) ?? -1;
-    //                       final srNo = (index + 1).toString();
-    //                       final title = holiday.title ?? '';
-    //                       final description = holiday.description ?? '';
-    //                       final date = DateTime.fromMillisecondsSinceEpoch(
-    //                           (int.tryParse(holiday.date!.toString()) ?? 0) *
-    //                               1000);
-    //                       final formattedDate =
-    //                           DateFormat('dd/MM/yyyy').format(date);
-    //                       return DataRow(cells: [
-    //                         DataCell(Text(srNo)),
-    //                         DataCell(Text(title)),
-    //                         DataCell(Text(description)),
-    //                         DataCell(Text(formattedDate.toString())),
-    //                       ]);
-    //                     }).toList() ??
-    //                     [],
-    //                 dataRowHeight: 32.0,
-    //               )
-    //             ],
-    //           ),
-    //         ),
-    //       ],
-    //     ),
+        //     Column(
+        //       children: <Widget>[
+        //         SingleChildScrollView(
+        //           scrollDirection: Axis.horizontal,
+        //           child: Row(
+        //             children: [
+        //               DataTable(
+        //                 columns: const [
+        //                   DataColumn(label: Text('Sr. No.'), numeric: true),
+        //                   DataColumn(label: Text('Title')),
+        //                   DataColumn(label: Text('Description')),
+        //                   DataColumn(label: Text('Date')),
+        //                 ],
+        //                 rows: dataHolidayList?.holiday?.map((holiday) {
+        //                       final index =
+        //                           dataHolidayList?.holiday?.indexOf(holiday) ?? -1;
+        //                       final srNo = (index + 1).toString();
+        //                       final title = holiday.title ?? '';
+        //                       final description = holiday.description ?? '';
+        //                       final date = DateTime.fromMillisecondsSinceEpoch(
+        //                           (int.tryParse(holiday.date!.toString()) ?? 0) *
+        //                               1000);
+        //                       final formattedDate =
+        //                           DateFormat('dd/MM/yyyy').format(date);
+        //                       return DataRow(cells: [
+        //                         DataCell(Text(srNo)),
+        //                         DataCell(Text(title)),
+        //                         DataCell(Text(description)),
+        //                         DataCell(Text(formattedDate.toString())),
+        //                       ]);
+        //                     }).toList() ??
+        //                     [],
+        //                 dataRowHeight: 32.0,
+        //               )
+        //             ],
+        //           ),
+        //         ),
+        //       ],
+        //     ),
       ],
     );
   }
@@ -2223,12 +2223,15 @@ class TableSource extends AdvancedDataTableSource<HolidayList> {
 
       if (holidays != null && holidays.isNotEmpty) {
         final Holiday holiday = holidays.first;
+        final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(holiday.date ?? '0') * 1000);
+        final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
             DataCell(Text(holiday.title ?? '')),
             DataCell(Text(holiday.description ?? '')),
-            DataCell(Text(holiday.date ?? '')),
+            DataCell(Text(formattedDate)),
           ],
         );
       }
@@ -2249,15 +2252,12 @@ class TableSource extends AdvancedDataTableSource<HolidayList> {
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
-   
 
     genModel? dataModel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-     
     );
 
     if (dataModel != null && dataModel.status == true) {
-     
       final dynamicData = dataModel.data;
       final holidayList = dynamicData['holiday'];
       int count = holidayList.length ?? 0;
@@ -2332,15 +2332,12 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
-   
 
     genModel? dataModel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-      
     );
 
     if (dataModel != null && dataModel.status == true) {
-     
       final dynamicData = dataModel.data;
       final birthdayList = dynamicData['birthday_list'];
       int count = birthdayList.length ?? 0;

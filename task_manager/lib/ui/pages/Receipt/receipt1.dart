@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class custom_invoice extends StatefulWidget {
-  const custom_invoice({super.key});
+
+class Receipt1 extends StatefulWidget {
+  const Receipt1({super.key});
 
   @override
-  State<custom_invoice> createState() => _custom_invoiceState();
+  State<Receipt1> createState() => _Receipt1State();
 }
 
-class _custom_invoiceState extends State<custom_invoice> {
+class _Receipt1State extends State<Receipt1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Invoice > Custom Invoice",
+          "Menu > Receipt1",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -75,7 +76,7 @@ class _custom_invoiceState extends State<custom_invoice> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Custom Recurring Invoice List",
+          "Receipt1 List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -85,6 +86,7 @@ class _custom_invoiceState extends State<custom_invoice> {
         SizedBox(
           width: 30,
         ),
+        IconButton(onPressed: () {}, icon: Icon(Icons.calendar_month)),
         const Spacer(),
       ],
     );
@@ -115,7 +117,7 @@ class _custom_invoiceState extends State<custom_invoice> {
         OutlinedButton(
           onPressed: () {},
           child: Text(
-            "Add Receipt",
+            "Add Receipt1",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,
@@ -142,51 +144,48 @@ class _custom_invoiceState extends State<custom_invoice> {
             children: [
               DataTable(
                 columns: const [
-                  DataColumn(label: Text('Sr.No.'), numeric: true),
-                  DataColumn(label: Text(' Client Name')),
+                  DataColumn(label: Text('SR No.')),
+                  DataColumn(label: Text('ID')),
+                  DataColumn(label: Text('Client Name')),
                   DataColumn(label: Text('Amount')),
-                  DataColumn(label: Text('Starting Date')),
-                  DataColumn(label: Text('Next Date')),
-                  DataColumn(label: Text('Time Interval')),
-                  DataColumn(label: Text('Edit')),
-                  DataColumn(label: Text('Delete')),
+                  DataColumn(label: Text('Date')),
+                  DataColumn(label: Text('Description')),
+                  DataColumn(label: Text('Reference No.')),
+                  DataColumn(label: Text('View')),
                 ],
                 rows: const [
                   DataRow(cells: [
                     DataCell(Text('1')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('1200')),
+                    DataCell(Text('123')),
+                    DataCell(Text('Roy')),
+                    DataCell(Text('1600')),
                     DataCell(Text('06/03/2023')),
-                    DataCell(Text('Customer09/03/2023')),
-                    DataCell(Text('Monthly')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                    DataCell(Text('Completed')),
+                    DataCell(Text('1')),
+                    DataCell(IconButton(
+                        onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                   DataRow(cells: [
                     DataCell(Text('1')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('1200')),
+                    DataCell(Text('123')),
+                    DataCell(Text('Roy')),
+                    DataCell(Text('1600')),
                     DataCell(Text('06/03/2023')),
-                    DataCell(Text('Customer09/03/2023')),
-                    DataCell(Text('Monthly')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                    DataCell(Text('Completed')),
+                    DataCell(Text('1')),
+                    DataCell(IconButton(
+                        onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                   DataRow(cells: [
                     DataCell(Text('1')),
-                    DataCell(Text('ABC')),
-                    DataCell(Text('1200')),
+                    DataCell(Text('123')),
+                    DataCell(Text('Roy')),
+                    DataCell(Text('1600')),
                     DataCell(Text('06/03/2023')),
-                    DataCell(Text('Customer09/03/2023')),
-                    DataCell(Text('Monthly')),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.edit))),
-                    DataCell(
-                        IconButton(onPressed: null, icon: Icon(Icons.delete))),
+                    DataCell(Text('Completed')),
+                    DataCell(Text('1')),
+                    DataCell(IconButton(
+                        onPressed: null, icon: Icon(Icons.view_list))),
                   ]),
                 ],
                 dataRowMinHeight: 32.0,

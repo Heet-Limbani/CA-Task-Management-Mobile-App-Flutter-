@@ -6,7 +6,7 @@ import 'package:task_manager/API/model/companyDataModel.dart';
 import 'package:task_manager/API/model/companyGroupEditDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditCompanyGroup extends StatefulWidget {

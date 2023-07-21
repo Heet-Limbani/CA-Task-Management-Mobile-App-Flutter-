@@ -6,7 +6,7 @@ import 'package:task_manager/API/model/expensesDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/pages/Setting/addExpenses.dart';
 import 'package:task_manager/ui/pages/Setting/editExpenses.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 
 class Expenses extends StatefulWidget {
   const Expenses({super.key});

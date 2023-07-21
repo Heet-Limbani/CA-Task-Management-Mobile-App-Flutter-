@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/model/companyDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/pages/Company/viewCompany.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class Company1 extends StatefulWidget {

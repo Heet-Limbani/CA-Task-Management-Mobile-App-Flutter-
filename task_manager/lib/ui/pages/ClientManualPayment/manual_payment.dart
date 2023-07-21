@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
+
 
 class Manual_Payment extends StatefulWidget {
   const Manual_Payment({super.key});

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class profile1 extends StatefulWidget {

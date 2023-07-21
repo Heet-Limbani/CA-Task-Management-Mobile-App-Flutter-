@@ -3,7 +3,7 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/API/model/CompanyTicketDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class CompanyTicket extends StatefulWidget {

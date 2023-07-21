@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/model/ManageLocationDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarAdmin.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/pages/File_Manager/addLocation.dart';
 import 'package:task_manager/ui/pages/File_Manager/editLocation.dart';
 

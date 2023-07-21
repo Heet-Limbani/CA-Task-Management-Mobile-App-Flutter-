@@ -249,7 +249,7 @@ import 'package:task_manager/ui/pages/Company/companyGroup.dart.dart';
 import 'package:task_manager/ui/pages/Company/companyManageComments.dart';
 import 'package:task_manager/ui/pages/Company/editCompany.dart';
 import 'package:task_manager/ui/pages/Company/viewCompany.dart';
-import '../DashBoard/sidebarAdmin.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class Company extends StatefulWidget {

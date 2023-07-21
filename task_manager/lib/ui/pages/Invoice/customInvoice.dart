@@ -1,27 +1,33 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager/API/model/ClientManualPaymentDataModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/API/model/CustomInvoiceDataModel.dart';
+import 'package:task_manager/ui/pages/Invoice/editCustomInvoice.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class ClientManualPayment extends StatefulWidget {
-  const ClientManualPayment({super.key});
+class CustomInvoice extends StatefulWidget {
+  const CustomInvoice({super.key});
 
   @override
-  State<ClientManualPayment> createState() => _ClientManualPaymentState();
+  State<CustomInvoice> createState() => _CustomInvoiceState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
-class _ClientManualPaymentState extends State<ClientManualPayment> {
+TextEditingController nameController1 = TextEditingController();
+
+class _CustomInvoiceState extends State<CustomInvoice> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
-  double deviceWidth = 1.0;
-  double deviceHeight = 1.0;
+  late double deviceWidth;
+  late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
 
@@ -39,7 +45,8 @@ class _ClientManualPaymentState extends State<ClientManualPayment> {
   @override
   void initState() {
     super.initState();
-    _source = TableSource(context);
+    _source = TableSource(context); // Initialize _source here
+    refreshTable();
   }
 
   void refreshTable() {
@@ -55,7 +62,7 @@ class _ClientManualPaymentState extends State<ClientManualPayment> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Client Manual Payment",
+          "Menu > Invoice > Custom Invoice",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -90,6 +97,10 @@ class _ClientManualPaymentState extends State<ClientManualPayment> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
+                _add(),
+                SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -107,11 +118,39 @@ class _ClientManualPaymentState extends State<ClientManualPayment> {
     return Row(
       children: [
         Text(
-          "Manual Payment List",
+          "Custom Invoice List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Row _add() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        OutlinedButton(
+          onPressed: () {
+           
+          },
+          child: Text(
+            "Add",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ),
       ],
@@ -193,23 +232,23 @@ class _ClientManualPaymentState extends State<ClientManualPayment> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Title'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Image'),
-              onSort: setSort,
-            ),
-            DataColumn(
               label: const Text('Amount'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Description'),
+              label: const Text('Starting Date'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Requested On'),
+              label: const Text('Next Date'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Time Interval'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Action'),
               onSort: setSort,
             ),
           ],
@@ -291,21 +330,16 @@ class _ClientManualPaymentState extends State<ClientManualPayment> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource
-    extends AdvancedDataTableSource<ClientManualPaymentDataModel> {
+class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   final BuildContext context; // Add the context parameter
 
-  TableSource(this.context); // Add the context parameter
-
- 
-  double get deviceWidth => MediaQuery.of(context).size.width;
-  double get deviceHeight => MediaQuery.of(context).size.height;
-
+  TableSource(this.context);
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
 
-  int startIndex = 0;
+  int startIndex = 0; // Add the startIndex variable
+
   int countIds(String ids) {
     if (ids.isEmpty) {
       return 0;
@@ -314,40 +348,92 @@ class TableSource
     List<String> idList = ids.split(',');
     return idList.length;
   }
- void showImage(String imageUrl) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Image.network(imageUrl),
-      ),
-    );
-  }
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final ClientManualPaymentDataModel dataList = lastDetails!.rows[index];
-    String img = Urls.baseUrlMain + Urls.manualPayment + dataList.image!;
-    print("img: $img");
-    //output :-img: https://task.mysyva.net/backend/assets/client_receipt/Screenshot_from_2023-04-27_16-52-07.png
+    final CustomInvoiceDataModel dataList = lastDetails!.rows[index];
+
+    void delete(String? id) async {
+      if (id != null) {
+        genModel? genmodel = await Urls.postApiCall(
+          method: '${Urls.deleteCustomInvoice}',
+          params: {'id': id},
+        );
+
+        if (genmodel != null && genmodel.status == true) {
+          Fluttertoast.showToast(
+            msg: "${genmodel.message.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+          );
+        }
+      }
+    }
+
+     String interval = '';
+    if (dataList.timePeriod == "0") {
+      interval = "Week";
+    } else if (dataList.timePeriod == "1") {
+      interval = "Half - Month";
+    } else if (dataList.timePeriod == "2") {
+      interval = "Month";
+    } else if (dataList.timePeriod == "3") {
+      interval = "Quarter";
+    } else if (dataList.timePeriod == "4") {
+      interval = "Half - Year";
+    } else if (dataList.timePeriod == "5") {
+      interval = "Year";
+    }
+     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.startingDate ?? '0') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.nextDate ?? '0') * 1000);
+    final formattedDate1 = DateFormat('yyyy-MM-dd').format(parsedDate1);
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.clientFirstName ?? '')),
-        DataCell(Text(dataList.title ?? '')),
-         DataCell(
-          GestureDetector(
-            onTap: () => showImage(img), // Show the image on tap
-            child: Image.network(
-              img,
-              width: deviceWidth * 0.1, // Set the desired width
-              height: deviceHeight * 1, // Set the desired height
-              fit: BoxFit.contain, // Adjust the image within the specified size
+        DataCell(Text(dataList.company ?? '')),
+        DataCell(Text(dataList.amount ?? '')),
+        DataCell(Text(formattedDate)),
+        DataCell(Text(formattedDate1)),
+        DataCell(Text(interval)),
+        DataCell(
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (dataList.id != null) {
+                         Get.to(EditCustomInvoice(userId: dataList.id!));
+                        }
+                      },
+                      child: Icon(Icons.edit),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                    RawMaterialButton(
+                      onPressed: () {
+                        if (dataList.id != null) {
+                          delete(dataList.id);
+                        }
+                      },
+                      child: Icon(Icons.delete),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
-        DataCell(Text(dataList.amount ?? '')),
-        DataCell(Text(dataList.description ?? '')),
-        DataCell(Text(dataList.createdOn ?? '')),
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
@@ -374,7 +460,7 @@ class TableSource
   }
 
   @override
-  Future<RemoteDataSourceDetails<ClientManualPaymentDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<CustomInvoiceDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -385,7 +471,7 @@ class TableSource
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientManualPayment}',
+      method: '${Urls.customInvoice}',
       params: queryParameter,
     );
 
@@ -397,16 +483,15 @@ class TableSource
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<ClientManualPaymentDataModel>(
-              (item) => ClientManualPaymentDataModel.fromJson(
-                  item as Map<String, dynamic>),
+            .map<CustomInvoiceDataModel>(
+              (item) => CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<ClientManualPaymentDataModel>(
-                  (item) => ClientManualPaymentDataModel.fromJson(
-                      item as Map<String, dynamic>),
+                .map<CustomInvoiceDataModel>(
+                  (item) =>
+                      CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

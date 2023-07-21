@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
-import 'package:task_manager/ui/pages/DashBoard/sidebarClient.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarClient.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
