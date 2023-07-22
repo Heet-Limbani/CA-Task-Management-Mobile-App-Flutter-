@@ -1,21 +1,16 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/CustomInvoiceDataModel.dart';
-import 'package:task_manager/ui/pages/Invoice/addCustomInvoice.dart';
-import 'package:task_manager/ui/pages/Invoice/editCustomInvoice.dart';
+import 'package:task_manager/API/model/ActivityLogDataModel.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class CustomInvoice extends StatefulWidget {
-  const CustomInvoice({super.key});
+class ActivityLog extends StatefulWidget {
+  const ActivityLog({super.key});
 
   @override
-  State<CustomInvoice> createState() => _CustomInvoiceState();
+  State<ActivityLog> createState() => _ActivityLogState();
 }
 
 TextEditingController nameController =
@@ -23,7 +18,7 @@ TextEditingController nameController =
 
 TextEditingController nameController1 = TextEditingController();
 
-class _CustomInvoiceState extends State<CustomInvoice> {
+class _ActivityLogState extends State<ActivityLog> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -63,7 +58,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Invoice > Custom Invoice",
+          "Menu > ActivityLog ",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -98,10 +93,6 @@ class _CustomInvoiceState extends State<CustomInvoice> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                _add(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -119,7 +110,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     return Row(
       children: [
         Text(
-          "Custom Invoice List",
+          "Activity Log List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -130,33 +121,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     );
   }
 
-  Row _add() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        OutlinedButton(
-          onPressed: () {
-           Get.to(AddCustomInvoice());
-          },
-          child: Text(
-            "Add",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+  
 
   Column _table() {
     return Column(
@@ -229,27 +194,19 @@ class _CustomInvoiceState extends State<CustomInvoice> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Client Name'),
+              label: const Text('User Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Amount'),
+              label: const Text('Title'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Starting Date'),
+              label: const Text('Id'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Next Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Time Interval'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Action'),
+              label: const Text('Date'),
               onSort: setSort,
             ),
           ],
@@ -331,7 +288,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
+class TableSource extends AdvancedDataTableSource<ActivityLogDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -353,88 +310,15 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final CustomInvoiceDataModel dataList = lastDetails!.rows[index];
+    final ActivityLogDataModel dataList = lastDetails!.rows[index];
 
-    void delete(String? id) async {
-      if (id != null) {
-        genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.deleteCustomInvoice}',
-          params: {'id': id},
-        );
-
-        if (genmodel != null && genmodel.status == true) {
-          Fluttertoast.showToast(
-            msg: "${genmodel.message.toString()}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
-        }
-      }
-    }
-
-     String interval = '';
-    if (dataList.timePeriod == "0") {
-      interval = "Week";
-    } else if (dataList.timePeriod == "1") {
-      interval = "Half - Month";
-    } else if (dataList.timePeriod == "2") {
-      interval = "Month";
-    } else if (dataList.timePeriod == "3") {
-      interval = "Quarter";
-    } else if (dataList.timePeriod == "4") {
-      interval = "Half - Year";
-    } else if (dataList.timePeriod == "5") {
-      interval = "Year";
-    }
-     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.startingDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.nextDate ?? '0') * 1000);
-    final formattedDate1 = DateFormat('yyyy-MM-dd').format(parsedDate1);
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.company ?? '')),
-        DataCell(Text(dataList.amount ?? '')),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(formattedDate1)),
-        DataCell(Text(interval)),
-        DataCell(
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.id != null) {
-                         Get.to(EditCustomInvoice(userId: dataList.id!));
-                        }
-                      },
-                      child: Icon(Icons.edit),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.id != null) {
-                          delete(dataList.id);
-                        }
-                      },
-                      child: Icon(Icons.delete),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
+        DataCell(Text(dataList.userName ?? '')),
+        DataCell(Text(dataList.title ?? '')),
+        DataCell(Text(dataList.id ?? '')),
+        DataCell(Text(dataList.date ?? '')),
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
@@ -461,7 +345,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<CustomInvoiceDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ActivityLogDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -472,7 +356,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.customInvoice}',
+      method: '${Urls.activityLog}',
       params: queryParameter,
     );
 
@@ -484,15 +368,16 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<CustomInvoiceDataModel>(
-              (item) => CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+            .map<ActivityLogDataModel>(
+              (item) =>
+                  ActivityLogDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<CustomInvoiceDataModel>(
-                  (item) =>
-                      CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+                .map<ActivityLogDataModel>(
+                  (item) => ActivityLogDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

@@ -2,20 +2,16 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/CustomInvoiceDataModel.dart';
-import 'package:task_manager/ui/pages/Invoice/addCustomInvoice.dart';
-import 'package:task_manager/ui/pages/Invoice/editCustomInvoice.dart';
+import 'package:task_manager/API/model/ClientPasswordDataModel.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class CustomInvoice extends StatefulWidget {
-  const CustomInvoice({super.key});
+class ClientPassword extends StatefulWidget {
+  const ClientPassword({super.key});
 
   @override
-  State<CustomInvoice> createState() => _CustomInvoiceState();
+  State<ClientPassword> createState() => _ClientPasswordState();
 }
 
 TextEditingController nameController =
@@ -23,7 +19,7 @@ TextEditingController nameController =
 
 TextEditingController nameController1 = TextEditingController();
 
-class _CustomInvoiceState extends State<CustomInvoice> {
+class _ClientPasswordState extends State<ClientPassword> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -63,7 +59,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Invoice > Custom Invoice",
+          "Menu > Client Password",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -119,7 +115,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     return Row(
       children: [
         Text(
-          "Custom Invoice List",
+          "Client Password List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -137,10 +133,10 @@ class _CustomInvoiceState extends State<CustomInvoice> {
       children: [
         OutlinedButton(
           onPressed: () {
-           Get.to(AddCustomInvoice());
+            
           },
           child: Text(
-            "Add",
+            "Add New",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,
@@ -229,23 +225,19 @@ class _CustomInvoiceState extends State<CustomInvoice> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Client Name'),
+              label: const Text('Company Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Amount'),
+              label: const Text('GST  User Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Starting Date'),
+              label: const Text('GST Password'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Next Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Time Interval'),
+              label: const Text('Another Password'),
               onSort: setSort,
             ),
             DataColumn(
@@ -331,7 +323,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
+class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -353,12 +345,12 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final CustomInvoiceDataModel dataList = lastDetails!.rows[index];
+    final ClientPasswordDataModel dataList = lastDetails!.rows[index];
 
-    void delete(String? id) async {
+    void message(String? id) async {
       if (id != null) {
         genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.deleteCustomInvoice}',
+          method: '${Urls.clientPassword}',
           params: {'id': id},
         );
 
@@ -373,34 +365,13 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
       }
     }
 
-     String interval = '';
-    if (dataList.timePeriod == "0") {
-      interval = "Week";
-    } else if (dataList.timePeriod == "1") {
-      interval = "Half - Month";
-    } else if (dataList.timePeriod == "2") {
-      interval = "Month";
-    } else if (dataList.timePeriod == "3") {
-      interval = "Quarter";
-    } else if (dataList.timePeriod == "4") {
-      interval = "Half - Year";
-    } else if (dataList.timePeriod == "5") {
-      interval = "Year";
-    }
-     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.startingDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.nextDate ?? '0') * 1000);
-    final formattedDate1 = DateFormat('yyyy-MM-dd').format(parsedDate1);
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
         DataCell(Text(dataList.company ?? '')),
-        DataCell(Text(dataList.amount ?? '')),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(formattedDate1)),
-        DataCell(Text(interval)),
+        DataCell(Text(dataList.username ?? '')),
+        DataCell(Text(dataList.name ?? '')),
+        DataCell(Text(dataList.password ?? '')),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -410,11 +381,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                 Row(
                   children: [
                     RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.id != null) {
-                         Get.to(EditCustomInvoice(userId: dataList.id!));
-                        }
-                      },
+                      onPressed: () {},
                       child: Icon(Icons.edit),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
@@ -422,7 +389,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          delete(dataList.id);
+                          message(dataList.id!);
                         }
                       },
                       child: Icon(Icons.delete),
@@ -461,7 +428,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<CustomInvoiceDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ClientPasswordDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -472,7 +439,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.customInvoice}',
+      method: '${Urls.clientPassword}',
       params: queryParameter,
     );
 
@@ -484,15 +451,15 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<CustomInvoiceDataModel>(
-              (item) => CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+            .map<ClientPasswordDataModel>(
+              (item) => ClientPasswordDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<CustomInvoiceDataModel>(
+                .map<ClientPasswordDataModel>(
                   (item) =>
-                      CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+                      ClientPasswordDataModel.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

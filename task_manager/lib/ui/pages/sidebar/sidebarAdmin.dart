@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
-import 'package:task_manager/ui/pages/Activity_Log/activity_log.dart';
+import 'package:task_manager/ui/pages/Activity_Log/activityLog.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/clientManualPayment.dart';
 import 'package:task_manager/ui/pages/Client_Data/client_data.dart';
-import 'package:task_manager/ui/pages/Client_Password/client_password.dart';
+import 'package:task_manager/ui/pages/Client_Password/clientPassword.dart';
 import 'package:task_manager/ui/pages/Company%20View/company1.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
@@ -16,7 +16,7 @@ import 'package:task_manager/ui/pages/File_Manager/fileManager.dart';
 import 'package:task_manager/ui/pages/Holiday/holiday.dart';
 import 'package:task_manager/ui/pages/Invoice/customInvoice.dart';
 import 'package:task_manager/ui/pages/Invoice/invoice.dart';
-import 'package:task_manager/ui/pages/Password/password_manager.dart';
+import 'package:task_manager/ui/pages/Password/vault.dart';
 import 'package:task_manager/ui/pages/Receipt/receipt.dart';
 import 'package:task_manager/ui/pages/Reports/due_report.dart';
 import 'package:task_manager/ui/pages/Reports/gst_report.dart';
@@ -244,23 +244,23 @@ class SideBarAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.password),
-            title: Text('Password Manager'),
+            title: Text('Vault Manager'),
             onTap: () {
-              Get.to(Password_Manager());
+              Get.to(Vault());
             },
           ),
           ListTile(
             leading: Icon(Icons.local_activity),
             title: Text('Activity Log'),
             onTap: () {
-              Get.to(Activity_Log());
+              Get.to(ActivityLog());
             },
           ),
           ListTile(
             leading: Icon(Icons.password),
             title: Text('Client Password'),
             onTap: () {
-              Get.to(Client_Password());
+              Get.to(ClientPassword());
             },
           ),
           ListTile(

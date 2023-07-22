@@ -87,6 +87,12 @@ class Urls {
   static String customInvoice = "${Urls.baseUrlMain}custom_invoice_load";
   static String editCustomInvoice = "${Urls.baseUrlMain}edit_custom_invoice";
   static String deleteCustomInvoice = "${Urls.baseUrlMain}delete_custom_invoice";
+  static String addCustomInvoice = "${Urls.baseUrlMain}add_custom_invoice";
+  static String vault = "${Urls.baseUrlMain}Vault_manager";
+  static String vaultDelete = "${Urls.baseUrlMain}Delete_vault";
+  static String userPass = "${Urls.baseUrlMain}check_user_pass";
+  static String activityLog = "${Urls.baseUrlMain}ActivityLog";
+  static String clientPassword = "${Urls.baseUrlMain}client_password";
 
   static String profileEmail = "";
   static String profileUserName = "";

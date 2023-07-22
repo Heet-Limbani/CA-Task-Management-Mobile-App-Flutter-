@@ -2,28 +2,25 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/CustomInvoiceDataModel.dart';
-import 'package:task_manager/ui/pages/Invoice/addCustomInvoice.dart';
-import 'package:task_manager/ui/pages/Invoice/editCustomInvoice.dart';
+import 'package:task_manager/API/model/vaultDataModel.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class CustomInvoice extends StatefulWidget {
-  const CustomInvoice({super.key});
+class Vault extends StatefulWidget {
+  const Vault({super.key});
 
   @override
-  State<CustomInvoice> createState() => _CustomInvoiceState();
+  State<Vault> createState() => _VaultState();
 }
 
-TextEditingController nameController =
+TextEditingController nameController = TextEditingController();
+TextEditingController passController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
 
-class _CustomInvoiceState extends State<CustomInvoice> {
+class _VaultState extends State<Vault> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -63,7 +60,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Invoice > Custom Invoice",
+          "Menu > Vault > Vault List",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -119,7 +116,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
     return Row(
       children: [
         Text(
-          "Custom Invoice List",
+          "Vault List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -136,9 +133,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         OutlinedButton(
-          onPressed: () {
-           Get.to(AddCustomInvoice());
-          },
+          onPressed: () {},
           child: Text(
             "Add",
             style: TextStyle(
@@ -229,23 +224,23 @@ class _CustomInvoiceState extends State<CustomInvoice> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Client Name'),
+              label: const Text('Company Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Amount'),
+              label: const Text('Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Starting Date'),
+              label: const Text('User Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Next Date'),
+              label: const Text('Email'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Time Interval'),
+              label: const Text('Password'),
               onSort: setSort,
             ),
             DataColumn(
@@ -331,7 +326,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
+class TableSource extends AdvancedDataTableSource<VaultDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -353,12 +348,12 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final CustomInvoiceDataModel dataList = lastDetails!.rows[index];
+    final VaultDataModel dataList = lastDetails!.rows[index];
 
     void delete(String? id) async {
       if (id != null) {
         genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.deleteCustomInvoice}',
+          method: '${Urls.vaultDelete}',
           params: {'id': id},
         );
 
@@ -372,35 +367,113 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
         }
       }
     }
+    
+    void checkPass(password1, pass) async {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.userPass}',
+        params: {'password': pass.toString()},
+      );
 
-     String interval = '';
-    if (dataList.timePeriod == "0") {
-      interval = "Week";
-    } else if (dataList.timePeriod == "1") {
-      interval = "Half - Month";
-    } else if (dataList.timePeriod == "2") {
-      interval = "Month";
-    } else if (dataList.timePeriod == "3") {
-      interval = "Quarter";
-    } else if (dataList.timePeriod == "4") {
-      interval = "Half - Year";
-    } else if (dataList.timePeriod == "5") {
-      interval = "Year";
+      if (genmodel != null && genmodel.status == true) {
+        final data = genmodel.data;
+        final pass1 = data['password'];
+        String tmp = pass1.toString();
+        print("Password :- ${pass1.toString()}");
+        if (tmp == "true") {
+          Fluttertoast.showToast(
+            msg: " Password :- ${password1.toString()}",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            
+          );
+        } else {
+          Fluttertoast.showToast(
+            msg: "Password Not Match",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+          );
+        }
+      }
     }
-     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.startingDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.nextDate ?? '0') * 1000);
-    final formattedDate1 = DateFormat('yyyy-MM-dd').format(parsedDate1);
+
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
         DataCell(Text(dataList.company ?? '')),
-        DataCell(Text(dataList.amount ?? '')),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(formattedDate1)),
-        DataCell(Text(interval)),
+        DataCell(Text(dataList.name ?? '')),
+        DataCell(Text(dataList.username ?? '')),
+        DataCell(Text(dataList.email ?? '')),
+        DataCell(
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text("*******"),
+                    RawMaterialButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Password'),
+                              content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  TextField(
+                                    controller: passController,
+                                    decoration: InputDecoration(
+                                      hintText: 'User Password',
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                  },
+                                  child: Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .pop(); // Close the dialog
+                                    String pass = passController.text.trim();
+                                    if (pass.isNotEmpty) {
+                                      checkPass(dataList.password, pass);
+                                    } else {
+                                      Fluttertoast.showToast(
+                                        msg: "Field Is Empty",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                      );
+                                    }
+                                    passController.clear();
+                                  },
+                                  child: Text('Submit'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Icon(Icons.remove_red_eye_outlined),
+                      constraints: BoxConstraints.tight(Size(24, 24)),
+                      shape: CircleBorder(),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -410,11 +483,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                 Row(
                   children: [
                     RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.id != null) {
-                         Get.to(EditCustomInvoice(userId: dataList.id!));
-                        }
-                      },
+                      onPressed: () {},
                       child: Icon(Icons.edit),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
@@ -461,7 +530,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<CustomInvoiceDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<VaultDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -472,7 +541,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.customInvoice}',
+      method: '${Urls.vault}',
       params: queryParameter,
     );
 
@@ -484,15 +553,15 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<CustomInvoiceDataModel>(
-              (item) => CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+            .map<VaultDataModel>(
+              (item) => VaultDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<CustomInvoiceDataModel>(
+                .map<VaultDataModel>(
                   (item) =>
-                      CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+                      VaultDataModel.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,
