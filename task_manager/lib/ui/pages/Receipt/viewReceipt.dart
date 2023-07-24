@@ -33,7 +33,7 @@ TextEditingController _searchController = TextEditingController();
 String id = "";
 
 String? selectedClientId1;
-
+int dataCount = 0;
 class _ViewReceiptState extends State<ViewReceipt> {
   bool isObscurePassword = true;
 
@@ -356,6 +356,11 @@ void refreshTable() {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -551,6 +556,8 @@ class TableSource extends AdvancedDataTableSource<ReceiptViewDataModel> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
+       int count = dataModel.data.length ?? 0;
+       dataCount = count;
       
       if (dynamicData is Map<String, dynamic> &&
           dynamicData.containsKey('invoice_payment_id')) {

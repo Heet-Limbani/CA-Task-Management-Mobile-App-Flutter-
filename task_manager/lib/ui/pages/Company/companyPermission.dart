@@ -20,7 +20,7 @@ TextEditingController nameController =
 
 String id = "";
 String per = "";
-
+int dataCount = 0;
 class _CompanyPermissionState extends State<CompanyPermission> {
   late TableSource _source; // Declare _source here
 
@@ -195,6 +195,11 @@ class _CompanyPermissionState extends State<CompanyPermission> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -393,7 +398,8 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel3> {
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
       final List<dynamic> employeeList = dynamicData['employee'];
-
+       int count = dataModel.data.length ?? 0;
+       dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         employeeList

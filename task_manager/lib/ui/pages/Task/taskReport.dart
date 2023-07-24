@@ -14,7 +14,7 @@ class TaskReport extends StatefulWidget {
   @override
   State<TaskReport> createState() => _TaskReportState();
 }
-
+int dataCount = 0;
 class _TaskReportState extends State<TaskReport> {
   late TableSource _source;
   String? stringResponse;
@@ -201,6 +201,11 @@ class _TaskReportState extends State<TaskReport> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -406,7 +411,20 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.defaultDialog(
+                              title: "Delete",
+                              middleText: "Are you sure you want to delete ?",
+                              textConfirm: "Yes",
+                              textCancel: "No",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.red,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                Get.back();
+                               
+                              },
+                              onCancel: () {},
+                            );
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -596,7 +614,8 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
+       int count = dataModel.data.length ?? 0;
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData

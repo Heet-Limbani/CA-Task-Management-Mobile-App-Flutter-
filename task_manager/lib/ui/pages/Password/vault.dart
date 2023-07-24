@@ -2,6 +2,7 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/vaultDataModel.dart';
@@ -19,6 +20,7 @@ TextEditingController passController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
+int dataCount = 0;
 
 class _VaultState extends State<Vault> {
   late TableSource _source; // Declare _source here
@@ -202,6 +204,11 @@ class _VaultState extends State<Vault> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -367,7 +374,7 @@ class TableSource extends AdvancedDataTableSource<VaultDataModel> {
         }
       }
     }
-    
+
     void checkPass(password1, pass) async {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.userPass}',
@@ -385,7 +392,6 @@ class TableSource extends AdvancedDataTableSource<VaultDataModel> {
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
-            
           );
         } else {
           Fluttertoast.showToast(
@@ -491,7 +497,20 @@ class TableSource extends AdvancedDataTableSource<VaultDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          delete(dataList.id);
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText: "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              delete(dataList.id!);
+                            },
+                            onCancel: () {},
+                          );
                         }
                       },
                       child: Icon(Icons.delete),
@@ -546,9 +565,9 @@ class TableSource extends AdvancedDataTableSource<VaultDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,

@@ -145,8 +145,6 @@ class _ExpensesState extends State<Expenses> {
     );
   }
 
- 
-
   Row _add() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -213,8 +211,21 @@ class _ExpensesState extends State<Expenses> {
                     DataCell(IconButton(
                         onPressed: () {
                           if (expense.id != null) {
-                            deleteExpense(expense.id!);
-                            expenses();
+                            Get.defaultDialog(
+                              title: "Delete",
+                              middleText: "Are you sure you want to delete ?",
+                              textConfirm: "Yes",
+                              textCancel: "No",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.red,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                Get.back();
+                                deleteExpense(expense.id!);
+                                expenses();
+                              },
+                              onCancel: () {},
+                            );
                           }
                         },
                         icon: Icon(Icons.delete))),

@@ -430,7 +430,19 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText: "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                            },
+                            onCancel: () {},
+                          );
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),

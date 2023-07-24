@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:shimmer/shimmer.dart';
 
 class Urls {
   static String baseUrlMain = "https://task.mysyva.net/backend/";
@@ -86,7 +88,8 @@ class Urls {
   static String addInvoice = "${Urls.baseUrlMain}Add_Invoice";
   static String customInvoice = "${Urls.baseUrlMain}custom_invoice_load";
   static String editCustomInvoice = "${Urls.baseUrlMain}edit_custom_invoice";
-  static String deleteCustomInvoice = "${Urls.baseUrlMain}delete_custom_invoice";
+  static String deleteCustomInvoice =
+      "${Urls.baseUrlMain}delete_custom_invoice";
   static String addCustomInvoice = "${Urls.baseUrlMain}add_custom_invoice";
   static String vault = "${Urls.baseUrlMain}Vault_manager";
   static String vaultDelete = "${Urls.baseUrlMain}Delete_vault";
@@ -167,5 +170,172 @@ class Urls {
     }
 
     return null;
+  }
+}
+
+class UniversalShimmer extends StatelessWidget {
+  final int itemCount;
+  final double deviceWidth;
+  final double deviceHeight;
+
+  UniversalShimmer({
+    required this.itemCount,
+    required this.deviceWidth,
+    required this.deviceHeight,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[400]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: itemCount + 2, // Add 2 for the heading and footer rows
+        itemBuilder: (context, index) {
+          // Check if it's the heading row
+          if (index == 0) {
+            return _buildHeadingRow();
+          }
+          // Check if it's the footer row
+          else if (index == itemCount + 1) {
+            return _buildFooterRow();
+          } else {
+            // Subtract 1 from index to get the correct data row index
+            int rowIndex = index - 1;
+            return _buildDataRow(rowIndex);
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _buildHeadingRow() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.black,
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: deviceHeight * 0.02, // Adjust the height as needed
+              color: Colors.grey[400],
+            ),
+          ),
+          //SizedBox(width: deviceWidth * 0.02), // Adjust the width as needed
+          Expanded(
+            flex: 2,
+            child: Container(
+              height: deviceHeight * 0.02, // Adjust the height as needed
+              color: Colors.grey[400],
+            ),
+          ),
+          //SizedBox(width: deviceWidth * 0.02), // Adjust the width as needed
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: deviceHeight * 0.02, // Adjust the height as needed
+              color: Colors.grey[400],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFooterRow() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            color: Colors.black,
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: deviceHeight * 0.02, // Adjust the height as needed
+              color: Colors.grey[400],
+            ),
+          ),
+          // SizedBox(width: deviceWidth * 0.02), // Adjust the width as needed
+          Expanded(
+            flex: 2,
+            child: Container(
+              height: deviceHeight * 0.02, // Adjust the height as needed
+              color: Colors.grey[400],
+            ),
+          ),
+          // SizedBox(width: deviceWidth * 0.02), // Adjust the width as needed
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: deviceHeight * 0.02, // Adjust the height as needed
+              color: Colors.grey[400],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDataRow(int rowIndex) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 10),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Colors.black,
+            width: 1.0,
+          ),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: deviceHeight * 0.01, // Adjust the height as needed
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: deviceWidth * 0.02), // Adjust the width as needed
+          Expanded(
+            flex: 2,
+            child: Container(
+              height: deviceHeight * 0.01, // Adjust the height as needed
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(width: deviceWidth * 0.02), // Adjust the width as needed
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: deviceHeight * 0.01, // Adjust the height as needed
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -20,7 +20,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
-
+int dataCount = 0;
 class _InvoiceState extends State<Invoice> {
   late TableSource _source; // Declare _source here
 
@@ -205,6 +205,11 @@ class _InvoiceState extends State<Invoice> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -446,9 +451,9 @@ class TableSource extends AdvancedDataTableSource<InvoiceDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,

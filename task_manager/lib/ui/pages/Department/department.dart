@@ -2,6 +2,7 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/departmentDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
@@ -18,7 +19,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
-
+int dataCount = 0;
 class _DepartmentState extends State<Department> {
   late TableSource _source; // Declare _source here
 
@@ -177,6 +178,8 @@ class _DepartmentState extends State<Department> {
                         String newName = nameController1.text.trim();
                         if (newName.isNotEmpty) {
                           addDepartment(newName);
+                          refreshTable();
+                          nameController1.clear();
                         } else {
                           Fluttertoast.showToast(
                             msg: "Field Is Empty",
@@ -186,7 +189,7 @@ class _DepartmentState extends State<Department> {
                           );
                         }
                       },
-                      child: Text('Update'),
+                      child: Text('Add'),
                     ),
                   ],
                 );
@@ -261,6 +264,11 @@ class _DepartmentState extends State<Department> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -498,7 +506,22 @@ class TableSource extends AdvancedDataTableSource<DepartmentDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          deleteUser(dataList.id!);
+                          Get.defaultDialog(
+                            title: "Delete Department",
+                            middleText:
+                                "Are you sure you want to delete this department?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              deleteUser(dataList.id!);
+                            },
+                            onCancel: () {
+                            },
+                          );
                         }
                       },
                       child: Icon(Icons.delete),
@@ -555,6 +578,7 @@ class TableSource extends AdvancedDataTableSource<DepartmentDataModel> {
     if (dataModel != null && dataModel.status == true) {
       int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         //dataModel.count ?? 0,

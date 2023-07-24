@@ -261,7 +261,7 @@ class Company extends StatefulWidget {
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
+int dataCount = 0;
 class _CompanyState extends State<Company> {
   late TableSource _source; // Declare _source here
 
@@ -490,6 +490,11 @@ class _CompanyState extends State<Company> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -686,8 +691,18 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
                      RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          //Get.to(EditNotificationConfig(userId: dataList.id!));
-                           deleteUser(dataList.id!);
+                          Get.defaultDialog(
+                            title: 'Delete',
+                            middleText: 'Are you sure you want to delete?',
+                            textConfirm: 'Yes',
+                            textCancel: 'No',
+                            onConfirm: () {
+                              deleteUser(dataList.id);
+                            },
+                            onCancel: () {
+                             
+                            },
+                          );
                         }
                       },
                       child: Icon(Icons.delete),
@@ -742,9 +757,9 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-      
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

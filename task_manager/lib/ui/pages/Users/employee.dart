@@ -16,18 +16,19 @@ class Employee extends StatefulWidget {
   @override
   State<Employee> createState() => _EmployeeState();
 }
- 
+
+int dataCount = 0;
 
 class _EmployeeState extends State<Employee> {
-   late TableSource _source;
+  late TableSource _source;
   String? stringResponse;
- 
+
   Map? mapResponse;
   Map? dataResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
-    TextEditingController _searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
 
   List<GetUser> clientType = [];
   var _sortIndex = 0;
@@ -200,7 +201,6 @@ class _EmployeeState extends State<Employee> {
             fontSize: 22,
           ),
         ),
-       
       ],
     );
   }
@@ -317,6 +317,11 @@ class _EmployeeState extends State<Employee> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -595,6 +600,7 @@ class _EmployeeState extends State<Employee> {
     );
   }
 }
+
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<GetUser> {
@@ -669,7 +675,20 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
         DataCell(IconButton(
           onPressed: () {
             if (dataList.iD != null) {
-              deleteUser(dataList.iD!);
+              Get.defaultDialog(
+                title: "Delete",
+                middleText: "Are you sure you want to delete ?",
+                textConfirm: "Yes",
+                textCancel: "No",
+                confirmTextColor: Colors.white,
+                buttonColor: Colors.red,
+                cancelTextColor: Colors.black,
+                onConfirm: () {
+                  Get.back();
+                  deleteUser(dataList.iD!);
+                },
+                onCancel: () {},
+              );
             }
           },
           icon: Icon(Icons.delete),
@@ -677,7 +696,7 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
         DataCell(IconButton(
           onPressed: () {
             if (dataList.iD != null) {
-             // Get.to(viewClient1(userId: dataList.iD!));
+              // Get.to(viewClient1(userId: dataList.iD!));
 
               showDialog(
                 context: context,
@@ -790,7 +809,7 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
       'limit': pageRequest.pageSize.toString(),
-       'type': Urls.employeeType,
+      'type': Urls.employeeType,
     };
 
     genModel? dataModel = await Urls.postApiCall(
@@ -800,6 +819,8 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

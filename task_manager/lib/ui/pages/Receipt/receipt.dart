@@ -20,6 +20,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
+int dataCount = 0;
 
 class _ReceiptState extends State<Receipt> {
   late TableSource _source; // Declare _source here
@@ -279,6 +280,11 @@ class _ReceiptState extends State<Receipt> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -447,7 +453,7 @@ class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
                         RawMaterialButton(
                           onPressed: () {
                             if (file.id != null) {
-                             Get.to(ViewReceipt(id: file.id!) );
+                              Get.to(ViewReceipt(id: file.id!));
                             }
                           },
                           child: Icon(Icons.remove_red_eye_outlined),
@@ -496,7 +502,8 @@ class TableSource extends AdvancedDataTableSource<ReceiptDataModel> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
       if (dynamicData is Map<String, dynamic> &&
           dynamicData.containsKey('file')) {
         final dynamicList = dynamicData['file'] as List<dynamic>?;

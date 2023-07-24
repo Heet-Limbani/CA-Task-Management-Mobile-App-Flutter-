@@ -19,7 +19,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 String id = "";
-
+int dataCount = 0;
 class _CompanyLogState extends State<CompanyLog> {
   late TableSource _source; // Declare _source here
 
@@ -172,6 +172,11 @@ class _CompanyLogState extends State<CompanyLog> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -365,8 +370,9 @@ class TableSource extends AdvancedDataTableSource<CompanyLogDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      dataCount = count;
      
 
       return RemoteDataSourceDetails(

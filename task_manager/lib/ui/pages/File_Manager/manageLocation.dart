@@ -19,7 +19,7 @@ class ManageLocation extends StatefulWidget {
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
+int dataCount = 0;
 class _ManageLocationState extends State<ManageLocation> {
   late TableSource _source; // Declare _source here
 
@@ -205,6 +205,11 @@ class _ManageLocationState extends State<ManageLocation> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -419,8 +424,24 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
-                          deleteUser(dataList.id);
+                           if (dataList.id != null) {
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText:
+                                "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              deleteUser(dataList.id!);
+                            },
+                            onCancel: () {},
+                          );
+                        }
+                          
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -452,8 +473,23 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
-                           deleteUser(dataList.id);
+                          if (dataList.id != null) {
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText:
+                                "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              deleteUser(dataList.id!);
+                            },
+                            onCancel: () {},
+                          );
+                        }
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -509,9 +545,9 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,

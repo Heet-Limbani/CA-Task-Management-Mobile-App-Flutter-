@@ -18,7 +18,7 @@ class NotificationConfig extends StatefulWidget {
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
+int dataCount = 0;
 class _NotificationConfigState extends State<NotificationConfig> {
   late TableSource _source; // Declare _source here
 
@@ -170,6 +170,11 @@ class _NotificationConfigState extends State<NotificationConfig> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -409,9 +414,9 @@ class TableSource extends AdvancedDataTableSource<NotificationConfigDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-      print("dynamicData :- $dynamicData");
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

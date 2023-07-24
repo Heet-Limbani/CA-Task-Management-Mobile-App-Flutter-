@@ -12,7 +12,7 @@ class TaskUnPaid extends StatefulWidget {
   @override
   State<TaskUnPaid> createState() => _TaskUnPaidState();
 }
-
+int dataCount = 0;
 class _TaskUnPaidState extends State<TaskUnPaid> {
   late TableSource _source;
   String? stringResponse;
@@ -197,6 +197,11 @@ class _TaskUnPaidState extends State<TaskUnPaid> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -448,7 +453,8 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-      print("dynamicData $dynamicData");
+       int count = dataModel.data.length ?? 0;
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

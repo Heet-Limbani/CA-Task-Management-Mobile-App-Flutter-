@@ -283,6 +283,3 @@ class _EditExpensesState extends State<EditExpenses> {
     );
   }
 }
-
-// Table heading
-

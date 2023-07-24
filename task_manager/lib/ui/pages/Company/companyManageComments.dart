@@ -18,6 +18,7 @@ class CompanyManageComments extends StatefulWidget {
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
+int dataCount = 0;
 
 class _CompanyManageCommentsState extends State<CompanyManageComments> {
   late TableSource _source; // Declare _source here
@@ -202,6 +203,11 @@ class _CompanyManageCommentsState extends State<CompanyManageComments> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -410,9 +416,9 @@ class TableSource extends AdvancedDataTableSource<CompanyCommentDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,

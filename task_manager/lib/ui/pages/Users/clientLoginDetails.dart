@@ -30,7 +30,7 @@ var _sortAsc = true;
 var _customFooter = false;
 var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 TextEditingController _searchController = TextEditingController();
-
+int dataCount = 0;
 class _ClientLoginDetailsState extends State<ClientLoginDetails> {
   @override
   void initState() {
@@ -181,6 +181,11 @@ class _ClientLoginDetailsState extends State<ClientLoginDetails> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -357,8 +362,20 @@ class ClientDataSource extends DataTableSource {
       ),
       DataCell(IconButton(
         onPressed: () {
-          print("client.id :- ${client.id}");
-          deleteUser(client.id!);
+          Get.defaultDialog(
+            title: "Delete",
+            middleText: "Are you sure you want to delete ?",
+            textConfirm: "Yes",
+            textCancel: "No",
+            confirmTextColor: Colors.white,
+            buttonColor: Colors.red,
+            cancelTextColor: Colors.black,
+            onConfirm: () {
+              Get.back();
+              deleteUser(client.id!);
+            },
+            onCancel: () {},
+          );
         },
         icon: Icon(Icons.delete),
       )),
@@ -456,7 +473,8 @@ class ClientSource extends AdvancedDataTableSource<Login> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
+       int count = dataModel.data.length ?? 0;
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData

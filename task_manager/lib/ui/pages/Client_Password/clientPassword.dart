@@ -2,6 +2,7 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/ClientPasswordDataModel.dart';
@@ -18,6 +19,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
+int dataCount = 0;
 
 class _ClientPasswordState extends State<ClientPassword> {
   late TableSource _source; // Declare _source here
@@ -132,9 +134,7 @@ class _ClientPasswordState extends State<ClientPassword> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         OutlinedButton(
-          onPressed: () {
-            
-          },
+          onPressed: () {},
           child: Text(
             "Add New",
             style: TextStyle(
@@ -203,6 +203,11 @@ class _ClientPasswordState extends State<ClientPassword> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -389,7 +394,20 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          message(dataList.id!);
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText: "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              message(dataList.id!);
+                            },
+                            onCancel: () {},
+                          );
                         }
                       },
                       child: Icon(Icons.delete),
@@ -444,22 +462,24 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,
         dynamicData
             .map<ClientPasswordDataModel>(
-              (item) => ClientPasswordDataModel.fromJson(item as Map<String, dynamic>),
+              (item) => ClientPasswordDataModel.fromJson(
+                  item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
                 .map<ClientPasswordDataModel>(
-                  (item) =>
-                      ClientPasswordDataModel.fromJson(item as Map<String, dynamic>),
+                  (item) => ClientPasswordDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

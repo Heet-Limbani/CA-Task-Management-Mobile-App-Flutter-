@@ -18,6 +18,8 @@ class Client extends StatefulWidget {
   State<Client> createState() => _ClientState();
 }
 
+int dataCount = 0;
+
 class _ClientState extends State<Client> {
   late TableSource _source; // Declare _source here
 
@@ -220,8 +222,6 @@ class _ClientState extends State<Client> {
             fontSize: 22,
           ),
         ),
-       
-      
       ],
     );
   }
@@ -301,6 +301,11 @@ class _ClientState extends State<Client> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -513,7 +518,20 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
         DataCell(IconButton(
           onPressed: () {
             if (dataList.iD != null) {
-              deleteUser(dataList.iD!);
+              Get.defaultDialog(
+                title: "Delete",
+                middleText: "Are you sure you want to delete ?",
+                textConfirm: "Yes",
+                textCancel: "No",
+                confirmTextColor: Colors.white,
+                buttonColor: Colors.red,
+                cancelTextColor: Colors.black,
+                onConfirm: () {
+                  Get.back();
+                  deleteUser(dataList.iD!);
+                },
+                onCancel: () {},
+              );
             }
           },
           icon: Icon(Icons.delete),
@@ -634,7 +652,7 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
       'limit': pageRequest.pageSize.toString(),
-       'type': Urls.clientType,
+      'type': Urls.clientType,
     };
 
     genModel? dataModel = await Urls.postApiCall(
@@ -644,7 +662,8 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-      print("count ${dataModel.count}");
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

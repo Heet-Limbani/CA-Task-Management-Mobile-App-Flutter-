@@ -30,6 +30,9 @@ class HomeAdminScreen extends StatefulWidget {
   State<HomeAdminScreen> createState() => _HomeAdminScreenState();
 }
 
+int dataCount3 = 0;
+int dataCount1 = 0;
+int dataCount2 = 0;
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   final _source = ClientSource();
   var _sortIndex = 0;
@@ -1440,6 +1443,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         ),
 
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount1,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -1654,6 +1662,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         ),
 
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount2,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source2,
           showHorizontalScrollbarAlways: true,
@@ -1861,6 +1874,11 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         ),
 
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount3,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source1,
           showHorizontalScrollbarAlways: true,
@@ -2183,6 +2201,8 @@ class ClientSource extends AdvancedDataTableSource<Client> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
+       int count = dataModel.data.length ?? 0;
+       dataCount1 = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
@@ -2261,6 +2281,7 @@ class TableSource extends AdvancedDataTableSource<HolidayList> {
       final dynamicData = dataModel.data;
       final holidayList = dynamicData['holiday'];
       int count = holidayList.length ?? 0;
+      dataCount3 = count;
 
       if (dynamicData is Map<String, dynamic> &&
           dynamicData.containsKey('holiday')) {
@@ -2341,6 +2362,7 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
       final dynamicData = dataModel.data;
       final birthdayList = dynamicData['birthday_list'];
       int count = birthdayList.length ?? 0;
+      dataCount2 = count;
 
       if (dynamicData is Map<String, dynamic> &&
           dynamicData.containsKey('birthday_list')) {

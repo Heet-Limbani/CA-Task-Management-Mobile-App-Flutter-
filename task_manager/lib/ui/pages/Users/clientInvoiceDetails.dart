@@ -30,6 +30,7 @@ var _sortAsc = true;
 var _customFooter = false;
 var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 TextEditingController _searchController = TextEditingController();
+int dataCount = 0;
 
 class _ClientInvoiceDetailsState extends State<ClientInvoiceDetails> {
   @override
@@ -93,15 +94,15 @@ class _ClientInvoiceDetailsState extends State<ClientInvoiceDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                   height: deviceHeight * 0.04,
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
                 SizedBox(
-                    height: deviceHeight * 0.01,
+                  height: deviceHeight * 0.01,
                 ),
                 _table(),
                 SizedBox(
-                    height: deviceHeight * 0.1,
+                  height: deviceHeight * 0.1,
                 ),
               ],
             ),
@@ -181,6 +182,11 @@ class _ClientInvoiceDetailsState extends State<ClientInvoiceDetails> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -361,8 +367,20 @@ class ClientDataSource extends DataTableSource {
       ),
       DataCell(IconButton(
         onPressed: () {
-          print("client.id :- ${client.id}");
-          deleteUser(client.id!);
+          Get.defaultDialog(
+            title: "Delete",
+            middleText: "Are you sure you want to delete ?",
+            textConfirm: "Yes",
+            textCancel: "No",
+            confirmTextColor: Colors.white,
+            buttonColor: Colors.red,
+            cancelTextColor: Colors.black,
+            onConfirm: () {
+              Get.back();
+              deleteUser(client.id!);
+            },
+            onCancel: () {},
+          );
         },
         icon: Icon(Icons.delete),
       )),
@@ -401,66 +419,73 @@ class ClientSource extends AdvancedDataTableSource<Invoice> {
     //print("parsedDate $parsedDate");
 
     return DataRow(
-  cells: [
-    DataCell(Text(srNo.toString())),
-    DataCell(Text(invoice.invoiceNo ?? "")),
-    DataCell(Text(invoice.company ?? "")),
-    DataCell(Text(invoice.total.toString())),
-    DataCell(Text(invoice.otherDetails ?? "")),
-    DataCell(
-      Container(
-        margin: EdgeInsets.symmetric(horizontal: 10), // Adjust the horizontal margin as per your requirement
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start, // Align buttons to the start of the column
-          children: [
-            if (invoice.paymentId == "1")
-              RawMaterialButton(
-                onPressed: () {
-                  // Handle button pressed
-                },
-                child: Icon(Icons.remove_red_eye),
-                constraints: BoxConstraints.tight(Size(24, 24)), // Adjust the size as per your requirement
-                shape: CircleBorder(),
-              ),
-            if (invoice.paymentId == "0" || (invoice.paymentId == "0" && invoice.customInvoice == "1"))
-              RawMaterialButton(
-                onPressed: () {
-                  // Handle button pressed
-                },
-                child: Icon(Icons.remove_red_eye),
-                constraints: BoxConstraints.tight(Size(24, 24)), // Adjust the size as per your requirement
-                shape: CircleBorder(),
-              ),
-            if (invoice.paymentId == "0" || (invoice.paymentId == "0" && invoice.customInvoice == "1"))
-              RawMaterialButton(
-                onPressed: () {
-                  // Handle button pressed
-                },
-                child: Icon(Icons.message),
-                constraints: BoxConstraints.tight(Size(24, 24)), // Adjust the size as per your requirement
-                shape: CircleBorder(),
-              ),
-            if (invoice.paymentId == "0" && invoice.customInvoice == "1")
-              RawMaterialButton(
-                onPressed: () {
-                  // Handle button pressed
-                },
-                child: Icon(Icons.edit),
-                constraints: BoxConstraints.tight(Size(24, 24)), // Adjust the size as per your requirement
-                shape: CircleBorder(),
-              ),
-          ],
+      cells: [
+        DataCell(Text(srNo.toString())),
+        DataCell(Text(invoice.invoiceNo ?? "")),
+        DataCell(Text(invoice.company ?? "")),
+        DataCell(Text(invoice.total.toString())),
+        DataCell(Text(invoice.otherDetails ?? "")),
+        DataCell(
+          Container(
+            margin: EdgeInsets.symmetric(
+                horizontal:
+                    10), // Adjust the horizontal margin as per your requirement
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment
+                  .start, // Align buttons to the start of the column
+              children: [
+                if (invoice.paymentId == "1")
+                  RawMaterialButton(
+                    onPressed: () {
+                      // Handle button pressed
+                    },
+                    child: Icon(Icons.remove_red_eye),
+                    constraints: BoxConstraints.tight(Size(
+                        24, 24)), // Adjust the size as per your requirement
+                    shape: CircleBorder(),
+                  ),
+                if (invoice.paymentId == "0" ||
+                    (invoice.paymentId == "0" && invoice.customInvoice == "1"))
+                  RawMaterialButton(
+                    onPressed: () {
+                      // Handle button pressed
+                    },
+                    child: Icon(Icons.remove_red_eye),
+                    constraints: BoxConstraints.tight(Size(
+                        24, 24)), // Adjust the size as per your requirement
+                    shape: CircleBorder(),
+                  ),
+                if (invoice.paymentId == "0" ||
+                    (invoice.paymentId == "0" && invoice.customInvoice == "1"))
+                  RawMaterialButton(
+                    onPressed: () {
+                      // Handle button pressed
+                    },
+                    child: Icon(Icons.message),
+                    constraints: BoxConstraints.tight(Size(
+                        24, 24)), // Adjust the size as per your requirement
+                    shape: CircleBorder(),
+                  ),
+                if (invoice.paymentId == "0" && invoice.customInvoice == "1")
+                  RawMaterialButton(
+                    onPressed: () {
+                      // Handle button pressed
+                    },
+                    child: Icon(Icons.edit),
+                    constraints: BoxConstraints.tight(Size(
+                        24, 24)), // Adjust the size as per your requirement
+                    shape: CircleBorder(),
+                  ),
+              ],
+            ),
+          ),
         ),
-      ),
-    ),
-  ],
-  // selected: selectedIds.contains(invoice.id),
-  // onSelectChanged: (value) {
-  //   selectedRow(invoice.id.toString(), value ?? false);
-  // },
-);
-
-
+      ],
+      // selected: selectedIds.contains(invoice.id),
+      // onSelectChanged: (value) {
+      //   selectedRow(invoice.id.toString(), value ?? false);
+      // },
+    );
   }
 
   @override
@@ -503,9 +528,8 @@ class ClientSource extends AdvancedDataTableSource<Invoice> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
-      print("Data :- $dynamicData");
-
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
       return RemoteDataSourceDetails<Invoice>(
         dataModel.count ?? 0,
         dynamicData

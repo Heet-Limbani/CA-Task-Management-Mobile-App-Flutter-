@@ -12,7 +12,6 @@ import 'package:task_manager/ui/pages/Users/editClientForm.dart';
 import 'package:task_manager/ui/pages/Users/editLogClient.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-
 class ClientLogDetails extends StatefulWidget {
   final String userId;
   const ClientLogDetails({required this.userId, Key? key}) : super(key: key);
@@ -32,6 +31,7 @@ var _sortAsc = true;
 var _customFooter = false;
 var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 TextEditingController _searchController = TextEditingController();
+int dataCount = 0;
 
 class _ClientLogDetailsState extends State<ClientLogDetails> {
   @override
@@ -95,7 +95,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                 height: deviceHeight * 0.04,
+                  height: deviceHeight * 0.04,
                 ),
                 _header(),
                 SizedBox(
@@ -183,6 +183,11 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -371,8 +376,20 @@ class ClientDataSource extends DataTableSource {
       ),
       DataCell(IconButton(
         onPressed: () {
-          print("client.id :- ${client.id}");
-          deleteUser(client.id!);
+          Get.defaultDialog(
+            title: "Delete",
+            middleText: "Are you sure you want to delete ?",
+            textConfirm: "Yes",
+            textCancel: "No",
+            confirmTextColor: Colors.white,
+            buttonColor: Colors.red,
+            cancelTextColor: Colors.black,
+            onConfirm: () {
+              Get.back();
+              deleteUser(client.id!);
+            },
+            onCancel: () {},
+          );
         },
         icon: Icon(Icons.delete),
       )),
@@ -420,11 +437,18 @@ class ClientSource extends AdvancedDataTableSource<Client> {
     }
   }
 
-  void updateUserPassword(String? clientId, String message, String description, String date ) async {
+  void updateUserPassword(
+      String? clientId, String message, String description, String date) async {
     if (clientId != null) {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.clientViewLogDetailsEdit}',
-        params: {'id': clientId, 'message': message, 'description': description, 'date': date, 'save': "save"},
+        params: {
+          'id': clientId,
+          'message': message,
+          'description': description,
+          'date': date,
+          'save': "save"
+        },
       );
 
       if (genmodel != null && genmodel.status == true) {
@@ -567,7 +591,20 @@ class ClientSource extends AdvancedDataTableSource<Client> {
         ),
         DataCell(IconButton(
           onPressed: () {
-            deleteUser(log.id!);
+            Get.defaultDialog(
+              title: "Delete",
+              middleText: "Are you sure you want to delete ?",
+              textConfirm: "Yes",
+              textCancel: "No",
+              confirmTextColor: Colors.white,
+              buttonColor: Colors.red,
+              cancelTextColor: Colors.black,
+              onConfirm: () {
+                Get.back();
+                deleteUser(log.id!);
+              },
+              onCancel: () {},
+            );
           },
           icon: Icon(Icons.delete),
         )),
@@ -619,7 +656,8 @@ class ClientSource extends AdvancedDataTableSource<Client> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         dynamicData

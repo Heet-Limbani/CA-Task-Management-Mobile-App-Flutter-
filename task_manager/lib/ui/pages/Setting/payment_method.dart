@@ -18,6 +18,7 @@ class Payment_Method extends StatefulWidget {
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
+int dataCount = 0;
 
 class _Payment_MethodState extends State<Payment_Method> {
   late TableSource _source; // Declare _source here
@@ -26,7 +27,7 @@ class _Payment_MethodState extends State<Payment_Method> {
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
- 
+
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
@@ -208,6 +209,11 @@ class _Payment_MethodState extends State<Payment_Method> {
         //   height: deviceHeight * 0.03,
         // ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -442,7 +448,20 @@ class TableSource extends AdvancedDataTableSource<PaymentMethod> {
                       onPressed: () {
                         // Handle button pressed
                         if (dataList.id != null) {
-                          deleteUser(dataList.id!);
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText: "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              deleteUser(dataList.id!);
+                            },
+                            onCancel: () {},
+                          );
                         }
                       },
                       child: Icon(Icons.delete),
@@ -499,7 +518,7 @@ class TableSource extends AdvancedDataTableSource<PaymentMethod> {
     if (dataModel != null && dataModel.status == true) {
       int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-
+      dataCount = count;
       return RemoteDataSourceDetails(
         //dataModel.count ?? 0,
         count,

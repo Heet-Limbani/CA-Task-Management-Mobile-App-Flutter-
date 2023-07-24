@@ -231,19 +231,9 @@ class _LoginScreenState extends State<LoginScreen> {
         },
       );
     } catch (e) {
-      Fluttertoast.showToast(msg: 'Inside Login Admin and inside catch');
-      Fluttertoast.showToast(msg: 'An error occurred: ' + e.toString());
+      Fluttertoast.showToast(msg: e.toString());
     }
-    Fluttertoast.showToast(msg: 'genmodel :-  ' + genmodel.toString());
-    Fluttertoast.showToast(msg: 'Test');
-
-    if (genmodel == null) {
-      Fluttertoast.showToast(msg: 'API response is null');
-      return;
-    }
-
     if (genmodel != null) {
-      Fluttertoast.showToast(msg: 'message ' + genmodel!.message.toString());
       LoginData loginData = LoginData.fromJson(genmodel!.data);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('xtoken', loginData.xtoken ?? '');
@@ -258,8 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setString('avatar', loginData.avatar ?? '');
 
       if (genmodel?.status == true) {
-        Fluttertoast.showToast(
-            msg: 'Inside Login Admin and inside if of status');
+        Fluttertoast.showToast(msg: genmodel!.message.toString());
         var sharedPref = await SharedPreferences.getInstance();
         sharedPref.setBool(MyApp.KEYLOGIN, true);
         Get.offAll(MyApp());

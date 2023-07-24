@@ -18,6 +18,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
+int dataCount = 0;
 
 class _ViewDispatchFileState extends State<ViewDispatchFile> {
   late TableSource _source; // Declare _source here
@@ -277,6 +278,11 @@ class _ViewDispatchFileState extends State<ViewDispatchFile> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -481,7 +487,8 @@ class TableSource extends AdvancedDataTableSource<ViewDispatchFileDataModel> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
       if (dynamicData is Map<String, dynamic> &&
           dynamicData.containsKey('file')) {
         final dynamicList = dynamicData['file'] as List<dynamic>?;

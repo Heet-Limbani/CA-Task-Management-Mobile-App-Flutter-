@@ -22,7 +22,7 @@ TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 
 TextEditingController nameController1 = TextEditingController();
-
+int dataCount = 0;
 class _CustomInvoiceState extends State<CustomInvoice> {
   late TableSource _source; // Declare _source here
 
@@ -207,6 +207,11 @@ class _CustomInvoiceState extends State<CustomInvoice> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -422,7 +427,23 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          delete(dataList.id);
+                          
+                          Get.defaultDialog(
+                            title: "Delete",
+                            middleText:
+                                "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              Get.back();
+                              delete(dataList.id!);
+                            },
+                            onCancel: () {},
+                          );
+                        
                         }
                       },
                       child: Icon(Icons.delete),
@@ -477,8 +498,9 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      dataCount = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

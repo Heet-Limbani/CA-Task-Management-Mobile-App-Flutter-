@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/companyFileDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import '../sidebar/sidebarAdmin.dart';
@@ -22,6 +23,7 @@ TextEditingController fileController = TextEditingController();
 File? selectedFile;
 
 String id = "";
+int dataCount = 0;
 
 class _CompanyFileState extends State<CompanyFile> {
   late TableSource _source; // Declare _source here
@@ -196,6 +198,11 @@ class _CompanyFileState extends State<CompanyFile> {
           height: deviceHeight * 0.03,
         ),
         AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
           addEmptyRows: false,
           source: _source,
           showHorizontalScrollbarAlways: true,
@@ -396,7 +403,20 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.defaultDialog(
+                            title: "Delete",
+                            content: Text("Are you sure you want to delete?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {},
+                                child: Text("Delete"),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text("Cencel"),
+                              ),
+                            ],
+                          );
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -425,7 +445,21 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                           Get.defaultDialog(
+                            title: "Delete",
+                            middleText:
+                                "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                             Get.back();
+                            },
+                            onCancel: () {
+                            },
+                          );
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -480,8 +514,9 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
     );
 
     if (dataModel != null && dataModel.status == true) {
-      //int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,
