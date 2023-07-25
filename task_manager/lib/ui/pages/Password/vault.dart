@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/vaultDataModel.dart';
+import 'package:task_manager/ui/pages/Password/vaultAdd.dart';
+import 'package:task_manager/ui/pages/Password/vaultEdit.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
 class Vault extends StatefulWidget {
@@ -135,7 +137,9 @@ class _VaultState extends State<Vault> {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         OutlinedButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.to(VaultAdd());
+          },
           child: Text(
             "Add",
             style: TextStyle(
@@ -489,7 +493,13 @@ class TableSource extends AdvancedDataTableSource<VaultDataModel> {
                 Row(
                   children: [
                     RawMaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(
+                          VaultEdit(
+                            id: dataList.id.toString(),
+                          ),
+                        );
+                      },
                       child: Icon(Icons.edit),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),

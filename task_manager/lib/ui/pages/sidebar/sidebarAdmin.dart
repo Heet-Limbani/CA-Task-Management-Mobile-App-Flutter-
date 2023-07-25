@@ -7,7 +7,7 @@ import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activityLog.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/clientManualPayment.dart';
-import 'package:task_manager/ui/pages/Client_Data/client_data.dart';
+import 'package:task_manager/ui/pages/Client_Data/clientData.dart';
 import 'package:task_manager/ui/pages/Client_Password/clientPassword.dart';
 import 'package:task_manager/ui/pages/Company%20View/company1.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
@@ -267,7 +267,7 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.data_usage),
             title: Text('Client Data'),
             onTap: () {
-              Get.to(Client_Data());
+              Get.to(ClientData());
             },
           ),
           ListTile(

@@ -360,7 +360,7 @@ class _ClientState extends State<Client> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Permission'),
+              label: const Text('Reset Password'),
               onSort: setSort,
             ),
             DataColumn(
@@ -478,7 +478,7 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
 
       if (genmodel != null && genmodel.status == true) {
         Fluttertoast.showToast(
-          msg: " ${genmodel.message.toString()}",
+          msg: "${genmodel.message.toString()}",
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
@@ -540,77 +540,75 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
           onPressed: () {
             if (dataList.iD != null) {
               Get.to(viewClient1(userId: dataList.iD!));
-
-              // showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) {
-              //     String newPassword = ''; // Store the entered new password
-              //     String confirmPassword =
-              //         ''; // Store the entered confirm password
-              //     return AlertDialog(
-              //       title: Text('Reset Password'),
-              //       content: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           TextField(
-              //             onChanged: (value) {
-              //               newPassword = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter new password',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onChanged: (value) {
-              //               confirmPassword = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Confirm new password',
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       actions: [
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //           },
-              //           child: Text('Cancel'),
-              //         ),
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //             if (newPassword.isNotEmpty &&
-              //                 confirmPassword.isNotEmpty) {
-              //               if (newPassword == confirmPassword) {
-              //                 updateUserPassword(dataList.iD, newPassword);
-              //               } else {
-              //                 Fluttertoast.showToast(
-              //                   msg: "Passwords do not match.",
-              //                   toastLength: Toast.LENGTH_SHORT,
-              //                   gravity: ToastGravity.BOTTOM,
-              //                   timeInSecForIosWeb: 1,
-              //                 );
-              //               }
-              //             }
-              //           },
-              //           child: Text('Reset'),
-              //         ),
-              //       ],
-              //     );
-              //   },
-              // );
             }
           },
           icon: Icon(Icons.remove_red_eye),
         )),
         DataCell(IconButton(
           onPressed: () {
-            // Implement permission functionality
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                String newPassword = ''; // Store the entered new password
+                String confirmPassword =
+                    ''; // Store the entered confirm password
+                return AlertDialog(
+                  title: Text('Reset Password'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        onChanged: (value) {
+                          newPassword = value;
+                        },
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: 'Enter new password',
+                        ),
+                      ),
+                      TextField(
+                        onChanged: (value) {
+                          confirmPassword = value;
+                        },
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          hintText: 'Confirm new password',
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                      },
+                      child: Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop(); // Close the dialog
+                        if (newPassword.isNotEmpty &&
+                            confirmPassword.isNotEmpty) {
+                          if (newPassword == confirmPassword) {
+                            updateUserPassword(dataList.iD, newPassword);
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Passwords do not match.",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                            );
+                          }
+                        }
+                      },
+                      child: Text('Reset'),
+                    ),
+                  ],
+                );
+              },
+            );
           },
-          icon: Icon(Icons.check),
+          icon: Icon(Icons.password),
         )),
         DataCell(IconButton(
           onPressed: () {

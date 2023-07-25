@@ -3,27 +3,24 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:task_manager/API/model/companyDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/ui/pages/Users/addClientForm.dart';
+import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/ClientPasswordDataModel.dart';
-import 'package:task_manager/ui/pages/Client_Password/clientPasswordAdd.dart';
-import 'package:task_manager/ui/pages/Client_Password/clientPasswordEdit.dart';
-import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class ClientPassword extends StatefulWidget {
-  const ClientPassword({super.key});
+class ClientData extends StatefulWidget {
+  const ClientData({super.key});
 
   @override
-  State<ClientPassword> createState() => _ClientPasswordState();
+  State<ClientData> createState() => _ClientDataState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
-TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
 
-class _ClientPasswordState extends State<ClientPassword> {
+class _ClientDataState extends State<ClientData> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -47,7 +44,6 @@ class _ClientPasswordState extends State<ClientPassword> {
   void initState() {
     super.initState();
     _source = TableSource(context); // Initialize _source here
-    refreshTable();
   }
 
   void refreshTable() {
@@ -63,7 +59,7 @@ class _ClientPasswordState extends State<ClientPassword> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Client Password",
+          "Menu > Client Data",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -119,7 +115,7 @@ class _ClientPasswordState extends State<ClientPassword> {
     return Row(
       children: [
         Text(
-          "Client Password List",
+          "Client List For Latest Data",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -137,10 +133,10 @@ class _ClientPasswordState extends State<ClientPassword> {
       children: [
         OutlinedButton(
           onPressed: () {
-            Get.to(ClientPasswordAdd());
+            Get.to(AddClientForm());
           },
           child: Text(
-            "Add New",
+            "Add New Client",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,
@@ -234,23 +230,27 @@ class _ClientPasswordState extends State<ClientPassword> {
               onSort: setSort,
             ),
             DataColumn(
+              label: const Text('Client Name'),
+              onSort: setSort,
+            ),
+            DataColumn(
               label: const Text('Company Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('GST  User Name'),
+              label: const Text('Property Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('GST Password'),
+              label: const Text('Mobile'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Another Password'),
+              label: const Text('Email'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Action'),
+              label: const Text('View Upload'),
               onSort: setSort,
             ),
           ],
@@ -332,7 +332,7 @@ class _ClientPasswordState extends State<ClientPassword> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
+class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -342,45 +342,37 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
 
   int startIndex = 0; // Add the startIndex variable
 
-  int countIds(String ids) {
-    if (ids.isEmpty) {
-      return 0;
-    }
+  void deleteUser(String? id) async {
+    if (id != null) {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.deleteCompany}',
+        params: {'id': id},
+      );
 
-    List<String> idList = ids.split(',');
-    return idList.length;
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+      }
+    }
   }
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final ClientPasswordDataModel dataList = lastDetails!.rows[index];
-
-    void delete(String? id) async {
-      if (id != null) {
-        genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.clientPasswordDelete}',
-          params: {'id': id},
-        );
-
-        if (genmodel != null && genmodel.status == true) {
-          Fluttertoast.showToast(
-            msg: "${genmodel.message.toString()}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
-        }
-      }
-    }
+    final CompanyDataModel dataList = lastDetails!.rows[index];
 
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.company ?? '')),
-        DataCell(Text(dataList.username ?? '')),
+        DataCell(Text(dataList.cname ?? '')),
         DataCell(Text(dataList.name ?? '')),
-        DataCell(Text(dataList.password ?? '')),
+        DataCell(Text(dataList.proprietorName ?? '')),
+        DataCell(Text(dataList.mobile ?? '')),
+        DataCell(Text(dataList.email ?? '')),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -391,32 +383,11 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                        Get.to(ClientPasswordEdit(id: dataList.id!));
-                      },
-                      child: Icon(Icons.edit),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                    RawMaterialButton(
-                      onPressed: () {
                         if (dataList.id != null) {
-                          Get.defaultDialog(
-                            title: "Delete",
-                            middleText: "Are you sure you want to delete ?",
-                            textConfirm: "Yes",
-                            textCancel: "No",
-                            confirmTextColor: Colors.white,
-                            buttonColor: Colors.red,
-                            cancelTextColor: Colors.black,
-                            onConfirm: () {
-                              Get.back();
-                              delete(dataList.id!);
-                            },
-                            onCancel: () {},
-                          );
+                         
                         }
                       },
-                      child: Icon(Icons.delete),
+                      child: Icon(Icons.cloud_upload_outlined),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
@@ -452,7 +423,7 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<ClientPasswordDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<CompanyDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -463,7 +434,7 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientPassword}',
+      method: '${Urls.company}',
       params: queryParameter,
     );
 
@@ -476,16 +447,15 @@ class TableSource extends AdvancedDataTableSource<ClientPasswordDataModel> {
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<ClientPasswordDataModel>(
-              (item) => ClientPasswordDataModel.fromJson(
-                  item as Map<String, dynamic>),
+            .map<CompanyDataModel>(
+              (item) => CompanyDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<ClientPasswordDataModel>(
-                  (item) => ClientPasswordDataModel.fromJson(
-                      item as Map<String, dynamic>),
+                .map<CompanyDataModel>(
+                  (item) =>
+                      CompanyDataModel.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

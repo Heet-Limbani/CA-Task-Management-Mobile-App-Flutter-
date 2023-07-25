@@ -1,96 +1,91 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-import 'package:task_manager/API/model/AddCustomInvoiceDataModel.dart';
+import 'package:task_manager/API/model/companyDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class AddCustomInvoice extends StatefulWidget {
-  const AddCustomInvoice({Key? key}) : super(key: key);
+class ClientPasswordAdd extends StatefulWidget {
+  
+  const ClientPasswordAdd({ Key? key}) : super(key: key);
 
   @override
-  State<AddCustomInvoice> createState() => _AddCustomInvoiceState();
+  State<ClientPasswordAdd> createState() => _ClientPasswordAddState();
 }
 
-class _AddCustomInvoiceState extends State<AddCustomInvoice> {
+
+
+class _ClientPasswordAddState extends State<ClientPasswordAdd> {
   late double deviceWidth;
   late double deviceHeight;
+  bool obscurePassword = true;
+  bool obscurePassword1 = true;
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _AddCustomInvoiceKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _ClientPasswordAddKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
-  TextEditingController amount = TextEditingController();
-  TextEditingController startingDate = TextEditingController();
-  TextEditingController interval = TextEditingController();
-  TextEditingController particular = TextEditingController();
+  TextEditingController gstUser = TextEditingController();
+  TextEditingController gstPassword = TextEditingController();
+  TextEditingController anotherPass = TextEditingController();
+  TextEditingController note = TextEditingController();
 
   String? selectedClientId1;
-  String? selectedIntervalId1;
-  late int selectedIntervalId;
-  bool isActive = true;
 
-  String isActiveValue = "";
   @override
   void dispose() {
     companyName.dispose();
-    amount.dispose();
-    startingDate.dispose();
-    interval.dispose();
-    particular.dispose();
+    gstUser.dispose();
+    gstPassword.dispose();
+    anotherPass.dispose();
+    note.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    // Store widget.userId in a local variable
+  
     getUser();
   }
 
   void clearField() {
     companyName.clear();
-    amount.clear();
-    startingDate.clear();
-    interval.clear();
-    particular.clear();
+    gstUser.clear();
+    gstPassword.clear();
+    anotherPass.clear();
+    note.clear();
     selectedClientId1 = null;
   }
 
-  List<AddCustomInvoiceDataModel> clientType = [];
+  List<CompanyDataModel> clientType = [];
   void getUser() async {
     genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.addCustomInvoice}',
+      method: '${Urls.company}',
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       if (data != null && data is List) {
-        clientType = data
-            .map((item) => AddCustomInvoiceDataModel.fromJson(item))
-            .toList();
+        clientType =
+            data.map((item) => CompanyDataModel.fromJson(item)).toList();
       }
       setState(() {});
     }
   }
 
   void fileEdit() async {
-    isActiveValue = (isActive ? "0" : "1");
-    String test = selectedIntervalId.toString();
-    print("selectedIntervalId :- $test");
     try {
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.addCustomInvoice}',
+        method: '${Urls.clientPasswordAdd}',
         params: {
-          "btnSave": "Save",
-          "Client": selectedClientId1.toString(),
-          "amount": amount.text,
-          "startingdate": startingDate.text,
-          "active": isActiveValue,
-          "time_period": selectedIntervalId.toString(),
-          "particular": particular.text,
+          "company": selectedClientId1.toString(),
+          "gstun": gstUser.text.toString(),
+          "gstpass": gstPassword.text.toString(),
+          "anotherpass": anotherPass.text.toString(),
+          "note": note.text.toString(),
+          "save": "save",
         },
       );
       if (genmodel != null) {
@@ -113,25 +108,6 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     setState(() {});
   }
 
-  int? _getItemId(String item) {
-    switch (item) {
-      case 'Week':
-        return 0;
-      case 'Half - Month':
-        return 1;
-      case 'Month':
-        return 2;
-      case 'Quarter':
-        return 3;
-      case 'Half - Year':
-        return 4;
-      case 'Year':
-        return 5;
-      default:
-        return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -140,7 +116,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Custome Invoice > Edit Invoice",
+          "Menu > Client Password > Add Client Password",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -175,7 +151,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _AddCustomInvoice(),
+                _ClientPasswordAdd(),
               ],
             ),
           ),
@@ -188,7 +164,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     return Row(
       children: [
         Text(
-          "Add Invoice",
+          "Add Client Password",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -199,12 +175,12 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     );
   }
 
-  Form _AddCustomInvoice() {
+  Form _ClientPasswordAdd() {
     return Form(
-      key: _AddCustomInvoiceKey,
+      key: _ClientPasswordAddKey,
       child: Column(
         children: <Widget>[
-          DropdownButtonFormField<String>(
+         DropdownButtonFormField<String>(
             value: selectedClientId1,
             decoration: const InputDecoration(
               labelText: 'Client',
@@ -220,10 +196,10 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
                 companyName.text = selectedClientId1 ?? '';
               });
             },
-            items: clientType.map((AddCustomInvoiceDataModel user) {
+            items: clientType.map((CompanyDataModel user) {
               return DropdownMenuItem<String>(
                 value: user.id ?? '',
-                child: Text(user.text ?? ''),
+                child: Text(user.name ?? ''),
               );
             }).toList(),
             validator: (value) {
@@ -236,43 +212,16 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          TextFormField(
-            controller: amount,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Amount',
-              suffixIcon: Icon(Icons.file_present),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppTheme.colors.grey),
-                gapPadding: 10,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-                gapPadding: 10,
-              ),
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Amount';
-              }
-              return null; // Return null if the input is valid
-            },
-          ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: particular,
+            controller: gstUser,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'Particular',
-              suffixIcon: Icon(Icons.file_present),
+              labelText: 'GST Username',
+              suffixIcon: Icon(Icons.person),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
@@ -288,7 +237,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
             ),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Particular';
+                return 'Please Enter GST Username';
               }
               return null; // Return null if the input is valid
             },
@@ -297,114 +246,107 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: startingDate,
-            keyboardType: TextInputType.datetime,
-            textInputAction: TextInputAction.next,
+            controller: gstPassword,
+            obscureText: obscurePassword1,
             decoration: InputDecoration(
-              labelText: 'Starting Date',
-              suffixIcon: Icon(Icons.calendar_month),
+              labelText: 'GST Password',
+               suffix: GestureDetector(
+                child: Icon(
+                    obscurePassword1 ? Icons.visibility : Icons.visibility_off),
+                onTap: () {
+                  setState(() {
+                    obscurePassword1 = !obscurePassword1;
+                  });
+                },
+              ),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(color: AppTheme.colors.grey),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(color: AppTheme.colors.lightBlue),
                 gapPadding: 10,
               ),
             ),
-            onTap: () async {
-              // Show date picker when the text field is tapped
-              DateTime? selectedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1900),
-                lastDate: DateTime.now(),
-              );
-
-              if (selectedDate != null) {
-                // Format the selected date as 'dd-MM-yyyy'
-                String formattedDate =
-                    DateFormat('yyyy-MM-dd').format(selectedDate);
-
-                setState(() {
-                  startingDate.text = formattedDate;
-                });
-              }
-            },
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please Select birth date.';
+              if (value!.isEmpty) {
+                return 'Please enter a password';
               }
-              return null;
+
+              return null; // Return null if the input is valid
             },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          DropdownButtonFormField<String>(
-            value: selectedIntervalId1,
-            decoration: const InputDecoration(
-              labelText: 'Interval',
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                borderSide: BorderSide(color: Colors.grey, width: 0.0),
+          TextFormField(
+            controller: anotherPass,
+            obscureText: obscurePassword,
+            decoration: InputDecoration(
+              labelText: 'Another Password',
+              suffix: GestureDetector(
+                child: Icon(
+                    obscurePassword ? Icons.visibility : Icons.visibility_off),
+                onTap: () {
+                  setState(() {
+                    obscurePassword = !obscurePassword;
+                  });
+                },
               ),
-              border: OutlineInputBorder(),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
             ),
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedIntervalId1 = newValue!;
-                selectedIntervalId = _getItemId(newValue)!;
-              });
-            },
-            items: <String>[
-              'Week',
-              'Half - Month',
-              'Month',
-              'Quarter',
-              'Half - Year',
-              'Year'
-            ].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: TextStyle(fontSize: 16)),
-              );
-            }).toList(),
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please select a client';
+              if (value!.isEmpty) {
+                return 'Please enter a password';
               }
-              return null;
+
+              return null; // Return null if the input is valid
             },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          SwitchListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Account', style: TextStyle(fontSize: 20)),
-                Text(
-                  isActive ? 'Active' : 'Inactive',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
+          TextFormField(
+            controller: note,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: 'Note',
+              suffixIcon: Icon(Icons.note),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
             ),
-            value: isActive,
-            onChanged: (value) {
-              setState(() {
-                isActive = value;
-              });
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter Note';
+              }
+              return null; // Return null if the input is valid
             },
-            controlAffinity: ListTileControlAffinity.trailing,
-            secondary: isActive
-                ? Icon(Icons.check_circle, color: Colors.green)
-                : Icon(Icons.cancel, color: Colors.red),
           ),
           SizedBox(
             height: deviceHeight * 0.05,
@@ -422,8 +364,9 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              if (_AddCustomInvoiceKey.currentState!.validate()) {
+              if (_ClientPasswordAddKey.currentState!.validate()) {
                 fileEdit();
+                clearField();
               }
             },
             child: Text(

@@ -301,7 +301,7 @@ class _CompanyState extends State<Company> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Setting > SMS Company",
+          "Menu > Company",
           style: Theme.of(context)
               .textTheme
               .bodySmall!

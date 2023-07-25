@@ -372,7 +372,7 @@ class _EmployeeState extends State<Employee> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('View'),
+              label: const Text('Reset Password'),
               onSort: setSort,
             ),
             DataColumn(

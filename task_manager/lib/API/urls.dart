@@ -93,9 +93,14 @@ class Urls {
   static String addCustomInvoice = "${Urls.baseUrlMain}add_custom_invoice";
   static String vault = "${Urls.baseUrlMain}Vault_manager";
   static String vaultDelete = "${Urls.baseUrlMain}Delete_vault";
+  static String vaultAdd = "${Urls.baseUrlMain}Add_Vault";
+  static String vaultEdit = "${Urls.baseUrlMain}Edit_vault";
   static String userPass = "${Urls.baseUrlMain}check_user_pass";
   static String activityLog = "${Urls.baseUrlMain}ActivityLog";
   static String clientPassword = "${Urls.baseUrlMain}client_password";
+  static String clientPasswordEdit = "${Urls.baseUrlMain}edit_client_password";
+  static String clientPasswordAdd = "${Urls.baseUrlMain}add_client_password";
+  static String clientPasswordDelete = "${Urls.baseUrlMain}delete_client_password";
 
   static String profileEmail = "";
   static String profileUserName = "";

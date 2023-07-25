@@ -1,96 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-import 'package:task_manager/API/model/AddCustomInvoiceDataModel.dart';
+import 'package:task_manager/API/model/companyDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class AddCustomInvoice extends StatefulWidget {
-  const AddCustomInvoice({Key? key}) : super(key: key);
+class VaultAdd extends StatefulWidget {
+  const VaultAdd({Key? key}) : super(key: key);
 
   @override
-  State<AddCustomInvoice> createState() => _AddCustomInvoiceState();
+  State<VaultAdd> createState() => _VaultAddState();
 }
 
-class _AddCustomInvoiceState extends State<AddCustomInvoice> {
+class _VaultAddState extends State<VaultAdd> {
   late double deviceWidth;
   late double deviceHeight;
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _AddCustomInvoiceKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _VaultAddKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
-  TextEditingController amount = TextEditingController();
-  TextEditingController startingDate = TextEditingController();
-  TextEditingController interval = TextEditingController();
-  TextEditingController particular = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController userName = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController contact = TextEditingController();
+  TextEditingController pass = TextEditingController();
+  TextEditingController rpass = TextEditingController();
+  TextEditingController note = TextEditingController();
 
   String? selectedClientId1;
-  String? selectedIntervalId1;
-  late int selectedIntervalId;
-  bool isActive = true;
 
-  String isActiveValue = "";
   @override
   void dispose() {
     companyName.dispose();
-    amount.dispose();
-    startingDate.dispose();
-    interval.dispose();
-    particular.dispose();
+    name.dispose();
+    userName.dispose();
+    email.dispose();
+    contact.dispose();
+    pass.dispose();
+    rpass.dispose();
+    note.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    // Store widget.userId in a local variable
     getUser();
   }
 
   void clearField() {
     companyName.clear();
-    amount.clear();
-    startingDate.clear();
-    interval.clear();
-    particular.clear();
+    name.clear();
+    userName.clear();
+    email.clear();
+    contact.clear();
+    pass.clear();
+    rpass.clear();
+    note.clear();
     selectedClientId1 = null;
   }
 
-  List<AddCustomInvoiceDataModel> clientType = [];
+  List<CompanyDataModel> clientType = [];
   void getUser() async {
     genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.addCustomInvoice}',
+      method: '${Urls.company}',
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       if (data != null && data is List) {
-        clientType = data
-            .map((item) => AddCustomInvoiceDataModel.fromJson(item))
-            .toList();
+        clientType =
+            data.map((item) => CompanyDataModel.fromJson(item)).toList();
       }
       setState(() {});
     }
   }
 
   void fileEdit() async {
-    isActiveValue = (isActive ? "0" : "1");
-    String test = selectedIntervalId.toString();
-    print("selectedIntervalId :- $test");
     try {
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.addCustomInvoice}',
+        method: '${Urls.vaultAdd}',
         params: {
-          "btnSave": "Save",
-          "Client": selectedClientId1.toString(),
-          "amount": amount.text,
-          "startingdate": startingDate.text,
-          "active": isActiveValue,
-          "time_period": selectedIntervalId.toString(),
-          "particular": particular.text,
+          "company": selectedClientId1.toString(),
+          "name": name.text,
+          "usname": userName.text,
+          "pass": pass.text,
+          "rpass": rpass.text,
+          "email": email.text,
+          "number": contact.text,
+          "note": note.text,
         },
       );
       if (genmodel != null) {
@@ -113,25 +113,6 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     setState(() {});
   }
 
-  int? _getItemId(String item) {
-    switch (item) {
-      case 'Week':
-        return 0;
-      case 'Half - Month':
-        return 1;
-      case 'Month':
-        return 2;
-      case 'Quarter':
-        return 3;
-      case 'Half - Year':
-        return 4;
-      case 'Year':
-        return 5;
-      default:
-        return null;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -140,7 +121,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Custome Invoice > Edit Invoice",
+          "Menu > Vault > Add Vault",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -175,7 +156,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _AddCustomInvoice(),
+                _VaultAdd(),
               ],
             ),
           ),
@@ -188,7 +169,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     return Row(
       children: [
         Text(
-          "Add Invoice",
+          "Add Vault",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -199,9 +180,9 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
     );
   }
 
-  Form _AddCustomInvoice() {
+  Form _VaultAdd() {
     return Form(
-      key: _AddCustomInvoiceKey,
+      key: _VaultAddKey,
       child: Column(
         children: <Widget>[
           DropdownButtonFormField<String>(
@@ -220,10 +201,10 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
                 companyName.text = selectedClientId1 ?? '';
               });
             },
-            items: clientType.map((AddCustomInvoiceDataModel user) {
+            items: clientType.map((CompanyDataModel user) {
               return DropdownMenuItem<String>(
                 value: user.id ?? '',
-                child: Text(user.text ?? ''),
+                child: Text(user.name ?? ''),
               );
             }).toList(),
             validator: (value) {
@@ -236,42 +217,15 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          TextFormField(
-            controller: amount,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Amount',
-              suffixIcon: Icon(Icons.file_present),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppTheme.colors.grey),
-                gapPadding: 10,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-                gapPadding: 10,
-              ),
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Amount';
-              }
-              return null; // Return null if the input is valid
-            },
-          ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: particular,
+            controller: name,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'Particular',
+              labelText: 'Name',
               suffixIcon: Icon(Icons.file_present),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -288,7 +242,7 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
             ),
             validator: (value) {
               if (value!.isEmpty) {
-                return 'Please Enter Particular';
+                return 'Please Enter Name';
               }
               return null; // Return null if the input is valid
             },
@@ -297,86 +251,128 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
             height: deviceHeight * 0.02,
           ),
           TextFormField(
-            controller: startingDate,
-            keyboardType: TextInputType.datetime,
+            controller: userName,
+            keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: 'Starting Date',
-              suffixIcon: Icon(Icons.calendar_month),
+              labelText: 'Username',
+              suffixIcon: Icon(Icons.person),
               contentPadding:
                   EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(color: AppTheme.colors.grey),
                 gapPadding: 10,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
+                borderRadius: BorderRadius.circular(30),
                 borderSide: BorderSide(color: AppTheme.colors.lightBlue),
                 gapPadding: 10,
               ),
             ),
-            onTap: () async {
-              // Show date picker when the text field is tapped
-              DateTime? selectedDate = await showDatePicker(
-                context: context,
-                initialDate: DateTime.now(),
-                firstDate: DateTime(1900),
-                lastDate: DateTime.now(),
-              );
-
-              if (selectedDate != null) {
-                // Format the selected date as 'dd-MM-yyyy'
-                String formattedDate =
-                    DateFormat('yyyy-MM-dd').format(selectedDate);
-
-                setState(() {
-                  startingDate.text = formattedDate;
-                });
-              }
-            },
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please Select birth date.';
+              if (value!.isEmpty) {
+                return 'Please Enter Username';
               }
-              return null;
+              return null; // Return null if the input is valid
             },
           ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          DropdownButtonFormField<String>(
-            value: selectedIntervalId1,
-            decoration: const InputDecoration(
-              labelText: 'Interval',
+          TextFormField(
+            controller: pass,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              suffixIcon: Icon(Icons.person),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                borderSide: BorderSide(color: Colors.grey, width: 0.0),
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
               ),
-              border: OutlineInputBorder(),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
             ),
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedIntervalId1 = newValue!;
-                selectedIntervalId = _getItemId(newValue)!;
-              });
-            },
-            items: <String>[
-              'Week',
-              'Half - Month',
-              'Month',
-              'Quarter',
-              'Half - Year',
-              'Year'
-            ].map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value, style: TextStyle(fontSize: 16)),
-              );
-            }).toList(),
             validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please select a client';
+              if (value!.isEmpty) {
+                return 'Please enter a password';
+              }
+              if (value.length < 3) {
+                return 'Password must be at least 3 characters long';
+              }
+              return null; // Return null if the input is valid
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: rpass,
+            obscureText: true,
+            decoration: InputDecoration(
+              labelText: 'Re-Password',
+              suffixIcon: Icon(Icons.person),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter a password';
+              }
+              if (value != pass.text) {
+                return 'Password Not Match';
+              }
+              return null; // Return null if the input is valid
+            },
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: email,
+            keyboardType: TextInputType.emailAddress,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: 'Email',
+              suffixIcon: Icon(Icons.email),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please enter an email';
+              }
+
+              final emailRegex =
+                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
+              if (!RegExp(emailRegex).hasMatch(value)) {
+                return 'Please enter a valid email';
               }
               return null;
             },
@@ -384,27 +380,62 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          SwitchListTile(
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Account', style: TextStyle(fontSize: 20)),
-                Text(
-                  isActive ? 'Active' : 'Inactive',
-                  style: TextStyle(fontSize: 14),
-                ),
-              ],
+          TextFormField(
+            controller: contact,
+            keyboardType: TextInputType.number,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: 'Contact',
+              suffixIcon: Icon(Icons.phone),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
             ),
-            value: isActive,
-            onChanged: (value) {
-              setState(() {
-                isActive = value;
-              });
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter Contact';
+              }
+              return null; // Return null if the input is valid
             },
-            controlAffinity: ListTileControlAffinity.trailing,
-            secondary: isActive
-                ? Icon(Icons.check_circle, color: Colors.green)
-                : Icon(Icons.cancel, color: Colors.red),
+          ),
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          TextFormField(
+            controller: note,
+            keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.next,
+            decoration: InputDecoration(
+              labelText: 'Note',
+              suffixIcon: Icon(Icons.note),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.grey),
+                gapPadding: 10,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
+                gapPadding: 10,
+              ),
+            ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'Please Enter Note';
+              }
+              return null; // Return null if the input is valid
+            },
           ),
           SizedBox(
             height: deviceHeight * 0.05,
@@ -422,8 +453,9 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              if (_AddCustomInvoiceKey.currentState!.validate()) {
+              if (_VaultAddKey.currentState!.validate()) {
                 fileEdit();
+                clearField();
               }
             },
             child: Text(
