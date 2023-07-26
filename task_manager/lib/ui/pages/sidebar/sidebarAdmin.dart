@@ -5,15 +5,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
 import 'package:task_manager/ui/pages/Activity_Log/activityLog.dart';
-import 'package:task_manager/ui/pages/Appointment/appointment_list.dart';
+import 'package:task_manager/ui/pages/Admin_Leave/adminLeave.dart';
+import 'package:task_manager/ui/pages/Appointment/appointment.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/clientManualPayment.dart';
 import 'package:task_manager/ui/pages/Client_Data/clientData.dart';
 import 'package:task_manager/ui/pages/Client_Password/clientPassword.dart';
 import 'package:task_manager/ui/pages/Company%20View/company1.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
-import 'package:task_manager/ui/pages/Employee_Leave/employee_leave.dart';
+import 'package:task_manager/ui/pages/Employee_Leave/employeeLeave.dart';
 import 'package:task_manager/ui/pages/File_Manager/fileManager.dart';
-import 'package:task_manager/ui/pages/Holiday/holiday.dart';
+import 'package:task_manager/ui/pages/Holiday/holidayView.dart';
 import 'package:task_manager/ui/pages/Invoice/customInvoice.dart';
 import 'package:task_manager/ui/pages/Invoice/invoice.dart';
 import 'package:task_manager/ui/pages/Password/vault.dart';
@@ -30,7 +31,6 @@ import 'package:task_manager/ui/pages/Users/employee.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/pages/Profile/profile1.dart';
 import '../../../API/model/loginDataModel.dart';
-import '../Admin_Leave/admin_leave.dart';
 import '../Client_Login/client_login.dart';
 import '../Department/department.dart';
 import '../Employee_Login/employee_login.dart';
@@ -274,28 +274,28 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.app_registration),
             title: Text('Appointment'),
             onTap: () {
-              Get.to(Appointment_List());
+              Get.to(Appointment());
             },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Employee Leave'),
             onTap: () {
-              Get.to(Employee_Leave());
+              Get.to(EmployeeLeave());
             },
           ),
           ListTile(
             leading: Icon(Icons.note_alt_outlined),
             title: Text('Admin Leave'),
             onTap: () {
-              Get.to(Admin_Leave());
+              Get.to(AdminLeave());
             },
           ),
           ListTile(
             leading: Icon(Icons.manage_accounts_sharp),
             title: Text('Manage Holiday'),
             onTap: () {
-              Get.to(Holiday());
+              Get.to(HolidayView());
             },
           ),
           ListTile(

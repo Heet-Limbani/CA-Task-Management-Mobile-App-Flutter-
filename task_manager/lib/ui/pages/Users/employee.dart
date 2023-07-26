@@ -628,9 +628,10 @@ class TableSource extends AdvancedDataTableSource<GetUser> {
 
   void updateUserPassword(String? clientId, String newPassword) async {
     if (clientId != null) {
+     
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.updateEmployeePassword}',
-        params: {'id': clientId, 'pass': newPassword},
+        params: {'id': clientId, 'pass': newPassword.toString()},
       );
 
       if (genmodel != null && genmodel.status == true) {

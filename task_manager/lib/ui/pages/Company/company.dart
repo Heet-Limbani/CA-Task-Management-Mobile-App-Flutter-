@@ -697,6 +697,7 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
                             textConfirm: 'Yes',
                             textCancel: 'No',
                             onConfirm: () {
+                              Get.back();
                               deleteUser(dataList.id);
                             },
                             onCancel: () {

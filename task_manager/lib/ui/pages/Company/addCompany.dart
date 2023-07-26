@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/API/model/companyDataModel2.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/pages/Users/addClientForm.dart';
 import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:collection/collection.dart'; // Import the 'collection' package for the 'firstWhereOrNull' method
-
 class AddCompany extends StatefulWidget {
   const AddCompany({Key? key}) : super(key: key);
 
@@ -87,30 +85,55 @@ class _AddCompanyState extends State<AddCompany> {
     getUser();
   }
 
-  List<CompanyDataModel2> clientType = [];
+  List<GetUser> clientType = [];
 
+  // void getUser() async {
+  //   try {
+  //     genModel? genmodel = await Urls.postApiCall(
+  //       method: '${Urls.editCompany}',
+  //       params: {
+  //         "id": "1",
+  //       },
+  //     );
+
+  //     if (genmodel != null &&
+  //         genmodel.status == true &&
+  //         genmodel.data != null) {
+  //       final data = genmodel.data!;
+
+  //       final companyData = CompanyDataModel2.fromJson(data);
+  //       selectedClientId1 = companyData.company?.clientId?.toString() ?? '';
+  //       clientType.add(companyData);
+
+  //       setState(() {});
+  //     }
+  //   } catch (e) {
+  //     print('Error retrieving client data: $e');
+  //   }
+  // }
   void getUser() async {
-    try {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.editCompany}',
-        params: {
-          "id": "1",
-        },
-      );
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.getUsers}',
+      params: {'type': Urls.clientType, 'limit': "200"},
+    );
 
-      if (genmodel != null &&
-          genmodel.status == true &&
-          genmodel.data != null) {
-        final data = genmodel.data!;
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
 
-        final companyData = CompanyDataModel2.fromJson(data);
-        selectedClientId1 = companyData.company?.clientId?.toString() ?? '';
-        clientType.add(companyData);
-
+      if (data != null && data is List) {
+        clientType = data.map((item) => GetUser.fromJson(item)).toList();
+        //if (clientType.isEmpty) {
+        // List is empty
+        //print("No client data available.");
+        // } else {
+        // List has values
+        //print("Client data available.");
+        // }
+        // for (GetUser clientdata1 in clientType) {
+        //   print('UserName: ${clientdata1.username}');
+        // }
         setState(() {});
       }
-    } catch (e) {
-      print('Error retrieving client data: $e');
     }
   }
 
@@ -269,14 +292,13 @@ class _AddCompanyState extends State<AddCompany> {
             ),
             onChanged: (String? newValue) {
               setState(() {
-                selectedClientId1 = newValue;
-                client.text = selectedClientId1 ?? '';
+                selectedClientId1 = newValue ?? '';
+                client.text = selectedClientId1!;
 
                 // Find the selected client in the clientType list
-                final selectedClient = clientType
-                    .expand((dataModel) => dataModel.client ?? [])
-                    .firstWhereOrNull(
-                        (client) => client.iD == selectedClientId1);
+                final selectedClient = clientType.firstWhereOrNull(
+                  (client) => client.iD == selectedClientId1,
+                );
 
                 if (selectedClient != null) {
                   contactNumber.text = selectedClient.contactNumber ?? '';
@@ -287,20 +309,12 @@ class _AddCompanyState extends State<AddCompany> {
                 }
               });
             },
-            items: clientType.isNotEmpty
-                ? clientType.expand<DropdownMenuItem<String>>(
-                    (CompanyDataModel2 dataModel) {
-                    return dataModel.client
-                            ?.map<DropdownMenuItem<String>>((Client client) {
-                          return DropdownMenuItem<String>(
-                            value: client.iD ?? '',
-                            child:
-                                Text('${client.firstName} ${client.lastName}'),
-                          );
-                        }).toList() ??
-                        [];
-                  }).toList()
-                : [],
+            items: clientType.map((GetUser user) {
+              return DropdownMenuItem<String>(
+                value: user.iD ?? '',
+                child: Text('${user.firstName ?? ''} ${user.lastName ?? ''}'),
+              );
+            }).toList(),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please select a client';
