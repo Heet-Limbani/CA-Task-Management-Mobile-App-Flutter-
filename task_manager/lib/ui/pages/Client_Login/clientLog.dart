@@ -1,29 +1,28 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/API/model/HolidayViewDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/ui/pages/Holiday/holidayViewAdd.dart';
-import 'package:task_manager/ui/pages/Holiday/holidayViewEdit.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/API/model/EmployeeLogDataModel.dart';
+import 'package:task_manager/ui/pages/sidebar/sidebarAdmin.dart';
 
-class HolidayView extends StatefulWidget {
-  const HolidayView({super.key});
+class ClientLog extends StatefulWidget {
+  const ClientLog({super.key});
 
   @override
-  State<HolidayView> createState() => _HolidayViewState();
+  State<ClientLog> createState() => _ClientLogState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-int dataCount = 0;
-late TableSource _source; // Declare _source here
 
-class _HolidayViewState extends State<HolidayView> {
+TextEditingController nameController1 = TextEditingController();
+int dataCount = 0;
+
+class _ClientLogState extends State<ClientLog> {
+  late TableSource _source; // Declare _source here
+
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
@@ -45,6 +44,7 @@ class _HolidayViewState extends State<HolidayView> {
   void initState() {
     super.initState();
     _source = TableSource(context); // Initialize _source here
+    refreshTable();
   }
 
   void refreshTable() {
@@ -60,7 +60,7 @@ class _HolidayViewState extends State<HolidayView> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Holiday",
+          "Menu > Client Log ",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -95,10 +95,6 @@ class _HolidayViewState extends State<HolidayView> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                _add(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
                 _table(),
                 SizedBox(
                   height: deviceHeight * 0.1,
@@ -116,39 +112,11 @@ class _HolidayViewState extends State<HolidayView> {
     return Row(
       children: [
         Text(
-          "Holiday List",
+          "Client Log List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Row _add() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        OutlinedButton(
-          onPressed: () {
-            Get.to(HolidayViewAdd());
-          },
-          child: Text(
-            "Add New",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
           ),
         ),
       ],
@@ -231,26 +199,15 @@ class _HolidayViewState extends State<HolidayView> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Title'),
+              label: const Text('User Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Description'),
+              label: const Text('Login Time'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Date'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Show'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text(
-                'Action',
-                textAlign: TextAlign.center,
-              ),
+              label: const Text('Logout Time'),
               onSort: setSort,
             ),
           ],
@@ -332,7 +289,7 @@ class _HolidayViewState extends State<HolidayView> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<HolidayViewDataModel> {
+class TableSource extends AdvancedDataTableSource<EmployeeLogDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -342,71 +299,39 @@ class TableSource extends AdvancedDataTableSource<HolidayViewDataModel> {
 
   int startIndex = 0; // Add the startIndex variable
 
-  void deleteHolidayView(String? id) async {
-    if (id != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.holidayViewDelete}',
-        params: {'id': id},
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: "${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
+  int countIds(String ids) {
+    if (ids.isEmpty) {
+      return 0;
     }
+
+    List<String> idList = ids.split(',');
+    return idList.length;
   }
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final HolidayViewDataModel dataList = lastDetails!.rows[index];
-
+    final EmployeeLogDataModel dataList = lastDetails!.rows[index];
     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(dataList.date ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    String show = "";
-    if (dataList.showToUsers == "0") {
-      show = "No";
-    } else {
-      show = "Yes";
+        int.parse(dataList.loginTime ?? '0') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd  hh:mm:ss').format(parsedDate);
+    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.logoutTime ?? '0') * 1000);
+    final formattedDate1 = DateFormat('yyyy-MM-dd  hh:mm:ss').format(parsedDate1);
+    String dateText="";
+    if(dataList.logoutTime=="0"){
+      dateText="Logged In";
     }
-
+    else{
+      dateText=formattedDate1.toString();
+    }
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.title ?? '')),
-        DataCell(Text(dataList.description ?? '')),
+        DataCell(Text(dataList.userName ?? '')),
         DataCell(Text(formattedDate)),
-        DataCell(Text(show)),
-        DataCell(
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                RawMaterialButton(
-                  onPressed: () {
-                    Get.to(HolidayViewEdit(userId: dataList.id!));
-                  },
-                  child: Icon(Icons.edit),
-                  constraints: BoxConstraints.tight(Size(24, 24)),
-                  shape: CircleBorder(),
-                ),
-                RawMaterialButton(
-                  onPressed: () {
-                    deleteHolidayView(dataList.id);
-                  },
-                  child: Icon(Icons.delete),
-                  constraints: BoxConstraints.tight(Size(24, 24)),
-                  shape: CircleBorder(),
-                ),
-              ],
-            ),
-          ),
-        ),
+        DataCell(Text(dateText)),
+    
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
@@ -433,7 +358,7 @@ class TableSource extends AdvancedDataTableSource<HolidayViewDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<HolidayViewDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<EmployeeLogDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -444,7 +369,7 @@ class TableSource extends AdvancedDataTableSource<HolidayViewDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.holidayView}',
+      method: '${Urls.clientLogin}',
       params: queryParameter,
     );
 
@@ -452,20 +377,19 @@ class TableSource extends AdvancedDataTableSource<HolidayViewDataModel> {
       int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
       dataCount = count;
-
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         //count,
         dynamicData
-            .map<HolidayViewDataModel>(
+            .map<EmployeeLogDataModel>(
               (item) =>
-                  HolidayViewDataModel.fromJson(item as Map<String, dynamic>),
+                  EmployeeLogDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<HolidayViewDataModel>(
-                  (item) => HolidayViewDataModel.fromJson(
+                .map<EmployeeLogDataModel>(
+                  (item) => EmployeeLogDataModel.fromJson(
                       item as Map<String, dynamic>),
                 )
                 .length

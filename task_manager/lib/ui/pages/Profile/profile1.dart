@@ -11,6 +11,7 @@ class _profile1State extends State<profile1> {
   bool isObscurePassword = true;
   bool receiveSms = false;
   bool receiveEmail = false;
+  String img = Urls.baseUrlMain + Urls.profile + Urls.profileAvatar;
 
   @override
   Widget build(BuildContext context) {
@@ -56,14 +57,7 @@ class _profile1State extends State<profile1> {
                         shape: BoxShape.circle,
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: Urls.profileAvatar == ""
-                              ? AssetImage(
-                                  "assets/images/heet.png",
-                                )
-                              : NetworkImage(Urls.profileAvatar) as ImageProvider,
-                          // AssetImage(
-                          //   "assets/images/heet.png",
-                          // ),
+                          image: NetworkImage(img),
                         ),
                       ),
                     ),
@@ -92,7 +86,8 @@ class _profile1State extends State<profile1> {
               ),
               buildTextField("User Name", Urls.profileUserName, false),
               buildTextField("E-mail", Urls.profileEmail, false),
-              buildTextField("Contact Number", Urls.profileContactNumber, false),
+              buildTextField(
+                  "Contact Number", Urls.profileContactNumber, false),
               buildTextField("First Name", Urls.profileFirstName, false),
               buildTextField("Last Name", Urls.profileLastName, false),
               buildTextField("Password", Urls.profilePassword, true),
@@ -148,7 +143,7 @@ class _profile1State extends State<profile1> {
           ),
         ),
       ),
-      drawer:  SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
     );
   }
@@ -175,7 +170,9 @@ class _profile1State extends State<profile1> {
                 : null,
             contentPadding: EdgeInsets.only(bottom: 3),
             labelText: labelText,
-            labelStyle: TextStyle(fontSize: 16, ),
+            labelStyle: TextStyle(
+              fontSize: 16,
+            ),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: placeholder,
             hintStyle: TextStyle(

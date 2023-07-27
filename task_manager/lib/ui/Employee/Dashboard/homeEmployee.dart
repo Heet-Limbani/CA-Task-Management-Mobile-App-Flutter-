@@ -3,7 +3,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
-import 'package:task_manager/ui/pages/sidebar/sidebarClient.dart';
+import 'package:task_manager/ui/Employee/Sidebar/sidebarEmployee.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
@@ -11,14 +11,14 @@ import 'package:task_manager/API/model/clientLogDataModel.dart';
 import '../../../API/model/genModel.dart';
 import 'package:task_manager/API/model/birthDayDataModel.dart';
 
-class HomeClientScreen extends StatefulWidget {
-  const HomeClientScreen({Key? key}) : super(key: key);
+class HomeEmployeeScreen extends StatefulWidget {
+  const HomeEmployeeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeClientScreen> createState() => _HomeClientScreenState();
+  State<HomeEmployeeScreen> createState() => _HomeEmployeeScreenState();
 }
 
-class _HomeClientScreenState extends State<HomeClientScreen> {
+class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
   List<Client> clients = [];
   late double deviceWidth ;
   late double deviceHeight ;
@@ -64,7 +64,7 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: const SideBarClient(),
+      drawer: const SideBarEmployee(),
       extendBody: true,
       body: _buildBody(),
     );
@@ -75,7 +75,6 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   CountData? dataCount;
   void clientDashboard() async {
    
-
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
      
@@ -96,11 +95,10 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
 
   BirthDayList? dataBirthdayList;
   void birthDayTable() async {
-   
-
+  
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-    
+     
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -124,7 +122,7 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
    
 
     genModel? genmodel = await Urls.postApiCall(
-       method: '${Urls.adminDashBoard}',
+      method: '${Urls.adminDashBoard}',
      
     );
     if (genmodel != null) {
@@ -145,11 +143,11 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   }
 
   void clientTable() async {
-   
+  
 
     genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.clientLog}',
-     
+       method: '${Urls.clientLog}',
+    
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -185,11 +183,11 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                //_admin(),
+                // _admin(),
 
-                _client(),
+                // _client(),
 
-                //_employee(),
+                _employee(),
               ],
             ),
           ),
@@ -208,14 +206,17 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
 
   String Function(DateTime date) date = DateFormat('dd/MM/yyyy').format;
 
-
-  Column _client() {
+ 
+ 
+  Column _employee() {
     return Column(
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Client Dashboard",
+              "Employee Dashboard",
               style: TextStyle(
                 color: Colors.blueGrey[900],
                 fontWeight: FontWeight.w700,
@@ -229,66 +230,124 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
           height: deviceHeight * 0.05,
         ),
         StaggeredGrid.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 15,
-            crossAxisSpacing: 15,
-            children: const [
-              StaggeredGridTile.count(
-                crossAxisCellCount: 2,
-                mainAxisCellCount: 1.1,
-                child: TaskGroupContainer(
-                  color: Colors.blue,
-                  icon: Icons.keyboard,
-                  taskCount: 5,
-                  taskGroup: "On Going Task",
-                ),
+          crossAxisCount: 2,
+          mainAxisSpacing: 15,
+          crossAxisSpacing: 15,
+          children: [
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1.1,
+              child: TaskGroupContainer(
+                color: Colors.blue,
+                icon: Icons.keyboard,
+                taskCount: 5,
+                taskGroup: "Today's Task",
               ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1,
-                child: TaskGroupContainer(
-                  color: Colors.green,
-                  isSmall: true,
-                  icon: Icons.live_help_rounded,
-                  taskCount: 2,
-                  taskGroup: "Query Raised",
-                ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: TaskGroupContainer(
+                color: Colors.orange,
+                isSmall: true,
+                icon: Icons.pending_actions,
+                taskCount: 2,
+                taskGroup: "Pending Task",
               ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1.2,
-                child: TaskGroupContainer(
-                  color: Colors.orange,
-                  icon: Icons.pending_actions,
-                  taskCount: 5,
-                  taskGroup: "Inoice Raised",
-                ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1.2,
+              child: TaskGroupContainer(
+                color: Colors.green,
+                icon: Icons.currency_rupee,
+                taskCount: 5,
+                taskGroup: "Task Payable",
               ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1.2,
-                child: TaskGroupContainer(
-                  color: Colors.blue,
-                  icon: Icons.attach_money,
-                  taskCount: 10,
-                  taskGroup: "Amount",
-                ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1.2,
+              child: TaskGroupContainer(
+                color: Colors.red,
+                icon: Icons.watch_later_rounded,
+                taskCount: 10,
+                taskGroup: "Overdue Task",
               ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1,
-                child: TaskGroupContainer(
-                  color: Colors.purple,
-                  icon: Icons.download,
-                  taskCount: 5,
-                  isSmall: true,
-                  taskGroup: "Download",
-                ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: TaskGroupContainer(
+                color: Colors.purple,
+                icon: Icons.live_help_outlined,
+                taskCount: 5,
+                isSmall: true,
+                taskGroup: "Query Raised",
               ),
-            ])
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.1,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "Holiday List",
+              style: TextStyle(
+                color: Colors.blueGrey[900],
+                fontWeight: FontWeight.w700,
+                fontSize: 22,
+              ),
+            ),
+            const Spacer(),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr. No.'), numeric: true),
+                  DataColumn(label: Text('Title')),
+                  DataColumn(label: Text('Description')),
+                  DataColumn(label: Text('Date')),
+                ],
+                rows: const [
+                  DataRow(cells: [
+                    DataCell(Text('1')),
+                    DataCell(Text('John')),
+                    DataCell(Text('Hello')),
+                    DataCell(Text('2023-05-10')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('2')),
+                    DataCell(Text('Jane')),
+                    DataCell(Text('Hi')),
+                    DataCell(Text('2023-05-11')),
+                  ]),
+                  DataRow(cells: [
+                    DataCell(Text('3')),
+                    DataCell(Text('Bob')),
+                    DataCell(Text('Hey')),
+                    DataCell(Text('2023-05-12')),
+                  ]),
+                ],
+                dataRowMinHeight: 32.0,
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
-
  
+
 }

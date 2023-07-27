@@ -2,6 +2,7 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/AppointmentDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import '../sidebar/sidebarAdmin.dart';
@@ -379,13 +380,19 @@ class TableSource extends AdvancedDataTableSource<AppointmentDataModel> {
     } else {
       statusValue = "Reject";
     }
+     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.date ?? '0') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.time ?? '0') * 1000);
+    final formattedDate1 = DateFormat('hh:mm:ss').format(parsedDate1.toUtc());
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
         DataCell(Text(dataList.userName ?? '')),
         DataCell(Text(dataList.topic ?? '')),
-        DataCell(Text(dataList.date ?? '')),
-        DataCell(Text(dataList.time ?? '')),
+        DataCell(Text(formattedDate)),
+        DataCell(Text(formattedDate1)),
         DataCell(Text(statusValue)),
         DataCell(
           Container(

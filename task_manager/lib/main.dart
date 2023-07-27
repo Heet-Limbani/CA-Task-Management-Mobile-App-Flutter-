@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
-import 'package:task_manager/ui/pages/DashBoard/homeClient.dart';
-import 'package:task_manager/ui/pages/DashBoard/homeEmployee.dart';
+import 'package:task_manager/ui/Client/Dashboard/homeClient.dart';
+import 'package:task_manager/ui/Employee/Dashboard/homeEmployee.dart';
 import 'package:task_manager/ui/pages/loginPage/login_screen.dart';
 import 'package:task_manager/ui/core/res/color.dart';
 

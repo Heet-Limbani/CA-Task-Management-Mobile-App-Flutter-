@@ -9,19 +9,23 @@ import 'package:task_manager/ui/pages/Admin_Leave/adminLeave.dart';
 import 'package:task_manager/ui/pages/Appointment/appointment.dart';
 import 'package:task_manager/ui/pages/ClientManualPayment/clientManualPayment.dart';
 import 'package:task_manager/ui/pages/Client_Data/clientData.dart';
+import 'package:task_manager/ui/pages/Client_Login/clientLog.dart';
 import 'package:task_manager/ui/pages/Client_Password/clientPassword.dart';
 import 'package:task_manager/ui/pages/Company%20View/company1.dart';
 import 'package:task_manager/ui/pages/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/pages/Employee_Leave/employeeLeave.dart';
+import 'package:task_manager/ui/pages/Employee_Login/employeeLog.dart';
 import 'package:task_manager/ui/pages/File_Manager/fileManager.dart';
 import 'package:task_manager/ui/pages/Holiday/holidayView.dart';
 import 'package:task_manager/ui/pages/Invoice/customInvoice.dart';
 import 'package:task_manager/ui/pages/Invoice/invoice.dart';
 import 'package:task_manager/ui/pages/Password/vault.dart';
 import 'package:task_manager/ui/pages/Receipt/receipt.dart';
-import 'package:task_manager/ui/pages/Reports/due_report.dart';
+import 'package:task_manager/ui/pages/Reports/attendanceLog.dart';
+import 'package:task_manager/ui/pages/Reports/attendanceReport.dart';
+import 'package:task_manager/ui/pages/Reports/dueReport.dart';
 import 'package:task_manager/ui/pages/Reports/gst_report.dart';
-import 'package:task_manager/ui/pages/Reports/performance_report.dart';
+import 'package:task_manager/ui/pages/Reports/performanceReport.dart';
 import 'package:task_manager/ui/pages/Setting/notificationConfig.dart';
 import 'package:task_manager/ui/pages/Setting/expenses.dart';
 import 'package:task_manager/ui/pages/Setting/msgConfig.dart';
@@ -31,20 +35,18 @@ import 'package:task_manager/ui/pages/Users/employee.dart';
 import 'package:task_manager/ui/pages/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/pages/Profile/profile1.dart';
 import '../../../API/model/loginDataModel.dart';
-import '../Client_Login/client_login.dart';
 import '../Department/department.dart';
-import '../Employee_Login/employee_login.dart';
-import '../Reports/attendance_log.dart';
-import '../Reports/attendance_report.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';
 import '../Users/client.dart';
 import 'package:task_manager/ui/pages/Notification/notification1.dart';
+  String img = Urls.baseUrlMain + Urls.profile + Urls.profileAvatar;
 
 class SideBarAdmin extends StatelessWidget {
   SideBarAdmin({Key? key}) : super(key: key);
   final String email = Urls.profileEmail;
   final String userName = Urls.profileUserName;
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -74,12 +76,11 @@ class SideBarAdmin extends StatelessWidget {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Color.fromARGB(255, 255, 255, 255),
               child: ClipOval(
-                  child: Image(
-                image: AssetImage(
-                  'assets/images/task_manager.png',
+                child: Image(
+                  image: NetworkImage(img),
+                  fit: BoxFit.cover,
                 ),
-                fit: BoxFit.cover,
-              )),
+              ),
             ),
           ),
           // Various options
@@ -135,7 +136,7 @@ class SideBarAdmin extends StatelessWidget {
                   Get.to(Expenses());
                 },
               ),
-               ListTile(
+              ListTile(
                 title: Text('Configure SMS'),
                 onTap: () {
                   Get.to(Sent());
@@ -197,7 +198,7 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Task Report'),
                 onTap: () {
-                  Get.to(()=>TaskReport());
+                  Get.to(() => TaskReport());
                 },
               ),
             ],
@@ -302,14 +303,14 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.login),
             title: Text('Employee Login'),
             onTap: () {
-              Get.to(Employee_Login());
+              Get.to(EmployeeLog());
             },
           ),
           ListTile(
             leading: Icon(Icons.login),
             title: Text('Client Login'),
             onTap: () {
-              Get.to(Client_Login());
+              Get.to(ClientLog());
             },
           ),
           ExpansionTile(
@@ -320,25 +321,25 @@ class SideBarAdmin extends StatelessWidget {
               ListTile(
                 title: Text('Performance Report'),
                 onTap: () {
-                  Get.to(Performance_Report());
+                  Get.to(PerformanceReport());
                 },
               ),
               ListTile(
                 title: Text('Due Report'),
                 onTap: () {
-                  Get.to(Due_Report());
+                  Get.to(DueReport());
                 },
               ),
               ListTile(
                 title: Text('Attendance Log'),
                 onTap: () {
-                  Get.to(Attendance_Log());
+                  Get.to(AttendanceLog());
                 },
               ),
               ListTile(
                 title: Text('Attendance Report'),
                 onTap: () {
-                  Get.to(Attendance_Report());
+                  Get.to(AttendanceReport());
                 },
               ),
               ListTile(

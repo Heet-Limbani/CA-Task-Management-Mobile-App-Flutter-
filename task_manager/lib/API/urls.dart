@@ -9,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 class Urls {
   static String baseUrlMain = "https://task.mysyva.net/backend/";
   static String manualPayment = "assets/client_receipt/";
+  static String profile = "assets/profile/";
 
   static String login = "${Urls.baseUrlMain}Login";
   static String adminDashBoard = "${Urls.baseUrlMain}AdminDashboard";
@@ -100,14 +101,17 @@ class Urls {
   static String clientPassword = "${Urls.baseUrlMain}client_password";
   static String clientPasswordEdit = "${Urls.baseUrlMain}edit_client_password";
   static String clientPasswordAdd = "${Urls.baseUrlMain}add_client_password";
-  static String clientPasswordDelete = "${Urls.baseUrlMain}delete_client_password";
+  static String clientPasswordDelete =
+      "${Urls.baseUrlMain}delete_client_password";
   static String appointment = "${Urls.baseUrlMain}Appointment";
   static String appointmentAccept = "${Urls.baseUrlMain}Accept_Appointment";
   static String appointmentReject = "${Urls.baseUrlMain}Reject_Appointment";
   static String appointmentDelete = "${Urls.baseUrlMain}Delete_Appointment";
   static String employeeLeave = "${Urls.baseUrlMain}get_employee_leave";
-  static String employeeLeaveAccept = "${Urls.baseUrlMain}employee_leave_accept";
-  static String employeeLeaveReject = "${Urls.baseUrlMain}employee_leave_reject";
+  static String employeeLeaveAccept =
+      "${Urls.baseUrlMain}employee_leave_accept";
+  static String employeeLeaveReject =
+      "${Urls.baseUrlMain}employee_leave_reject";
   static String employeeLeaveDelete = "${Urls.baseUrlMain}Delete_Admin_Leave";
   static String adminLeave = "${Urls.baseUrlMain}Admin_Leave";
   static String adminLeaveEdit = "${Urls.baseUrlMain}Edit_Admin_Leave";
@@ -115,6 +119,19 @@ class Urls {
   static String holidayViewEdit = "${Urls.baseUrlMain}EditHoliday";
   static String holidayViewAdd = "${Urls.baseUrlMain}AddHoliday";
   static String holidayViewDelete = "${Urls.baseUrlMain}DeleteHoliday";
+  static String employeeLog = "${Urls.baseUrlMain}EmployeeLoginLog";
+  static String clientLogin = "${Urls.baseUrlMain}ClientLoginLog";
+  static String performanceReport =
+      "${Urls.baseUrlMain}Reports/Employee_Performance";
+  static String dueReport = "${Urls.baseUrlMain}Reports/DueReport";
+  static String attendanceLog = "${Urls.baseUrlMain}Reports/AttendanceLog";
+  static String attendanceLogEdit =
+      "${Urls.baseUrlMain}Reports/AttendanceLog_Edit";
+  static String attendanceLogEditGetData =
+      "${Urls.baseUrlMain}Reports/AttendanceLog";
+  static String attendanceLogDelete =
+      "${Urls.baseUrlMain}Reports/DeleteAttendanceLog";
+  static String attendanceReport = "${Urls.baseUrlMain}Reports/Attendance";
 
   static String profileEmail = "";
   static String profileUserName = "";
