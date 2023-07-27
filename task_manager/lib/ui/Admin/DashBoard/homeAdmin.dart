@@ -10,7 +10,7 @@ import 'package:task_manager/API/model/clientDataModel.dart';
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
-import 'package:task_manager/ui/core/res/color.dart';
+import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Admin/DashBoard/taskOnBoard.dart';
 import 'package:task_manager/ui/Admin/DashBoard/taskUnPaid.dart';

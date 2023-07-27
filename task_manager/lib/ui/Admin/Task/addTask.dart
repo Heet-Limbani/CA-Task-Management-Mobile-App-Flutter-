@@ -7,7 +7,7 @@ import 'package:task_manager/API/model/fileDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/taskDataModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:task_manager/ui/core/res/color.dart';
+import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/Company/addCompany.dart';
 import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';

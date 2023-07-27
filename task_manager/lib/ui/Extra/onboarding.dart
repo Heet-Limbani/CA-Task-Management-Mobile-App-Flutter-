@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:task_manager/ui/core/res/app.dart';
+import 'package:task_manager/ui/Resources/res/app.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 
 class OnboardingScreen extends StatefulWidget {

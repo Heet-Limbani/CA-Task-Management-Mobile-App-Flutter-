@@ -6,7 +6,7 @@ import 'package:task_manager/ui/Admin/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/Client/Dashboard/homeClient.dart';
 import 'package:task_manager/ui/Employee/Dashboard/homeEmployee.dart';
 import 'package:task_manager/ui/Admin/loginPage/login_screen.dart';
-import 'package:task_manager/ui/core/res/color.dart';
+import 'package:task_manager/ui/Resources/res/color.dart';
 
 void main() {
   runApp(GetMaterialApp(

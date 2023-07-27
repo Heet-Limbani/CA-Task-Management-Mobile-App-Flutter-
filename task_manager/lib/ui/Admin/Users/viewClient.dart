@@ -7,7 +7,7 @@ import 'package:task_manager/ui/Admin/Users/clientInvoiceDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientLogDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientLoginDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientTicketDetails.dart';
-import '../../core/res/color.dart';
+import '../../Resources/res/color.dart';
 import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 

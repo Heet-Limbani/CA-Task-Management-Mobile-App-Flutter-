@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/ui/core/res/color.dart';
+import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/models/task.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task.dart';

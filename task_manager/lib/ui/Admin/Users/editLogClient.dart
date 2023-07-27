@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/logModel.dart';
-import 'package:task_manager/ui/core/res/color.dart';
+import 'package:task_manager/ui/Resources/res/color.dart';
 import '../sidebar/sidebarAdmin.dart';
 
 class EditLogClient extends StatefulWidget {
