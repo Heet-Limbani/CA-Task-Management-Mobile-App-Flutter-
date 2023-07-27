@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../ui/pages/DashBoard/homeAdmin.dart';
+import '../../ui/Admin/DashBoard/homeAdmin.dart';
 
 class Client {
   String? id;
