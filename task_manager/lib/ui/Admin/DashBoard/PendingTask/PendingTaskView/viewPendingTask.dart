@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/API/model/cardDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/viewTasksDataModel.dart';
-import '../sidebar/sidebarAdmin.dart';
+import '../../../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class ViewPendingTask extends StatefulWidget {

@@ -1,6 +1,11 @@
+import 'package:advanced_datatable/datatable.dart';
+import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/viewTasksDataModel.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/subtaskEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskEdit.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
@@ -26,17 +31,37 @@ TextEditingController deadlineDateController = TextEditingController();
 TextEditingController createdDateController = TextEditingController();
 bool isObscurePassword = true;
 String ticketId = "";
-
+int dataCount = 0;
 String? selectedClientId1;
 
 class _ViewTasksTaskState extends State<ViewTasksTask> {
+  TextEditingController _searchController = TextEditingController();
+
+  late TableSource _source;
+  var _sortIndex = 0;
+  var _sortAsc = true;
+  var _customFooter = false;
+  var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
+
+  void setSort(int i, bool asc) => setState(() {
+        _sortIndex = i;
+        _sortAsc = asc;
+      });
   @override
   void initState() {
     super.initState();
     ticketId = widget.ticketId; // Store widget.userId in a local variable
     // getUser();
-
+    _source = TableSource(context);
+    _source.setNextView();
     getTaskDetails();
+  }
+
+  void refreshTable() {
+    setState(() {
+      _source.startIndex = 0;
+      _source.setNextView();
+    });
   }
 
   List<Subtask> subtaskList = [];
@@ -62,10 +87,6 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
       clientEmailController.text = taskData.company!.email.toString();
       setState(() {});
     }
-  }
-
-  void refreshTable() {
-    setState(() {});
   }
 
   @override
@@ -119,16 +140,19 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                 _add2(),
+                _add2(),
                 SizedBox(
                   height: deviceHeight * 0.01,
                 ),
                 _header(),
                 SizedBox(
+                  height: deviceHeight * 0.02,
+                ),
+                _table(),
+                SizedBox(
                   height: deviceHeight * 0.1,
                 ),
-               
-                _table(),
+                _button(),
                 SizedBox(
                   height: deviceHeight * 0.1,
                 ),
@@ -154,7 +178,7 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
       children: [
         OutlinedButton(
           onPressed: () {
-            // Get.to(() => AddClientForm());
+            Get.to(() => EditTask(id: ticketId));
           },
           child: Text(
             "Edit",
@@ -174,7 +198,8 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
       ],
     );
   }
-Row _add2() {
+
+  Row _add2() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -196,6 +221,177 @@ Row _add2() {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
+        ),
+      ],
+    );
+  }
+
+  Column _table() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: deviceHeight * 0.02,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: const InputDecoration(
+                    labelText: 'Search',
+                  ),
+                  onSubmitted: (vlaue) {
+                    _source.filterServerSide(_searchController.text);
+                  },
+                ),
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  _searchController.text = '';
+                });
+                _source.filterServerSide(_searchController.text);
+                ;
+              },
+              icon: const Icon(Icons.clear),
+            ),
+            IconButton(
+              onPressed: () => _source.filterServerSide(_searchController.text),
+              icon: const Icon(Icons.search),
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+              ),
+              onPressed: refreshTable,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: deviceHeight * 0.03,
+        ),
+        AdvancedPaginatedDataTable(
+          loadingWidget: () => UniversalShimmer(
+            itemCount: dataCount,
+            deviceHeight: deviceHeight,
+            deviceWidth: deviceWidth,
+          ),
+          addEmptyRows: false,
+          source: _source,
+          showHorizontalScrollbarAlways: true,
+          sortAscending: _sortAsc,
+          sortColumnIndex: _sortIndex,
+          showFirstLastButtons: true,
+          rowsPerPage: _rowsPerPage,
+          availableRowsPerPage: const [10, 20, 50, 100, 200],
+          onRowsPerPageChanged: (newRowsPerPage) {
+            if (newRowsPerPage != null) {
+              setState(() {
+                _rowsPerPage = newRowsPerPage;
+              });
+            }
+          },
+          columns: [
+            DataColumn(
+              label: const Text('Sr. No.'),
+              numeric: true,
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Task'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Employee'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Tax Payable'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Tax Payable Till Date'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Action'),
+              onSort: setSort,
+            ),
+          ],
+          //Optianl override to support custom data row text / translation
+          getFooterRowText:
+              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
+            final localizations = MaterialLocalizations.of(context);
+            var amountText = localizations.pageRowsInfoTitle(
+              startRow,
+              pageSize,
+              totalFilter ?? totalRowsWithoutFilter,
+              false,
+            );
+
+            if (totalFilter != null) {
+              //Filtered data source show addtional information
+              amountText += ' filtered from ($totalRowsWithoutFilter)';
+            }
+
+            return amountText;
+          },
+          customTableFooter: _customFooter
+              ? (source, offset) {
+                  const maxPagesToShow = 6;
+                  const maxPagesBeforeCurrent = 3;
+                  final lastRequestDetails = source.lastDetails!;
+                  final rowsForPager = lastRequestDetails.filteredRows ??
+                      lastRequestDetails.totalRows;
+                  final totalPages = rowsForPager ~/ _rowsPerPage;
+                  final currentPage = (offset ~/ _rowsPerPage) + 1;
+                  final List<int> pageList = [];
+                  if (currentPage > 1) {
+                    pageList.addAll(
+                      List.generate(currentPage - 1, (index) => index + 1),
+                    );
+                    //Keep up to 3 pages before current in the list
+                    pageList.removeWhere(
+                      (element) =>
+                          element < currentPage - maxPagesBeforeCurrent,
+                    );
+                  }
+                  pageList.add(currentPage);
+                  //Add reminding pages after current to the list
+                  pageList.addAll(
+                    List.generate(
+                      maxPagesToShow - (pageList.length - 1),
+                      (index) => (currentPage + 1) + index,
+                    ),
+                  );
+                  pageList.removeWhere((element) => element > totalPages);
+
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: pageList
+                        .map(
+                          (e) => TextButton(
+                            onPressed: e != currentPage
+                                ? () {
+                                    //Start index is zero based
+                                    source.setNextView(
+                                      startIndex: (e - 1) * _rowsPerPage,
+                                    );
+                                  }
+                                : null,
+                            child: Text(
+                              e.toString(),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  );
+                }
+              : null,
         ),
       ],
     );
@@ -256,13 +452,13 @@ Row _add2() {
     );
   }
 
-  Row _table() {
+  Row _button() {
     return Row(
       children: [
         SizedBox(
           width: deviceWidth * 0.1,
         ),
-       
+
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
@@ -411,5 +607,132 @@ Row _add2() {
             )),
       ),
     );
+  }
+}
+
+typedef SelectedCallBack = Function(String id, bool newSelectState);
+
+class TableSource extends AdvancedDataTableSource<TasksData> {
+  final BuildContext context;
+
+  TableSource(this.context);
+
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+  int startIndex = 0;
+  RemoteDataSourceDetails<TasksData>? lastDetails;
+
+  @override
+  DataRow? getRow(int index) {
+    final srNo = (startIndex + index + 1).toString();
+    final List<TasksData> rows = lastDetails!.rows;
+    if (index >= 0 && index < rows.length) {
+      final TasksData dataList = rows[index];
+      final List<Subtask>? subtasks = dataList.subtask;
+
+      if (subtasks != null && subtasks.isNotEmpty) {
+        final Subtask subtask = subtasks.first;
+        return DataRow(
+          cells: [
+            DataCell(Text(srNo)),
+            DataCell(Text(subtask.taskTitle ?? '')),
+            DataCell(Row(
+              children: [
+                Text(subtask.firstName ?? ''),
+                Text(subtask.lastName ?? ''),
+              ],
+            )),
+            DataCell(Text(subtask.taxPayable ?? '')),
+            DataCell(Text(subtask.taxPayableTillDate ?? '')),
+            DataCell(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.to(() => SubtaskEdit(userId: subtask.subtaskId.toString()));
+                          },
+                          child: Icon(Icons.edit),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {},
+                          child: Icon(Icons.delete),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        );
+      }
+    }
+    return null;
+  }
+
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.toLowerCase().trim();
+    setNextView();
+  }
+
+  @override
+  Future<RemoteDataSourceDetails<TasksData>> getNextPage(
+    NextPageRequest pageRequest,
+  ) async {
+    startIndex = pageRequest.offset;
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+      'limit': pageRequest.pageSize.toString(),
+      'id': ticketId.toString(),
+    };
+
+    genModel? dataModel = await Urls.postApiCall(
+      method: '${Urls.taskViewTaskDetails}',
+      params: queryParameter,
+    );
+
+    if (dataModel != null && dataModel.status == true) {
+      final dynamicData = dataModel.data;
+
+      int subtaskCount = 0;
+
+      if (dynamicData is Map<String, dynamic> &&
+          dynamicData.containsKey('subtask')) {
+        final dynamicList = dynamicData['subtask'] as List<dynamic>?;
+        subtaskCount = dynamicList?.length ?? 0;
+        dataCount = subtaskCount;
+        final List<TasksData> dataList = dynamicList
+                ?.map<TasksData>(
+                    (item) => TasksData(subtask: [Subtask.fromJson(item)]))
+                .toList() ??
+            [];
+
+        lastDetails = RemoteDataSourceDetails<TasksData>(
+          //dataModel.count ?? 0,
+          subtaskCount,
+          dataList,
+          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
+        );
+      } else {
+        throw Exception('Invalid dynamicData format');
+      }
+
+      return lastDetails!;
+    } else {
+      throw Exception('Unable to query remote server');
+    }
   }
 }

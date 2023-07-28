@@ -6,7 +6,7 @@ import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/taskOnBoardDataModel.dart';
 import 'package:task_manager/ui/Admin/Task/addTask.dart';
-import '../sidebar/sidebarAdmin.dart';
+import '../../sidebar/sidebarAdmin.dart';
 
 class TaskOnBoard extends StatefulWidget {
   const TaskOnBoard({Key? key}) : super(key: key);

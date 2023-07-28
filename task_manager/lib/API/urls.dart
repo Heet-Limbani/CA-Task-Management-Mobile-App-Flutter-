@@ -132,6 +132,8 @@ class Urls {
   static String attendanceLogDelete =
       "${Urls.baseUrlMain}Reports/DeleteAttendanceLog";
   static String attendanceReport = "${Urls.baseUrlMain}Reports/Attendance";
+  static String editTask = "${Urls.baseUrlMain}UpdateTask";
+  static String subtaskEdit = "${Urls.baseUrlMain}EditSubTask";
 
   static String profileEmail = "";
   static String profileUserName = "";
