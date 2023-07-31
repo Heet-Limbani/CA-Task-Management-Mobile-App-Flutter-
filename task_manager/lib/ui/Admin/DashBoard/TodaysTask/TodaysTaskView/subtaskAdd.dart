@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/API/model/SubtaskEditDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/model/subTaskAddDataModel.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class SubtaskEdit extends StatefulWidget {
+class SubtaskAdd extends StatefulWidget {
   final String userId;
 
-  const SubtaskEdit({required this.userId, Key? key}) : super(key: key);
+  const SubtaskAdd({required this.userId, Key? key}) : super(key: key);
 
   @override
-  State<SubtaskEdit> createState() => _SubtaskEditState();
+  State<SubtaskAdd> createState() => _SubtaskAddState();
 }
 
-class _SubtaskEditState extends State<SubtaskEdit> {
+class _SubtaskAddState extends State<SubtaskAdd> {
   late double deviceWidth;
   late double deviceHeight;
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _SubtaskEditKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _SubtaskAddKey = GlobalKey<FormState>();
   TextEditingController subTaskName = TextEditingController();
    TextEditingController activity = TextEditingController();
   TextEditingController startingDate = TextEditingController();
@@ -69,42 +69,21 @@ class _SubtaskEditState extends State<SubtaskEdit> {
     selectedClientId1 = null;
   }
 
-  List<SubtaskEditDataModel> clientType = [];
+  List<SubtaskAddDataModel> clientType = [];
 
   void getUser() async {
     print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.subtaskEdit}',
+      method: '${Urls.subtaskAdd}',
       params: {
-         "sub_tid": userId.toString(),
       },
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-      final fileData = SubtaskEditDataModel.fromJson(data);
+      final fileData = SubtaskAddDataModel.fromJson(data);
       print("fileData :- $fileData");
              
-      subTaskName.text =fileData.data![0].title.toString();
-      startingDate.text = fileData.data![0].startingDate.toString();
-      deadlineDate.text = fileData.data![0].deadlineDate.toString();
-      description.text = fileData.data![0].description.toString();
-      tpAmount.text = fileData.data![0].taxPayable.toString();
-      tpDate.text = fileData.data![0].taxPayableTillDate.toString();
-
-
-      selectedClientId1 = fileData.data![0].empId.toString();
-      String intervalValue = '';
-      if (fileData.data![0].priority.toString() == "0") {
-        intervalValue = "High";
-      } else if (fileData.data![0].priority.toString() == "1") {
-        intervalValue = "Normal";
-      } else if (fileData.data![0].priority.toString() == "2") {
-        intervalValue = "Low";
-      } 
-      selectedIntervalId = _getItemId(intervalValue)!;
-      activity.text = intervalValue;
-      selectedIntervalId1 = intervalValue;
       clientType.add(fileData); // Add the companyData to clientType list
       setState(() {});
     }
@@ -112,20 +91,17 @@ class _SubtaskEditState extends State<SubtaskEdit> {
 
   void fileEdit() async {
     try {
-      print("startingDate :- ${startingDate.text}");
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.subtaskEdit}',
+        method: '${Urls.subtaskAdd}',
         params: {
           "submit": "Save",
-          "sub_tid": userId.toString(),
+          "taskid": userId.toString(),
           "txtStaskname": subTaskName.text,
           "Employee": selectedClientId1.toString(),
           "priority": selectedIntervalId.toString(),
           "deadline_date": deadlineDate.text,
           "starting_date": startingDate.text,
           "txtSComment": description.text,
-          "amount": tpAmount.text,
-          "till_date": tpDate.text,
         },
       );
       if (genmodel != null) {
@@ -169,7 +145,7 @@ class _SubtaskEditState extends State<SubtaskEdit> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Desboard > Task > Edit Task",
+          "Desboard > Task > Add Sub Task",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -204,7 +180,7 @@ class _SubtaskEditState extends State<SubtaskEdit> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _SubtaskEdit(),
+                _SubtaskAdd(),
               ],
             ),
           ),
@@ -217,7 +193,7 @@ class _SubtaskEditState extends State<SubtaskEdit> {
     return Row(
       children: [
         Text(
-          "Edit Sub Task",
+          "Add Sub Task",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -228,9 +204,9 @@ class _SubtaskEditState extends State<SubtaskEdit> {
     );
   }
 
-  Form _SubtaskEdit() {
+  Form _SubtaskAdd() {
     return Form(
-      key: _SubtaskEditKey,
+      key: _SubtaskAddKey,
       child: Column(
         children: <Widget>[
           TextFormField(
@@ -281,7 +257,7 @@ class _SubtaskEditState extends State<SubtaskEdit> {
               });
             },
             items: clientType.expand<DropdownMenuItem<String>>(
-                (SubtaskEditDataModel dataModel) {
+                (SubtaskAddDataModel dataModel) {
               return dataModel.employee
                       ?.map<DropdownMenuItem<String>>((Employee employee) {
                     return DropdownMenuItem<String>(
@@ -441,37 +417,6 @@ class _SubtaskEditState extends State<SubtaskEdit> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-
-          TextFormField(
-            controller: tpAmount,
-            keyboardType: TextInputType.number,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Tax Payable Amount',
-              suffixIcon: Icon(Icons.file_present),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppTheme.colors.grey),
-                gapPadding: 10,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-                gapPadding: 10,
-              ),
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Please Enter Amount';
-              }
-              return null; // Return null if the input is valid
-            },
-          ),
-          SizedBox(
-            height: deviceHeight * 0.02,
-          ),
           TextFormField(
             controller: description,
             keyboardType: TextInputType.text,
@@ -500,57 +445,6 @@ class _SubtaskEditState extends State<SubtaskEdit> {
             },
           ),
           SizedBox(
-            height: deviceHeight * 0.02,
-          ),
-          TextFormField(
-            controller: tpDate,
-            keyboardType: TextInputType.datetime,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Tax Payable Date',
-              suffixIcon: Icon(Icons.calendar_month),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.grey),
-                gapPadding: 10,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(28),
-                borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-                gapPadding: 10,
-              ),
-            ),
-            onTap: () async {
-              // Show date picker when the text field is tapped
-              DateTime? selectedDate = await showDatePicker(
-                context: context,
-                initialDate: tpDate.text == "0"
-                    ? DateTime.now()
-                    : DateTime.parse(tpDate.text),
-                firstDate: DateTime(1900),
-                lastDate: DateTime(2100),
-              );
-
-              if (selectedDate != null) {
-                // Format the selected date as 'dd-MM-yyyy'
-                String formattedDate =
-                    DateFormat('yyyy-MM-dd').format(selectedDate);
-
-                setState(() {
-                  tpDate.text = formattedDate;
-                });
-              }
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please Select Tax Payable date.';
-              }
-              return null;
-            },
-          ),
-          SizedBox(
             height: deviceHeight * 0.05,
           ),
           ElevatedButton(
@@ -566,12 +460,13 @@ class _SubtaskEditState extends State<SubtaskEdit> {
               shadowColor: Colors.black, // Set the shadow color
             ),
             onPressed: () {
-              if (_SubtaskEditKey.currentState!.validate()) {
+              if (_SubtaskAddKey.currentState!.validate()) {
                 fileEdit();
+                clearField();
               }
             },
             child: Text(
-              "Update",
+              "Add",
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.white,

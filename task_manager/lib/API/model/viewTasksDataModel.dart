@@ -6,10 +6,10 @@ class TasksData {
   String? ticketId;
   List<Employee>? employee;
   List<Expences>? expences;
-  List<Null>? taskExpences;
+  List<TaskExpences>? taskExpences;
   List<Null>? comment;
   List<File>? file;
-  List<Null>? virtualFile;
+  List<VirtualFile>? virtualFile;
 
   TasksData(
       {this.data,
@@ -51,6 +51,18 @@ class TasksData {
       expences = <Expences>[];
       json['expences'].forEach((v) {
         expences!.add(new Expences.fromJson(v));
+      });
+    }
+    if (json['virtual_file'] != null) {
+      virtualFile = <VirtualFile>[];
+      json['virtual_file'].forEach((v) {
+        virtualFile!.add(new VirtualFile.fromJson(v));
+      });
+    }
+     if (json['task_expences'] != null) {
+      taskExpences = <TaskExpences>[];
+      json['task_expences'].forEach((v) {
+        taskExpences!.add(new TaskExpences.fromJson(v));
       });
     }
     // if (json['task_expences'] != null) {
@@ -99,6 +111,13 @@ class TasksData {
     }
     if (this.expences != null) {
       data['expences'] = this.expences!.map((v) => v.toJson()).toList();
+    }
+    if (this.virtualFile != null) {
+      data['virtual_file'] = this.virtualFile!.map((v) => v.toJson()).toList();
+    }
+     if (this.taskExpences != null) {
+      data['task_expences'] =
+          this.taskExpences!.map((v) => v.toJson()).toList();
     }
     // if (this.taskExpences != null) {
     //   data['task_expences'] =
@@ -688,6 +707,128 @@ class File {
     data['note'] = this.note;
     data['outward_by'] = this.outwardBy;
     data['location'] = this.location;
+    return data;
+  }
+}
+
+class VirtualFile {
+  String? id;
+  String? locationId;
+  String? locationNum;
+  String? type;
+  String? clientId;
+  String? userId;
+  String? name;
+  String? inwardTime;
+  String? outwardTime;
+  String? showToClient;
+  String? downloadable;
+  String? dl;
+  Null receiverName;
+  Null note;
+  String? outwardBy;
+
+  VirtualFile(
+      {this.id,
+      this.locationId,
+      this.locationNum,
+      this.type,
+      this.clientId,
+      this.userId,
+      this.name,
+      this.inwardTime,
+      this.outwardTime,
+      this.showToClient,
+      this.downloadable,
+      this.dl,
+      this.receiverName,
+      this.note,
+      this.outwardBy});
+
+  VirtualFile.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    locationId = json['location_id'];
+    locationNum = json['location_num'];
+    type = json['type'];
+    clientId = json['client_id'];
+    userId = json['user_id'];
+    name = json['name'];
+    inwardTime = json['inward_time'];
+    outwardTime = json['outward_time'];
+    showToClient = json['show_to_client'];
+    downloadable = json['downloadable'];
+    dl = json['dl'];
+    receiverName = json['receiver_name'];
+    note = json['note'];
+    outwardBy = json['outward_by'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['location_id'] = this.locationId;
+    data['location_num'] = this.locationNum;
+    data['type'] = this.type;
+    data['client_id'] = this.clientId;
+    data['user_id'] = this.userId;
+    data['name'] = this.name;
+    data['inward_time'] = this.inwardTime;
+    data['outward_time'] = this.outwardTime;
+    data['show_to_client'] = this.showToClient;
+    data['downloadable'] = this.downloadable;
+    data['dl'] = this.dl;
+    data['receiver_name'] = this.receiverName;
+    data['note'] = this.note;
+    data['outward_by'] = this.outwardBy;
+    return data;
+  }
+}
+
+class TaskExpences {
+  String? id;
+  String? ticketId;
+  String? expenceId;
+  String? amount;
+  String? description;
+  String? createdOn;
+  String? dl;
+  String? type;
+  String? name;
+
+  TaskExpences(
+      {this.id,
+      this.ticketId,
+      this.expenceId,
+      this.amount,
+      this.description,
+      this.createdOn,
+      this.dl,
+      this.type,
+      this.name});
+
+  TaskExpences.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    ticketId = json['ticket_id'];
+    expenceId = json['expence_id'];
+    amount = json['amount'];
+    description = json['description'];
+    createdOn = json['created_on'];
+    dl = json['dl'];
+    type = json['type'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['ticket_id'] = this.ticketId;
+    data['expence_id'] = this.expenceId;
+    data['amount'] = this.amount;
+    data['description'] = this.description;
+    data['created_on'] = this.createdOn;
+    data['dl'] = this.dl;
+    data['type'] = this.type;
+    data['name'] = this.name;
     return data;
   }
 }

@@ -134,6 +134,13 @@ class Urls {
   static String attendanceReport = "${Urls.baseUrlMain}Reports/Attendance";
   static String editTask = "${Urls.baseUrlMain}UpdateTask";
   static String subtaskEdit = "${Urls.baseUrlMain}EditSubTask";
+  static String subtaskDelete = "${Urls.baseUrlMain}DeleteSubTask";
+  static String subtaskAdd = "${Urls.baseUrlMain}AddSubTask";
+  static String editFileTask = "${Urls.baseUrlMain}Editupload_image";
+  static String deleteFileTask = "${Urls.baseUrlMain}DeleteVirtualFile";
+  static String taskChargeEdit = "${Urls.baseUrlMain}Edit_TaskExpences";
+  static String taskChargeDelete = "${Urls.baseUrlMain}Delete_TaskExpences";
+  static String taskChargeAdd = "${Urls.baseUrlMain}Add_TaskExpences";
 
   static String profileEmail = "";
   static String profileUserName = "";

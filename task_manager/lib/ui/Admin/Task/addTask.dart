@@ -323,6 +323,7 @@ class _AddTaskState extends State<AddTask> {
         OutlinedButton(
           onPressed: () {
             addFile();
+            enterFile.clear();
           },
           child: Text(
             "Add File",

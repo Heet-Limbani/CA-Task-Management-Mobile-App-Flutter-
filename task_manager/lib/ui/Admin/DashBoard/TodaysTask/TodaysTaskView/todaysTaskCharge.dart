@@ -5,52 +5,41 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/viewTasksDataModel.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/subtaskAdd.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/subtaskEdit.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskCharge.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskEdit.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskFile.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskChargeAdd.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskChargeEdit.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class ViewTasksTask extends StatefulWidget {
+class TodaysTaskCharge extends StatefulWidget {
   final String ticketId;
-  const ViewTasksTask({required this.ticketId, Key? key}) : super(key: key);
+  const TodaysTaskCharge({required this.ticketId, Key? key}) : super(key: key);
 
   @override
-  State<ViewTasksTask> createState() => _ViewTasksTaskState();
+  State<TodaysTaskCharge> createState() => _TodaysTaskChargeState();
 }
 
 late double deviceWidth;
 late double deviceHeight;
 
 // Declare _source here
-
-TextEditingController descriptionController = TextEditingController();
-TextEditingController clientNameController = TextEditingController();
-TextEditingController clientNumberController = TextEditingController();
-TextEditingController clientEmailController = TextEditingController();
-TextEditingController startingDateController = TextEditingController();
-TextEditingController deadlineDateController = TextEditingController();
-TextEditingController createdDateController = TextEditingController();
 bool isObscurePassword = true;
 String ticketId = "";
 int dataCount = 0;
+
 String? selectedClientId1;
 
-class _ViewTasksTaskState extends State<ViewTasksTask> {
+class _TodaysTaskChargeState extends State<TodaysTaskCharge> {
   TextEditingController _searchController = TextEditingController();
-
   late TableSource _source;
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
-
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
       });
+
   @override
   void initState() {
     super.initState();
@@ -58,7 +47,6 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
     // getUser();
     _source = TableSource(context);
     _source.setNextView();
-    getTaskDetails();
   }
 
   void refreshTable() {
@@ -68,30 +56,7 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
     });
   }
 
-  List<Subtask> subtaskList = [];
-
-  void getTaskDetails() async {
-    genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.taskViewTaskDetails}',
-      params: {
-        'id': ticketId.toString(),
-      },
-    );
-    if (genmodel != null && genmodel.status == true) {
-      final data = genmodel.data;
-
-      final taskData = TasksData.fromJson(data);
-
-      descriptionController.text = taskData.data!.description.toString();
-      startingDateController.text = taskData.data!.startingDate.toString();
-      deadlineDateController.text = taskData.data!.deadlineDate.toString();
-      createdDateController.text = taskData.data!.createdOn.toString();
-      clientNameController.text = taskData.company!.name.toString();
-      clientNumberController.text = taskData.company!.mobile.toString();
-      clientEmailController.text = taskData.company!.email.toString();
-      setState(() {});
-    }
-  }
+  List<File> fileList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +65,7 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Tasks",
+          "Dashboard > Tasks > Charges",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -129,49 +94,27 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: deviceHeight * 0.05,
+                  height: deviceHeight * 0.02,
                 ),
-                _detail(),
+                _header(),
+                SizedBox(
+                  height: deviceHeight * 0.01,
+                ),
                 _add(),
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _header1(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
-                _detail1(),
+                _table(),
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _add2(),
                 SizedBox(
-                  height: deviceHeight * 0.01,
-                ),
-                _header(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
-                _table(),
-                SizedBox(
-                  height: deviceHeight * 0.1,
-                ),
-                _button(),
-                SizedBox(
-                  height: deviceHeight * 0.1,
+                  height: deviceHeight * 0.5,
                 ),
               ],
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  Column _detail() {
-    return Column(
-      children: [
-        buildTextField("Description", descriptionController.text, false),
       ],
     );
   }
@@ -182,10 +125,10 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
       children: [
         OutlinedButton(
           onPressed: () {
-            Get.to(() => EditTask(id: ticketId));
+            Get.to(TaskChargeAdd(userId: ticketId));
           },
           child: Text(
-            "Edit",
+            "Add Expense",
             style: TextStyle(
               fontSize: 12,
               letterSpacing: 0,
@@ -203,29 +146,23 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
     );
   }
 
-  Row _add2() {
+  Row _header() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        OutlinedButton(
-          onPressed: () {
-           Get.to(() => SubtaskAdd(userId: ticketId));
-          },
-          child: Text(
-            "Add Subtask",
-            style: TextStyle(
-              fontSize: 12,
-              letterSpacing: 0,
-              color: Colors.blue,
-            ),
-          ),
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
+        Text(
+          "Charge Details",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
           ),
         ),
+        SizedBox(
+          width: 30,
+        ),
+        const Spacer(),
       ],
     );
   }
@@ -306,19 +243,11 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Task'),
+              label: const Text('Expense Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Employee'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Tax Payable'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Tax Payable Till Date'),
+              label: const Text('Amount'),
               onSort: setSort,
             ),
             DataColumn(
@@ -400,218 +329,6 @@ class _ViewTasksTaskState extends State<ViewTasksTask> {
       ],
     );
   }
-
-  Row _header1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "Main Task Details",
-          style: TextStyle(
-            color: Colors.blueGrey[900],
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
-          ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        const Spacer(),
-      ],
-    );
-  }
-
-  Column _detail1() {
-    return Column(
-      children: [
-        buildTextField1("Client Name", clientNameController.text, false),
-        buildTextField1("Client Number", clientNumberController.text, false),
-        buildTextField1("Client Email", clientEmailController.text, false),
-        buildTextField1("Starting Date", startingDateController.text, false),
-        buildTextField1("Deadline Date", deadlineDateController.text, false),
-        buildTextField1("Created Date", createdDateController.text, false),
-      ],
-    );
-  }
-
-  Row _header() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "Task List",
-          style: TextStyle(
-            color: Colors.blueGrey[900],
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
-          ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        const Spacer(),
-      ],
-    );
-  }
-
-  Row _button() {
-    return Row(
-      children: [
-        SizedBox(
-          width: deviceWidth * 0.1,
-        ),
-
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    TodaysTaskFile(ticketId: ticketId),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'File Details',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        // Add more buttons for additional tables
-        SizedBox(
-          width: deviceWidth * 0.05,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            // Navigator.push(
-            //   context,
-            //   PageRouteBuilder(
-            //     pageBuilder: (context, animation, secondaryAnimation) =>
-            //         ClientTicketDetails(userId: ticketId),
-            //     transitionsBuilder:
-            //         (context, animation, secondaryAnimation, child) {
-            //       return FadeTransition(opacity: animation, child: child);
-            //     },
-            //   ),
-            // );
-          },
-          child: Text(
-            'Chat',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        SizedBox(
-          width: deviceWidth * 0.05,
-        ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) =>
-                    TodaysTaskCharge(ticketId: ticketId),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(opacity: animation, child: child);
-                },
-              ),
-            );
-          },
-          child: Text(
-            'Charges',
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 30.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? true : false,
-        readOnly: true,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.grey,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isObscurePassword = !isObscurePassword;
-                      });
-                    },
-                  )
-                : null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            labelStyle: TextStyle(
-              fontSize: 16,
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            )),
-      ),
-    );
-  }
-
-  Widget buildTextField1(
-      String labelText, String placeholder, bool isPasswordTextField) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 30.0),
-      child: TextField(
-        obscureText: isPasswordTextField ? true : false,
-        readOnly: true,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.grey,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        isObscurePassword = !isObscurePassword;
-                      });
-                    },
-                  )
-                : null,
-            contentPadding: EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            labelStyle: TextStyle(
-              fontSize: 16,
-            ),
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 20,
-              color: Colors.black,
-            )),
-      ),
-    );
-  }
 }
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
@@ -626,11 +343,11 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
   int startIndex = 0;
   RemoteDataSourceDetails<TasksData>? lastDetails;
 
-  void subTaskDelete(String? id) async {
+   void delete(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.subtaskDelete}',
-        params: {'subtask_id': id},
+        method: '${Urls.taskChargeDelete}',
+        params: {'id': id},
       );
 
       if (genmodel != null && genmodel.status == true) {
@@ -644,31 +361,21 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
     }
   }
 
-
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final List<TasksData> rows = lastDetails!.rows;
     if (index >= 0 && index < rows.length) {
       final TasksData dataList = rows[index];
-      final List<Subtask>? subtasks = dataList.subtask;
+      final List<TaskExpences>? taskExpencess = dataList.taskExpences;
 
-      if (subtasks != null && subtasks.isNotEmpty) {
-        final Subtask subtask = subtasks.first;
+      if (taskExpencess != null && taskExpencess.isNotEmpty) {
+        final TaskExpences taskExpences = taskExpencess.first;
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
-            DataCell(Text(subtask.title ?? '')),
-            DataCell(
-              Row(
-                children: [
-                  Text(subtask.firstName ?? ''),
-                  Text(subtask.lastName ?? ''),
-                ],
-              ),
-            ),
-            DataCell(Text(subtask.taxPayable ?? '')),
-            DataCell(Text(subtask.taxPayableTillDate ?? '')),
+            DataCell(Text(taskExpences.name ?? '')),
+            DataCell(Text(taskExpences.amount ?? '')),
             DataCell(
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -679,8 +386,7 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                            Get.to(() => SubtaskEdit(
-                                userId: subtask.subtaskId.toString()));
+                            Get.to(TaskChargeEdit(userId:taskExpences.id.toString()));
                           },
                           child: Icon(Icons.edit),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -688,7 +394,7 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
                         ),
                         RawMaterialButton(
                           onPressed: () {
-                            subTaskDelete(subtask.subtaskId.toString());
+                            delete(taskExpences.id.toString());
                           },
                           child: Icon(Icons.delete),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -735,22 +441,22 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
 
-      int subtaskCount = 0;
+      int expenseCount = 0;
 
       if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('subtask')) {
-        final dynamicList = dynamicData['subtask'] as List<dynamic>?;
-        subtaskCount = dynamicList?.length ?? 0;
-        dataCount = subtaskCount;
+          dynamicData.containsKey('task_expences')) {
+        final dynamicList = dynamicData['task_expences'] as List<dynamic>?;
+        expenseCount = dynamicList?.length ?? 0;
+        dataCount = expenseCount;
         final List<TasksData> dataList = dynamicList
                 ?.map<TasksData>(
-                    (item) => TasksData(subtask: [Subtask.fromJson(item)]))
+                    (item) => TasksData(taskExpences: [TaskExpences.fromJson(item)]))
                 .toList() ??
             [];
 
         lastDetails = RemoteDataSourceDetails<TasksData>(
           //dataModel.count ?? 0,
-          subtaskCount,
+          expenseCount,
           dataList,
           filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
         );
