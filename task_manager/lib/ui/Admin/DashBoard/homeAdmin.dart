@@ -14,9 +14,7 @@ import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Admin/DashBoard/OnBoardTask/taskOnBoard.dart';
 import 'package:task_manager/ui/Admin/DashBoard/UnpaidTask/taskUnPaid.dart';
-import 'package:task_manager/ui/Admin/DashBoard/OverDueTask/OverdueView/viewOverdueTask.dart';
-import 'package:task_manager/ui/Admin/DashBoard/PendingTask/PendingTaskView/viewPendingTask.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskView.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/clientLogDataModel.dart';
@@ -988,7 +986,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                             Get.to(
                                               ViewTasksTask(ticketId: ticketId),
                                             );
-                                            print("Ticket Id :- $ticketId");
                                           },
                                           icon: Icon(
                                             Icons.remove_red_eye,
@@ -1078,8 +1075,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                         IconButton(
                                           onPressed: () {
                                             Get.to(
-                                              ViewPendingTask(
-                                                  ticketId: pending.ticketId!),
+                                              ViewTasksTask(ticketId:pending.ticketId!),
+                                              // ViewPendingTask(
+                                              //     ticketId: pending.ticketId!),
                                             );
                                           },
                                           icon: Icon(
@@ -1169,10 +1167,12 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                       DataCell(
                                         IconButton(
                                           onPressed: () {
-                                            Get.to(
-                                              ViewOverdueTask(
-                                                  ticketId: overdue.ticketId!),
-                                            );
+                                            Get.to(ViewTasksTask(ticketId: overdue.ticketId!));
+                                            // ViewTasksTask(ticketId: overdue.ticketId!);
+                                            // Get.to(
+                                            //   ViewOverdueTask(
+                                            //       ticketId: overdue.ticketId!),
+                                            // );
                                           },
                                           icon: Icon(
                                             Icons.remove_red_eye,

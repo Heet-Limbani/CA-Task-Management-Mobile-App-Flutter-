@@ -1,9 +1,12 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/unPaidTaskDataModel.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
+import 'package:task_manager/ui/Admin/DashBoard/UnpaidTask/taskPayment.dart';
 import '../../sidebar/sidebarAdmin.dart';
 
 class TaskUnPaid extends StatefulWidget {
@@ -389,7 +392,7 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                        // Handle button pressed
+                       Get.to(ViewTasksTask(ticketId: dataList.ticketId ?? ''));
                       },
                       child: Icon(Icons.remove_red_eye),
                       constraints: BoxConstraints.tight(Size(24, 24)),
@@ -397,7 +400,7 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
                     ),
                     RawMaterialButton(
                       onPressed: () {
-                        // Handle button pressed
+                       Get.to(TaskPayment(userId: dataList.ticketId ?? ''));  
                       },
                       child: Icon(Icons.currency_rupee),
                       constraints: BoxConstraints.tight(Size(24, 24)),

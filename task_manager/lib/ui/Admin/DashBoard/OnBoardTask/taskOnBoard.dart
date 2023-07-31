@@ -1,10 +1,14 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/model/taskOnBoardDataModel.dart';
+import 'package:task_manager/ui/Admin/DashBoard/OnBoardTask/detailsEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/Admin/Task/addTask.dart';
 import '../../sidebar/sidebarAdmin.dart';
 
@@ -347,6 +351,26 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
 
   //int startIndex = 0; // Add the startIndex variable
 
+   void delete(id) async {
+    
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.deleteTask}',
+      params: { 
+        'id': id,
+      
+        },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+    }
+  }
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
@@ -414,7 +438,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -422,7 +446,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -439,6 +463,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                             buttonColor: Colors.red,
                             cancelTextColor: Colors.black,
                             onConfirm: () {
+                              delete(dataList.ticketId);
                               Get.back();
                             },
                             onCancel: () {},
@@ -450,7 +475,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(DetailsEdit( ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.close),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -464,24 +489,24 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                   Row(
                     children: [
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                       onPressed: () {
+                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                         onPressed: () {
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                         onPressed: () {
+                          Get.to(DetailsEdit( ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.close),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -494,7 +519,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -502,7 +527,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -518,7 +543,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(DetailsEdit( ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.close),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -530,8 +555,8 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                   Row(
                     children: [
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                       onPressed: () {
+                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -539,7 +564,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -560,27 +585,27 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.currency_rupee),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
+                      // RawMaterialButton(
+                      //   onPressed: () {
+                      //     // Handle button pressed
+                      //   },
+                      //   child: Icon(Icons.currency_rupee),
+                      //   constraints: BoxConstraints.tight(Size(24, 24)),
+                      //   shape: CircleBorder(),
+                      // ),
                     ],
                   ),
                 if (dataList.status == "7")
                   RawMaterialButton(
                     onPressed: () {
-                      // Handle button pressed
-                    },
+                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
+                        },
                     child: Icon(Icons.remove_red_eye),
                     constraints: BoxConstraints.tight(Size(24, 24)),
                     shape: CircleBorder(),

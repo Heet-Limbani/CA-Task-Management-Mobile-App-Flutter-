@@ -141,6 +141,10 @@ class Urls {
   static String taskChargeEdit = "${Urls.baseUrlMain}Edit_TaskExpences";
   static String taskChargeDelete = "${Urls.baseUrlMain}Delete_TaskExpences";
   static String taskChargeAdd = "${Urls.baseUrlMain}Add_TaskExpences";
+  static String closeTicket = "${Urls.baseUrlMain}close_ticket";
+  static String deleteTask = "${Urls.baseUrlMain}DeleteTask";
+  static String taskPayment = "${Urls.baseUrlMain}task_payment";
+
 
   static String profileEmail = "";
   static String profileUserName = "";

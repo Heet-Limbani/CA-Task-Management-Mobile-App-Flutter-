@@ -5,8 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/viewTasksDataModel.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskChargeAdd.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/todaysTaskChargeEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskChargeAdd.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskChargeEdit.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 

@@ -3,55 +3,55 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/viewTasksDataModel.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TodaysTask/TodaysTaskView/fileDetailsEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/subtaskAdd.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/subtaskEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskCharge.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskFile.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
-class TodaysTaskFile extends StatefulWidget {
+class ViewTasksTask extends StatefulWidget {
   final String ticketId;
-  const TodaysTaskFile({required this.ticketId, Key? key}) : super(key: key);
+  const ViewTasksTask({required this.ticketId, Key? key}) : super(key: key);
 
   @override
-  State<TodaysTaskFile> createState() => _TodaysTaskFileState();
+  State<ViewTasksTask> createState() => _ViewTasksTaskState();
 }
 
 late double deviceWidth;
 late double deviceHeight;
 
 // Declare _source here
+
+TextEditingController descriptionController = TextEditingController();
+TextEditingController clientNameController = TextEditingController();
+TextEditingController clientNumberController = TextEditingController();
+TextEditingController clientEmailController = TextEditingController();
+TextEditingController startingDateController = TextEditingController();
+TextEditingController deadlineDateController = TextEditingController();
+TextEditingController createdDateController = TextEditingController();
 bool isObscurePassword = true;
 String ticketId = "";
 int dataCount = 0;
-int dataCount2 = 0;
 String? selectedClientId1;
 
-class _TodaysTaskFileState extends State<TodaysTaskFile> {
-   
-   TextEditingController _searchController = TextEditingController();
+class _ViewTasksTaskState extends State<ViewTasksTask> {
+  TextEditingController _searchController = TextEditingController();
+
   late TableSource _source;
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
+
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
       });
-
-  TextEditingController _searchController2 = TextEditingController();
-   late TableSource2 _source2;
-  var _sortIndex2 = 0;
-  var _sortAsc2 = true;
-  var _customFooter2 = false;
-  var _rowsPerPage2 = AdvancedPaginatedDataTable.defaultRowsPerPage;
-  void setSort2(int i, bool asc) => setState(() {
-        _sortIndex2 = i;
-        _sortAsc2 = asc;
-      });
-
-
   @override
   void initState() {
     super.initState();
@@ -59,9 +59,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     // getUser();
     _source = TableSource(context);
     _source.setNextView();
-
-    _source2 = TableSource2(context);
-    _source2.setNextView();
+    getTaskDetails();
   }
 
   void refreshTable() {
@@ -71,14 +69,30 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     });
   }
 
-   void refreshTable2() {
-    setState(() {
-      _source2.startIndex = 0;
-      _source2.setNextView();
-    });
-  }
+  List<Subtask> subtaskList = [];
 
-  List<File> fileList = [];
+  void getTaskDetails() async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.taskViewTaskDetails}',
+      params: {
+        'id': ticketId.toString(),
+      },
+    );
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+
+      final taskData = TasksData.fromJson(data);
+
+      descriptionController.text = taskData.data!.description.toString();
+      startingDateController.text = taskData.data!.startingDate.toString();
+      deadlineDateController.text = taskData.data!.deadlineDate.toString();
+      createdDateController.text = taskData.data!.createdOn.toString();
+      clientNameController.text = taskData.company!.name.toString();
+      clientNumberController.text = taskData.company!.mobile.toString();
+      clientEmailController.text = taskData.company!.email.toString();
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +101,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Tasks > Files",
+          "Dashboard > Tasks",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -116,7 +130,24 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
+                  height: deviceHeight * 0.05,
+                ),
+                _detail(),
+                _add(),
+                SizedBox(
+                  height: deviceHeight * 0.05,
+                ),
+                _header1(),
+                SizedBox(
                   height: deviceHeight * 0.02,
+                ),
+                _detail1(),
+                SizedBox(
+                  height: deviceHeight * 0.05,
+                ),
+                _add2(),
+                SizedBox(
+                  height: deviceHeight * 0.01,
                 ),
                 _header(),
                 SizedBox(
@@ -124,19 +155,11 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
                 ),
                 _table(),
                 SizedBox(
-                  height: deviceHeight * 0.05,
+                  height: deviceHeight * 0.1,
                 ),
-                _header3(),
+                _button(),
                 SizedBox(
-                  height: deviceHeight * 0.2,
-                ),
-                _header2(),
-                SizedBox(
-                  height: deviceHeight * 0.02,
-                ),
-                _table2(),
-                SizedBox(
-                  height: deviceHeight * 0.5,
+                  height: deviceHeight * 0.1,
                 ),
               ],
             ),
@@ -146,44 +169,64 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     );
   }
 
-  Row _header3() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+  Column _detail() {
+    return Column(
       children: [
-        Text(
-          "Upload File",
-          style: TextStyle(
-            color: Colors.blueGrey[900],
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
-          ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        const Spacer(),
+        buildTextField("Description", descriptionController.text, false),
       ],
     );
   }
 
-  Row _header() {
+  Row _add() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Text(
-          "File Details",
-          style: TextStyle(
-            color: Colors.blueGrey[900],
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
+        OutlinedButton(
+          onPressed: () {
+            Get.to(() => EditTask(id: ticketId));
+          },
+          child: Text(
+            "Edit",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         ),
-        SizedBox(
-          width: 30,
+      ],
+    );
+  }
+
+  Row _add2() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        OutlinedButton(
+          onPressed: () {
+           Get.to(() => SubtaskAdd(userId: ticketId));
+          },
+          child: Text(
+            "Add Subtask",
+            style: TextStyle(
+              fontSize: 12,
+              letterSpacing: 0,
+              color: Colors.blue,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
         ),
-        const Spacer(),
       ],
     );
   }
@@ -264,11 +307,23 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('File Name'),
+              label: const Text('Task'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('File Location'),
+              label: const Text('Employee'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Tax Payable'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Tax Payable Till Date'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Action'),
               onSort: setSort,
             ),
           ],
@@ -347,13 +402,13 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     );
   }
 
-   Row _header2() {
+  Row _header1() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Uploaded Files",
+          "Main Task Details",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -368,169 +423,196 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     );
   }
 
-  Column _table2() {
+  Column _detail1() {
     return Column(
-      children: <Widget>[
-        SizedBox(
-          height: deviceHeight * 0.02,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: TextField(
-                  controller: _searchController2,
-                  decoration: const InputDecoration(
-                    labelText: 'Search',
-                  ),
-                  onSubmitted: (vlaue) {
-                    _source2.filterServerSide(_searchController2.text);
-                  },
-                ),
-              ),
-            ),
-            IconButton(
-              onPressed: () {
-                setState(() {
-                  _searchController2.text = '';
-                });
-                _source2.filterServerSide(_searchController2.text);
-                ;
-              },
-              icon: const Icon(Icons.clear),
-            ),
-            IconButton(
-              onPressed: () => _source2.filterServerSide(_searchController2.text),
-              icon: const Icon(Icons.search),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.refresh,
-              ),
-              onPressed: refreshTable2,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: deviceHeight * 0.03,
-        ),
-        AdvancedPaginatedDataTable(
-          loadingWidget: () => UniversalShimmer(
-            itemCount: dataCount2,
-            deviceHeight: deviceHeight,
-            deviceWidth: deviceWidth,
+      children: [
+        buildTextField1("Client Name", clientNameController.text, false),
+        buildTextField1("Client Number", clientNumberController.text, false),
+        buildTextField1("Client Email", clientEmailController.text, false),
+        buildTextField1("Starting Date", startingDateController.text, false),
+        buildTextField1("Deadline Date", deadlineDateController.text, false),
+        buildTextField1("Created Date", createdDateController.text, false),
+      ],
+    );
+  }
+
+  Row _header() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          "Task List",
+          style: TextStyle(
+            color: Colors.blueGrey[900],
+            fontWeight: FontWeight.w700,
+            fontSize: 22,
           ),
-          addEmptyRows: false,
-          source: _source2,
-          showHorizontalScrollbarAlways: true,
-          sortAscending: _sortAsc2,
-          sortColumnIndex: _sortIndex2,
-          showFirstLastButtons: true,
-          rowsPerPage: _rowsPerPage2,
-          availableRowsPerPage: const [10, 20, 50, 100, 200],
-          onRowsPerPageChanged: (newRowsPerPage) {
-            if (newRowsPerPage != null) {
-              setState(() {
-                _rowsPerPage2 = newRowsPerPage;
-              });
-            }
-          },
-          columns: [
-            DataColumn(
-              label: const Text('Sr. No.'),
-              numeric: true,
-              onSort: setSort2,
-            ),
-            DataColumn(
-              label: const Text('ID'),
-              onSort: setSort2,
-            ),
-            DataColumn(
-              label: const Text('Name'),
-              onSort: setSort2,
-            ),
-            DataColumn(
-              label: const Text('Action'),
-              onSort: setSort2,
-            ),
-          ],
-          //Optianl override to support custom data row text / translation
-          getFooterRowText:
-              (startRow, pageSize, totalFilter, totalRowsWithoutFilter) {
-            final localizations = MaterialLocalizations.of(context);
-            var amountText = localizations.pageRowsInfoTitle(
-              startRow,
-              pageSize,
-              totalFilter ?? totalRowsWithoutFilter,
-              false,
+        ),
+        SizedBox(
+          width: 30,
+        ),
+        const Spacer(),
+      ],
+    );
+  }
+
+  Row _button() {
+    return Row(
+      children: [
+        SizedBox(
+          width: deviceWidth * 0.1,
+        ),
+
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    TodaysTaskFile(ticketId: ticketId),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+              ),
             );
-
-            if (totalFilter != null) {
-              //Filtered data source show addtional information
-              amountText += ' filtered from ($totalRowsWithoutFilter)';
-            }
-
-            return amountText;
           },
-          customTableFooter: _customFooter2
-              ? (source, offset) {
-                  const maxPagesToShow = 6;
-                  const maxPagesBeforeCurrent = 3;
-                  final lastRequestDetails = source.lastDetails!;
-                  final rowsForPager = lastRequestDetails.filteredRows ??
-                      lastRequestDetails.totalRows;
-                  final totalPages = rowsForPager ~/ _rowsPerPage2;
-                  final currentPage = (offset ~/ _rowsPerPage2) + 1;
-                  final List<int> pageList = [];
-                  if (currentPage > 1) {
-                    pageList.addAll(
-                      List.generate(currentPage - 1, (index) => index + 1),
-                    );
-                    //Keep up to 3 pages before current in the list
-                    pageList.removeWhere(
-                      (element) =>
-                          element < currentPage - maxPagesBeforeCurrent,
-                    );
-                  }
-                  pageList.add(currentPage);
-                  //Add reminding pages after current to the list
-                  pageList.addAll(
-                    List.generate(
-                      maxPagesToShow - (pageList.length - 1),
-                      (index) => (currentPage + 1) + index,
-                    ),
-                  );
-                  pageList.removeWhere((element) => element > totalPages);
-
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: pageList
-                        .map(
-                          (e) => TextButton(
-                            onPressed: e != currentPage
-                                ? () {
-                                    //Start index is zero based
-                                    source.setNextView(
-                                      startIndex: (e - 1) * _rowsPerPage2,
-                                    );
-                                  }
-                                : null,
-                            child: Text(
-                              e.toString(),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                  );
-                }
-              : null,
+          child: Text(
+            'File Details',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        // Add more buttons for additional tables
+        SizedBox(
+          width: deviceWidth * 0.05,
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+          ),
+          onPressed: () {
+            // Navigator.push(
+            //   context,
+            //   PageRouteBuilder(
+            //     pageBuilder: (context, animation, secondaryAnimation) =>
+            //         ClientTicketDetails(userId: ticketId),
+            //     transitionsBuilder:
+            //         (context, animation, secondaryAnimation, child) {
+            //       return FadeTransition(opacity: animation, child: child);
+            //     },
+            //   ),
+            // );
+          },
+          child: Text(
+            'Chat',
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+        SizedBox(
+          width: deviceWidth * 0.05,
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    TodaysTaskCharge(ticketId: ticketId),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(opacity: animation, child: child);
+                },
+              ),
+            );
+          },
+          child: Text(
+            'Charges',
+            style: TextStyle(color: Colors.black),
+          ),
         ),
       ],
     );
   }
- 
+
+  Widget buildTextField(
+      String labelText, String placeholder, bool isPasswordTextField) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: TextField(
+        obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
+        decoration: InputDecoration(
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isObscurePassword = !isObscurePassword;
+                      });
+                    },
+                  )
+                : null,
+            contentPadding: EdgeInsets.only(bottom: 3),
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontSize: 16,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            )),
+      ),
+    );
+  }
+
+  Widget buildTextField1(
+      String labelText, String placeholder, bool isPasswordTextField) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: TextField(
+        obscureText: isPasswordTextField ? true : false,
+        readOnly: true,
+        decoration: InputDecoration(
+            suffixIcon: isPasswordTextField
+                ? IconButton(
+                    icon: Icon(
+                      Icons.remove_red_eye,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isObscurePassword = !isObscurePassword;
+                      });
+                    },
+                  )
+                : null,
+            contentPadding: EdgeInsets.only(bottom: 3),
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontSize: 16,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+            hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+            )),
+      ),
+    );
+  }
 }
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
@@ -545,106 +627,11 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
   int startIndex = 0;
   RemoteDataSourceDetails<TasksData>? lastDetails;
 
-  @override
-  DataRow? getRow(int index) {
-    final srNo = (startIndex + index + 1).toString();
-    final List<TasksData> rows = lastDetails!.rows;
-    if (index >= 0 && index < rows.length) {
-      final TasksData dataList = rows[index];
-      final List<File>? files = dataList.file;
-
-      if (files != null && files.isNotEmpty) {
-        final File file = files.first;
-        return DataRow(
-          cells: [
-            DataCell(Text(srNo)),
-            DataCell(Text(file.name ?? '')),
-            DataCell(Text(file.locationNum ?? '')),
-          ],
-        );
-      }
-    }
-    return null;
-  }
-
-  @override
-  int get selectedRowCount => selectedIds.length;
-
-  void filterServerSide(String filterQuery) {
-    lastSearchTerm = filterQuery.toLowerCase().trim();
-    setNextView();
-  }
-
-  @override
-  Future<RemoteDataSourceDetails<TasksData>> getNextPage(
-    NextPageRequest pageRequest,
-  ) async {
-    startIndex = pageRequest.offset;
-    final queryParameter = <String, dynamic>{
-      'offset': pageRequest.offset.toString(),
-      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
-      'id': ticketId.toString(),
-    };
-
-    genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.taskViewTaskDetails}',
-      params: queryParameter,
-    );
-
-    if (dataModel != null && dataModel.status == true) {
-      final dynamicData = dataModel.data;
-
-      int fileCount = 0;
-
-      if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('file')) {
-        final dynamicList = dynamicData['file'] as List<dynamic>?;
-        fileCount = dynamicList?.length ?? 0;
-        dataCount = fileCount;
-        final List<TasksData> dataList = dynamicList
-                ?.map<TasksData>(
-                    (item) => TasksData(file: [File.fromJson(item)]))
-                .toList() ??
-            [];
-
-        lastDetails = RemoteDataSourceDetails<TasksData>(
-          //dataModel.count ?? 0,
-          fileCount,
-          dataList,
-          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
-        );
-      } else {
-        throw Exception('Invalid dynamicData format');
-      }
-
-      return lastDetails!;
-    } else {
-      throw Exception('Unable to query remote server');
-    }
-  }
-}
-///////////
-class TableSource2 extends AdvancedDataTableSource<TasksData> {
-  final BuildContext context;
-
-  TableSource2(this.context);
-
-  List<String> selectedIds = [];
-  String lastSearchTerm = '';
-  int startIndex = 0;
-  RemoteDataSourceDetails<TasksData>? lastDetails;
-
-  
-  void delete(String? id) async {
+  void subTaskDelete(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.deleteFileTask}',
-        params: {
-          'id': id,
-          'ticket_id': ticketId,
-          'task':'View_task',  
-        },
+        method: '${Urls.subtaskDelete}',
+        params: {'subtask_id': id},
       );
 
       if (genmodel != null && genmodel.status == true) {
@@ -658,21 +645,35 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
     }
   }
 
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final List<TasksData> rows = lastDetails!.rows;
     if (index >= 0 && index < rows.length) {
       final TasksData dataList = rows[index];
-      final List<VirtualFile>? virtualFiles = dataList.virtualFile;
+      final List<Subtask>? subtasks = dataList.subtask;
+      
 
-      if (virtualFiles != null && virtualFiles.isNotEmpty) {
-        final VirtualFile file = virtualFiles.first;
+      if (subtasks != null && subtasks.isNotEmpty) {
+        final Subtask subtask = subtasks.first;
+         final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(subtask.taxPayableTillDate ?? '') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
-            DataCell(Text(file.id ?? '')),
-            DataCell(Text(file.name ?? '')),
+            DataCell(Text(subtask.title ?? '')),
+            DataCell(
+              Row(
+                children: [
+                  Text(subtask.firstName ?? ''),
+                  Text(subtask.lastName ?? ''),
+                ],
+              ),
+            ),
+            DataCell(Text(subtask.taxPayable ?? '')),
+            DataCell(Text(formattedDate)),
             DataCell(
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -683,7 +684,8 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                           Get.to(fileDetailsEdit(userId: file.id!, ticketId: ticketId, sc: file.showToClient! ));
+                            Get.to(() => SubtaskEdit(
+                                userId: subtask.subtaskId.toString()));
                           },
                           child: Icon(Icons.edit),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -691,7 +693,7 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
                         ),
                         RawMaterialButton(
                           onPressed: () {
-                            delete(file.id);
+                            subTaskDelete(subtask.subtaskId.toString());
                           },
                           child: Icon(Icons.delete),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -738,22 +740,22 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
 
-      int virtualFileCount = 0;
+      int subtaskCount = 0;
 
       if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('virtual_file')) {
-        final dynamicList = dynamicData['virtual_file'] as List<dynamic>?;
-        virtualFileCount = dynamicList?.length ?? 0;
-        dataCount2 = virtualFileCount;
+          dynamicData.containsKey('subtask')) {
+        final dynamicList = dynamicData['subtask'] as List<dynamic>?;
+        subtaskCount = dynamicList?.length ?? 0;
+        dataCount = subtaskCount;
         final List<TasksData> dataList = dynamicList
                 ?.map<TasksData>(
-                    (item) => TasksData(virtualFile: [VirtualFile.fromJson(item)]))
+                    (item) => TasksData(subtask: [Subtask.fromJson(item)]))
                 .toList() ??
             [];
 
         lastDetails = RemoteDataSourceDetails<TasksData>(
           //dataModel.count ?? 0,
-          virtualFileCount,
+          subtaskCount,
           dataList,
           filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
         );
