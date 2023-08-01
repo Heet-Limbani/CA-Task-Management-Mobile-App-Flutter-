@@ -31,6 +31,7 @@ class HomeAdminScreen extends StatefulWidget {
 int dataCount3 = 0;
 int dataCount1 = 0;
 int dataCount2 = 0;
+
 class _HomeAdminScreenState extends State<HomeAdminScreen> {
   final _source = ClientSource();
   var _sortIndex = 0;
@@ -92,6 +93,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   int limit = 10;
   String? selectedClientId1;
   bool showTablePending = false;
+  bool showTablePayable = false;
+  bool showTableQuery = false;
   bool showTableOverdue = false;
   bool showTableTask = true;
   bool showHideAll = false;
@@ -580,15 +583,15 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.taxPayableCount ?? '0') != 0) {
-                    // setState(() {
-                    //   showTablePending =
-                    //       !showTablePending; // Toggle the visibility of the table
-                    // });
+                    setState(() {
+                      showTablePayable =
+                          !showTablePayable; // Toggle the visibility of the table
+                    });
                     final snackBar = SnackBar(
                       content: Text(
-                        showTablePending
-                            ? "Pending Task Added to Task List"
-                            : "Pending Task Removed from Task List",
+                        showTablePayable
+                            ? "Task Payable Added to Task List"
+                            : "Task Payble Removed from Task List",
                         style: TextStyle(color: Colors.black),
                       ),
                       backgroundColor: Colors.blue,
@@ -694,15 +697,15 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.totalQueryRaisedCount ?? '0') != 0) {
-                    // setState(() {
-                    //   showTablePending =
-                    //       !showTablePending; // Toggle the visibility of the table
-                    // });
+                    setState(() {
+                      showTableQuery =
+                          !showTableQuery; // Toggle the visibility of the table
+                    });
                     final snackBar = SnackBar(
                       content: Text(
-                        showTablePending
-                            ? "Pending Task Added to Task List"
-                            : "Pending Task Removed from Task List",
+                        showTableQuery
+                            ? "Query Added to Task List"
+                            : "Query Task Removed from Task List",
                         style: TextStyle(color: Colors.black),
                       ),
                       backgroundColor: Colors.blue,
@@ -863,7 +866,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
           ],
         ),
         SizedBox(
-          height: deviceHeight * 0.1,
+          height: deviceHeight * 0.05,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -883,6 +886,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                     showTableTask = true;
                     showTablePending = true;
                     showTableOverdue = true;
+                    showTablePayable = true;
+                    showTableQuery = true;
                     showHideAll = true;
                     showSeeAll = false;
                   });
@@ -903,6 +908,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                     showTableTask = false;
                     showTablePending = false;
                     showTableOverdue = false;
+                    showTablePayable = false;
+                    showTableQuery = false;
                     showHideAll = false;
                     showSeeAll = true;
                   });
@@ -1075,7 +1082,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                         IconButton(
                                           onPressed: () {
                                             Get.to(
-                                              ViewTasksTask(ticketId:pending.ticketId!),
+                                              ViewTasksTask(
+                                                  ticketId: pending.ticketId!),
                                               // ViewPendingTask(
                                               //     ticketId: pending.ticketId!),
                                             );
@@ -1100,6 +1108,109 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
             ],
           ),
         },
+        SizedBox(
+          height: deviceHeight * 0.05,
+        ),
+        if (showTablePayable) ...{
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Tax Payable",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  // const Spacer(),
+                ],
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              Column(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Task Name'), numeric: true),
+                            DataColumn(label: Text('Ticket Id')),
+                            DataColumn(label: Text('Client Name')),
+                            DataColumn(label: Text('Employee Name')),
+                            DataColumn(label: Text('Deadline')),
+                            DataColumn(label: Text('Query')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('Tax Payable')),
+                          ],
+                          rows: cardData?.cardData?.taxPayable?.map(
+                                (taxPayable) {
+                                  final taskName = taxPayable.title ?? '';
+                                  final ticketId = taxPayable.ticketId ?? '';
+                                  final clientName =
+                                      taxPayable.clientName ?? '';
+                                  final employeeName =
+                                      taxPayable.employeeName ?? '';
+                                  final deadline =
+                                      taxPayable.cdeadlineDate ?? '';
+
+                                  final query =
+                                      taxPayable.lastReplyByText ?? '';
+
+                                  int roundedPercentage = 0;
+                                  double percentage = double.parse(
+                                      taxPayable.taskCompletePercentage!);
+                                  roundedPercentage = percentage.toInt();
+                                  final statusText = "$roundedPercentage%";
+
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(taskName)),
+                                      DataCell(Text(ticketId)),
+                                      DataCell(Text(clientName)),
+                                      DataCell(Text(employeeName)),
+                                      DataCell(Text(deadline)),
+                                      DataCell(Text(query)),
+                                      DataCell(Text(statusText)),
+                                      DataCell(
+                                        IconButton(
+                                          onPressed: () {
+                                            Get.to(
+                                              ViewTasksTask(
+                                                  ticketId:
+                                                      taxPayable.ticketId!),
+                                              // ViewPendingTask(
+                                              //     ticketId: pending.ticketId!),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          dataRowMinHeight: 32.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        },
+
         SizedBox(
           height: deviceHeight * 0.05,
         ),
@@ -1167,7 +1278,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                                       DataCell(
                                         IconButton(
                                           onPressed: () {
-                                            Get.to(ViewTasksTask(ticketId: overdue.ticketId!));
+                                            Get.to(ViewTasksTask(
+                                                ticketId: overdue.ticketId!));
                                             // ViewTasksTask(ticketId: overdue.ticketId!);
                                             // Get.to(
                                             //   ViewOverdueTask(
@@ -1196,7 +1308,106 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         },
 
         SizedBox(
-          height: deviceHeight * 0.1,
+          height: deviceHeight * 0.05,
+        ),
+        if (showTablePayable) ...{
+          SizedBox(
+            height: deviceHeight * 0.02,
+          ),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    "Query Raised",
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
+                  ),
+                  // const Spacer(),
+                ],
+              ),
+              SizedBox(
+                height: deviceHeight * 0.02,
+              ),
+              Column(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Task Name'), numeric: true),
+                            DataColumn(label: Text('Ticket Id')),
+                            DataColumn(label: Text('Client Name')),
+                            DataColumn(label: Text('Employee Name')),
+                            DataColumn(label: Text('Deadline')),
+                            DataColumn(label: Text('Status')),
+                            DataColumn(label: Text('Action')),
+                          ],
+                          rows: cardData?.cardData?.totalQueryRaised?.map(
+                                (totalQueryRaised) {
+                                  final taskName = totalQueryRaised.title ?? '';
+                                  final ticketId =
+                                      totalQueryRaised.ticketId ?? '';
+                                  final clientName =
+                                      totalQueryRaised.clientName ?? '';
+                                  final employeeName =
+                                      totalQueryRaised.employeeName ?? '';
+                                  final deadline =
+                                      totalQueryRaised.cdeadlineDate ?? '';
+
+                                  int roundedPercentage = 0;
+                                  double percentage = double.parse(
+                                      totalQueryRaised.taskCompletePercentage!);
+                                  roundedPercentage = percentage.toInt();
+                                  final statusText = "$roundedPercentage%";
+
+                                  return DataRow(
+                                    cells: [
+                                      DataCell(Text(taskName)),
+                                      DataCell(Text(ticketId)),
+                                      DataCell(Text(clientName)),
+                                      DataCell(Text(employeeName)),
+                                      DataCell(Text(deadline)),
+                                      DataCell(Text(statusText)),
+                                      DataCell(
+                                        IconButton(
+                                          onPressed: () {
+                                            Get.to(
+                                              ViewTasksTask(
+                                                  ticketId: totalQueryRaised
+                                                      .ticketId!),
+                                              // ViewPendingTask(
+                                              //     ticketId: pending.ticketId!),
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.remove_red_eye,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ).toList() ??
+                              [],
+                          dataRowMinHeight: 32.0,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        },
+
+        SizedBox(
+          height: deviceHeight * 0.05,
         ),
         Row(
           children: [
@@ -2201,8 +2412,8 @@ class ClientSource extends AdvancedDataTableSource<Client> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-       int count = dataModel.data.length ?? 0;
-       dataCount1 = count;
+      int count = dataModel.data.length ?? 0;
+      dataCount1 = count;
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
@@ -2389,3 +2600,4 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
     }
   }
 }
+

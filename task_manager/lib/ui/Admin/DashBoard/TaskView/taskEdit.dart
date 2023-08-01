@@ -36,7 +36,7 @@ class _EditTaskState extends State<EditTask> {
 
   Map? dataResponse;
 
-   TextEditingController _searchController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
 
   late TableSource _source;
   var _sortIndex = 0;
@@ -105,11 +105,12 @@ class _EditTaskState extends State<EditTask> {
     super.initState();
     id = widget.id!;
     ticketId = widget.id!;
-     _source = TableSource(context);
+    _source = TableSource(context);
     _source.setNextView();
     getUser();
   }
-   void refreshTable() {
+
+  void refreshTable() {
     setState(() {
       _source.startIndex = 0;
       _source.setNextView();
@@ -144,6 +145,7 @@ class _EditTaskState extends State<EditTask> {
         clientType.add(taskData);
         departmentType.add(taskData);
         selectedClientId1 = taskData.data!.clientId!;
+
         selectedDepartmentIds = taskData.data!.depId!;
         selectedFileIds = taskData.data!.fileId!.split(',');
         print("selectedFileIds: $selectedFileIds");
@@ -669,8 +671,13 @@ class _EditTaskState extends State<EditTask> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
+
           DropdownButtonFormField<String>(
-            value: selectedDepartmentIds,
+            value: departmentType
+                    .expand((dataModel) => dataModel.department ?? [])
+                    .any((department) => department.id == selectedDepartmentIds)
+                ? selectedDepartmentIds
+                : null,
             decoration: const InputDecoration(
               labelText: 'Department',
               enabledBorder: OutlineInputBorder(
@@ -695,8 +702,8 @@ class _EditTaskState extends State<EditTask> {
                 }
               });
             },
-            items: clientType.isNotEmpty
-                ? clientType
+            items: departmentType.isNotEmpty
+                ? departmentType
                     .expand((dataModel) => dataModel.department ?? [])
                     .map<DropdownMenuItem<String>>((dynamic item) {
                     final department =
@@ -714,6 +721,58 @@ class _EditTaskState extends State<EditTask> {
               return null;
             },
           ),
+
+          // DropdownButtonFormField<String>(
+          //   value: departmentType
+          //           .expand((dataModel) => dataModel.department ?? [])
+          //           .any((department) => department.id == selectedDepartmentIds)
+          //       ? selectedDepartmentIds
+          //       : null, // Set value to null if selected department is not found
+          //   decoration: const InputDecoration(
+          //     labelText: 'Department',
+          //     enabledBorder: OutlineInputBorder(
+          //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
+          //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
+          //     ),
+          //     border: OutlineInputBorder(),
+          //   ),
+          //   onChanged: (String? newValue) {
+          //     setState(() {
+          //       selectedDepartmentIds = newValue;
+          //       client.text = selectedDepartmentIds ?? '';
+          //       getUser2();
+
+          //       // Find the selected client in the clientType list
+          //       final selectedDepartment = departmentType
+          //           .expand((dataModel) => dataModel.department ?? [])
+          //           .firstWhereOrNull(
+          //               (department) => department.id == selectedDepartmentIds);
+
+          //       if (selectedDepartment != null) {
+          //         // Handle selected client
+          //       } else {
+          //         // Handle when no client is selected
+          //       }
+          //     });
+          //   },
+          //   items: departmentType.isNotEmpty
+          //       ? departmentType
+          //           .expand((dataModel) => dataModel.department ?? [])
+          //           .map<DropdownMenuItem<String>>((dynamic item) {
+          //           final company = item as Department; // Cast item to Company
+          //           return DropdownMenuItem<String>(
+          //             value: company.id ?? '',
+          //             child: Text('${company.name}'),
+          //           );
+          //         }).toList()
+          //       : [],
+          //   validator: (value) {
+          //     if (value == null || value.isEmpty) {
+          //       return 'Please select a client';
+          //     }
+          //     return null;
+          //   },
+          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -1068,6 +1127,7 @@ class _EditTaskState extends State<EditTask> {
     );
   }
 }
+
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<TasksData2> {
@@ -1098,7 +1158,6 @@ class TableSource extends AdvancedDataTableSource<TasksData2> {
     }
   }
 
-
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
@@ -1106,13 +1165,12 @@ class TableSource extends AdvancedDataTableSource<TasksData2> {
     if (index >= 0 && index < rows.length) {
       final TasksData2 dataList = rows[index];
       final List<Subtask2>? subtasks = dataList.subtask;
-      
 
       if (subtasks != null && subtasks.isNotEmpty) {
         final Subtask2 subtask = subtasks.first;
-         final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(subtask.taxPayableTillDate ?? '') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+        final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(subtask.taxPayableTillDate ?? '') * 1000);
+        final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
