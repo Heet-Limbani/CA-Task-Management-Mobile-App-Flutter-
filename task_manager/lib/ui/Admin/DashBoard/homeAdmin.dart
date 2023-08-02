@@ -10,6 +10,7 @@ import 'package:task_manager/API/model/clientDataModel.dart';
 import 'package:task_manager/API/model/countDataModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/holidayDataModel.dart';
+import 'package:task_manager/ui/Admin/DashBoard/UnAssignTask/unAssignTask.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Admin/DashBoard/OnBoardTask/taskOnBoard.dart';
@@ -794,6 +795,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
               child: InkWell(
                 onTap: () {
                   if ((dataCount?.count?.unassignedTaskCount ?? '0') != 0) {
+                    Get.to(
+                      UnAssignTask(),
+                    );
                   } else {
                     final snackBar = SnackBar(
                       content: Text(
