@@ -145,6 +145,8 @@ class Urls {
   static String deleteTask = "${Urls.baseUrlMain}DeleteTask";
   static String taskPayment = "${Urls.baseUrlMain}task_payment";
   static String unAssignTask = "${Urls.baseUrlMain}unassigned_task_board";
+  static String messageUser = "${Urls.baseUrlMain}message_the_user";
+  
 
 
   static String profileEmail = "";

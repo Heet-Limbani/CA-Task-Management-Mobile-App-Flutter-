@@ -2,11 +2,15 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/model/clientDataModel.dart';
 import 'package:task_manager/API/model/genModel.dart';
 import 'package:task_manager/API/model/getUsersDataModel.dart';
 import 'package:task_manager/API/model/unAssignTaskDataModel.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
+import 'package:task_manager/ui/Admin/Task/addTask.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
@@ -20,13 +24,13 @@ class UnAssignTask extends StatefulWidget {
   State<UnAssignTask> createState() => _UnAssignTaskState();
 }
 
-int subtaskCount = 0;
-int subtaskCount1 = 0;
-int subtaskCount2 = 0;
-
 int dataCount3 = 0;
 int dataCount1 = 0;
 int dataCount2 = 0;
+final GlobalKey<FormState> _formKey = GlobalKey();
+final GlobalKey<FormState> _formKey2 = GlobalKey();
+List<String> selectedIds2 = [];
+List<String> selectedIds = [];
 
 class _UnAssignTaskState extends State<UnAssignTask> {
   final _source1 = TableSource();
@@ -61,11 +65,8 @@ class _UnAssignTaskState extends State<UnAssignTask> {
   late double deviceWidth;
   late double deviceHeight;
 
-  TextEditingController clientController = TextEditingController();
   TextEditingController messageController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
-  TextEditingController searchLogController = TextEditingController();
+
   String clientId = "";
   String selectedClientId = "";
   String clientName = '';
@@ -84,11 +85,8 @@ class _UnAssignTaskState extends State<UnAssignTask> {
   DateTime? selectedDateTime = DateTime.now();
   @override
   void dispose() {
-    clientController.dispose();
     messageController.dispose();
-    descriptionController.dispose();
-    dateController.dispose();
-    searchLogController.dispose();
+
     super.dispose();
   }
 
@@ -99,10 +97,7 @@ class _UnAssignTaskState extends State<UnAssignTask> {
   }
 
   void clear() {
-    clientController.clear();
     messageController.clear();
-    descriptionController.clear();
-    dateController.clear();
   }
 
   List<Client> clients = [];
@@ -125,6 +120,10 @@ class _UnAssignTaskState extends State<UnAssignTask> {
     });
   }
 
+  int subtaskCount = 0;
+  int subtaskCount1 = 0;
+  int subtaskCount2 = 0;
+
   void unAssign() async {
     genModel? genmodel = await Urls.postApiCall(method: '${Urls.unAssignTask}');
     if (genmodel != null && genmodel.status == true) {
@@ -132,15 +131,56 @@ class _UnAssignTaskState extends State<UnAssignTask> {
       if (dynamicData is Map<String, dynamic>) {
         final dynamicList = dynamicData['all_task'] as List<dynamic>?;
         final dynamicList1 = dynamicData['manual'] as List<dynamic>?;
-        final dynamicList2 = dynamicData['group_data'] as List<dynamic>?;
+        final dynamicList2 = dynamicData['group_task_data'] as List<dynamic>?;
         subtaskCount = dynamicList?.length ?? 0;
         subtaskCount1 = dynamicList1?.length ?? 0;
         subtaskCount2 = dynamicList2?.length ?? 0;
+        print("subtaskCount $subtaskCount");
+        print("subtaskCount1 $subtaskCount1");
+        print("subtaskCount2 $subtaskCount2");
       } else {
         throw Exception('Invalid dynamicData format');
       }
     } else {
       throw Exception('Unable to query remote server');
+    }
+  }
+
+  void msg1() async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.messageUser}',
+      params: {
+        'ticket_id': selectedIds.toString(),
+        'message': messageController.text,
+      },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+    }
+  }
+
+  void msg2() async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.messageUser}',
+      params: {
+        'ticket_id': selectedIds2.toString(),
+        'message': messageController.text,
+      },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
     }
   }
 
@@ -202,6 +242,30 @@ class _UnAssignTaskState extends State<UnAssignTask> {
               //   copy: true,
               //   selectAll: true,
               // ),
+            ),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            OutlinedButton(
+              onPressed: () {
+                Get.to(() => AddTask());
+              },
+              child: Text(
+                "Add Task",
+                style: TextStyle(
+                  fontSize: 12,
+                  letterSpacing: 0,
+                  color: Colors.blue,
+                ),
+              ),
+              style: OutlinedButton.styleFrom(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
             ),
           ],
         ),
@@ -332,6 +396,7 @@ class _UnAssignTaskState extends State<UnAssignTask> {
               mainAxisCellCount: 1,
               child: InkWell(
                 onTap: () {
+                  print("2 :- ${subtaskCount2}");
                   if (subtaskCount2 != 0) {
                     setState(() {
                       showTableGroup =
@@ -642,11 +707,100 @@ class _UnAssignTaskState extends State<UnAssignTask> {
                       }
                     : null,
               ),
+              SizedBox(
+                height: deviceHeight * 0.05,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: deviceHeight * 0.02,
+                    ),
+                    TextFormField(
+                      controller: messageController,
+                      decoration: const InputDecoration(
+                          labelText: 'Message',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 0.0),
+                          ),
+                          border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 3) {
+                          return 'Last Name must contain at least 3 characters';
+                        } else if (value
+                            .contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          return 'Last Name cannot contain special characters';
+                        }
+                        return null;
+                      },
+                      onFieldSubmitted: (value) {
+                        setState(() {
+                          message = value;
+                          // lastNameList.add(lastName);
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          message = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: deviceHeight * 0.02),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //       minimumSize: const Size.fromHeight(60)),
+                    //   onPressed: () {
+                    //     if (_formKey.currentState!.validate()) {
+                    //       msg1();
+                    //       FocusScope.of(context).unfocus();
+                    //     }
+                    //     clear();
+                    //   },
+                    //   child: const Text("Send"),
+                    // ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        msg1();
+                        FocusScope.of(context).unfocus();
+                      }
+                      clear();
+                    },
+                    child: Text(
+                      "Send",
+                      style: TextStyle(
+                        fontSize: 12,
+                        letterSpacing: 0,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         },
         SizedBox(
-          height: deviceHeight * 0.05,
+          height: deviceHeight * 0.15,
         ),
         if (showTableManual) ...{
           SizedBox(
@@ -843,53 +997,101 @@ class _UnAssignTaskState extends State<UnAssignTask> {
                       }
                     : null,
               ),
+              SizedBox(
+                height: deviceHeight * 0.05,
+              ),
+              Form(
+                key: _formKey2,
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: deviceHeight * 0.02,
+                    ),
+                    TextFormField(
+                      controller: messageController,
+                      decoration: const InputDecoration(
+                          labelText: 'Message',
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                            borderSide:
+                                BorderSide(color: Colors.grey, width: 0.0),
+                          ),
+                          border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            value.length < 3) {
+                          return 'Last Name must contain at least 3 characters';
+                        } else if (value
+                            .contains(RegExp(r'^[0-9_\-=@,\.;]+$'))) {
+                          return 'Last Name cannot contain special characters';
+                        }
+                        return null;
+                      },
+                      onFieldSubmitted: (value) {
+                        setState(() {
+                          message = value;
+                          // lastNameList.add(lastName);
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          message = value;
+                        });
+                      },
+                    ),
+                    SizedBox(height: deviceHeight * 0.02),
+                    // ElevatedButton(
+                    //   style: ElevatedButton.styleFrom(
+                    //       minimumSize: const Size.fromHeight(60)),
+                    //   onPressed: () {
+                    //     if (_formKey.currentState!.validate()) {
+                    //       msg2();
+                    //       FocusScope.of(context).unfocus();
+                    //     }
+                    //     clear();
+                    //   },
+                    //   child: const Text("Submit"),
+                    // ),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  OutlinedButton(
+                    onPressed: () {
+                      if (_formKey2.currentState!.validate()) {
+                        msg2();
+                        FocusScope.of(context).unfocus();
+                      }
+                      clear();
+                    },
+                    child: Text(
+                      "Send",
+                      style: TextStyle(
+                        fontSize: 12,
+                        letterSpacing: 0,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         },
-
         SizedBox(
           height: deviceHeight * 0.1,
         ),
-
-        //     Column(
-        //       children: <Widget>[
-        //         SingleChildScrollView(
-        //           scrollDirection: Axis.horizontal,
-        //           child: Row(
-        //             children: [
-        //               DataTable(
-        //                 columns: const [
-        //                   DataColumn(label: Text('Sr. No.'), numeric: true),
-        //                   DataColumn(label: Text('Title')),
-        //                   DataColumn(label: Text('Description')),
-        //                   DataColumn(label: Text('Date')),
-        //                 ],
-        //                 rows: dataHolidayList?.holiday?.map((holiday) {
-        //                       final index =
-        //                           dataHolidayList?.holiday?.indexOf(holiday) ?? -1;
-        //                       final srNo = (index + 1).toString();
-        //                       final title = holiday.title ?? '';
-        //                       final description = holiday.description ?? '';
-        //                       final date = DateTime.fromMillisecondsSinceEpoch(
-        //                           (int.tryParse(holiday.date!.toString()) ?? 0) *
-        //                               1000);
-        //                       final formattedDate =
-        //                           DateFormat('dd/MM/yyyy').format(date);
-        //                       return DataRow(cells: [
-        //                         DataCell(Text(srNo)),
-        //                         DataCell(Text(title)),
-        //                         DataCell(Text(description)),
-        //                         DataCell(Text(formattedDate.toString())),
-        //                       ]);
-        //                     }).toList() ??
-        //                     [],
-        //                 dataRowHeight: 32.0,
-        //               )
-        //             ],
-        //           ),
-        //         ),
-        //       ],
-        //     ),
       ],
     );
   }
@@ -947,153 +1149,31 @@ class _UnAssignTaskState extends State<UnAssignTask> {
   }
 }
 
-class ClientDataSource extends DataTableSource {
-  final List<Client> clients;
-  final int totalCount;
-  final int startIndex;
-
-  ClientDataSource(this.clients, this.totalCount, this.startIndex);
-
-  @override
-  DataRow getRow(int index) {
-    final clientIndex = startIndex + index;
-    if (clientIndex >= clients.length) {
-      return DataRow(cells: [
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-      ]);
-    }
-
-    final client = clients[clientIndex];
-
-    return DataRow(cells: [
-      DataCell(Text((clientIndex + 1).toString())),
-      DataCell(Text(client.client ?? "")),
-      DataCell(Text(client.message ?? "")),
-      DataCell(Text(client.description ?? "")),
-      DataCell(Text(client.onDate.toString())),
-      DataCell(Text(client.createdOn ?? "")),
-    ]);
-  }
-
-  @override
-  int get rowCount => totalCount;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-typedef SelectedCallBack = Function(String id, bool newSelectState);
-
-class ClientSource extends AdvancedDataTableSource<Client> {
-  List<String> selectedIds = [];
-  String lastSearchTerm = '';
-
-  int startIndex = 0; // Add the startIndex variable
-
-  @override
-  DataRow? getRow(int index) {
-    final int srNo = startIndex + index + 1;
-    final Client client = lastDetails!.rows[index];
-    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
-        int.parse(client.onDate ?? '0') * 1000);
-    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-    //print("parsedDate $parsedDate");
-
-    return DataRow(
-      cells: [
-        DataCell(Text(srNo.toString())),
-        DataCell(Text(client.client ?? "")),
-        DataCell(Text(client.message ?? "")),
-        DataCell(Text(client.description ?? "")),
-        DataCell(Text(formattedDate)),
-        DataCell(Text(client.createdOn ?? "")),
-      ],
-      // selected: selectedIds.contains(client.id),
-      // onSelectChanged: (value) {
-      //   selectedRow(client.id.toString(), value ?? false);
-      // },
-    );
-  }
-
-  @override
-  int get selectedRowCount => selectedIds.length;
-
-  void selectedRow(String id, bool newSelectState) {
-    if (selectedIds.contains(id)) {
-      selectedIds.remove(id);
-    } else {
-      selectedIds.add(id);
-    }
-    notifyListeners();
-  }
-
-  void filterServerSide(String filterQuery) {
-    lastSearchTerm = filterQuery.toLowerCase().trim();
-    setNextView();
-  }
-
-  void refresh() {
-    setNextView();
-  }
-
-  @override
-  Future<RemoteDataSourceDetails<Client>> getNextPage(
-    NextPageRequest pageRequest,
-  ) async {
-    startIndex = pageRequest.offset;
-    final queryParameter = <String, dynamic>{
-      'offset': pageRequest.offset.toString(),
-      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
-    };
-
-    genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientLog}',
-      params: queryParameter,
-    );
-
-    if (dataModel != null && dataModel.status == true) {
-      final dynamicData = dataModel.data;
-      int count = dataModel.data.length ?? 0;
-      dataCount1 = count;
-
-      return RemoteDataSourceDetails(
-        dataModel.count ?? 0,
-        dynamicData
-            .map<Client>(
-              (item) => Client.fromJson(item as Map<String, dynamic>),
-            )
-            .toList(),
-        filteredRows: lastSearchTerm.isNotEmpty
-            ? dynamicData
-                .map<Client>(
-                  (item) => Client.fromJson(item as Map<String, dynamic>),
-                )
-                .length
-            : null,
-      );
-    } else {
-      throw Exception('Unable to query remote server');
-    }
-  }
-}
-
 ///////////////
 typedef SelectedCallBack1 = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<UnAssignTaskDataModel> {
-  List<String> selectedIds = [];
   String lastSearchTerm = '';
   int startIndex = 0;
   RemoteDataSourceDetails<UnAssignTaskDataModel>? lastDetails;
+
+  void delete(id) async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.deleteTask}',
+      params: {
+        'id': id,
+      },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+    }
+  }
 
   @override
   DataRow? getRow(int index) {
@@ -1114,8 +1194,62 @@ class TableSource extends AdvancedDataTableSource<UnAssignTaskDataModel> {
             DataCell(Text(allTask.departmentName ?? '')),
             DataCell(Text(allTask.deadlineDate ?? '')),
             DataCell(Text(allTask.status ?? '')),
-            DataCell(Text('')),
+            DataCell(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.to(ViewTasksTask(ticketId: allTask.ticketId!));
+                          },
+                          child: Icon(Icons.remove_red_eye_outlined),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.to(EditTask(id: allTask.ticketId!));
+                          },
+                          child: Icon(Icons.edit),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.defaultDialog(
+                              title: "Delete",
+                              middleText: "Are you sure you want to delete ?",
+                              textConfirm: "Yes",
+                              textCancel: "No",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.red,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                delete(allTask.ticketId!);
+                                Get.back();
+                              },
+                              onCancel: () {},
+                            );
+                          },
+                          child: Icon(Icons.delete),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
+          selected: selectedIds.contains(allTask.ticketId!),
+          onSelectChanged: (value) {
+            selectedRow(allTask.ticketId!.toString(), value ?? false);
+          },
         );
       }
     }
@@ -1124,6 +1258,15 @@ class TableSource extends AdvancedDataTableSource<UnAssignTaskDataModel> {
 
   @override
   int get selectedRowCount => selectedIds.length;
+
+  void selectedRow(String id, bool newSelectState) {
+    if (selectedIds.contains(id)) {
+      selectedIds.remove(id);
+    } else {
+      selectedIds.add(id);
+    }
+    notifyListeners();
+  }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
@@ -1175,10 +1318,27 @@ class TableSource extends AdvancedDataTableSource<UnAssignTaskDataModel> {
 typedef SelectedCallBack2 = Function(String id, bool newSelectState);
 
 class TableSource2 extends AdvancedDataTableSource<UnAssignTaskDataModel> {
-  List<String> selectedIds = [];
   String lastSearchTerm = '';
   int startIndex = 0;
   RemoteDataSourceDetails<UnAssignTaskDataModel>? lastDetails;
+
+  void delete(id) async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.deleteTask}',
+      params: {
+        'id': id,
+      },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+    }
+  }
 
   @override
   DataRow? getRow(int index) {
@@ -1199,8 +1359,62 @@ class TableSource2 extends AdvancedDataTableSource<UnAssignTaskDataModel> {
             DataCell(Text(manual.departmentName ?? '')),
             DataCell(Text(manual.deadlineDate ?? '')),
             DataCell(Text(manual.status ?? '')),
-            DataCell(Text('')),
+            DataCell(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.to(ViewTasksTask(ticketId: manual.ticketId!));
+                          },
+                          child: Icon(Icons.remove_red_eye_outlined),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.to(EditTask(id: manual.ticketId!));
+                          },
+                          child: Icon(Icons.edit),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                        RawMaterialButton(
+                          onPressed: () {
+                            Get.defaultDialog(
+                              title: "Delete",
+                              middleText: "Are you sure you want to delete ?",
+                              textConfirm: "Yes",
+                              textCancel: "No",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.red,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                delete(manual.ticketId!);
+                                Get.back();
+                              },
+                              onCancel: () {},
+                            );
+                          },
+                          child: Icon(Icons.delete),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
+          selected: selectedIds2.contains(manual.ticketId!),
+          onSelectChanged: (value) {
+            selectedRow2(manual.ticketId!.toString(), value ?? false);
+          },
         );
       }
     }
@@ -1208,7 +1422,16 @@ class TableSource2 extends AdvancedDataTableSource<UnAssignTaskDataModel> {
   }
 
   @override
-  int get selectedRowCount => selectedIds.length;
+  int get selectedRowCount => selectedIds2.length;
+
+  void selectedRow2(String id, bool newSelectState) {
+    if (selectedIds2.contains(id)) {
+      selectedIds2.remove(id);
+    } else {
+      selectedIds2.add(id);
+    }
+    notifyListeners();
+  }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
