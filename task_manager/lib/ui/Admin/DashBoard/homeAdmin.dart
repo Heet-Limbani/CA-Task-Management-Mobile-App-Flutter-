@@ -117,8 +117,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     super.initState();
     fetchData();
     clientDashboard();
-    birthDayTable();
-    holidayTable();
     clientTable();
     clientData();
     getUser();
@@ -230,55 +228,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       cardData = CardData.fromJson(data);
-    }
-  }
-
-  // Print the pending items
-  // if (cardData?.cardData?.pending != null) {
-  //   for (Pending pendingItem in cardData!.cardData!.pending!) {
-  //     print('Pending Ticket ID: ${pendingItem.ticketId}');
-  //     print('Title: ${pendingItem.title}');
-  //     print('Status: ${pendingItem.status}');
-  //     print('----------------------');
-  //   }
-  // }
-  BirthDayList? dataBirthdayList;
-
-  void birthDayTable() async {
-    genModel? genmodel =
-        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
-    if (genmodel != null) {
-      // print('Status: ${genmodel.message}');
-      if (genmodel.status == true) {
-        // print('Data: ${genmodel.data}');
-
-        final data = genmodel.data;
-        dataBirthdayList = BirthDayList.fromJson(data);
-        // if (dataBirthdayList?.birthday != null) {
-        //   for (Birthday birthday in dataBirthdayList!.birthday!) {
-        //     print('BirthDay ID: ${birthday.id}');
-        //   }
-        // }
-        setState(() {});
-      }
-    }
-  }
-
-  HolidayList? dataHolidayList;
-
-  void holidayTable() async {
-    genModel? genmodel =
-        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
-    if (genmodel != null) {
-      // print('Status: ${genmodel.message}');
-      if (genmodel.status == true) {
-        //print('Data: ${genmodel?.data}');
-
-        final data = genmodel.data;
-        dataHolidayList = HolidayList.fromJson(data);
-
-        setState(() {});
-      }
     }
   }
 
@@ -413,23 +362,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
                   height: deviceHeight * 0.02,
                 ),
                 _admin(),
-
-                // ListView.builder(
-                //   shrinkWrap: true,
-                //   physics: NeverScrollableScrollPhysics(),
-                //   itemCount: clients.length,
-                //   itemBuilder: (context, index) {
-                //     final client = clients[index];
-                //     return ListTile(
-                //       title: Text(client.client ?? ''),
-                //       subtitle: Text(client.message ?? ''),
-                //     );
-                //   },
-                // ),
-
-                //_client(),
-
-                //_employee(),
               ],
             ),
           ),

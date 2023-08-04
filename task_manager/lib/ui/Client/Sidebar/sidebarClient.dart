@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
-
+import 'package:task_manager/ui/Client/Dashboard/homeClient.dart';
+import 'package:task_manager/ui/Client/Profile/profile2.dart';
+String img = Urls.baseUrlMain + Urls.profile + Urls.profileAvatar;
 
 class SideBarClient extends StatelessWidget {
-  const SideBarClient({super.key});
+   SideBarClient({Key? key}) : super(key: key);
+   final String email = Urls.profileEmail;
+  final String userName = Urls.profileUserName;
 
   @override
   Widget build(BuildContext context) {
@@ -26,32 +31,41 @@ class SideBarClient extends StatelessWidget {
               ],
             )),
             accountName: Text(
-              "Admin",
+              userName,
               style: TextStyle(color: Colors.black),
             ),
             accountEmail: Text(
-              "admin@admin.com",
+              email,
               style: TextStyle(color: Colors.black),
             ),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Color.fromARGB(255, 255, 255, 255),
-              child: ClipOval(
-                  child: Image(
-                image: AssetImage(
-                  'assets/images/task_manager.png',
-                ),
-                fit: BoxFit.cover,
-              )),
-            ),
+            // currentAccountPicture: CircleAvatar(
+            //   backgroundColor: Color.fromARGB(255, 255, 255, 255),
+            //   child: ClipOval(
+            //     child: Image(
+            //       image: NetworkImage(img),
+            //       fit: BoxFit.cover,
+            //     ),
+            //   ),
+            // ),
           ),
           // Various options
 
           ListTile(
             title: Text('Client '),
           ),
+           ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Profile'),
+            onTap: () {
+              Get.to(profile2());
+            },
+          ),
           ListTile(
             leading: Icon(Icons.dashboard),
             title: Text('Dashboard'),
+             onTap: () {
+              Get.to(HomeClientScreen());
+            },
           ),
           ListTile(
             leading: Icon(Icons.work_outline),
@@ -83,7 +97,6 @@ class SideBarClient extends StatelessWidget {
             onTap: () async {
               var sharedPref = await SharedPreferences.getInstance();
               sharedPref.setBool(MyApp.KEYLOGIN, false);
-
               Get.offAll(MyApp());
             },
           ),

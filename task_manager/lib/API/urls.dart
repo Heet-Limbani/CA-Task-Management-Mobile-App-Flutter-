@@ -146,8 +146,10 @@ class Urls {
   static String taskPayment = "${Urls.baseUrlMain}task_payment";
   static String unAssignTask = "${Urls.baseUrlMain}unassigned_task_board";
   static String messageUser = "${Urls.baseUrlMain}message_the_user";
-  
-
+  static String clientDashboard = "${Urls.baseUrlMain}ClientDashboard";
+  static String onGoingJobs = "${Urls.baseUrlMain}ongoing_jobs";
+  static String queryRaised = "${Urls.baseUrlMain}query_raised";
+  static String clientInvoice = "${Urls.baseUrlMain}loadclientinvoicelist";
 
   static String profileEmail = "";
   static String profileUserName = "";
