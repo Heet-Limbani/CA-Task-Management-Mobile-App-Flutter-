@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/model/ManageLocationDataModel.dart';
-import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Admin/File_Manager/addLocation.dart';

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/API/model/getUsersDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/getUsersDataModel.dart';
 import 'package:task_manager/ui/Admin/Users/clientInvoiceDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientLogDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientLoginDetails.dart';

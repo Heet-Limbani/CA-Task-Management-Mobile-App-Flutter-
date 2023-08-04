@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/API/model/clientDataModel.dart';
-import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/API/model/getUsersDataModel.dart';
-import 'package:task_manager/API/model/unAssignTaskDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/clientDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/getUsersDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/unAssignTaskDataModel.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/Admin/Task/addTask.dart';
@@ -15,7 +15,7 @@ import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/clientLogDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/clientLogDataModel.dart';
 
 class UnAssignTask extends StatefulWidget {
   const UnAssignTask({Key? key}) : super(key: key);

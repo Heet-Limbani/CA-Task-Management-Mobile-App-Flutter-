@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/API/model/viewTasksDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/viewTasksDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 

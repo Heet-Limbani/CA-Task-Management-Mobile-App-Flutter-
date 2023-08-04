@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/HolidayViewDataModel.dart';
-import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Holiday/holidayViewAdd.dart';
 import 'package:task_manager/ui/Admin/Holiday/holidayViewEdit.dart';
 import '../sidebar/sidebarAdmin.dart';

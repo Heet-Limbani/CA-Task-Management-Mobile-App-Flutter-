@@ -34,7 +34,7 @@ import 'package:task_manager/ui/Admin/Task/taskReport.dart';
 import 'package:task_manager/ui/Admin/Users/employee.dart';
 import 'package:task_manager/ui/Admin/DashBoard/homeAdmin.dart';
 import 'package:task_manager/ui/Admin/Profile/profile1.dart';
-import '../../../API/model/loginDataModel.dart';
+import '../../../API/Admin DataModel/loginDataModel.dart';
 import '../Department/department.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';

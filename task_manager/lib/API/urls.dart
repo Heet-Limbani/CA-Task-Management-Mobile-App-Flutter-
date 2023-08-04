@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
 import 'package:shimmer/shimmer.dart';
 
 class Urls {

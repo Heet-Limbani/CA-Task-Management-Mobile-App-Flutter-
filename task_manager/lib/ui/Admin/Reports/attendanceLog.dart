@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/model/AttendanceLogDataModel.dart';
-import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Reports/attendanceLogAdd.dart';
 import 'package:task_manager/ui/Admin/Reports/attendanceLogEdit.dart';
 import '../sidebar/sidebarAdmin.dart';

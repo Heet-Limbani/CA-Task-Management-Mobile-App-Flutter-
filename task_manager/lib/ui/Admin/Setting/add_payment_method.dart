@@ -3,7 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/Urls.dart' as url;
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
-import '../../../API/model/genModel.dart';
+import '../../../API/Admin DataModel/genModel.dart';
 
 class AddPaymentMethod extends StatefulWidget {
   const AddPaymentMethod({Key? key}) : super(key: key);

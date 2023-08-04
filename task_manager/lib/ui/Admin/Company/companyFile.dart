@@ -4,8 +4,8 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/API/model/companyFileDataModel.dart';
-import 'package:task_manager/API/model/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/companyFileDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
 import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 

@@ -5,9 +5,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/model/clientLoginDataModel.dart';
-import 'package:task_manager/API/model/genModel.dart';
-import 'package:task_manager/API/model/logModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/clientLoginDataModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/Admin%20DataModel/logModel.dart';
 import 'package:task_manager/ui/Admin/Users/editClientForm.dart';
 import '../sidebar/sidebarAdmin.dart';
 
