@@ -3,8 +3,10 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
+import 'package:task_manager/ui/Client/ClientTicket/clientTicket.dart';
 import 'package:task_manager/ui/Client/Dashboard/homeClient.dart';
 import 'package:task_manager/ui/Client/Profile/profile2.dart';
+import 'package:task_manager/ui/Client/ClientCompany/clientCompany.dart';
 String img = Urls.baseUrlMain + Urls.profile + Urls.profileAvatar;
 
 class SideBarClient extends StatelessWidget {
@@ -70,6 +72,9 @@ class SideBarClient extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.work_outline),
             title: Text('Company Details'),
+             onTap: () {
+              Get.to(ClientCompany());
+            },
           ),
           ListTile(
             leading: Icon(Icons.payment),
@@ -78,6 +83,9 @@ class SideBarClient extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.receipt),
             title: Text('Ticket'),
+             onTap: () {
+              Get.to(ClientTicket());
+            },
           ),
           ListTile(
             leading: Icon(Icons.inventory_outlined),

@@ -1,26 +1,23 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:task_manager/API/ClientDataModel/clientInvoiceDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/API/ClientDataModel/clientTicketDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/Client/ClientTicket/clientTicket.dart';
-import 'package:task_manager/ui/Client/Dashboard/TaskView/taskViewClient.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
-class ClientInvoice extends StatefulWidget {
-  const ClientInvoice({super.key});
+class ClientTicket extends StatefulWidget {
+  const ClientTicket({super.key});
 
   @override
-  State<ClientInvoice> createState() => _ClientInvoiceState();
+  State<ClientTicket> createState() => _ClientTicketState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 int dataCount = 0;
 
-class _ClientInvoiceState extends State<ClientInvoice> {
+class _ClientTicketState extends State<ClientTicket> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -59,7 +56,7 @@ class _ClientInvoiceState extends State<ClientInvoice> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Invoice Raised",
+          "Dashboard > Client Task",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -111,7 +108,7 @@ class _ClientInvoiceState extends State<ClientInvoice> {
     return Row(
       children: [
         Text(
-          "Invoice",
+          "Task List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -198,19 +195,19 @@ class _ClientInvoiceState extends State<ClientInvoice> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Invoice No.'),
+              label: const Text('Task Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Company Name'),
+              label: const Text('Ticket ID'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Amount'),
+              label: const Text('Client Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Particular'),
+              label: const Text('Status'),
               onSort: setSort,
             ),
             DataColumn(
@@ -296,7 +293,7 @@ class _ClientInvoiceState extends State<ClientInvoice> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
+class TableSource extends AdvancedDataTableSource<ClientTicketDataModel> {
   final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
@@ -309,119 +306,73 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final ClientInvoiceDataModel dataList = lastDetails!.rows[index];
+    final ClientTicketDataModel dataList = lastDetails!.rows[index];
 
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
-        DataCell(Text(dataList.invoiceNo ?? '')),
-        DataCell(Text(dataList.company ?? '')),
-        DataCell(Text(dataList.total ?? '')),
-        DataCell(Text(dataList.otherDetails ?? '')),
+        DataCell(Text(dataList.title ?? '')),
+        DataCell(Text(dataList.ticketId ?? '')),
+        DataCell(Text(dataList.clientName ?? '')),
+        DataCell(Text(dataList.statusname ?? '')),
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               children: [
-                if (dataList.paymentId == "0" && dataList.customInvoice == "0")
+                if (dataList.status == "0")
                   Row(
                     children: [
                       RawMaterialButton(
                         onPressed: () {},
-                        child: Icon(Icons.receipt_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.id.toString()));
-                        },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
-                          Get.to(() => ClientTicket());
-                        },
-                        child: Icon(Icons.pending_actions_outlined),
+                        onPressed: () {},
+                        child: Icon(Icons.edit),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {},
+                        child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                     ],
                   ),
-                if (dataList.paymentId != "0" && dataList.customInvoice == "0")
+                if (dataList.status == "1" ||
+                    dataList.status == "2" ||
+                    dataList.status == "3" ||
+                    dataList.status == "4" ||
+                    dataList.status == "5" ||
+                    dataList.status == "7")
                   Row(
                     children: [
                       RawMaterialButton(
                         onPressed: () {},
-                        child: Icon(Icons.receipt_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {
-                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.id.toString()));
-                        },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          "Paid",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
                     ],
                   ),
-                if (dataList.paymentId == "0" && dataList.customInvoice != "0")
+                if (dataList.status == "6")
                   Row(
                     children: [
                       RawMaterialButton(
                         onPressed: () {},
-                        child: Icon(Icons.receipt_outlined),
+                        child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                      RawMaterialButton(
-                         onPressed: () {
-                          Get.to(() => ClientTicket());
-                        },
-                        child: Icon(Icons.pending_actions_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.paymentId != "0" && dataList.customInvoice != "0")
-                  Row(
-                    children: [
                       RawMaterialButton(
                         onPressed: () {},
-                        child: Icon(Icons.receipt_outlined),
+                        child: Icon(Icons.payments),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Text(
-                          "Paid",
-                          style: TextStyle(color: Colors.white),
-                        ),
                       ),
                     ],
                   ),
@@ -455,7 +406,7 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<ClientInvoiceDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ClientTicketDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -466,7 +417,7 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientInvoice}',
+      method: '${Urls.clientTicket}',
       params: queryParameter,
     );
 
@@ -476,18 +427,18 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
       dataCount = count;
 
       return RemoteDataSourceDetails(
-        dataModel.count ?? 0,
-        //count,
+        //dataModel.count ?? 0,
+        count,
         dynamicData
-            .map<ClientInvoiceDataModel>(
+            .map<ClientTicketDataModel>(
               (item) =>
-                  ClientInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+                  ClientTicketDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
-                .map<ClientInvoiceDataModel>(
-                  (item) => ClientInvoiceDataModel.fromJson(
+                .map<ClientTicketDataModel>(
+                  (item) => ClientTicketDataModel.fromJson(
                       item as Map<String, dynamic>),
                 )
                 .length

@@ -8,6 +8,7 @@ import 'package:task_manager/ui/Client/Dashboard/clientInvoice.dart';
 import 'package:task_manager/ui/Client/Dashboard/onGoingJobs.dart';
 import 'package:task_manager/ui/Client/Dashboard/queryRaised.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
+import 'package:task_manager/ui/Client/ClientCompany/clientCompany.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/AdminDataModel/clientLogDataModel.dart';
 
@@ -22,6 +23,7 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   int onGoingTask = 0;
   int queryRaised = 0;
   int invoiceRaised = 0;
+  int clientCompany = 0;
   //double amount = 0;
 
   List<Client> clients = [];
@@ -50,6 +52,7 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
         int invoiceDataAmount = int.parse(data['invoice_data_amount'] ?? '0');
         int paymentDataAmount = int.parse(data['payment_data_amount'] ?? '0');
         amount = invoiceDataAmount - paymentDataAmount;
+        clientCompany = amount;
         setState(() {});
       }
     }
@@ -267,24 +270,38 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
               StaggeredGridTile.count(
                 crossAxisCellCount: 1,
                 mainAxisCellCount: 1.2,
-                child: TaskGroupContainer(
-                  color: Colors.blue,
-                  icon: Icons.attach_money,
-                  taskCount: amount,
-                  taskGroup: "Amount",
+                child: InkWell(
+                  onTap: () {
+                    if ((clientCompany) != 0) {
+                      Get.to(ClientCompany());
+                    } else {
+                      final snackBar = SnackBar(
+                        content: Text(
+                          "No Tasks Found",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        backgroundColor: Colors.blue,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                        action: SnackBarAction(
+                          label: 'Dismiss',
+                          textColor: Colors.white,
+                          onPressed: () {},
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
+                  },
+                  child: TaskGroupContainer(
+                    color: Colors.blue,
+                    icon: Icons.attach_money,
+                    taskCount: amount,
+                    taskGroup: "Amount",
+                  ),
                 ),
               ),
-              // StaggeredGridTile.count(
-              //   crossAxisCellCount: 1,
-              //   mainAxisCellCount: 1,
-              //   child: TaskGroupContainer(
-              //     color: Colors.purple,
-              //     icon: Icons.download,
-              //     taskCount: 5,
-              //     isSmall: true,
-              //     taskGroup: "Download",
-              //   ),
-              // ),
             ])
       ],
     );

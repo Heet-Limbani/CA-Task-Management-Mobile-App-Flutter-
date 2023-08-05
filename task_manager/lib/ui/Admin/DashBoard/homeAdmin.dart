@@ -97,7 +97,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   bool showTablePayable = false;
   bool showTableQuery = false;
   bool showTableOverdue = false;
-  bool showTableTask = true;
+  bool showTableTask = false;
   bool showHideAll = false;
   bool showSeeAll = true;
 
@@ -116,11 +116,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   void initState() {
     super.initState();
     fetchData();
-    clientDashboard();
     clientTable();
     clientData();
     getUser();
-    fetchCardData();
   }
 
   void clear() {
@@ -201,38 +199,9 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     setState(() {});
   }
 
-  CountData? dataCount;
-
-  void clientDashboard() async {
-    genModel? genmodel =
-        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
-    if (genmodel != null) {
-      //print('Status: ${genmodel.message}');
-      if (genmodel.status == true) {
-        //print('Data: ${genmodel?.data}');
-
-        final data = genmodel.data;
-        dataCount = CountData.fromJson(data);
-        //print('data  ${dataCount?.count?.pendingCount}');
-
-        setState(() {});
-      }
-    }
-  }
-
-  CardData? cardData;
-
-  Future<void> fetchCardData() async {
-    genModel? genmodel =
-        await Urls.postApiCall(method: '${Urls.adminDashBoard}');
-    if (genmodel != null && genmodel.status == true) {
-      final data = genmodel.data;
-      cardData = CardData.fromJson(data);
-    }
-  }
-
   ClientList? dataClientList;
-
+  CountData? dataCount;
+  CardData? cardData;
   void clientData() async {
     genModel? genmodel =
         await Urls.postApiCall(method: '${Urls.adminDashBoard}');
@@ -242,6 +211,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //print('Data: ${genmodel.data}');
 
         final data = genmodel.data;
+         cardData = CardData.fromJson(data);
+       dataCount = CountData.fromJson(data);
         dataClientList = ClientList.fromJson(data);
         if (dataClientList?.clientdata != null) {
           clientsdata = (data['client'] as List<dynamic>)
@@ -1246,7 +1217,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         SizedBox(
           height: deviceHeight * 0.05,
         ),
-        if (showTablePayable) ...{
+        if (showTableQuery) ...{
           SizedBox(
             height: deviceHeight * 0.02,
           ),

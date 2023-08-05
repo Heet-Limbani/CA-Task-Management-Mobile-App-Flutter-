@@ -150,6 +150,8 @@ class Urls {
   static String onGoingJobs = "${Urls.baseUrlMain}ongoing_jobs";
   static String queryRaised = "${Urls.baseUrlMain}query_raised";
   static String clientInvoice = "${Urls.baseUrlMain}loadclientinvoicelist";
+  static String clientCompany = "${Urls.baseUrlMain}ClientCompany";
+  static String clientTicket = "${Urls.baseUrlMain}ClientTickets";
 
   static String profileEmail = "";
   static String profileUserName = "";
