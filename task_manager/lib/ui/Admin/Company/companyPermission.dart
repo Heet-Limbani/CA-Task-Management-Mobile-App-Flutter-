@@ -1,9 +1,9 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager/API/model/CompanyDataModel2.dart';
-import 'package:task_manager/API/Admin%20DataModel/companyDataModel3.dart';
-import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/companyDataModel2.dart';
+import 'package:task_manager/API/AdminDataModel/companyDataModel3.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 

@@ -2,9 +2,9 @@ import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/Admin%20DataModel/viewDispatchFileDataModel.dart';
+import 'package:task_manager/API/AdminDataModel/viewDispatchFileDataModel.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class ViewDispatchFile extends StatefulWidget {

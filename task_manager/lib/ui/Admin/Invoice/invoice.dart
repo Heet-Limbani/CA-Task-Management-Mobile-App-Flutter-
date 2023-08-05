@@ -3,9 +3,9 @@ import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/Admin%20DataModel/invoiceDataModel.dart';
+import 'package:task_manager/API/AdminDataModel/invoiceDataModel.dart';
 import 'package:task_manager/ui/Admin/Invoice/addInvoice.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 

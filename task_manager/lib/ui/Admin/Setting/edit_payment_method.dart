@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/API/Urls.dart' as url;
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
-import '../../../API/Admin DataModel/genModel.dart';
+import '../../../API/AdminDataModel/genModel.dart';
 
 class EditPaymentMethod extends StatefulWidget {
   const EditPaymentMethod({Key? key}) : super(key: key);

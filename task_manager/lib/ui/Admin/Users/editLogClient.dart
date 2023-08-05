@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
-import 'package:task_manager/API/Admin%20DataModel/logModel.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/logModel.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
 import '../sidebar/sidebarAdmin.dart';
 

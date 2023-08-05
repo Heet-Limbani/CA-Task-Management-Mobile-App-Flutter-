@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/API/Admin%20DataModel/companyDataModel2.dart';
-import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/companyDataModel2.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Company/companyFile.dart';
 import 'package:task_manager/ui/Admin/Company/companyLog.dart';
 import 'package:task_manager/ui/Admin/Company/companyPermission.dart';

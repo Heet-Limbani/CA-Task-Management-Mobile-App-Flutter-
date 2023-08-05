@@ -3,13 +3,13 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/API/Admin%20DataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Client/Dashboard/clientInvoice.dart';
 import 'package:task_manager/ui/Client/Dashboard/onGoingJobs.dart';
 import 'package:task_manager/ui/Client/Dashboard/queryRaised.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
-import 'package:task_manager/API/Admin%20DataModel/clientLogDataModel.dart';
+import 'package:task_manager/API/AdminDataModel/clientLogDataModel.dart';
 
 class HomeClientScreen extends StatefulWidget {
   const HomeClientScreen({Key? key}) : super(key: key);
