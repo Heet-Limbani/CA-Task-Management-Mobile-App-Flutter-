@@ -1,27 +1,27 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/ClientDataModel/clientTicketDataModel.dart';
+import 'package:task_manager/API/ClientDataModel/ClientDocumentDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/Client/Dashboard/TaskView/taskEditClient.dart';
-import 'package:task_manager/ui/Client/Dashboard/TaskView/taskViewClient.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
-class ClientTicket extends StatefulWidget {
-  const ClientTicket({super.key});
+class ClientDocument extends StatefulWidget {
+  final String userId;
+  const ClientDocument({required this.userId, Key? key}) : super(key: key);
 
   @override
-  State<ClientTicket> createState() => _ClientTicketState();
+  State<ClientDocument> createState() => _ClientDocumentState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-int dataCount = 0;
 
-class _ClientTicketState extends State<ClientTicket> {
+TextEditingController nameController1 = TextEditingController();
+int dataCount = 0;
+String userId = "";
+
+class _ClientDocumentState extends State<ClientDocument> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -29,13 +29,14 @@ class _ClientTicketState extends State<ClientTicket> {
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
 
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -44,7 +45,9 @@ class _ClientTicketState extends State<ClientTicket> {
   @override
   void initState() {
     super.initState();
-    _source = TableSource(context); // Initialize _source here
+    userId = widget.userId;
+    _source = TableSource(context);
+    _source.setNextView();
   }
 
   void refreshTable() {
@@ -60,7 +63,7 @@ class _ClientTicketState extends State<ClientTicket> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Client Task",
+          "Menu > Company > Client Document",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -112,7 +115,7 @@ class _ClientTicketState extends State<ClientTicket> {
     return Row(
       children: [
         Text(
-          "Task List",
+          "Document List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -199,23 +202,15 @@ class _ClientTicketState extends State<ClientTicket> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Task Name'),
+              label: const Text('Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Ticket ID'),
+              label: const Text('Date'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Client Name'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Status'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Action'),
+              label: const Text('Download'),
               onSort: setSort,
             ),
           ],
@@ -297,145 +292,106 @@ class _ClientTicketState extends State<ClientTicket> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<ClientTicketDataModel> {
-  final BuildContext context; // Add the context parameter
+class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
+  final BuildContext context;
 
   TableSource(this.context);
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
-  int startIndex = 0; // Add the startIndex variable
-
-  void delete(String? id) async {
-    if (id != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.deleteTask}',
-        params: {'id': id},
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: "${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
-    }
-  }
+  int startIndex = 0;
+  RemoteDataSourceDetails<ClientDocumentDataModel>? lastDetails;
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final ClientTicketDataModel dataList = lastDetails!.rows[index];
+    final List<ClientDocumentDataModel> rows = lastDetails!.rows;
+    if (index >= 0 && index < rows.length) {
+      final ClientDocumentDataModel dataList = rows[index];
+      final List<Documents>? files = dataList.documents;
+      if (files != null && files.isNotEmpty) {
+        final Documents file = files.first;
+        return DataRow(
+          cells: [
+            DataCell(Text(srNo)),
+            DataCell(Text(file.name ?? '')),
+            DataCell(Text(file.inwardTime ?? '')),
+            DataCell(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  children: [
+                    if (file.downloadable == "0")
+                      Row(
+                        children: [
+                          // RawMaterialButton(
+                          //   onPressed: () {
+                          //   },
+                          //   child: Icon(Icons.remove_red_eye_outlined),
+                          //   constraints: BoxConstraints.tight(Size(24, 24)),
+                          //   shape: CircleBorder(),
+                          // ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                "Pay",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            onTap: () {
 
-    return DataRow(
-      cells: [
-        DataCell(Text(srNo)),
-        DataCell(Text(dataList.title ?? '')),
-        DataCell(Text(dataList.ticketId ?? '')),
-        DataCell(Text(dataList.clientName ?? '')),
-        DataCell(Text(dataList.statusname ?? '')),
-        DataCell(
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                if (dataList.status == "0")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
-                        },
-                        child: Icon(Icons.remove_red_eye_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
+                            },
+                          ),
+                        ],
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          Get.to(() => EditTask(
-                                userId: dataList.ticketId.toString(),
-                              ));
-                        },
-                        child: Icon(Icons.edit),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
+                    if (file.downloadable == "1")
+                      Row(
+                        children: [
+                          // RawMaterialButton(
+                          //   onPressed: () {
+                          //   },
+                          //   child: Icon(Icons.remove_red_eye_outlined),
+                          //   constraints: BoxConstraints.tight(Size(24, 24)),
+                          //   shape: CircleBorder(),
+                          // ),
+                          GestureDetector(
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                "Download",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            onTap: () {
+                              
+                            },
+                          ),
+                        ],
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          delete(dataList.ticketId.toString());
-                        },
-                        child: Icon(Icons.delete),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "1" ||
-                    dataList.status == "2" ||
-                    dataList.status == "3" ||
-                    dataList.status == "4" ||
-                    dataList.status == "5" ||
-                    dataList.status == "7")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
-                        },
-                        child: Icon(Icons.remove_red_eye_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-                if (dataList.status == "6")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                          Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
-                        },
-                        child: Icon(Icons.remove_red_eye_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                      RawMaterialButton(
-                        onPressed: () {},
-                        child: Icon(Icons.payments),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-              ],
+                  ],
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
-      // selected: selectedIds.contains(dataList.id),
-      // onSelectChanged: (value) {
-      //   selectedRow(dataList.id.toString(), value ?? false);
-      // },
-    );
+          ],
+        );
+      }
+    }
+    return null;
   }
 
   @override
   int get selectedRowCount => selectedIds.length;
-
-  // void selectedRow(String id, bool newSelectState) {
-  //   if (selectedIds.contains(id)) {
-  //     selectedIds.remove(id);
-  //   } else {
-  //     selectedIds.add(id);
-  //   }
-  //   notifyListeners();
-  // }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
@@ -443,44 +399,45 @@ class TableSource extends AdvancedDataTableSource<ClientTicketDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<ClientTicketDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ClientDocumentDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
     final queryParameter = <String, dynamic>{
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString()
+      'limit': pageRequest.pageSize.toString(),
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientTicket}',
+      method: '${Urls.clientDocument}/${userId}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
-      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
+      int count = dataModel.data.length ?? 0;
       dataCount = count;
+      if (dynamicData is Map<String, dynamic> &&
+          dynamicData.containsKey('documents')) {
+        final dynamicList = dynamicData['documents'] as List<dynamic>?;
+        final List<ClientDocumentDataModel> dataList = dynamicList
+                ?.map<ClientDocumentDataModel>((item) =>
+                    ClientDocumentDataModel(
+                        documents: [Documents.fromJson(item)]))
+                .toList() ??
+            [];
 
-      return RemoteDataSourceDetails(
-        //dataModel.count ?? 0,
-        count,
-        dynamicData
-            .map<ClientTicketDataModel>(
-              (item) =>
-                  ClientTicketDataModel.fromJson(item as Map<String, dynamic>),
-            )
-            .toList(),
-        filteredRows: lastSearchTerm.isNotEmpty
-            ? dynamicData
-                .map<ClientTicketDataModel>(
-                  (item) => ClientTicketDataModel.fromJson(
-                      item as Map<String, dynamic>),
-                )
-                .length
-            : null,
-      );
+        lastDetails = RemoteDataSourceDetails<ClientDocumentDataModel>(
+          dataModel.count ?? 0,
+          dataList,
+          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
+        );
+      } else {
+        throw Exception('Invalid dynamicData format');
+      }
+
+      return lastDetails!;
     } else {
       throw Exception('Unable to query remote server');
     }

@@ -1,9 +1,11 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/ClientDataModel/clientCompanyDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Client/ClientCompany/clientDocument.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
 class ClientCompany extends StatefulWidget {
@@ -330,7 +332,7 @@ class TableSource extends AdvancedDataTableSource<ClientCompanyDataModel> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                        if (dataList.id != null) {}
+                       Get.to(ClientDocument(userId: dataList.id.toString()));
                       },
                       child: Icon(Icons.download),
                       constraints: BoxConstraints.tight(Size(24, 24)),
