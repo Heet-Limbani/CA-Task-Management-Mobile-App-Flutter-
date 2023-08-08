@@ -1,29 +1,25 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+import 'package:task_manager/API/AdminDataModel/appointmentDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/ClientDataModel/ClientDocumentDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/Client/ClientCompany/clientAmount.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
-class ClientDocument extends StatefulWidget {
-  final String userId;
-  const ClientDocument({required this.userId, Key? key}) : super(key: key);
+class Appointment extends StatefulWidget {
+  const Appointment({super.key});
 
   @override
-  State<ClientDocument> createState() => _ClientDocumentState();
+  State<Appointment> createState() => _AppointmentState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
-TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
-String userId = "";
 
-class _ClientDocumentState extends State<ClientDocument> {
+class _AppointmentState extends State<Appointment> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
@@ -31,14 +27,13 @@ class _ClientDocumentState extends State<ClientDocument> {
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
 
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
+  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -47,9 +42,7 @@ class _ClientDocumentState extends State<ClientDocument> {
   @override
   void initState() {
     super.initState();
-    userId = widget.userId;
-    _source = TableSource(context);
-    _source.setNextView();
+    _source = TableSource(context); // Initialize _source here
   }
 
   void refreshTable() {
@@ -65,7 +58,7 @@ class _ClientDocumentState extends State<ClientDocument> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Company > Client Document",
+          "Menu > Appointment",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -117,7 +110,7 @@ class _ClientDocumentState extends State<ClientDocument> {
     return Row(
       children: [
         Text(
-          "Document List",
+          "Appointment List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -204,7 +197,7 @@ class _ClientDocumentState extends State<ClientDocument> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('Topic'),
               onSort: setSort,
             ),
             DataColumn(
@@ -212,7 +205,18 @@ class _ClientDocumentState extends State<ClientDocument> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Download'),
+              label: const Text('Time'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Status'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text(
+                'Action',
+                textAlign: TextAlign.center,
+              ),
               onSort: setSort,
             ),
           ],
@@ -294,114 +298,171 @@ class _ClientDocumentState extends State<ClientDocument> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
-  final BuildContext context;
+class TableSource extends AdvancedDataTableSource<AppointmentDataModel> {
+  final BuildContext context; // Add the context parameter
 
   TableSource(this.context);
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-  int startIndex = 0;
-  RemoteDataSourceDetails<ClientDocumentDataModel>? lastDetails;
-  void showImage(String imageUrl) {
-    showDialog(
-      context: context,
-      builder: (context) => Dialog(
-        child: Image.network(imageUrl),
-      ),
-    );
+
+  int startIndex = 0; // Add the startIndex variable
+
+  void deleteAppointment(String? id) async {
+    if (id != null) {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.appointmentDelete}',
+        params: {'id': id},
+      );
+
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+      }
+    }
   }
+
+  void rejectAppointment(String? id) async {
+    if (id != null) {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.appointmentReject}',
+        params: {'id': id},
+      );
+
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+      }
+    }
+  }
+
+  void approveAppointment(String? id) async {
+    if (id != null) {
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.appointmentAccept}',
+        params: {'id': id},
+      );
+
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+      }
+    }
+  }
+
+
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final List<ClientDocumentDataModel> rows = lastDetails!.rows;
-    if (index >= 0 && index < rows.length) {
-      final ClientDocumentDataModel dataList = rows[index];
-      final List<Documents>? files = dataList.documents;
-      if (files != null && files.isNotEmpty) {
-        final Documents file = files.first;
-        return DataRow(
-          cells: [
-            DataCell(Text(srNo)),
-            DataCell(Text(file.name ?? '')),
-            DataCell(Text(file.inwardTime ?? '')),
-            DataCell(
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    if (file.downloadable == "0")
-                      Row(
-                        children: [
-                          // RawMaterialButton(
-                          //   onPressed: () {
-                          //   },
-                          //   child: Icon(Icons.remove_red_eye_outlined),
-                          //   constraints: BoxConstraints.tight(Size(24, 24)),
-                          //   shape: CircleBorder(),
-                          // ),
-                          GestureDetector(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "Pay",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            onTap: () {
-                              Get.to(ClientAmount());
-                            },
-                          ),
-                        ],
-                      ),
-                    if (file.downloadable == "1")
-                      Row(
-                        children: [
-                          // RawMaterialButton(
-                          //   onPressed: () {
-                          //   },
-                          //   child: Icon(Icons.remove_red_eye_outlined),
-                          //   constraints: BoxConstraints.tight(Size(24, 24)),
-                          //   shape: CircleBorder(),
-                          // ),
-                          GestureDetector(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "Download",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            onTap: () {
-                              showImage(file.name!);
-                            },
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        );
-      }
+    final AppointmentDataModel dataList = lastDetails!.rows[index];
+    String statusValue = "";
+    if (dataList.status == "0") {
+      statusValue = "In Waiting";
+    } else if (dataList.status == "1") {
+      statusValue = "Approved";
+    } else {
+      statusValue = "Reject";
     }
-    return null;
+     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.date ?? '0') * 1000);
+    final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
+     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+        int.parse(dataList.time ?? '0') * 1000);
+    final formattedDate1 = DateFormat('hh:mm:ss').format(parsedDate1.toUtc());
+    return DataRow(
+      cells: [
+        DataCell(Text(srNo)),
+        DataCell(Text(dataList.topic ?? '')),
+        DataCell(Text(formattedDate)),
+        DataCell(Text(formattedDate1)),
+        DataCell(Text(statusValue)),
+        DataCell(
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: [
+                if (dataList.status == "0")
+                  Row(
+                    children: [
+                      RawMaterialButton(
+                        onPressed: () {
+                          approveAppointment(dataList.id);
+                        },
+                        child: Icon(Icons.check),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {
+                          rejectAppointment(dataList.id);
+                        },
+                        child: Icon(Icons.close),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {
+                          deleteAppointment(dataList.id);
+                        },
+                        child: Icon(Icons.delete),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {},
+                        child: Icon(Icons.mail),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                    ],
+                  ),
+                if (dataList.status == "1" || dataList.status == "2")
+                  Row(
+                    children: [
+                      RawMaterialButton(
+                        onPressed: () {},
+                        child: Icon(Icons.mail),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                    ],
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+      // selected: selectedIds.contains(dataList.id),
+      // onSelectChanged: (value) {
+      //   selectedRow(dataList.id.toString(), value ?? false);
+      // },
+    );
   }
 
   @override
   int get selectedRowCount => selectedIds.length;
+
+  // void selectedRow(String id, bool newSelectState) {
+  //   if (selectedIds.contains(id)) {
+  //     selectedIds.remove(id);
+  //   } else {
+  //     selectedIds.add(id);
+  //   }
+  //   notifyListeners();
+  // }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
@@ -409,45 +470,44 @@ class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<ClientDocumentDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<AppointmentDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
     final queryParameter = <String, dynamic>{
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
+      'limit': pageRequest.pageSize.toString()
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientDocument}/${userId}',
+      method: '${Urls.clientAppointment}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
-      final dynamicData = dataModel.data;
       int count = dataModel.data.length ?? 0;
+      final dynamicData = dataModel.data;
       dataCount = count;
-      if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('documents')) {
-        final dynamicList = dynamicData['documents'] as List<dynamic>?;
-        final List<ClientDocumentDataModel> dataList = dynamicList
-                ?.map<ClientDocumentDataModel>((item) =>
-                    ClientDocumentDataModel(
-                        documents: [Documents.fromJson(item)]))
-                .toList() ??
-            [];
 
-        lastDetails = RemoteDataSourceDetails<ClientDocumentDataModel>(
-          dataModel.count ?? 0,
-          dataList,
-          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
-        );
-      } else {
-        throw Exception('Invalid dynamicData format');
-      }
-
-      return lastDetails!;
+      return RemoteDataSourceDetails(
+        //dataModel.count ?? 0,
+        count,
+        dynamicData
+            .map<AppointmentDataModel>(
+              (item) =>
+                  AppointmentDataModel.fromJson(item as Map<String, dynamic>),
+            )
+            .toList(),
+        filteredRows: lastSearchTerm.isNotEmpty
+            ? dynamicData
+                .map<AppointmentDataModel>(
+                  (item) => AppointmentDataModel.fromJson(
+                      item as Map<String, dynamic>),
+                )
+                .length
+            : null,
+      );
     } else {
       throw Exception('Unable to query remote server');
     }

@@ -3,8 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/subTaskAddDataModel.dart';
+import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class SubtaskAdd extends StatefulWidget {
@@ -155,7 +155,7 @@ class _SubtaskAddState extends State<SubtaskAdd> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: SideBarAdmin(),
+      drawer: SideBarClient(),
       extendBody: true,
       body: _buildBody(),
     );

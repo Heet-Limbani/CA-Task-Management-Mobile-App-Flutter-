@@ -7,8 +7,8 @@ import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/viewTasksDataModel.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskChargeAdd.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskChargeEdit.dart';
-import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
 class TodaysTaskCharge extends StatefulWidget {
   final String ticketId;
@@ -75,7 +75,7 @@ class _TodaysTaskChargeState extends State<TodaysTaskCharge> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: SideBarAdmin(),
+      drawer: SideBarClient(),
       extendBody: true,
       body: _buildBody(),
     );

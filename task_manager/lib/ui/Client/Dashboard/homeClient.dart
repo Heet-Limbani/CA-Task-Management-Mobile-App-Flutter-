@@ -4,13 +4,14 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/ui/Client/Dashboard/clientInvoice.dart';
+import 'package:task_manager/ui/Client/ClientInvoice/clientInvoice.dart';
 import 'package:task_manager/ui/Client/Dashboard/onGoingJobs.dart';
 import 'package:task_manager/ui/Client/Dashboard/queryRaised.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 import 'package:task_manager/ui/Client/ClientCompany/clientCompany.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/AdminDataModel/clientLogDataModel.dart';
+import 'package:task_manager/ui/widgets/task_group2.dart';
 
 class HomeClientScreen extends StatefulWidget {
   const HomeClientScreen({Key? key}) : super(key: key);
@@ -41,10 +42,8 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.clientDashboard}',
     );
-    print("test");
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-      print("data is $data");
       if (data != null && data is Map<String, dynamic>) {
         onGoingTask = data['pending_count'] ?? 0;
         queryRaised = data['query_raised'] ?? 0;
@@ -294,7 +293,7 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     }
                   },
-                  child: TaskGroupContainer(
+                  child: TaskGroupContainer2(
                     color: Colors.blue,
                     icon: Icons.attach_money,
                     taskCount: amount,

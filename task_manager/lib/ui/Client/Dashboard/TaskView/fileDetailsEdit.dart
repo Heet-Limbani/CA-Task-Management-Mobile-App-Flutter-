@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
 class fileDetailsEdit extends StatefulWidget {
   final String userId;
@@ -98,7 +98,7 @@ class _fileDetailsEditState extends State<fileDetailsEdit> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: SideBarAdmin(),
+      drawer: SideBarClient(),
       extendBody: true,
       body: _buildBody(),
     );

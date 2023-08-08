@@ -1,44 +1,36 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:task_manager/API/AdminDataModel/clientManualPaymentDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/ClientDataModel/ClientDocumentDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/Client/ClientCompany/clientAmount.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
-class ClientDocument extends StatefulWidget {
-  final String userId;
-  const ClientDocument({required this.userId, Key? key}) : super(key: key);
+class ClientManualPayment extends StatefulWidget {
+  const ClientManualPayment({super.key});
 
   @override
-  State<ClientDocument> createState() => _ClientDocumentState();
+  State<ClientManualPayment> createState() => _ClientManualPaymentState();
 }
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
-TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
-String userId = "";
-
-class _ClientDocumentState extends State<ClientDocument> {
+class _ClientManualPaymentState extends State<ClientManualPayment> {
   late TableSource _source; // Declare _source here
 
   String? stringResponse;
-  late double deviceWidth;
-  late double deviceHeight;
+  double deviceWidth = 1.0;
+  double deviceHeight = 1.0;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
 
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
+  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -47,9 +39,7 @@ class _ClientDocumentState extends State<ClientDocument> {
   @override
   void initState() {
     super.initState();
-    userId = widget.userId;
     _source = TableSource(context);
-    _source.setNextView();
   }
 
   void refreshTable() {
@@ -65,7 +55,7 @@ class _ClientDocumentState extends State<ClientDocument> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Menu > Company > Client Document",
+          "Menu > Client Manual Payment",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -117,7 +107,7 @@ class _ClientDocumentState extends State<ClientDocument> {
     return Row(
       children: [
         Text(
-          "Document List",
+          "Manual Payment List",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -204,15 +194,27 @@ class _ClientDocumentState extends State<ClientDocument> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('Client Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Date'),
+              label: const Text('Title'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Download'),
+              label: const Text('Image'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Amount'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Description'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Requested On'),
               onSort: setSort,
             ),
           ],
@@ -294,16 +296,30 @@ class _ClientDocumentState extends State<ClientDocument> {
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
-  final BuildContext context;
+class TableSource
+    extends AdvancedDataTableSource<ClientManualPaymentDataModel> {
+  final BuildContext context; // Add the context parameter
 
-  TableSource(this.context);
+  TableSource(this.context); // Add the context parameter
+
+ 
+  double get deviceWidth => MediaQuery.of(context).size.width;
+  double get deviceHeight => MediaQuery.of(context).size.height;
+
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
+
   int startIndex = 0;
-  RemoteDataSourceDetails<ClientDocumentDataModel>? lastDetails;
-  void showImage(String imageUrl) {
+  int countIds(String ids) {
+    if (ids.isEmpty) {
+      return 0;
+    }
+
+    List<String> idList = ids.split(',');
+    return idList.length;
+  }
+ void showImage(String imageUrl) {
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -311,97 +327,51 @@ class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
       ),
     );
   }
-
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final List<ClientDocumentDataModel> rows = lastDetails!.rows;
-    if (index >= 0 && index < rows.length) {
-      final ClientDocumentDataModel dataList = rows[index];
-      final List<Documents>? files = dataList.documents;
-      if (files != null && files.isNotEmpty) {
-        final Documents file = files.first;
-        return DataRow(
-          cells: [
-            DataCell(Text(srNo)),
-            DataCell(Text(file.name ?? '')),
-            DataCell(Text(file.inwardTime ?? '')),
-            DataCell(
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                  children: [
-                    if (file.downloadable == "0")
-                      Row(
-                        children: [
-                          // RawMaterialButton(
-                          //   onPressed: () {
-                          //   },
-                          //   child: Icon(Icons.remove_red_eye_outlined),
-                          //   constraints: BoxConstraints.tight(Size(24, 24)),
-                          //   shape: CircleBorder(),
-                          // ),
-                          GestureDetector(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "Pay",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            onTap: () {
-                              Get.to(ClientAmount());
-                            },
-                          ),
-                        ],
-                      ),
-                    if (file.downloadable == "1")
-                      Row(
-                        children: [
-                          // RawMaterialButton(
-                          //   onPressed: () {
-                          //   },
-                          //   child: Icon(Icons.remove_red_eye_outlined),
-                          //   constraints: BoxConstraints.tight(Size(24, 24)),
-                          //   shape: CircleBorder(),
-                          // ),
-                          GestureDetector(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Text(
-                                "Download",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                            onTap: () {
-                              showImage(file.name!);
-                            },
-                          ),
-                        ],
-                      ),
-                  ],
-                ),
-              ),
+    final ClientManualPaymentDataModel dataList = lastDetails!.rows[index];
+    String img = Urls.baseUrlMain + Urls.manualPayment + dataList.image!;
+    print("img: $img");
+    //output :-img: https://task.mysyva.net/backend/assets/client_receipt/Screenshot_from_2023-04-27_16-52-07.png
+    return DataRow(
+      cells: [
+        DataCell(Text(srNo)),
+        DataCell(Text(dataList.clientFirstName ?? '')),
+        DataCell(Text(dataList.title ?? '')),
+         DataCell(
+          GestureDetector(
+            onTap: () => showImage(img), // Show the image on tap
+            child: Image.network(
+              img,
+              width: deviceWidth * 0.1, // Set the desired width
+              height: deviceHeight * 1, // Set the desired height
+              fit: BoxFit.contain, // Adjust the image within the specified size
             ),
-          ],
-        );
-      }
-    }
-    return null;
+          ),
+        ),
+        DataCell(Text(dataList.amount ?? '')),
+        DataCell(Text(dataList.description ?? '')),
+        DataCell(Text(dataList.createdOn ?? '')),
+      ],
+      // selected: selectedIds.contains(dataList.id),
+      // onSelectChanged: (value) {
+      //   selectedRow(dataList.id.toString(), value ?? false);
+      // },
+    );
   }
 
   @override
   int get selectedRowCount => selectedIds.length;
+
+  // void selectedRow(String id, bool newSelectState) {
+  //   if (selectedIds.contains(id)) {
+  //     selectedIds.remove(id);
+  //   } else {
+  //     selectedIds.add(id);
+  //   }
+  //   notifyListeners();
+  // }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
@@ -409,45 +379,43 @@ class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<ClientDocumentDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<ClientManualPaymentDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
     final queryParameter = <String, dynamic>{
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
+      'limit': pageRequest.pageSize.toString()
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.clientDocument}/${userId}',
+      method: '${Urls.clientManualPayment}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
-      final dynamicData = dataModel.data;
       int count = dataModel.data.length ?? 0;
+      final dynamicData = dataModel.data;
       dataCount = count;
-      if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('documents')) {
-        final dynamicList = dynamicData['documents'] as List<dynamic>?;
-        final List<ClientDocumentDataModel> dataList = dynamicList
-                ?.map<ClientDocumentDataModel>((item) =>
-                    ClientDocumentDataModel(
-                        documents: [Documents.fromJson(item)]))
-                .toList() ??
-            [];
-
-        lastDetails = RemoteDataSourceDetails<ClientDocumentDataModel>(
-          dataModel.count ?? 0,
-          dataList,
-          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
-        );
-      } else {
-        throw Exception('Invalid dynamicData format');
-      }
-
-      return lastDetails!;
+      return RemoteDataSourceDetails(
+        dataModel.count ?? 0,
+        //count,
+        dynamicData
+            .map<ClientManualPaymentDataModel>(
+              (item) => ClientManualPaymentDataModel.fromJson(
+                  item as Map<String, dynamic>),
+            )
+            .toList(),
+        filteredRows: lastSearchTerm.isNotEmpty
+            ? dynamicData
+                .map<ClientManualPaymentDataModel>(
+                  (item) => ClientManualPaymentDataModel.fromJson(
+                      item as Map<String, dynamic>),
+                )
+                .length
+            : null,
+      );
     } else {
       throw Exception('Unable to query remote server');
     }

@@ -11,6 +11,7 @@ class Urls {
   static String manualPayment = "assets/client_receipt/";
   static String profile = "assets/profile/";
 
+  /////Admin
   static String login = "${Urls.baseUrlMain}Login";
   static String adminDashBoard = "${Urls.baseUrlMain}AdminDashboard";
   static String clientLog = "${Urls.baseUrlMain}ClientLogData_Dashboard";
@@ -146,6 +147,7 @@ class Urls {
   static String taskPayment = "${Urls.baseUrlMain}task_payment";
   static String unAssignTask = "${Urls.baseUrlMain}unassigned_task_board";
   static String messageUser = "${Urls.baseUrlMain}message_the_user";
+  /////Client
   static String clientDashboard = "${Urls.baseUrlMain}ClientDashboard";
   static String onGoingJobs = "${Urls.baseUrlMain}ongoing_jobs";
   static String queryRaised = "${Urls.baseUrlMain}query_raised";
@@ -154,6 +156,8 @@ class Urls {
   static String clientTicket = "${Urls.baseUrlMain}ClientTickets";
   static String clientDocument = "${Urls.baseUrlMain}ClientCompanyDocument";
   static String clientAmount = "${Urls.baseUrlMain}pay_pending_amount";
+  static String clientPassbook = "${Urls.baseUrlMain}ClientCompanyPassbook";
+  static String clientAppointment = "${Urls.baseUrlMain}ClientAppointment";
 
   static String profileEmail = "";
   static String profileUserName = "";

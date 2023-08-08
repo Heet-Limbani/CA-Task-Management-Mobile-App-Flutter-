@@ -17,6 +17,8 @@
 // import 'package:collection/collection.dart'; // Import the 'collection' package for the 'firstWhereOrNull' method
 // import 'package:advanced_datatable/datatable.dart';
 // import 'package:advanced_datatable/advanced_datatable_source.dart';
+//import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
+
 
 // class EditTask extends StatefulWidget {
 //   final String? id;
@@ -276,7 +278,7 @@
 //         foregroundColor: Colors.grey,
 //         backgroundColor: Colors.transparent,
 //       ),
-//       drawer: SideBarAdmin(),
+//       drawer: SideBarClient(),
 //       extendBody: true,
 //       body: _buildBody(),
 //     );

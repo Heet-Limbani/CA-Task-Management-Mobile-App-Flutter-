@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/taskChargeEditDataModel.dart';
+import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class TaskChargeEdit extends StatefulWidget {
@@ -124,7 +124,7 @@ class _TaskChargeEditState extends State<TaskChargeEdit> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: SideBarAdmin(),
+      drawer: SideBarClient(),
       extendBody: true,
       body: _buildBody(),
     );

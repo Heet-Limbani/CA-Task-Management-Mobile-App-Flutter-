@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
+import 'package:task_manager/ui/Client/ClientAppointment/clientAppointment.dart';
+import 'package:task_manager/ui/Client/ClientInvoice/clientInvoice.dart';
+import 'package:task_manager/ui/Client/ClientManualPayment/clientManualPayment.dart';
 import 'package:task_manager/ui/Client/ClientTicket/clientTicket.dart';
 import 'package:task_manager/ui/Client/Dashboard/homeClient.dart';
 import 'package:task_manager/ui/Client/Profile/profile2.dart';
@@ -79,6 +82,9 @@ class SideBarClient extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.payment),
             title: Text('Client Manual Payment'),
+             onTap: () {
+              Get.to(ClientManualPayment());
+            },
           ),
           ListTile(
             leading: Icon(Icons.receipt),
@@ -90,10 +96,16 @@ class SideBarClient extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.inventory_outlined),
             title: Text('Invoice '),
+            onTap: () {
+              Get.to(ClientInvoice());
+            },
           ),
           ListTile(
             leading: Icon(Icons.app_registration),
             title: Text('Appointment'),
+            onTap: () {
+              Get.to(Appointment());
+            },
           ),
           ListTile(
             leading: Icon(Icons.chat),

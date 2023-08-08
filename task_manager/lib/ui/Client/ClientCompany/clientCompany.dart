@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/ClientDataModel/clientCompanyDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Client/ClientCompany/ClientPassbook.dart';
 import 'package:task_manager/ui/Client/ClientCompany/clientDocument.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
@@ -340,7 +341,7 @@ class TableSource extends AdvancedDataTableSource<ClientCompanyDataModel> {
                     ),
                     RawMaterialButton(
                       onPressed: () {
-                        if (dataList.id != null) {}
+                        Get.to(ClientPassbook(ticketId: dataList.id.toString()));
                       },
                       child: Icon(Icons.content_paste_search_outlined),
                       constraints: BoxConstraints.tight(Size(24, 24)),

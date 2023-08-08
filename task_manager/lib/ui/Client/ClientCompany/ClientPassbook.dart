@@ -1,20 +1,17 @@
 import 'package:advanced_datatable/datatable.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/AdminDataModel/viewTasksDataModel.dart';
-import 'package:task_manager/ui/Admin/DashBoard/TaskView/fileDetailsEdit.dart';
+import 'package:task_manager/API/ClientDataModel/clientPassbookDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
-class TodaysTaskFile extends StatefulWidget {
+class ClientPassbook extends StatefulWidget {
   final String ticketId;
-  const TodaysTaskFile({required this.ticketId, Key? key}) : super(key: key);
+  const ClientPassbook({required this.ticketId, Key? key}) : super(key: key);
 
   @override
-  State<TodaysTaskFile> createState() => _TodaysTaskFileState();
+  State<ClientPassbook> createState() => _ClientPassbookState();
 }
 
 late double deviceWidth;
@@ -27,9 +24,8 @@ int dataCount = 0;
 int dataCount2 = 0;
 String? selectedClientId1;
 
-class _TodaysTaskFileState extends State<TodaysTaskFile> {
-   
-   TextEditingController _searchController = TextEditingController();
+class _ClientPassbookState extends State<ClientPassbook> {
+  TextEditingController _searchController = TextEditingController();
   late TableSource _source;
   var _sortIndex = 0;
   var _sortAsc = true;
@@ -41,7 +37,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
       });
 
   TextEditingController _searchController2 = TextEditingController();
-   late TableSource2 _source2;
+  late TableSource2 _source2;
   var _sortIndex2 = 0;
   var _sortAsc2 = true;
   var _customFooter2 = false;
@@ -50,7 +46,6 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
         _sortIndex2 = i;
         _sortAsc2 = asc;
       });
-
 
   @override
   void initState() {
@@ -71,14 +66,12 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     });
   }
 
-   void refreshTable2() {
+  void refreshTable2() {
     setState(() {
       _source2.startIndex = 0;
       _source2.setNextView();
     });
   }
-
-  List<File> fileList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +80,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Tasks > Files",
+          "Dashboard > Company > Passbook",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -126,9 +119,9 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                _header3(),
+                // _header3(),
                 SizedBox(
-                  height: deviceHeight * 0.2,
+                  height: deviceHeight * 0.1,
                 ),
                 _header2(),
                 SizedBox(
@@ -146,26 +139,26 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     );
   }
 
-  Row _header3() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "Upload File",
-          style: TextStyle(
-            color: Colors.blueGrey[900],
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
-          ),
-        ),
-        SizedBox(
-          width: 30,
-        ),
-        const Spacer(),
-      ],
-    );
-  }
+  // Row _header3() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.center,
+  //     crossAxisAlignment: CrossAxisAlignment.center,
+  //     children: [
+  //       Text(
+  //         "Upload File",
+  //         style: TextStyle(
+  //           color: Colors.blueGrey[900],
+  //           fontWeight: FontWeight.w700,
+  //           fontSize: 22,
+  //         ),
+  //       ),
+  //       SizedBox(
+  //         width: 30,
+  //       ),
+  //       const Spacer(),
+  //     ],
+  //   );
+  // }
 
   Row _header() {
     return Row(
@@ -173,7 +166,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "File Details",
+          "Invoice",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -264,11 +257,23 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('File Name'),
+              label: const Text('Invoice No.'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Location'),
+              label: const Text('Amount'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Date'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Details'),
+              onSort: setSort,
+            ),
+            DataColumn(
+              label: const Text('Action'),
               onSort: setSort,
             ),
           ],
@@ -347,13 +352,13 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     );
   }
 
-   Row _header2() {
+  Row _header2() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Uploaded Files",
+          "Paid",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
@@ -402,7 +407,8 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
               icon: const Icon(Icons.clear),
             ),
             IconButton(
-              onPressed: () => _source2.filterServerSide(_searchController2.text),
+              onPressed: () =>
+                  _source2.filterServerSide(_searchController2.text),
               icon: const Icon(Icons.search),
             ),
             IconButton(
@@ -444,15 +450,19 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
               onSort: setSort2,
             ),
             DataColumn(
-              label: const Text('ID'),
+              label: const Text('Date'),
               onSort: setSort2,
             ),
             DataColumn(
-              label: const Text('Name'),
+              label: const Text('Amount'),
               onSort: setSort2,
             ),
             DataColumn(
-              label: const Text('Action'),
+              label: const Text('Download'),
+              onSort: setSort2,
+            ),
+            DataColumn(
+              label: const Text('Reference'),
               onSort: setSort2,
             ),
           ],
@@ -530,12 +540,11 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
       ],
     );
   }
- 
 }
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<TasksData> {
+class TableSource extends AdvancedDataTableSource<ClientPassbookDataModel> {
   final BuildContext context;
 
   TableSource(this.context);
@@ -543,136 +552,25 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
   List<String> selectedIds = [];
   String lastSearchTerm = '';
   int startIndex = 0;
-  RemoteDataSourceDetails<TasksData>? lastDetails;
+  RemoteDataSourceDetails<ClientPassbookDataModel>? lastDetails;
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final List<TasksData> rows = lastDetails!.rows;
+    final List<ClientPassbookDataModel> rows = lastDetails!.rows;
     if (index >= 0 && index < rows.length) {
-      final TasksData dataList = rows[index];
-      final List<File>? files = dataList.file;
+      final ClientPassbookDataModel dataList = rows[index];
+      final List<InvoiceData>? files = dataList.invoiceData;
 
       if (files != null && files.isNotEmpty) {
-        final File file = files.first;
+        final InvoiceData invoiceData = files.first;
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
-            DataCell(Text(file.name ?? '')),
-            DataCell(Text("File Location - ${file.locationNum ?? ''}")),
-          ],
-        );
-      }
-    }
-    return null;
-  }
-
-  @override
-  int get selectedRowCount => selectedIds.length;
-
-  void filterServerSide(String filterQuery) {
-    lastSearchTerm = filterQuery.toLowerCase().trim();
-    setNextView();
-  }
-
-  @override
-  Future<RemoteDataSourceDetails<TasksData>> getNextPage(
-    NextPageRequest pageRequest,
-  ) async {
-    startIndex = pageRequest.offset;
-    final queryParameter = <String, dynamic>{
-      'offset': pageRequest.offset.toString(),
-      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString(),
-      'id': ticketId.toString(),
-    };
-
-    genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.taskViewTaskDetails}',
-      params: queryParameter,
-    );
-
-    if (dataModel != null && dataModel.status == true) {
-      final dynamicData = dataModel.data;
-
-      int fileCount = 0;
-
-      if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('file')) {
-        final dynamicList = dynamicData['file'] as List<dynamic>?;
-        fileCount = dynamicList?.length ?? 0;
-        dataCount = fileCount;
-        final List<TasksData> dataList = dynamicList
-                ?.map<TasksData>(
-                    (item) => TasksData(file: [File.fromJson(item)]))
-                .toList() ??
-            [];
-
-        lastDetails = RemoteDataSourceDetails<TasksData>(
-          //dataModel.count ?? 0,
-          fileCount,
-          dataList,
-          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
-        );
-      } else {
-        throw Exception('Invalid dynamicData format');
-      }
-
-      return lastDetails!;
-    } else {
-      throw Exception('Unable to query remote server');
-    }
-  }
-}
-///////////
-class TableSource2 extends AdvancedDataTableSource<TasksData> {
-  final BuildContext context;
-
-  TableSource2(this.context);
-
-  List<String> selectedIds = [];
-  String lastSearchTerm = '';
-  int startIndex = 0;
-  RemoteDataSourceDetails<TasksData>? lastDetails;
-
-  
-  void delete(String? id) async {
-    if (id != null) {
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.deleteFileTask}',
-        params: {
-          'id': id,
-          'ticket_id': ticketId,
-          'task':'View_task',  
-        },
-      );
-
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: "${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
-    }
-  }
-
-  @override
-  DataRow? getRow(int index) {
-    final srNo = (startIndex + index + 1).toString();
-    final List<TasksData> rows = lastDetails!.rows;
-    if (index >= 0 && index < rows.length) {
-      final TasksData dataList = rows[index];
-      final List<VirtualFile>? virtualFiles = dataList.virtualFile;
-
-      if (virtualFiles != null && virtualFiles.isNotEmpty) {
-        final VirtualFile file = virtualFiles.first;
-        return DataRow(
-          cells: [
-            DataCell(Text(srNo)),
-            DataCell(Text(file.id ?? '')),
-            DataCell(Text(file.name ?? '')),
+            DataCell(Text("File Location - ${invoiceData.invoiceNo ?? ''}")),
+            DataCell(Text(invoiceData.total ?? '')),
+            DataCell(Text(invoiceData.dateOf ?? '')),
+            DataCell(Text(invoiceData.otherDetails ?? '')),
             DataCell(
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
@@ -682,18 +580,8 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
                     Row(
                       children: [
                         RawMaterialButton(
-                          onPressed: () {
-                           Get.to(fileDetailsEdit(userId: file.id!, ticketId: ticketId, sc: file.showToClient! ));
-                          },
-                          child: Icon(Icons.edit),
-                          constraints: BoxConstraints.tight(Size(24, 24)),
-                          shape: CircleBorder(),
-                        ),
-                        RawMaterialButton(
-                          onPressed: () {
-                            delete(file.id);
-                          },
-                          child: Icon(Icons.delete),
+                          onPressed: () {},
+                          child: Icon(Icons.remove_red_eye_outlined),
                           constraints: BoxConstraints.tight(Size(24, 24)),
                           shape: CircleBorder(),
                         ),
@@ -719,7 +607,7 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<TasksData>> getNextPage(
+  Future<RemoteDataSourceDetails<ClientPassbookDataModel>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
@@ -727,11 +615,122 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
       'limit': pageRequest.pageSize.toString(),
-      'id': ticketId.toString(),
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.taskViewTaskDetails}',
+      method: '${Urls.clientPassbook}/${ticketId}',
+      params: queryParameter,
+    );
+
+    if (dataModel != null && dataModel.status == true) {
+      final dynamicData = dataModel.data;
+
+      int fileCount = 0;
+
+      if (dynamicData is Map<String, dynamic> &&
+          dynamicData.containsKey('invoice_data')) {
+        final dynamicList = dynamicData['invoice_data'] as List<dynamic>?;
+        fileCount = dynamicList?.length ?? 0;
+        dataCount = fileCount;
+        final List<ClientPassbookDataModel> dataList = dynamicList
+                ?.map<ClientPassbookDataModel>((item) =>
+                    ClientPassbookDataModel(
+                        invoiceData: [InvoiceData.fromJson(item)]))
+                .toList() ??
+            [];
+
+        lastDetails = RemoteDataSourceDetails<ClientPassbookDataModel>(
+          //dataModel.count ?? 0,
+          fileCount,
+          dataList,
+          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
+        );
+      } else {
+        throw Exception('Invalid dynamicData format');
+      }
+
+      return lastDetails!;
+    } else {
+      throw Exception('Unable to query remote server');
+    }
+  }
+}
+
+///////////
+class TableSource2 extends AdvancedDataTableSource<ClientPassbookDataModel> {
+  final BuildContext context;
+
+  TableSource2(this.context);
+
+  List<String> selectedIds = [];
+  String lastSearchTerm = '';
+  int startIndex = 0;
+  RemoteDataSourceDetails<ClientPassbookDataModel>? lastDetails;
+
+  @override
+  DataRow? getRow(int index) {
+    final srNo = (startIndex + index + 1).toString();
+    final List<ClientPassbookDataModel> rows = lastDetails!.rows;
+    if (index >= 0 && index < rows.length) {
+      final ClientPassbookDataModel dataList = rows[index];
+      final List<PaymentDate>? paymentDates = dataList.paymentDate;
+
+      if (paymentDates != null && paymentDates.isNotEmpty) {
+        final PaymentDate file = paymentDates.first;
+        return DataRow(
+          cells: [
+            DataCell(Text(srNo)),
+            DataCell(Text(file.date ?? '')),
+            DataCell(Text(file.amount ?? '')),
+            DataCell(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        RawMaterialButton(
+                          onPressed: () {},
+                          child: Icon(Icons.edit),
+                          constraints: BoxConstraints.tight(Size(24, 24)),
+                          shape: CircleBorder(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            DataCell(Text(file.referenceNumber ?? '')),
+          ],
+        );
+      }
+    }
+    return null;
+  }
+
+  @override
+  int get selectedRowCount => selectedIds.length;
+
+  void filterServerSide(String filterQuery) {
+    lastSearchTerm = filterQuery.toLowerCase().trim();
+    setNextView();
+  }
+
+  @override
+  Future<RemoteDataSourceDetails<ClientPassbookDataModel>> getNextPage(
+    NextPageRequest pageRequest,
+  ) async {
+    startIndex = pageRequest.offset;
+    final queryParameter = <String, dynamic>{
+      'offset': pageRequest.offset.toString(),
+      if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
+      'limit': pageRequest.pageSize.toString(),
+    };
+
+    genModel? dataModel = await Urls.postApiCall(
+      method: '${Urls.clientPassbook}/${ticketId}',
       params: queryParameter,
     );
 
@@ -741,17 +740,18 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
       int virtualFileCount = 0;
 
       if (dynamicData is Map<String, dynamic> &&
-          dynamicData.containsKey('virtual_file')) {
-        final dynamicList = dynamicData['virtual_file'] as List<dynamic>?;
+          dynamicData.containsKey('payment_date')) {
+        final dynamicList = dynamicData['payment_date'] as List<dynamic>?;
         virtualFileCount = dynamicList?.length ?? 0;
         dataCount2 = virtualFileCount;
-        final List<TasksData> dataList = dynamicList
-                ?.map<TasksData>(
-                    (item) => TasksData(virtualFile: [VirtualFile.fromJson(item)]))
+        final List<ClientPassbookDataModel> dataList = dynamicList
+                ?.map<ClientPassbookDataModel>((item) =>
+                    ClientPassbookDataModel(
+                        paymentDate: [PaymentDate.fromJson(item)]))
                 .toList() ??
             [];
 
-        lastDetails = RemoteDataSourceDetails<TasksData>(
+        lastDetails = RemoteDataSourceDetails<ClientPassbookDataModel>(
           //dataModel.count ?? 0,
           virtualFileCount,
           dataList,
