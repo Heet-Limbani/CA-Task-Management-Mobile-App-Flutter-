@@ -158,6 +158,9 @@ class Urls {
   static String clientAmount = "${Urls.baseUrlMain}pay_pending_amount";
   static String clientPassbook = "${Urls.baseUrlMain}ClientCompanyPassbook";
   static String clientAppointment = "${Urls.baseUrlMain}ClientAppointment";
+  static String updateProfile = "${Urls.baseUrlMain}update_user_detail";
+  static String updateImage = "${Urls.baseUrlMain}upload_userpofile";
+  static String profile1 = "${Urls.baseUrlMain}Profile";
 
   static String profileEmail = "";
   static String profileUserName = "";

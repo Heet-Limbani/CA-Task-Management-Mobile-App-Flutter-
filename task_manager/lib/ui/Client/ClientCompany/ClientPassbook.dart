@@ -117,10 +117,6 @@ class _ClientPassbookState extends State<ClientPassbook> {
                 ),
                 _table(),
                 SizedBox(
-                  height: deviceHeight * 0.05,
-                ),
-                // _header3(),
-                SizedBox(
                   height: deviceHeight * 0.1,
                 ),
                 _header2(),
@@ -138,28 +134,6 @@ class _ClientPassbookState extends State<ClientPassbook> {
       ],
     );
   }
-
-  // Row _header3() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.center,
-  //     crossAxisAlignment: CrossAxisAlignment.center,
-  //     children: [
-  //       Text(
-  //         "Upload File",
-  //         style: TextStyle(
-  //           color: Colors.blueGrey[900],
-  //           fontWeight: FontWeight.w700,
-  //           fontSize: 22,
-  //         ),
-  //       ),
-  //       SizedBox(
-  //         width: 30,
-  //       ),
-  //       const Spacer(),
-  //     ],
-  //   );
-  // }
-
   Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

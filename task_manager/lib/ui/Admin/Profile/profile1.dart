@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
@@ -12,6 +15,9 @@ class _profile1State extends State<profile1> {
   bool receiveSms = false;
   bool receiveEmail = false;
   String img = Urls.baseUrlMain + Urls.profile + Urls.profileAvatar;
+  TextEditingController fileController = TextEditingController();
+  File? selectedFile;
+  bool edit = false;
 
   @override
   Widget build(BuildContext context) {
@@ -64,18 +70,25 @@ class _profile1State extends State<profile1> {
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            width: 4,
-                            color: Colors.white,
+                      child: GestureDetector(
+                        child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              width: 4,
+                              color: Colors.white,
+                            ),
+                            color: Colors.blue,
                           ),
-                          color: Colors.blue,
+                          child: Icon(Icons.edit, color: Colors.white),
                         ),
-                        child: Icon(Icons.edit, color: Colors.white),
+                        onTap: () {
+                          setState(() {
+                            edit = !edit;
+                          });
+                        },
                       ),
                     )
                   ],
@@ -84,14 +97,16 @@ class _profile1State extends State<profile1> {
               SizedBox(
                 height: 50,
               ),
+              if(edit) ...{
+                _detail(),
+              },
               buildTextField("User Name", Urls.profileUserName, false),
               buildTextField("E-mail", Urls.profileEmail, false),
-              buildTextField(
-                  "Contact Number", Urls.profileContactNumber, false),
+              buildTextField("Contact Number", Urls.profileContactNumber, false),
               buildTextField("First Name", Urls.profileFirstName, false),
               buildTextField("Last Name", Urls.profileLastName, false),
-              buildTextField("Password", Urls.profilePassword, true),
-              buildTextField("About Me", "Flutter developer", false),
+              //buildTextField("Password", Urls.profilePassword, true),
+              buildTextField("About Me", "", false),
               SizedBox(
                 height: 10,
               ),
@@ -197,6 +212,71 @@ class _profile1State extends State<profile1> {
           onChanged(newValue ?? false);
         },
       ),
+    );
+  }
+
+  Widget buildFileInput(
+    String labelText,
+    TextEditingController controller,
+    void Function(File?)? onPressed,
+  ) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: labelText,
+                labelStyle: TextStyle(
+                  fontSize: 16,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              FilePickerResult? result = await FilePicker.platform.pickFiles();
+              if (result != null) {
+                File file = File(result.files.single.path!);
+                controller.text = file.path;
+                onPressed?.call(file);
+              }
+            },
+            icon: Icon(Icons.attach_file),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.upload),
+          ),
+          IconButton(
+            onPressed: () {
+              controller.clear();
+              onPressed?.call(null);
+            },
+            icon: Icon(Icons.clear),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Column _detail() {
+    return Column(
+      children: [
+        buildFileInput(
+          "Select File",
+          fileController,
+          (file) {
+            setState(() {
+              selectedFile = file;
+            });
+          },
+        ),
+      ],
     );
   }
 }

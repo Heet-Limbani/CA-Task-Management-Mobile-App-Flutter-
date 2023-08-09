@@ -20,6 +20,7 @@ import 'package:task_manager/ui/Admin/Holiday/holidayView.dart';
 import 'package:task_manager/ui/Admin/Invoice/customInvoice.dart';
 import 'package:task_manager/ui/Admin/Invoice/invoice.dart';
 import 'package:task_manager/ui/Admin/Password/vault.dart';
+import 'package:task_manager/ui/Admin/Profile/profile2.dart';
 import 'package:task_manager/ui/Admin/Receipt/receipt.dart';
 import 'package:task_manager/ui/Admin/Reports/attendanceLog.dart';
 import 'package:task_manager/ui/Admin/Reports/attendanceReport.dart';
@@ -33,19 +34,41 @@ import 'package:task_manager/ui/Admin/Task/addTask.dart';
 import 'package:task_manager/ui/Admin/Task/taskReport.dart';
 import 'package:task_manager/ui/Admin/Users/employee.dart';
 import 'package:task_manager/ui/Admin/DashBoard/homeAdmin.dart';
-import 'package:task_manager/ui/Admin/Profile/profile1.dart';
 import '../../../API/AdminDataModel/loginDataModel.dart';
 import '../Department/department.dart';
 import '../Setting/payment_method.dart';
 import '../Company/company.dart';
 import '../Users/client.dart';
 import 'package:task_manager/ui/Admin/Notification/notification1.dart';
-  String img = Urls.baseUrlMain + Urls.profile + Urls.profileAvatar;
 
-class SideBarAdmin extends StatelessWidget {
+
+class SideBarAdmin extends StatefulWidget {
   SideBarAdmin({Key? key}) : super(key: key);
-  final String email = Urls.profileEmail;
-  final String userName = Urls.profileUserName;
+
+  @override
+  State<SideBarAdmin> createState() => _SideBarAdminState();
+}
+String img = "";
+class _SideBarAdminState extends State<SideBarAdmin> {
+   String email = "";
+
+   String userName = "";
+
+   @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+void getUser() {
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        img = Urls.baseUrlMain + Urls.profile + prefs.getString('avatar')!;
+        email = prefs.getString('email')!;
+        userName = prefs.getString('username')!;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +114,7 @@ class SideBarAdmin extends StatelessWidget {
             leading: Icon(Icons.person),
             title: Text('Profile'),
             onTap: () {
-              Get.to(profile1());
+              Get.to(Profile2());
             },
           ),
           ListTile(
