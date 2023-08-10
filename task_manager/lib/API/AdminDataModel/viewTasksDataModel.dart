@@ -8,7 +8,7 @@ class TasksData {
   List<Expences>? expences;
   List<TaskExpences>? taskExpences;
   List<Null>? comment;
-  List<File>? file;
+  List<File1>? file;
   List<VirtualFile>? virtualFile;
 
   TasksData(
@@ -78,9 +78,9 @@ class TasksData {
     //   });
     // }
     if (json['file'] != null) {
-      file = <File>[];
+      file = <File1>[];
       json['file'].forEach((v) {
-        file!.add(new File.fromJson(v));
+        file!.add(new File1.fromJson(v));
       });
     }
     // if (json['virtual_file'] != null) {
@@ -634,7 +634,7 @@ class Expences {
   }
 }
 
-class File {
+class File1 {
   String? id;
   String? locationId;
   String? locationNum;
@@ -652,7 +652,7 @@ class File {
   String? outwardBy;
   String? location;
 
-  File(
+  File1(
       {this.id,
       this.locationId,
       this.locationNum,
@@ -670,7 +670,7 @@ class File {
       this.outwardBy,
       this.location});
 
-  File.fromJson(Map<String, dynamic> json) {
+  File1.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     locationId = json['location_id'];
     locationNum = json['location_num'];

@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:advanced_datatable/datatable.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -28,8 +32,9 @@ int dataCount2 = 0;
 String? selectedClientId1;
 
 class _TodaysTaskFileState extends State<TodaysTaskFile> {
-   
-   TextEditingController _searchController = TextEditingController();
+  TextEditingController fileController = TextEditingController();
+  File? selectedFile;
+  TextEditingController _searchController = TextEditingController();
   late TableSource _source;
   var _sortIndex = 0;
   var _sortAsc = true;
@@ -41,7 +46,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
       });
 
   TextEditingController _searchController2 = TextEditingController();
-   late TableSource2 _source2;
+  late TableSource2 _source2;
   var _sortIndex2 = 0;
   var _sortAsc2 = true;
   var _customFooter2 = false;
@@ -50,7 +55,6 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
         _sortIndex2 = i;
         _sortAsc2 = asc;
       });
-
 
   @override
   void initState() {
@@ -71,14 +75,64 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     });
   }
 
-   void refreshTable2() {
+  void refreshTable2() {
     setState(() {
       _source2.startIndex = 0;
       _source2.setNextView();
     });
   }
 
-  List<File> fileList = [];
+  List<File1> fileList = [];
+
+  void uploadFile(File selectedFile) async {
+    try {
+      Map<String, String> headers = await Urls.getXTokenHeader();
+      String csrfToken = headers['Xtoken'] ?? ''; // Get the Xtoken value
+
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            '${Urls.fileUpload}/${ticketId}'), // Replace with your API endpoint URL
+      );
+
+      request.headers['Xtoken'] = csrfToken;
+      request.files.add(
+        http.MultipartFile(
+          'userImage',
+          selectedFile.readAsBytes().asStream(),
+          selectedFile.lengthSync(),
+          filename:
+              selectedFile.path.split('/').last, // Use the selected file's name
+        ),
+      );
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Successful response
+        var responseBody = await response.stream.bytesToString();
+        var genmodel = genModel.fromJson(json.decode(responseBody));
+        Fluttertoast.showToast(
+          msg: genmodel.message.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+
+        if (genmodel.status == true) {
+          setState(() {});
+        }
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Exception: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -124,11 +178,15 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
                 ),
                 _table(),
                 SizedBox(
-                  height: deviceHeight * 0.05,
+                  height: deviceHeight * 0.12,
                 ),
                 _header3(),
                 SizedBox(
-                  height: deviceHeight * 0.2,
+                  height: deviceHeight * 0.04,
+                ),
+                _detail(),
+                SizedBox(
+                  height: deviceHeight * 0.08,
                 ),
                 _header2(),
                 SizedBox(
@@ -152,18 +210,95 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Upload File",
+          "Upload Files",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
           ),
         ),
-        SizedBox(
-          width: 30,
-        ),
         const Spacer(),
       ],
+    );
+  }
+
+  Column _detail() {
+    return Column(
+      children: [
+        buildFileInput(
+          "Select File",
+          fileController,
+          (file) {
+            setState(() {
+              selectedFile = file;
+            });
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget buildFileInput(
+    String labelText,
+    TextEditingController controller,
+    void Function(File?)? onPressed,
+  ) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: labelText,
+                labelStyle: TextStyle(
+                  fontSize: 16,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              FilePickerResult? result = await FilePicker.platform.pickFiles();
+              if (result != null) {
+                File file = File(result.files.single.path!);
+                controller.text = file.path;
+                onPressed?.call(file);
+              }
+            },
+            icon: Icon(Icons.attach_file),
+          ),
+          IconButton(
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                uploadFile(selectedFile!);
+                controller.clear();
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Please Select File",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  // backgroundColor: AppColors.primaryColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              }
+            },
+            icon: Icon(Icons.upload),
+          ),
+          IconButton(
+            onPressed: () {
+              controller.clear();
+              onPressed?.call(null);
+            },
+            icon: Icon(Icons.clear),
+          ),
+        ],
+      ),
     );
   }
 
@@ -179,9 +314,6 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
             fontWeight: FontWeight.w700,
             fontSize: 22,
           ),
-        ),
-        SizedBox(
-          width: 30,
         ),
         const Spacer(),
       ],
@@ -347,7 +479,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     );
   }
 
-   Row _header2() {
+  Row _header2() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -402,7 +534,8 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
               icon: const Icon(Icons.clear),
             ),
             IconButton(
-              onPressed: () => _source2.filterServerSide(_searchController2.text),
+              onPressed: () =>
+                  _source2.filterServerSide(_searchController2.text),
               icon: const Icon(Icons.search),
             ),
             IconButton(
@@ -530,7 +663,6 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
       ],
     );
   }
- 
 }
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
@@ -551,10 +683,10 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
     final List<TasksData> rows = lastDetails!.rows;
     if (index >= 0 && index < rows.length) {
       final TasksData dataList = rows[index];
-      final List<File>? files = dataList.file;
+      final List<File1>? files = dataList.file;
 
       if (files != null && files.isNotEmpty) {
-        final File file = files.first;
+        final File1 file = files.first;
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
@@ -604,7 +736,7 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
         dataCount = fileCount;
         final List<TasksData> dataList = dynamicList
                 ?.map<TasksData>(
-                    (item) => TasksData(file: [File.fromJson(item)]))
+                    (item) => TasksData(file: [File1.fromJson(item)]))
                 .toList() ??
             [];
 
@@ -624,6 +756,7 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
     }
   }
 }
+
 ///////////
 class TableSource2 extends AdvancedDataTableSource<TasksData> {
   final BuildContext context;
@@ -635,7 +768,6 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
   int startIndex = 0;
   RemoteDataSourceDetails<TasksData>? lastDetails;
 
-  
   void delete(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
@@ -643,7 +775,7 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
         params: {
           'id': id,
           'ticket_id': ticketId,
-          'task':'View_task',  
+          'task': 'View_task',
         },
       );
 
@@ -683,7 +815,10 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                           Get.to(fileDetailsEdit(userId: file.id!, ticketId: ticketId, sc: file.showToClient! ));
+                            Get.to(fileDetailsEdit(
+                                userId: file.id!,
+                                ticketId: ticketId,
+                                sc: file.showToClient!));
                           },
                           child: Icon(Icons.edit),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -746,8 +881,8 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
         virtualFileCount = dynamicList?.length ?? 0;
         dataCount2 = virtualFileCount;
         final List<TasksData> dataList = dynamicList
-                ?.map<TasksData>(
-                    (item) => TasksData(virtualFile: [VirtualFile.fromJson(item)]))
+                ?.map<TasksData>((item) =>
+                    TasksData(virtualFile: [VirtualFile.fromJson(item)]))
                 .toList() ??
             [];
 

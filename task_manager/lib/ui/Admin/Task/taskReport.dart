@@ -1,10 +1,13 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/loadTask.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
+import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/Admin/Task/addTask.dart';
 import '../sidebar/sidebarAdmin.dart';
 
@@ -14,7 +17,9 @@ class TaskReport extends StatefulWidget {
   @override
   State<TaskReport> createState() => _TaskReportState();
 }
+
 int dataCount = 0;
+
 class _TaskReportState extends State<TaskReport> {
   late TableSource _source;
   String? stringResponse;
@@ -343,6 +348,24 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
   String lastSearchTerm = '';
 
   //int startIndex = 0; // Add the startIndex variable
+  void delete(id) async {
+  genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.deleteTask}',
+      params: { 
+        'id': id,
+      
+        },
+    );
+
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+    }
+  }
 
   @override
   DataRow? getRow(int index) {
@@ -380,9 +403,9 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
         DataCell(Text(srNo)),
         DataCell(Text(dataList.title ?? '')),
         DataCell(Text(dataList.ticketId ?? '')),
-        DataCell(Text(dataList.clientName ?? '')),      
+        DataCell(Text(dataList.clientName ?? '')),
         DataCell(Text(dataList.departmentName ?? '')),
-        DataCell(Text(dataList.deadlineDate ?? '')),      
+        DataCell(Text(dataList.deadlineDate ?? '')),
         DataCell(Text(statusText)),
         DataCell(
           Container(
@@ -395,49 +418,51 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(
+                            ViewTasksTask(ticketId: dataList.ticketId!),
+                          );
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                         onPressed: () {
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
+                       onPressed: () {
                           Get.defaultDialog(
-                              title: "Delete",
-                              middleText: "Are you sure you want to delete ?",
-                              textConfirm: "Yes",
-                              textCancel: "No",
-                              confirmTextColor: Colors.white,
-                              buttonColor: Colors.red,
-                              cancelTextColor: Colors.black,
-                              onConfirm: () {
-                                Get.back();
-                               
-                              },
-                              onCancel: () {},
-                            );
+                            title: "Delete",
+                            middleText: "Are you sure you want to delete ?",
+                            textConfirm: "Yes",
+                            textCancel: "No",
+                            confirmTextColor: Colors.white,
+                            buttonColor: Colors.red,
+                            cancelTextColor: Colors.black,
+                            onConfirm: () {
+                              delete(dataList.ticketId);
+                              Get.back();
+                            },
+                            onCancel: () {},
+                          );
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.close),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
+                      // RawMaterialButton(
+                      //   onPressed: () {
+                      //     // Handle button pressed
+                      //   },
+                      //   child: Icon(Icons.close),
+                      //   constraints: BoxConstraints.tight(Size(24, 24)),
+                      //   shape: CircleBorder(),
+                      // ),
                     ],
                   ),
                 if (dataList.status == "1" ||
@@ -447,28 +472,30 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(
+                            ViewTasksTask(ticketId: dataList.ticketId!),
+                          );
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                         onPressed: () {
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.close),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
+                      // RawMaterialButton(
+                      //   onPressed: () {
+                      //     // Handle button pressed
+                      //   },
+                      //   child: Icon(Icons.close),
+                      //   constraints: BoxConstraints.tight(Size(24, 24)),
+                      //   shape: CircleBorder(),
+                      // ),
                     ],
                   ),
                 if (dataList.status == "4")
@@ -476,7 +503,9 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(
+                            ViewTasksTask(ticketId: dataList.ticketId!),
+                          );
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -484,7 +513,7 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -498,14 +527,14 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                      RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                        },
-                        child: Icon(Icons.close),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
+                      // RawMaterialButton(
+                      //   onPressed: () {
+                      //     // Handle button pressed
+                      //   },
+                      //   child: Icon(Icons.close),
+                      //   constraints: BoxConstraints.tight(Size(24, 24)),
+                      //   shape: CircleBorder(),
+                      // ),
                     ],
                   ),
                 if (dataList.status == "5")
@@ -513,15 +542,17 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(
+                            ViewTasksTask(ticketId: dataList.ticketId!),
+                          );
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                         onPressed: () {
+                          Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -542,7 +573,9 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(
+                            ViewTasksTask(ticketId: dataList.ticketId!),
+                          );
                         },
                         child: Icon(Icons.remove_red_eye),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -561,7 +594,9 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                 if (dataList.status == "7")
                   RawMaterialButton(
                     onPressed: () {
-                      // Handle button pressed
+                      Get.to(
+                        ViewTasksTask(ticketId: dataList.ticketId!),
+                      );
                     },
                     child: Icon(Icons.remove_red_eye),
                     constraints: BoxConstraints.tight(Size(24, 24)),
@@ -614,7 +649,7 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-       int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

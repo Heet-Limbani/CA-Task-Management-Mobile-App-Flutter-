@@ -161,6 +161,10 @@ class Urls {
   static String updateProfile = "${Urls.baseUrlMain}update_user_detail";
   static String updateImage = "${Urls.baseUrlMain}upload_userpofile";
   static String profile1 = "${Urls.baseUrlMain}Profile";
+  static String fileUpload = "${Urls.baseUrlMain}ClientUploadTicketDoc";
+  static String companyFileUpload = "${Urls.baseUrlMain}ClientUploadImage";
+  static String companyFileEdit = "${Urls.baseUrlMain}EditVirtualFile";
+  static String companyFileDelete = "${Urls.baseUrlMain}DeleteVirtualFile";
 
   static String profileEmail = "";
   static String profileUserName = "";

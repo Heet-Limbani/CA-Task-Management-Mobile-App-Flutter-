@@ -56,7 +56,7 @@ class _TodaysTaskChargeState extends State<TodaysTaskCharge> {
     });
   }
 
-  List<File> fileList = [];
+  List<File1> fileList = [];
 
   @override
   Widget build(BuildContext context) {

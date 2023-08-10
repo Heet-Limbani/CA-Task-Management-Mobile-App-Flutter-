@@ -78,7 +78,7 @@ class _TodaysTaskFileState extends State<TodaysTaskFile> {
     });
   }
 
-  List<File> fileList = [];
+  List<File1> fileList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -551,10 +551,10 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
     final List<TasksData> rows = lastDetails!.rows;
     if (index >= 0 && index < rows.length) {
       final TasksData dataList = rows[index];
-      final List<File>? files = dataList.file;
+      final List<File1>? files = dataList.file;
 
       if (files != null && files.isNotEmpty) {
-        final File file = files.first;
+        final File1 file = files.first;
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
@@ -604,7 +604,7 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
         dataCount = fileCount;
         final List<TasksData> dataList = dynamicList
                 ?.map<TasksData>(
-                    (item) => TasksData(file: [File.fromJson(item)]))
+                    (item) => TasksData(file: [File1.fromJson(item)]))
                 .toList() ??
             [];
 

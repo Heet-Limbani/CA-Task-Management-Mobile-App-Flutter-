@@ -41,33 +41,41 @@ import '../Company/company.dart';
 import '../Users/client.dart';
 import 'package:task_manager/ui/Admin/Notification/notification1.dart';
 
-
 class SideBarAdmin extends StatefulWidget {
   SideBarAdmin({Key? key}) : super(key: key);
 
   @override
   State<SideBarAdmin> createState() => _SideBarAdminState();
 }
-String img = "";
+
 class _SideBarAdminState extends State<SideBarAdmin> {
-   String email = "";
-
-   String userName = "";
-
-   @override
+  @override
   void initState() {
     super.initState();
     getUser();
   }
 
-void getUser() {
-    SharedPreferences.getInstance().then((prefs) {
+  String email = "";
+  String img = "";
+  String userName = "";
+  bool loading = true;
+  bool errorOccurred = false;
+
+  void getUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
       setState(() {
         img = Urls.baseUrlMain + Urls.profile + prefs.getString('avatar')!;
         email = prefs.getString('email')!;
         userName = prefs.getString('username')!;
+        loading = false; // Set loading to false after data retrieval
       });
-    });
+    } catch (e) {
+      setState(() {
+        loading = false; // Set loading to false even in case of error
+        errorOccurred = true;
+      });
+    }
   }
 
   @override
@@ -99,10 +107,14 @@ void getUser() {
             currentAccountPicture: CircleAvatar(
               backgroundColor: Color.fromARGB(255, 255, 255, 255),
               child: ClipOval(
-                child: Image(
-                  image: NetworkImage(img),
-                  fit: BoxFit.cover,
-                ),
+                child: loading
+                    ? CircularProgressIndicator() // Show loading indicator
+                    : errorOccurred
+                        ? Icon(Icons.error) // Show error icon
+                        : Image(
+                            image: NetworkImage(img),
+                            fit: BoxFit.cover,
+                          ),
               ),
             ),
           ),

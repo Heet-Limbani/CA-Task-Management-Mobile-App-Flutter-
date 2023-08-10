@@ -1,13 +1,17 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/companyFileDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/Company/filesDetailsEdit.dart';
 import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:http/http.dart' as http;
 
 class CompanyFile extends StatefulWidget {
   final String id;
@@ -57,6 +61,56 @@ class _CompanyFileState extends State<CompanyFile> {
       _source.startIndex = 0;
       _source.setNextView();
     });
+  }
+
+  void uploadFile(File selectedFile) async {
+    try {
+      Map<String, String> headers = await Urls.getXTokenHeader();
+      String csrfToken = headers['Xtoken'] ?? ''; // Get the Xtoken value
+
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            '${Urls.companyFileUpload}/${id}'), // Replace with your API endpoint URL
+      );
+
+      request.headers['Xtoken'] = csrfToken;
+      request.files.add(
+        http.MultipartFile(
+          'userImage',
+          selectedFile.readAsBytes().asStream(),
+          selectedFile.lengthSync(),
+          filename:
+              selectedFile.path.split('/').last, // Use the selected file's name
+        ),
+      );
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Successful response
+        var responseBody = await response.stream.bytesToString();
+        var genmodel = genModel.fromJson(json.decode(responseBody));
+        Fluttertoast.showToast(
+          msg: genmodel.message.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+
+        if (genmodel.status == true) {
+          setState(() {});
+        }
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Exception: $e');
+    }
   }
 
   Widget build(BuildContext context) {
@@ -346,7 +400,22 @@ class _CompanyFileState extends State<CompanyFile> {
             icon: Icon(Icons.attach_file),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                uploadFile(selectedFile!);
+                controller.clear();
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Please Select File",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  // backgroundColor: AppColors.primaryColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              }
+            },
             icon: Icon(Icons.upload),
           ),
           IconButton(
@@ -373,7 +442,21 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
   String lastSearchTerm = '';
 
   int startIndex = 0; // Add the startIndex variable
-
+ void deleteUser(String? id1) async {
+    
+      genModel? genmodel = await Urls.postApiCall(
+        method: '${Urls.companyFileDelete}',
+        params: {'id': id1,'ticket_id':id,'task':'view_company_log'},
+      );
+      if (genmodel != null && genmodel.status == true) {
+        Fluttertoast.showToast(
+          msg: "${genmodel.message.toString()}",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+        );
+      }
+  }
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
@@ -395,7 +478,7 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          // Handle button pressed
+                          Get.to(fileDetailsEdit(ticketId:dataList.id!,sc: dataList.downloadable!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -408,7 +491,10 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                             content: Text("Are you sure you want to delete?"),
                             actions: [
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  deleteUser(dataList.id);
+                                  Get.back();
+                                },
                                 child: Text("Delete"),
                               ),
                               TextButton(
@@ -436,29 +522,31 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
+                       onPressed: () {
+                          Get.to(fileDetailsEdit(ticketId:dataList.id!,sc: dataList.downloadable!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                        onPressed: () {
-                           Get.defaultDialog(
+                       onPressed: () {
+                          Get.defaultDialog(
                             title: "Delete",
-                            middleText:
-                                "Are you sure you want to delete ?",
-                            textConfirm: "Yes",
-                            textCancel: "No",
-                            confirmTextColor: Colors.white,
-                            buttonColor: Colors.red,
-                            cancelTextColor: Colors.black,
-                            onConfirm: () {
-                             Get.back();
-                            },
-                            onCancel: () {
-                            },
+                            content: Text("Are you sure you want to delete?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  deleteUser(dataList.id);
+                                  Get.back();
+                                },
+                                child: Text("Delete"),
+                              ),
+                              TextButton(
+                                onPressed: () {},
+                                child: Text("Cencel"),
+                              ),
+                            ],
                           );
                         },
                         child: Icon(Icons.delete),
