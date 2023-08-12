@@ -2443,14 +2443,18 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
       final BirthDayList dataList = rows[index];
       final List<Birthday>? birthdays = dataList.birthday;
 
+
       if (birthdays != null && birthdays.isNotEmpty) {
         final Birthday birthday = birthdays.first;
+        final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+            int.parse(birthday.metaValue ?? '0') * 1000);
+        final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
         return DataRow(
           cells: [
             DataCell(Text(srNo)),
             DataCell(Text(birthday.id ?? '')),
             DataCell(Text(birthday.userName ?? '')),
-            DataCell(Text("")),
+            DataCell(Text(formattedDate)),
           ],
         );
       }

@@ -1,9 +1,11 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/performanceReportDataModel.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/Reports/graph.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class PerformanceReport extends StatefulWidget {
@@ -337,7 +339,7 @@ class TableSource extends AdvancedDataTableSource<PerformanceReportDataModel> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                       
+                       Get.to(Graph(userId:dataList.id ?? ''));
                       },
                       child: Icon(Icons.auto_graph),
                       constraints: BoxConstraints.tight(Size(24, 24)),

@@ -204,7 +204,12 @@ class _VaultEditState extends State<VaultEdit> {
       child: Column(
         children: <Widget>[
          DropdownButtonFormField<String>(
-            value: selectedClientId1,
+            //value: selectedClientId1,
+             value: clientType
+                    .expand((dataModel) => dataModel.company ?? [])
+                    .any((company) => company.id == selectedClientId1)
+                ? selectedClientId1
+                : null,
             decoration: const InputDecoration(
               labelText: 'Client',
               enabledBorder: OutlineInputBorder(
