@@ -269,7 +269,7 @@ class _ClientPasswordEditState extends State<ClientPasswordEdit> {
             obscureText: obscurePassword1,
             decoration: InputDecoration(
               labelText: 'GST Password',
-               suffix: GestureDetector(
+              suffix: GestureDetector(
                 child: Icon(
                     obscurePassword1 ? Icons.visibility : Icons.visibility_off),
                 onTap: () {

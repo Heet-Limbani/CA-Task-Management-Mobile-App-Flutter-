@@ -21,19 +21,16 @@ int dataCount = 0;
 
 class _AttendanceReportState extends State<AttendanceReport> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -297,13 +294,10 @@ class _AttendanceReportState extends State<AttendanceReport> {
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<AttendanceReportDataModel> {
-  final BuildContext context; // Add the context parameter
-
+  final BuildContext context;
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
   int startIndex = 0; // Add the startIndex variable
 
   int countIds(String ids) {
@@ -319,15 +313,15 @@ class TableSource extends AdvancedDataTableSource<AttendanceReportDataModel> {
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final AttendanceReportDataModel dataList = lastDetails!.rows[index];
-   
+
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
         DataCell(Text(dataList.name ?? '')),
-        DataCell(Text(dataList.totalWork.toString() )),
+        DataCell(Text(dataList.totalWork.toString())),
         DataCell(Text(dataList.totalLeave.toString())),
         DataCell(Text(dataList.totalDays.toString())),
-         DataCell(
+        DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -336,21 +330,17 @@ class TableSource extends AdvancedDataTableSource<AttendanceReportDataModel> {
                 Row(
                   children: [
                     RawMaterialButton(
-                      onPressed: () {
-                       
-                      },
+                      onPressed: () {},
                       child: Icon(Icons.auto_graph),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
-                   
                   ],
                 ),
               ],
             ),
           ),
         ),
-    
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
@@ -401,8 +391,8 @@ class TableSource extends AdvancedDataTableSource<AttendanceReportDataModel> {
         //count,
         dynamicData
             .map<AttendanceReportDataModel>(
-              (item) =>
-                  AttendanceReportDataModel.fromJson(item as Map<String, dynamic>),
+              (item) => AttendanceReportDataModel.fromJson(
+                  item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty

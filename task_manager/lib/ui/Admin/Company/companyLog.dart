@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/API/AdminDataModel/companyLogDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Company/viewCompany.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class CompanyLog extends StatefulWidget {
   final String id;
@@ -20,6 +20,7 @@ TextEditingController nameController =
 
 String id = "";
 int dataCount = 0;
+
 class _CompanyLogState extends State<CompanyLog> {
   late TableSource _source; // Declare _source here
 
@@ -373,7 +374,6 @@ class TableSource extends AdvancedDataTableSource<CompanyLogDataModel> {
       int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
       dataCount = count;
-     
 
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,

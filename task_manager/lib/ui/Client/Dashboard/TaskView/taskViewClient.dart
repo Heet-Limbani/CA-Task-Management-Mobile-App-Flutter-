@@ -24,9 +24,6 @@ class ViewTasksTaskClient extends StatefulWidget {
 
 late double deviceWidth;
 late double deviceHeight;
-
-// Declare _source here
-
 TextEditingController descriptionController = TextEditingController();
 TextEditingController clientNameController = TextEditingController();
 TextEditingController clientNumberController = TextEditingController();

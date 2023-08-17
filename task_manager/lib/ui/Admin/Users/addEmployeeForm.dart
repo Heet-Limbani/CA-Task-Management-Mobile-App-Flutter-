@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-
 
 class AddEmployeeForm extends StatefulWidget {
   const AddEmployeeForm({Key? key}) : super(key: key);
@@ -17,9 +16,6 @@ class AddEmployeeForm extends StatefulWidget {
 class _AddEmployeeFormState extends State<AddEmployeeForm> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _addEmployeeformKey = GlobalKey<FormState>();
   TextEditingController userName = TextEditingController();
   TextEditingController firstName = TextEditingController();
@@ -28,7 +24,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
   TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController contact2 = TextEditingController();
-
   bool isActive = true;
   bool checkSMS = true;
   bool checkEmail = true;
@@ -76,7 +71,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
         },
       );
       if (genmodel != null) {
-       // print('Status: ${genmodel.message}');
+        // print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -296,7 +291,8 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
 
               if (selectedDate != null) {
                 // Format the selected date as 'dd-MM-yyyy'
-                    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                String formattedDate =
+                    DateFormat('yyyy-MM-dd').format(selectedDate);
 
                 setState(() {
                   birthDateController.text = formattedDate;
@@ -384,7 +380,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           TextFormField(
+          TextFormField(
             controller: contact2,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.done,
@@ -414,38 +410,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               return null;
             },
           ),
-          // TextFormField(
-          //   controller: contact2,
-          //   keyboardType: TextInputType.number,
-          //   textInputAction: TextInputAction.done,
-          //   decoration: InputDecoration(
-          //     labelText: 'Parent Number',
-          //     suffixIcon: Icon(Icons.contact_phone),
-          //     contentPadding:
-          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.grey),
-          //       gapPadding: 10,
-          //     ),
-          //     focusedBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-          //       gapPadding: 10,
-          //     ),
-          //   ),
-          //   validator: (value) {
-          //     if (value!.isEmpty) {
-          //       return 'Please Enter Parent Contact Number';
-          //     }
-
-          //     final numberRegex = r'^[0-9]+$';
-          //     if (!RegExp(numberRegex).hasMatch(value)) {
-          //       return 'Please Enter Valid Number';
-          //     }
-          //     return null;
-          //   },
-          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -525,7 +489,7 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -536,7 +500,6 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
               if (_addEmployeeformKey.currentState!.validate()) {
                 employeeAdd();
                 clearField();
-               
               }
             },
             child: Text(
@@ -555,34 +518,3 @@ class _AddEmployeeFormState extends State<AddEmployeeForm> {
     );
   }
 }
-
-// Table heading
-
-
-
-
-
-// Row _test() {
-//   return Row(
-//     mainAxisAlignment: MainAxisAlignment.center,
-//     children: [
-//       Container(
-//         height: 100,
-//         width: 200,
-//         decoration: BoxDecoration(
-//           color: const Color.fromARGB(255, 182, 212, 237),
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//         child: Center(
-//           child: dataResponse == null
-//               ? Text("data Is Loading")
-//               : Text(
-//                   dataResponse!["first_name"].toString(),
-//                 ),
-//         ),
-//       ),
-//     ],
-//   );
-// }
-
-// Table contents

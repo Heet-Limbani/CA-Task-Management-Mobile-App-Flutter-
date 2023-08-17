@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/Admin/File_Manager/fileManager.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class DispatchFile extends StatefulWidget {
-  final String userId;
+  final String id;
 
-  const DispatchFile({required this.userId, Key? key}) : super(key: key);
+  const DispatchFile({required this.id, Key? key}) : super(key: key);
 
   @override
   State<DispatchFile> createState() => _DispatchFileState();
@@ -19,19 +19,12 @@ class DispatchFile extends StatefulWidget {
 class _DispatchFileState extends State<DispatchFile> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _DispatchFileKey = GlobalKey<FormState>();
   TextEditingController receiverName = TextEditingController();
   TextEditingController note = TextEditingController();
- 
-  String userId = "";
-
-
+  String id = "";
   @override
   void dispose() {
-  
     receiverName.dispose();
     note.dispose();
     super.dispose();
@@ -40,7 +33,7 @@ class _DispatchFileState extends State<DispatchFile> {
   @override
   void initState() {
     super.initState();
-    userId = widget.userId; // Store widget.userId in a local variable
+    id = widget.id; // Store widget.userId in a local variable
   }
 
   void clearField() {
@@ -48,14 +41,13 @@ class _DispatchFileState extends State<DispatchFile> {
     note.clear();
   }
 
- 
   void fileDispatch() async {
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.dispatchFile}',
         params: {
           "update": "Update",
-          "id": userId.toString(),
+          "id": id.toString(),
           "receiver_name": receiverName.text.toString(),
           "note": note.text.toString(),
         },
@@ -152,7 +144,6 @@ class _DispatchFileState extends State<DispatchFile> {
       key: _DispatchFileKey,
       child: Column(
         children: <Widget>[
-
           TextFormField(
             controller: receiverName,
             keyboardType: TextInputType.text,
@@ -216,7 +207,6 @@ class _DispatchFileState extends State<DispatchFile> {
               return null; // Return null if the input is valid
             },
           ),
-         
           SizedBox(
             height: deviceHeight * 0.05,
           ),
@@ -225,7 +215,7 @@ class _DispatchFileState extends State<DispatchFile> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -255,5 +245,3 @@ class _DispatchFileState extends State<DispatchFile> {
     );
   }
 }
-
-

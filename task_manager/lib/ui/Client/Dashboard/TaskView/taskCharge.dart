@@ -20,12 +20,9 @@ class TodaysTaskCharge extends StatefulWidget {
 
 late double deviceWidth;
 late double deviceHeight;
-
-// Declare _source here
 bool isObscurePassword = true;
 String ticketId = "";
 int dataCount = 0;
-
 String? selectedClientId1;
 
 class _TodaysTaskChargeState extends State<TodaysTaskCharge> {
@@ -343,7 +340,7 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
   int startIndex = 0;
   RemoteDataSourceDetails<TasksData>? lastDetails;
 
-   void delete(String? id) async {
+  void delete(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.taskChargeDelete}',
@@ -386,7 +383,8 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                            Get.to(TaskChargeEdit(userId:taskExpences.id.toString()));
+                            Get.to(TaskChargeEdit(
+                                userId: taskExpences.id.toString()));
                           },
                           child: Icon(Icons.edit),
                           constraints: BoxConstraints.tight(Size(24, 24)),
@@ -449,8 +447,8 @@ class TableSource extends AdvancedDataTableSource<TasksData> {
         expenseCount = dynamicList?.length ?? 0;
         dataCount = expenseCount;
         final List<TasksData> dataList = dynamicList
-                ?.map<TasksData>(
-                    (item) => TasksData(taskExpences: [TaskExpences.fromJson(item)]))
+                ?.map<TasksData>((item) =>
+                    TasksData(taskExpences: [TaskExpences.fromJson(item)]))
                 .toList() ??
             [];
 

@@ -391,7 +391,6 @@ class TableSource extends AdvancedDataTableSource<CompanyGroupDataModel> {
     if (ids.isEmpty) {
       return 0;
     }
-
     List<String> idList = ids.split(',');
     return idList.length;
   }
@@ -461,8 +460,7 @@ class TableSource extends AdvancedDataTableSource<CompanyGroupDataModel> {
                         if (dataList.id != null) {
                           Get.defaultDialog(
                             title: "Delete",
-                            middleText:
-                                "Are you sure you want to delete ?",
+                            middleText: "Are you sure you want to delete ?",
                             textConfirm: "Yes",
                             textCancel: "No",
                             confirmTextColor: Colors.white,

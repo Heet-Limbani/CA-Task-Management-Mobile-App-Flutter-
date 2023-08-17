@@ -22,19 +22,16 @@ int dataCount = 0;
 
 class _ClientInvoiceState extends State<ClientInvoice> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -334,15 +331,15 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.id.toString()));
+                          Get.to(() => ViewTasksTaskClient(
+                              ticketId: dataList.id.toString()));
                         },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
+                        onPressed: () {
                           Get.to(() => ClientTicket());
                         },
                         child: Icon(Icons.pending_actions_outlined),
@@ -362,8 +359,8 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.id.toString()));
+                          Get.to(() => ViewTasksTaskClient(
+                              ticketId: dataList.id.toString()));
                         },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -393,7 +390,7 @@ class TableSource extends AdvancedDataTableSource<ClientInvoiceDataModel> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
+                        onPressed: () {
                           Get.to(() => ClientTicket());
                         },
                         child: Icon(Icons.pending_actions_outlined),

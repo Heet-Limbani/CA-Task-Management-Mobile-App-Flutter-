@@ -8,9 +8,7 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AttendanceLogAdd extends StatefulWidget {
-
-
-  const AttendanceLogAdd({ Key? key}) : super(key: key);
+  const AttendanceLogAdd({Key? key}) : super(key: key);
 
   @override
   State<AttendanceLogAdd> createState() => _AttendanceLogAddState();
@@ -19,16 +17,11 @@ class AttendanceLogAdd extends StatefulWidget {
 class _AttendanceLogAddState extends State<AttendanceLogAdd> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AttendanceLogAddKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController inTime = TextEditingController();
   TextEditingController outTime = TextEditingController();
   TextEditingController date = TextEditingController();
-
- 
   String? selectedClientId1;
 
   @override
@@ -43,7 +36,6 @@ class _AttendanceLogAddState extends State<AttendanceLogAdd> {
   @override
   void initState() {
     super.initState();
-    // Store widget.userId in a local variable
     getUser();
   }
 
@@ -60,14 +52,12 @@ class _AttendanceLogAddState extends State<AttendanceLogAdd> {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.getUsers}',
       params: {'type': Urls.employeeType, 'limit': "200"},
-
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       if (data != null && data is List) {
-        clientType =
-            data.map((item) => GetUser.fromJson(item)).toList();
+        clientType = data.map((item) => GetUser.fromJson(item)).toList();
       }
       setState(() {});
     }
@@ -243,8 +233,7 @@ class _AttendanceLogAddState extends State<AttendanceLogAdd> {
               if (selectedTime != null) {
                 // Format the selected time
                 String formattedTime =
-               '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
-
+                    '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
 
                 setState(() {
                   inTime.text = formattedTime;
@@ -295,7 +284,7 @@ class _AttendanceLogAddState extends State<AttendanceLogAdd> {
               if (selectedTime != null) {
                 // Format the selected time
                 String formattedTime1 =
-                '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
+                    '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
 
                 setState(() {
                   outTime.text = formattedTime1;

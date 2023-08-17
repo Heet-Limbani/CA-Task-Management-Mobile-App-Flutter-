@@ -5,8 +5,8 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:task_manager/API/AdminDataModel/companyDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/companyGroupEditDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditCompanyGroup extends StatefulWidget {
@@ -35,9 +35,6 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
   String? company;
   List<String> selectedCompanyIds = [];
   List<CompanyDataModel> companyGroupDataList = [];
-
-  // TextEditingController contact2 = TextEditingController();
-
   bool autoTicket = true;
   bool checkSMS = true;
   bool checkEmail = true;
@@ -57,7 +54,6 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
     message.dispose();
     interval.dispose();
     startDate.dispose();
-
     super.dispose();
   }
 
@@ -95,18 +91,13 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
         groupName.text = clientType[0].group!.name.toString();
         String com = clientType[0].group!.companyId.toString();
         companyList = com.split(",");
-        print("Company List : $companyList");
-        print("com : $com");
-        
+
         Set<String> preselectedCompanyIds = Set.from(companyList);
         for (CompanyDataModel company in companyGroupDataList) {
           if (preselectedCompanyIds.contains(company.id)) {
             selectedCompanies.add(company);
           }
         }
-    //     List<CompanyDataModel> preselectedItems = companyGroupDataList
-    // .where((company) => preselectedCompanyIds.contains(company.id))
-    // .toList();
         message.text = clientType[0].group!.message.toString();
         String intervalValue = '';
         if (clientType[0].group!.timeInterval.toString() == "0") {
@@ -122,7 +113,6 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
         } else if (clientType[0].group!.timeInterval.toString() == "5") {
           intervalValue = "Year";
         }
-
         interval.text = intervalValue;
         selectedClientId1 = intervalValue;
         startDate.text = DateFormat('yyyy-MM-dd').format(
@@ -154,7 +144,6 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
         List<CompanyDataModel> fetchedData = data.map<CompanyDataModel>((item) {
           return CompanyDataModel.fromJson(item);
         }).toList();
-
         setState(() {
           companyGroupDataList.addAll(fetchedData);
         });
@@ -166,7 +155,6 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
     autoTicketValue = (autoTicket ? "1" : "0");
     checkSMSValue = (checkSMS ? "1" : "0");
     checkEmailValue = (checkEmail ? "1" : "0");
-    // print("Contact2 : ${contact2.text}");
 
     try {
       genModel? genmodel = await Urls.postApiCall(
@@ -324,37 +312,36 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-     Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Company',
-          style: TextStyle(
-            fontSize: 16,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Company',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(height: 8),
+              MultiSelectDialogField<CompanyDataModel>(
+                title: Text('Select Company'),
+                items: companyGroupDataList
+                    .map((company) => MultiSelectItem<CompanyDataModel>(
+                          company,
+                          company.name ?? '',
+                        ))
+                    .toList(),
+                listType: MultiSelectListType.CHIP,
+                onConfirm: (List<CompanyDataModel> selectedItems) {
+                  setState(() {
+                    selectedCompanyIds = selectedItems
+                        .map((item) => item.id!)
+                        .toList()
+                        .cast<String>();
+                  });
+                },
+              ),
+            ],
           ),
-        ),
-        SizedBox(height: 8),
-        MultiSelectDialogField<CompanyDataModel>(
-          title: Text('Select Company'),
-          items: companyGroupDataList
-              .map((company) => MultiSelectItem<CompanyDataModel>(
-                  company,
-                  company.name ?? '',
-                ))
-              .toList(),
-          listType: MultiSelectListType.CHIP,
-          onConfirm: (List<CompanyDataModel> selectedItems) {
-            setState(() {
-              selectedCompanyIds = selectedItems
-                  .map((item) => item.id!)
-                  .toList()
-                  .cast<String>();
-            });
-            print(selectedCompanyIds);
-          },
-        ),
-      ],
-    ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -553,7 +540,7 @@ class _EditCompanyGroupState extends State<EditCompanyGroup> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/manageLocationDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditLocation extends StatefulWidget {
@@ -18,9 +18,6 @@ class EditLocation extends StatefulWidget {
 class _EditLocationState extends State<EditLocation> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _EditLocationKey = GlobalKey<FormState>();
   TextEditingController locationName = TextEditingController();
   TextEditingController sortCode = TextEditingController();
@@ -53,7 +50,6 @@ class _EditLocationState extends State<EditLocation> {
 
   List<ManageLocationDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editLocation}',
       params: {
@@ -68,7 +64,6 @@ class _EditLocationState extends State<EditLocation> {
       sortCode.text = LocationData.sortTag ?? '';
       fromLimit.text = LocationData.minLimit ?? '';
       toLimit.text = LocationData.maxLimit ?? '';
-
       setState(() {});
     }
   }
@@ -92,7 +87,6 @@ class _EditLocationState extends State<EditLocation> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
-          // backgroundColor: AppColors.primaryColor,
           textColor: Colors.white,
           fontSize: 16.0,
         );
@@ -235,7 +229,7 @@ class _EditLocationState extends State<EditLocation> {
               if (value!.isEmpty) {
                 return 'Please Enter Sort Code';
               }
-             
+
               return null; // Return null if the input is valid
             },
           ),
@@ -266,7 +260,7 @@ class _EditLocationState extends State<EditLocation> {
               if (value!.isEmpty) {
                 return 'Please Enter From Limit';
               }
-             
+
               return null; // Return null if the input is valid
             },
           ),
@@ -297,7 +291,7 @@ class _EditLocationState extends State<EditLocation> {
               if (value!.isEmpty) {
                 return 'Please Enter To Limit';
               }
-             
+
               return null; // Return null if the input is valid
             },
           ),
@@ -309,7 +303,7 @@ class _EditLocationState extends State<EditLocation> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

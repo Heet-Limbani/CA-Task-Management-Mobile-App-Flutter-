@@ -13,13 +13,12 @@ class VaultEdit extends StatefulWidget {
   @override
   State<VaultEdit> createState() => _VaultEditState();
 }
+
 String id = '';
+
 class _VaultEditState extends State<VaultEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _VaultEditKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -29,7 +28,6 @@ class _VaultEditState extends State<VaultEdit> {
   TextEditingController pass = TextEditingController();
   TextEditingController rpass = TextEditingController();
   TextEditingController note = TextEditingController();
-
   String? selectedClientId1;
 
   @override
@@ -64,7 +62,7 @@ class _VaultEditState extends State<VaultEdit> {
     selectedClientId1 = null;
   }
 
-   List<VaultEditDataModel> clientType = [];
+  List<VaultEditDataModel> clientType = [];
 
   void getUser() async {
     genModel? genmodel = await Urls.postApiCall(
@@ -76,7 +74,6 @@ class _VaultEditState extends State<VaultEdit> {
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-
 
       final companyData = VaultEditDataModel.fromJson(data);
 
@@ -108,7 +105,7 @@ class _VaultEditState extends State<VaultEdit> {
           "number": contact.text,
           "note": note.text,
           "id": id.toString(),
-          "save":"save",
+          "save": "save",
         },
       );
       if (genmodel != null) {
@@ -203,9 +200,9 @@ class _VaultEditState extends State<VaultEdit> {
       key: _VaultEditKey,
       child: Column(
         children: <Widget>[
-         DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(
             //value: selectedClientId1,
-             value: clientType
+            value: clientType
                     .expand((dataModel) => dataModel.company ?? [])
                     .any((company) => company.id == selectedClientId1)
                 ? selectedClientId1

@@ -3,14 +3,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/companyDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 
 class AddCompanyGroup extends StatefulWidget {
   const AddCompanyGroup({super.key});
-
   @override
   State<AddCompanyGroup> createState() => _AddCompanyGroupState();
 }
@@ -18,24 +17,18 @@ class AddCompanyGroup extends StatefulWidget {
 class _AddCompanyGroupState extends State<AddCompanyGroup> {
   late double deviceWidth;
   late double deviceHeight;
-
   Map? dataResponse;
-
   final GlobalKey<FormState> _AddCompanyGroupKey = GlobalKey<FormState>();
   TextEditingController groupName = TextEditingController();
   TextEditingController Companies = TextEditingController();
   TextEditingController message = TextEditingController();
   TextEditingController interval = TextEditingController();
   TextEditingController startDate = TextEditingController();
-  List<String> test = ["1", "2"];
   String? selectedClientId1;
   late int selectedClientId;
   String? company;
   List<String> selectedCompanyIds = [];
   List<String> selectedCompanyNames = [];
-
-  // TextEditingController contact2 = TextEditingController();
-
   bool autoTicket = true;
   bool checkSMS = true;
   bool checkEmail = true;
@@ -50,7 +43,6 @@ class _AddCompanyGroupState extends State<AddCompanyGroup> {
     message.dispose();
     interval.dispose();
     startDate.dispose();
-
     super.dispose();
   }
 
@@ -58,7 +50,6 @@ class _AddCompanyGroupState extends State<AddCompanyGroup> {
   void initState() {
     getUser();
     super.initState();
-    // Store widget.userId in a local variable
   }
 
   void clearField() {
@@ -95,7 +86,6 @@ class _AddCompanyGroupState extends State<AddCompanyGroup> {
     autoTicketValue = (autoTicket ? "1" : "0");
     checkSMSValue = (checkSMS ? "1" : "0");
     checkEmailValue = (checkEmail ? "1" : "0");
-    // print("Contact2 : ${contact2.text}");
 
     try {
       genModel? genmodel = await Urls.postApiCall(
@@ -278,7 +268,6 @@ class _AddCompanyGroupState extends State<AddCompanyGroup> {
                         .toList()
                         .cast<String>();
                   });
-                  print(selectedCompanyIds);
                 },
               ),
             ],
@@ -481,7 +470,7 @@ class _AddCompanyGroupState extends State<AddCompanyGroup> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             // Set the text color
+              // Set the text color
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

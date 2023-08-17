@@ -17,7 +17,6 @@ class ClientPassbook extends StatefulWidget {
 late double deviceWidth;
 late double deviceHeight;
 
-// Declare _source here
 bool isObscurePassword = true;
 String ticketId = "";
 int dataCount = 0;
@@ -134,6 +133,7 @@ class _ClientPassbookState extends State<ClientPassbook> {
       ],
     );
   }
+
   Row _header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -630,7 +630,6 @@ class TableSource extends AdvancedDataTableSource<ClientPassbookDataModel> {
   }
 }
 
-///////////
 class TableSource2 extends AdvancedDataTableSource<ClientPassbookDataModel> {
   final BuildContext context;
 

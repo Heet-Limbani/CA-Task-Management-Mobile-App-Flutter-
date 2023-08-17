@@ -29,28 +29,25 @@ class _AdminLeaveEditState extends State<AdminLeaveEdit> {
   TextEditingController interval = TextEditingController();
   TextEditingController description = TextEditingController();
 
-  String userId = "";
+  String id = "";
   String? selectedIntervalId1;
   late int selectedIntervalId;
-  bool isActive = true;
 
-  String isActiveValue = "";
   @override
   void dispose() {
     reason.dispose();
     fromDate.dispose();
     toDate.dispose();
     interval.dispose();
-    description.dispose();   
+    description.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    userId = widget.id; // Store widget.userId in a local variable
+    id = widget.id; // Store widget.userId in a local variable
     getUser();
-     
   }
 
   void clearField() {
@@ -59,16 +56,15 @@ class _AdminLeaveEditState extends State<AdminLeaveEdit> {
     toDate.clear();
     interval.clear();
     description.clear();
-    
   }
 
   List<EmployeeLeaveDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
+    
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.adminLeaveEdit}',
       params: {
-        'id': userId.toString(),
+        'id': id.toString(),
       },
     );
 
@@ -77,14 +73,13 @@ class _AdminLeaveEditState extends State<AdminLeaveEdit> {
       final fileData = EmployeeLeaveDataModel.fromJson(data);
       reason.text = fileData.reason.toString();
       fromDate.text = DateFormat('yyyy-MM-dd').format(
-          DateTime.fromMillisecondsSinceEpoch(
-              int.parse(fileData.fromDate!) * 1000),
-        );
+        DateTime.fromMillisecondsSinceEpoch(
+            int.parse(fileData.fromDate!) * 1000),
+      );
       toDate.text = DateFormat('yyyy-MM-dd').format(
-          DateTime.fromMillisecondsSinceEpoch(
-              int.parse(fileData.toDate!) * 1000),
-        );
-      
+        DateTime.fromMillisecondsSinceEpoch(int.parse(fileData.toDate!) * 1000),
+      );
+
       String intervalValue = '';
       if (fileData.shift.toString() == "0") {
         intervalValue = "Shift - 1";
@@ -93,7 +88,7 @@ class _AdminLeaveEditState extends State<AdminLeaveEdit> {
       } else if (fileData.shift.toString() == "2") {
         intervalValue = "Full Day";
       }
-     
+
       selectedIntervalId = _getItemId(intervalValue)!;
       interval.text = intervalValue;
       selectedIntervalId1 = intervalValue;
@@ -109,11 +104,11 @@ class _AdminLeaveEditState extends State<AdminLeaveEdit> {
         method: '${Urls.adminLeaveEdit}',
         params: {
           "save": "save",
-          "id": userId.toString(),
+          "id": id.toString(),
           "reason": reason.text,
           "fdate": fromDate.text,
           "tdate": toDate.text,
-          "shift":selectedIntervalId.toString(),
+          "shift": selectedIntervalId.toString(),
           "description": description.text,
         },
       );
@@ -370,11 +365,8 @@ class _AdminLeaveEditState extends State<AdminLeaveEdit> {
                 selectedIntervalId = _getItemId(newValue)!;
               });
             },
-            items: <String>[
-              'Shift - 1',
-              'Shift - 2',
-              'Full Day'
-            ].map<DropdownMenuItem<String>>((String value) {
+            items: <String>['Shift - 1', 'Shift - 2', 'Full Day']
+                .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value, style: TextStyle(fontSize: 16)),

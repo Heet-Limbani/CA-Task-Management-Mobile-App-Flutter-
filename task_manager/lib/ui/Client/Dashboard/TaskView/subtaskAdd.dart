@@ -24,20 +24,18 @@ class _SubtaskAddState extends State<SubtaskAdd> {
 
   final GlobalKey<FormState> _SubtaskAddKey = GlobalKey<FormState>();
   TextEditingController subTaskName = TextEditingController();
-   TextEditingController activity = TextEditingController();
+  TextEditingController activity = TextEditingController();
   TextEditingController startingDate = TextEditingController();
   TextEditingController deadlineDate = TextEditingController();
-   TextEditingController description = TextEditingController();
+  TextEditingController description = TextEditingController();
   TextEditingController tpAmount = TextEditingController();
   TextEditingController tpDate = TextEditingController();
   TextEditingController companyName = TextEditingController();
-  
-
   String userId = "";
   String? selectedClientId1;
   String? selectedIntervalId1;
   late int selectedIntervalId;
- 
+
   @override
   void dispose() {
     subTaskName.dispose();
@@ -55,7 +53,6 @@ class _SubtaskAddState extends State<SubtaskAdd> {
     super.initState();
     userId = widget.userId; // Store widget.userId in a local variable
     getUser();
-     
   }
 
   void clearField() {
@@ -72,18 +69,15 @@ class _SubtaskAddState extends State<SubtaskAdd> {
   List<SubtaskAddDataModel> clientType = [];
 
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.subtaskAdd}',
-      params: {
-      },
+      params: {},
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       final fileData = SubtaskAddDataModel.fromJson(data);
-      print("fileData :- $fileData");
-             
+
       clientType.add(fileData); // Add the companyData to clientType list
       setState(() {});
     }
@@ -239,7 +233,6 @@ class _SubtaskAddState extends State<SubtaskAdd> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          
           DropdownButtonFormField<String>(
             value: selectedClientId1,
             decoration: const InputDecoration(
@@ -277,7 +270,7 @@ class _SubtaskAddState extends State<SubtaskAdd> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(
             value: selectedIntervalId1,
             decoration: const InputDecoration(
               labelText: 'Activity',

@@ -15,26 +15,22 @@ class Department extends StatefulWidget {
   State<Department> createState() => _DepartmentState();
 }
 
-TextEditingController nameController =
-    TextEditingController(); // Define the TextEditingController
-
+TextEditingController nameController = TextEditingController();
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
+
 class _DepartmentState extends State<Department> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -387,7 +383,7 @@ class TableSource extends AdvancedDataTableSource<DepartmentDataModel> {
 
   int startIndex = 0; // Add the startIndex variable
 
-  void deleteUser(String? id) async {
+  void delete(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.deleteDepartment}',
@@ -517,10 +513,9 @@ class TableSource extends AdvancedDataTableSource<DepartmentDataModel> {
                             cancelTextColor: Colors.black,
                             onConfirm: () {
                               Get.back();
-                              deleteUser(dataList.id!);
+                              delete(dataList.id!);
                             },
-                            onCancel: () {
-                            },
+                            onCancel: () {},
                           );
                         }
                       },

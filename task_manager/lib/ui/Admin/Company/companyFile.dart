@@ -9,9 +9,9 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/companyFileDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Company/filesDetailsEdit.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:http/http.dart' as http;
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class CompanyFile extends StatefulWidget {
   final String id;
@@ -442,21 +442,21 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
   String lastSearchTerm = '';
 
   int startIndex = 0; // Add the startIndex variable
- void deleteUser(String? id1) async {
-    
-      genModel? genmodel = await Urls.postApiCall(
-        method: '${Urls.companyFileDelete}',
-        params: {'id': id1,'ticket_id':id,'task':'view_company_log'},
+  void deleteUser(String? id1) async {
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.companyFileDelete}',
+      params: {'id': id1, 'ticket_id': id, 'task': 'view_company_log'},
+    );
+    if (genmodel != null && genmodel.status == true) {
+      Fluttertoast.showToast(
+        msg: "${genmodel.message.toString()}",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
       );
-      if (genmodel != null && genmodel.status == true) {
-        Fluttertoast.showToast(
-          msg: "${genmodel.message.toString()}",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          timeInSecForIosWeb: 1,
-        );
-      }
+    }
   }
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
@@ -478,7 +478,9 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                     children: [
                       RawMaterialButton(
                         onPressed: () {
-                          Get.to(fileDetailsEdit(ticketId:dataList.id!,sc: dataList.downloadable!));
+                          Get.to(fileDetailsEdit(
+                              ticketId: dataList.id!,
+                              sc: dataList.downloadable!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -522,15 +524,17 @@ class TableSource extends AdvancedDataTableSource<CompanyFileDataModel> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                       onPressed: () {
-                          Get.to(fileDetailsEdit(ticketId:dataList.id!,sc: dataList.downloadable!));
+                        onPressed: () {
+                          Get.to(fileDetailsEdit(
+                              ticketId: dataList.id!,
+                              sc: dataList.downloadable!));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                       onPressed: () {
+                        onPressed: () {
                           Get.defaultDialog(
                             title: "Delete",
                             content: Text("Are you sure you want to delete?"),

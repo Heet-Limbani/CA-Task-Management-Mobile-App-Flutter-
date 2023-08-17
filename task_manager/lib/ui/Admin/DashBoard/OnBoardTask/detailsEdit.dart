@@ -6,12 +6,8 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class DetailsEdit extends StatefulWidget {
-
   final String ticketId;
-
-
   const DetailsEdit({required this.ticketId, Key? key}) : super(key: key);
-
   @override
   State<DetailsEdit> createState() => _DetailsEditState();
 }
@@ -19,18 +15,13 @@ class DetailsEdit extends StatefulWidget {
 class _DetailsEditState extends State<DetailsEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _DetailsEditKey = GlobalKey<FormState>();
-
   String ticketId = "";
-
-  bool  isActive = true;
-    bool  isActive2 = true;
- 
+  bool isActive = true;
+  bool isActive2 = true;
   String isActiveValue = "";
   String isActiveValue2 = "";
+
   @override
   void dispose() {
     super.dispose();
@@ -39,19 +30,19 @@ class _DetailsEditState extends State<DetailsEdit> {
   @override
   void initState() {
     super.initState();
-    ticketId  = widget.ticketId;
+    ticketId = widget.ticketId;
   }
 
   void editFile() async {
-     isActiveValue = (isActive ? "1" : "0");
-     isActiveValue2 = (isActive2 ? "1" : "0");
+    isActiveValue = (isActive ? "1" : "0");
+    isActiveValue2 = (isActive2 ? "1" : "0");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.closeTicket}',
-      params: { 
+      params: {
         'ticket_id': ticketId,
         'send_message': isActiveValue,
         'send_email': isActiveValue2,
-        },
+      },
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -135,7 +126,6 @@ class _DetailsEditState extends State<DetailsEdit> {
     return Form(
       key: _DetailsEditKey,
       child: Column(
-        
         children: <Widget>[
           SizedBox(
             height: deviceHeight * 0.02,

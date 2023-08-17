@@ -19,17 +19,14 @@ class HolidayViewEdit extends StatefulWidget {
 class _HolidayViewEditState extends State<HolidayViewEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _HolidayViewEditKey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
-  TextEditingController description= TextEditingController();
+  TextEditingController description = TextEditingController();
   TextEditingController date = TextEditingController();
-
   String userId = "";
   bool isActive = true;
   String isActiveValue = "";
+
   @override
   void dispose() {
     title.dispose();
@@ -43,7 +40,6 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
     super.initState();
     userId = widget.userId; // Store widget.userId in a local variable
     getUser();
-     
   }
 
   void clearField() {
@@ -54,7 +50,6 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
 
   List<HolidayViewEditDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.holidayViewEdit}',
       params: {
@@ -68,10 +63,9 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
       title.text = fileData.title.toString();
       description.text = fileData.description.toString();
       date.text = DateFormat('yyyy-MM-dd').format(
-          DateTime.fromMillisecondsSinceEpoch(
-              int.parse(fileData.date!) * 1000),
-        );
-    
+        DateTime.fromMillisecondsSinceEpoch(int.parse(fileData.date!) * 1000),
+      );
+
       isActive = fileData.showToUsers.toString() == "1" ? true : false;
       clientType.add(fileData); // Add the companyData to clientType list
       setState(() {});
@@ -79,7 +73,7 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
   }
 
   void fileEdit() async {
-     isActiveValue = (isActive ? "1" : "0");
+    isActiveValue = (isActive ? "1" : "0");
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.holidayViewEdit}',
@@ -112,7 +106,6 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
     setState(() {});
   }
 
- 
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -180,8 +173,6 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
     );
   }
 
-  
- 
   Form _HolidayViewEdit() {
     return Form(
       key: _HolidayViewEditKey,
@@ -247,7 +238,6 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-
           TextFormField(
             controller: date,
             keyboardType: TextInputType.datetime,
@@ -297,7 +287,6 @@ class _HolidayViewEditState extends State<HolidayViewEdit> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-        
           SizedBox(
             height: deviceHeight * 0.02,
           ),

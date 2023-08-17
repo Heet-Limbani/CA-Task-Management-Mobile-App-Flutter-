@@ -19,23 +19,19 @@ class EditCustomInvoice extends StatefulWidget {
 class _EditCustomInvoiceState extends State<EditCustomInvoice> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _EditCustomInvoiceKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController startingDate = TextEditingController();
   TextEditingController interval = TextEditingController();
   TextEditingController particular = TextEditingController();
-
   String userId = "";
   String? selectedClientId1;
   String? selectedIntervalId1;
   late int selectedIntervalId;
   bool isActive = true;
-
   String isActiveValue = "";
+
   @override
   void dispose() {
     companyName.dispose();
@@ -49,9 +45,8 @@ class _EditCustomInvoiceState extends State<EditCustomInvoice> {
   @override
   void initState() {
     super.initState();
-    userId = widget.userId; // Store widget.userId in a local variable
+    userId = widget.userId;
     getUser();
-     
   }
 
   void clearField() {
@@ -65,7 +60,6 @@ class _EditCustomInvoiceState extends State<EditCustomInvoice> {
 
   List<EditCustomInvoiceDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editCustomInvoice}',
       params: {
@@ -79,9 +73,9 @@ class _EditCustomInvoiceState extends State<EditCustomInvoice> {
       amount.text = fileData.data!.amount.toString();
       particular.text = fileData.data!.particular.toString();
       startingDate.text = DateFormat('yyyy-MM-dd').format(
-          DateTime.fromMillisecondsSinceEpoch(
-              int.parse(fileData.data!.startingDate!) * 1000),
-        );
+        DateTime.fromMillisecondsSinceEpoch(
+            int.parse(fileData.data!.startingDate!) * 1000),
+      );
       selectedClientId1 = fileData.data!.clientId.toString();
       String intervalValue = '';
       if (fileData.data!.timePeriod.toString() == "0") {
@@ -107,9 +101,7 @@ class _EditCustomInvoiceState extends State<EditCustomInvoice> {
   }
 
   void fileEdit() async {
-     isActiveValue = (isActive ? "0" : "1");
-     String test = selectedIntervalId.toString();
-     print("selectedIntervalId :- $test");
+    isActiveValue = (isActive ? "0" : "1");
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.editCustomInvoice}',
@@ -120,7 +112,7 @@ class _EditCustomInvoiceState extends State<EditCustomInvoice> {
           "amount": amount.text,
           "startingdate": startingDate.text,
           "active": isActiveValue,
-          "time_period":selectedIntervalId.toString(),
+          "time_period": selectedIntervalId.toString(),
           "particular": particular.text,
         },
       );

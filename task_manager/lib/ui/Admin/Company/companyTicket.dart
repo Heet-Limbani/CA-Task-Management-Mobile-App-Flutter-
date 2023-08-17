@@ -19,6 +19,7 @@ TextEditingController nameController =
 
 String id = "";
 int dataCount = 0;
+
 class _CompanyTicketState extends State<CompanyTicket> {
   late TableSource _source; // Declare _source here
 
@@ -213,7 +214,7 @@ class _CompanyTicketState extends State<CompanyTicket> {
               label: const Text('Amount'),
               onSort: setSort,
             ),
-             DataColumn(
+            DataColumn(
               label: const Text('Status'),
               onSort: setSort,
             ),
@@ -310,8 +311,8 @@ class TableSource extends AdvancedDataTableSource<CompanyTicketDataModel> {
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final CompanyTicketDataModel dataList = lastDetails!.rows[index];
-     String statusText = '';
-     if (dataList.status == "0") {
+    String statusText = '';
+    if (dataList.status == "0") {
       statusText = "Unassigned";
     } else if (dataList.status == "1") {
       statusText = "Assigned";

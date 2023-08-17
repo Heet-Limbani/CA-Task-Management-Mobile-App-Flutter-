@@ -18,26 +18,22 @@ class CustomInvoice extends StatefulWidget {
   State<CustomInvoice> createState() => _CustomInvoiceState();
 }
 
-TextEditingController nameController =
-    TextEditingController(); // Define the TextEditingController
-
+TextEditingController nameController = TextEditingController();
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
+
 class _CustomInvoiceState extends State<CustomInvoice> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -137,7 +133,7 @@ class _CustomInvoiceState extends State<CustomInvoice> {
       children: [
         OutlinedButton(
           onPressed: () {
-           Get.to(AddCustomInvoice());
+            Get.to(AddCustomInvoice());
           },
           child: Text(
             "Add",
@@ -378,7 +374,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
       }
     }
 
-     String interval = '';
+    String interval = '';
     if (dataList.timePeriod == "0") {
       interval = "Week";
     } else if (dataList.timePeriod == "1") {
@@ -392,7 +388,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
     } else if (dataList.timePeriod == "5") {
       interval = "Year";
     }
-     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.startingDate ?? '0') * 1000);
     final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
@@ -417,7 +413,7 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                         Get.to(EditCustomInvoice(userId: dataList.id!));
+                          Get.to(EditCustomInvoice(userId: dataList.id!));
                         }
                       },
                       child: Icon(Icons.edit),
@@ -427,11 +423,9 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                          
                           Get.defaultDialog(
                             title: "Delete",
-                            middleText:
-                                "Are you sure you want to delete ?",
+                            middleText: "Are you sure you want to delete ?",
                             textConfirm: "Yes",
                             textCancel: "No",
                             confirmTextColor: Colors.white,
@@ -443,7 +437,6 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
                             },
                             onCancel: () {},
                           );
-                        
                         }
                       },
                       child: Icon(Icons.delete),
@@ -507,14 +500,15 @@ class TableSource extends AdvancedDataTableSource<CustomInvoiceDataModel> {
         //count,
         dynamicData
             .map<CustomInvoiceDataModel>(
-              (item) => CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+              (item) =>
+                  CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
                 .map<CustomInvoiceDataModel>(
-                  (item) =>
-                      CustomInvoiceDataModel.fromJson(item as Map<String, dynamic>),
+                  (item) => CustomInvoiceDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

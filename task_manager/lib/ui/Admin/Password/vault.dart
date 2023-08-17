@@ -339,19 +339,15 @@ typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<VaultDataModel> {
   final BuildContext context; // Add the context parameter
-
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
   int startIndex = 0; // Add the startIndex variable
 
   int countIds(String ids) {
     if (ids.isEmpty) {
       return 0;
     }
-
     List<String> idList = ids.split(',');
     return idList.length;
   }
@@ -389,7 +385,6 @@ class TableSource extends AdvancedDataTableSource<VaultDataModel> {
         final data = genmodel.data;
         final pass1 = data['password'];
         String tmp = pass1.toString();
-        print("Password :- ${pass1.toString()}");
         if (tmp == "true") {
           Fluttertoast.showToast(
             msg: " Password :- ${password1.toString()}",

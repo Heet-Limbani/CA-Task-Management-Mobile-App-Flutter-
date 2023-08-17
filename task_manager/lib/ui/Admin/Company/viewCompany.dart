@@ -5,8 +5,8 @@ import 'package:task_manager/ui/Admin/Company/companyFile.dart';
 import 'package:task_manager/ui/Admin/Company/companyLog.dart';
 import 'package:task_manager/ui/Admin/Company/companyPermission.dart';
 import 'package:task_manager/ui/Admin/Company/companyTicket.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class ViewCompany extends StatefulWidget {
   final String id;
@@ -18,15 +18,12 @@ class ViewCompany extends StatefulWidget {
 
 late double deviceWidth;
 late double deviceHeight;
-
 TextEditingController companyNameController = TextEditingController();
 TextEditingController clientNameController = TextEditingController();
 TextEditingController mobileNumberController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController gstNumberController = TextEditingController();
-
 String id = "";
-
 String? selectedClientId1;
 
 class _ViewCompanyState extends State<ViewCompany> {
@@ -41,7 +38,6 @@ class _ViewCompanyState extends State<ViewCompany> {
 
   List<CompanyDataModel2> clientType = [];
   void getUser() async {
-    print("id :- $id");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editCompany}',
       params: {
@@ -264,7 +260,7 @@ class _ViewCompanyState extends State<ViewCompany> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-         SizedBox(
+        SizedBox(
           width: deviceWidth * 0.02,
         ),
         ElevatedButton(

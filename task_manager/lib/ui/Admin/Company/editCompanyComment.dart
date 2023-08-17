@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/companyCommentEditDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class EditCompanyComments extends StatefulWidget {
   final String id;
@@ -17,56 +17,47 @@ class EditCompanyComments extends StatefulWidget {
 class _EditCompanyCommentsState extends State<EditCompanyComments> {
   late double deviceWidth;
   late double deviceHeight;
-
   Map? dataResponse;
-
   final GlobalKey<FormState> _EditCompanyCommentsKey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
   TextEditingController data = TextEditingController();
-    TextEditingController clientName = TextEditingController();
-
-
+  TextEditingController clientName = TextEditingController();
   bool isActive = true;
   bool checkSMS = true;
   bool checkEmail = true;
   String isActiveValue = "";
   String checkSMSValue = "";
   String checkEmailValue = "";
-  String userId = "";
+  String id = "";
   String? selectedClientId1;
 
   @override
   void dispose() {
-  
     clientName.dispose();
     title.dispose();
     data.dispose();
-    
-
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-    userId = widget.id; // Store widget.userId in a local variable
+    id = widget.id; // Store widget.userId in a local variable
     getUser();
   }
 
   void clearField() {
     clientName.clear();
-   title.clear();
+    title.clear();
     data.clear();
-    
   }
 
   List<CompanyCommentEditDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.manageCompanyComment}',
       params: {
-        'id': userId.toString(),
+        'id': id.toString(),
       },
     );
 
@@ -76,9 +67,9 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
       final companyData = CompanyCommentEditDataModel.fromJson(dataa);
 
       //clientName.text = companyData.company!.name.toString();
-    title.text = companyData.data!.title.toString();
-    data.text = companyData.data!.data.toString();
-    
+      title.text = companyData.data!.title.toString();
+      data.text = companyData.data!.data.toString();
+
       selectedClientId1 = companyData.data!.clientId.toString();
       clientType.add(companyData); // Add the companyData to clientType list
 
@@ -91,12 +82,10 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.editCompanyComment}',
         params: {
-         
-          "id": userId.toString(),
+          "id": id.toString(),
           "company": selectedClientId1.toString(),
           "title": title.text.toString(),
           "data": data.text.toString(),
-        
         },
       );
       if (genmodel != null) {
@@ -228,7 +217,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-         TextFormField(
+          TextFormField(
             controller: title,
             decoration: const InputDecoration(
               labelText: 'Title',
@@ -264,7 +253,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
               }
               return null;
             },
-         ),
+          ),
           SizedBox(
             height: deviceHeight * 0.05,
           ),
@@ -273,7 +262,7 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -301,6 +290,3 @@ class _EditCompanyCommentsState extends State<EditCompanyComments> {
     );
   }
 }
-
-// Table heading
-

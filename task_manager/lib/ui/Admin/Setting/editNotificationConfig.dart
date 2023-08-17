@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/notificationConficDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-
 
 class EditNotificationConfig extends StatefulWidget {
   final String userId;
 
-  const EditNotificationConfig({required this.userId, Key? key}) : super(key: key);
+  const EditNotificationConfig({required this.userId, Key? key})
+      : super(key: key);
 
   @override
   State<EditNotificationConfig> createState() => _EditNotificationConfigState();
@@ -22,7 +22,8 @@ class _EditNotificationConfigState extends State<EditNotificationConfig> {
 
   Map? dataResponse;
 
-  final GlobalKey<FormState> _EditNotificationConfigKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _EditNotificationConfigKey =
+      GlobalKey<FormState>();
   TextEditingController message = TextEditingController();
 
   bool isActive = true;
@@ -61,15 +62,13 @@ class _EditNotificationConfigState extends State<EditNotificationConfig> {
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-     
+
       if (data != null && data is Map<String, dynamic>) {
-        
         final notificationData = NotificationConfigDataModel.fromJson(data);
         notificationList = [notificationData];
         message.text = notificationData.message.toString();
 
         isActive = notificationData.send.toString() == "0" ? true : false;
-
 
         setState(() {});
       }
@@ -108,8 +107,6 @@ class _EditNotificationConfigState extends State<EditNotificationConfig> {
     }
     notification();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -239,7 +236,7 @@ class _EditNotificationConfigState extends State<EditNotificationConfig> {
             },
             controlAffinity: ListTileControlAffinity.trailing,
             secondary: isActive
-                ?Icon(Icons.check_circle, color: Colors.green)
+                ? Icon(Icons.check_circle, color: Colors.green)
                 : Icon(Icons.cancel, color: Colors.red),
           ),
           SizedBox(
@@ -250,7 +247,7 @@ class _EditNotificationConfigState extends State<EditNotificationConfig> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

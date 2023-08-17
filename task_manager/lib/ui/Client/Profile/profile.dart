@@ -215,47 +215,6 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  // void editImage() async {
-  //   try {
-  //     Map<String, String> headers = await Urls.getXTokenHeader();
-  //     String csrfToken = headers['Xtoken'] ?? ''; // Get the Xtoken value
-  //     var response = await http.post(
-  //       Uri.parse(Urls.updateImage), // Replace with your API endpoint URL
-  //       headers: {
-  //         "Xtoken": csrfToken,
-  //       },
-  //       body: {
-  //         "userImage": fileController.text,
-  //       },
-  //     );
-  //     if (response.statusCode == 200) {
-  //       // Successful response
-  //       var genmodel = genModel.fromJson(json.decode(response.body));
-  //       print('Response body: ${response.body}');
-  //       Fluttertoast.showToast(
-  //         msg: genmodel.message.toString(),
-  //         toastLength: Toast.LENGTH_SHORT,
-  //         gravity: ToastGravity.BOTTOM,
-  //         timeInSecForIosWeb: 1,
-  //         textColor: Colors.white,
-  //         fontSize: 16.0,
-  //       );
-
-  //       if (genmodel.status == true) {
-  //         setState(() {});
-  //       }
-  //     } else {
-  //       // Handle error response
-  //       print('Request failed with status: ${response.statusCode}');
-  //     }
-
-  //     // Rest of your code...
-  //   } catch (e) {
-  //     // Handle exceptions
-  //     print('Exception: $e');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -384,6 +343,7 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
+
   Column _detail() {
     return Column(
       children: [
@@ -638,111 +598,6 @@ class _ProfileState extends State<Profile> {
               return null; // Return null if the input is valid
             },
           ),
-          // SizedBox(
-          //   height: deviceHeight * 0.02,
-          // ),
-          // TextFormField(
-          //   controller: about,
-          //   keyboardType: TextInputType.text,
-          //   textInputAction: TextInputAction.next,
-          //   decoration: InputDecoration(
-          //     labelText: 'About Me',
-          //     suffixIcon: Icon(Icons.person),
-          //     contentPadding:
-          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.grey),
-          //       gapPadding: 10,
-          //     ),
-          //     focusedBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-          //       gapPadding: 10,
-          //     ),
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: deviceHeight * 0.02,
-          // ),
-          // ListTile(
-          //   contentPadding: EdgeInsets.symmetric(horizontal: 16),
-          //   title: Row(
-          //     children: [
-          //       Text('SMS Notification', style: TextStyle(fontSize: 20)),
-          //       SizedBox(
-          //         width: deviceWidth * 0.05,
-          //       ),
-          //       Spacer(), // Add spacer to push checkbox to the right
-          //       Checkbox(
-          //         value: checkSMS,
-          //         onChanged: (value) {
-          //           setState(() {
-          //             checkSMS = value!;
-          //           });
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: deviceHeight * 0.02,
-          // ),
-          // ListTile(
-          //   contentPadding: EdgeInsets.symmetric(horizontal: 16),
-          //   title: Row(
-          //     children: [
-          //       Text('Email Notification', style: TextStyle(fontSize: 20)),
-          //       SizedBox(
-          //         width: deviceWidth * 0.05,
-          //       ),
-          //       Spacer(), // Add spacer to push checkbox to the right
-          //       Checkbox(
-          //         value: checkEmail,
-          //         onChanged: (value) {
-          //           setState(() {
-          //             checkEmail = value!;
-          //           });
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: deviceHeight * 0.02,
-          // ),
-          // TextFormField(
-          //   controller: session,
-          //   keyboardType: TextInputType.number,
-          //   textInputAction: TextInputAction.next,
-          //   decoration: InputDecoration(
-          //     labelText: 'Session Time',
-          //     suffixIcon: Icon(Icons.timer),
-          //     contentPadding:
-          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.grey),
-          //       gapPadding: 10,
-          //     ),
-          //     focusedBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-          //       gapPadding: 10,
-          //     ),
-          //   ),
-          //   validator: (value) {
-          //     if (value!.isEmpty) {
-          //       return 'Please Enter Session Time';
-          //     }
-
-          //     final numberRegex = r'^[0-9]+$';
-          //     if (!RegExp(numberRegex).hasMatch(value)) {
-          //       return 'Please Enter valid Number';
-          //     }
-          //     return null;
-          //   },
-          // ),
           SizedBox(
             height: deviceHeight * 0.05,
           ),
@@ -780,7 +635,3 @@ class _ProfileState extends State<Profile> {
     );
   }
 }
-
-
-// Table heading
-

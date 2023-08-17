@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/countDataModel.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/holidayDataModel.dart';
 import 'package:task_manager/ui/Employee/Sidebar/sidebarEmployee.dart';
 import 'package:task_manager/ui/widgets/circle_gradient_icon.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/clientLogDataModel.dart';
-import '../../../API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/birthDayDataModel.dart';
 
 class HomeEmployeeScreen extends StatefulWidget {
@@ -20,14 +20,12 @@ class HomeEmployeeScreen extends StatefulWidget {
 
 class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
   List<Client> clients = [];
-  late double deviceWidth ;
-  late double deviceHeight ;
+  late double deviceWidth;
+  late double deviceHeight;
 
   @override
   void initState() {
     super.initState();
-
-    
 
     clientDashboard();
     birthDayTable();
@@ -35,7 +33,7 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
     clientTable();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
@@ -69,15 +67,11 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
       body: _buildBody(),
     );
   }
-  
-  
 
   CountData? dataCount;
   void clientDashboard() async {
-   
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-     
     );
     if (genmodel != null) {
       //print('Status: ${genmodel.message}');
@@ -95,10 +89,8 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   BirthDayList? dataBirthdayList;
   void birthDayTable() async {
-  
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-     
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -119,11 +111,8 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   HolidayList? dataHolidayList;
   void holidayTable() async {
-   
-
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.adminDashBoard}',
-     
     );
     if (genmodel != null) {
       // print('Status: ${genmodel.message}');
@@ -143,11 +132,8 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
   }
 
   void clientTable() async {
-  
-
     genModel? genmodel = await Urls.postApiCall(
-       method: '${Urls.clientLog}',
-    
+      method: '${Urls.clientLog}',
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -206,8 +192,6 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   String Function(DateTime date) date = DateFormat('dd/MM/yyyy').format;
 
- 
- 
   Column _employee() {
     return Column(
       children: [
@@ -348,6 +332,4 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
       ],
     );
   }
- 
-
 }

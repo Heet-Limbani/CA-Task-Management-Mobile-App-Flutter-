@@ -15,27 +15,22 @@ class PerformanceReport extends StatefulWidget {
   State<PerformanceReport> createState() => _PerformanceReportState();
 }
 
-TextEditingController nameController =
-    TextEditingController(); // Define the TextEditingController
-
+TextEditingController nameController = TextEditingController();
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
 
 class _PerformanceReportState extends State<PerformanceReport> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -300,19 +295,15 @@ typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<PerformanceReportDataModel> {
   final BuildContext context; // Add the context parameter
-
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
   int startIndex = 0; // Add the startIndex variable
 
   int countIds(String ids) {
     if (ids.isEmpty) {
       return 0;
     }
-
     List<String> idList = ids.split(',');
     return idList.length;
   }
@@ -321,15 +312,15 @@ class TableSource extends AdvancedDataTableSource<PerformanceReportDataModel> {
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final PerformanceReportDataModel dataList = lastDetails!.rows[index];
-   
+
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
         DataCell(Text(dataList.name ?? '')),
-        DataCell(Text(dataList.totalTask.toString() )),
+        DataCell(Text(dataList.totalTask.toString())),
         DataCell(Text(dataList.completeTask.toString())),
         DataCell(Text(dataList.performance ?? '')),
-         DataCell(
+        DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -339,20 +330,18 @@ class TableSource extends AdvancedDataTableSource<PerformanceReportDataModel> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                       Get.to(Graph(userId:dataList.id ?? ''));
+                        Get.to(Graph(userId: dataList.id ?? ''));
                       },
                       child: Icon(Icons.auto_graph),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
-                   
                   ],
                 ),
               ],
             ),
           ),
         ),
-    
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {
@@ -403,8 +392,8 @@ class TableSource extends AdvancedDataTableSource<PerformanceReportDataModel> {
         //count,
         dynamicData
             .map<PerformanceReportDataModel>(
-              (item) =>
-                  PerformanceReportDataModel.fromJson(item as Map<String, dynamic>),
+              (item) => PerformanceReportDataModel.fromJson(
+                  item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty

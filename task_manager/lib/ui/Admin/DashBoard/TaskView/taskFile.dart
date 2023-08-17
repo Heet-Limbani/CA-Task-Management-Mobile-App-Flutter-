@@ -816,7 +816,7 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
                         RawMaterialButton(
                           onPressed: () {
                             Get.to(fileDetailsEdit(
-                                userId: file.id!,
+                                id: file.id!,
                                 ticketId: ticketId,
                                 sc: file.showToClient!));
                           },

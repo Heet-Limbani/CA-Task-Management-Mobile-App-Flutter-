@@ -17,22 +17,18 @@ class AddCustomInvoice extends StatefulWidget {
 class _AddCustomInvoiceState extends State<AddCustomInvoice> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AddCustomInvoiceKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController startingDate = TextEditingController();
   TextEditingController interval = TextEditingController();
   TextEditingController particular = TextEditingController();
-
   String? selectedClientId1;
   String? selectedIntervalId1;
   late int selectedIntervalId;
   bool isActive = true;
-
   String isActiveValue = "";
+
   @override
   void dispose() {
     companyName.dispose();
@@ -46,7 +42,6 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
   @override
   void initState() {
     super.initState();
-    // Store widget.userId in a local variable
     getUser();
   }
 
@@ -78,8 +73,6 @@ class _AddCustomInvoiceState extends State<AddCustomInvoice> {
 
   void fileEdit() async {
     isActiveValue = (isActive ? "0" : "1");
-    String test = selectedIntervalId.toString();
-    print("selectedIntervalId :- $test");
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.addCustomInvoice}',

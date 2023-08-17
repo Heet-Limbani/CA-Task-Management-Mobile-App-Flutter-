@@ -3,10 +3,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/getUsersDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-
 
 class EditEmployeeForm extends StatefulWidget {
   final String userId;
@@ -20,9 +19,6 @@ class EditEmployeeForm extends StatefulWidget {
 class _EditEmployeeFormState extends State<EditEmployeeForm> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _editEmployeeFormKey = GlobalKey<FormState>();
   TextEditingController userName = TextEditingController();
   TextEditingController firstName = TextEditingController();
@@ -31,7 +27,6 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
   TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
   TextEditingController contact2 = TextEditingController();
-
   bool isActive = true;
   bool checkSMS = true;
   bool checkEmail = true;
@@ -556,7 +551,7 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -584,32 +579,3 @@ class _EditEmployeeFormState extends State<EditEmployeeForm> {
     );
   }
 }
-
-// Table heading
-
-
-// Row _test() {
-//   return Row(
-//     mainAxisAlignment: MainAxisAlignment.center,
-//     children: [
-//       Container(
-//         height: 100,
-//         width: 200,
-//         decoration: BoxDecoration(
-//           color: const Color.fromARGB(255, 182, 212, 237),
-//           borderRadius: BorderRadius.circular(10),
-//         ),
-//         child: Center(
-//           child: dataResponse == null
-//               ? Text("data Is Loading")
-//               : Text(
-//                   dataResponse!["first_name"].toString(),
-//                 ),
-//         ),
-//       ),
-//     ],
-//   );
-// }
-
-// Table contents
-

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-
 
 class AddExpenses extends StatefulWidget {
   const AddExpenses({Key? key}) : super(key: key);
@@ -48,7 +47,7 @@ class _AddExpensesState extends State<AddExpenses> {
         },
       );
       if (genmodel != null) {
-       // print('Status: ${genmodel.message}');
+        // print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -175,7 +174,7 @@ class _AddExpensesState extends State<AddExpenses> {
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                 Text('Type', style: TextStyle(fontSize: 20)),
+                Text('Type', style: TextStyle(fontSize: 20)),
                 Text(
                   isActive ? 'Deductable' : 'Chargeable',
                   style: TextStyle(fontSize: 14),
@@ -201,7 +200,7 @@ class _AddExpensesState extends State<AddExpenses> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

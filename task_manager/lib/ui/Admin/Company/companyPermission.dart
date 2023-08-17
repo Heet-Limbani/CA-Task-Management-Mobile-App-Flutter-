@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/API/AdminDataModel/companyDataModel2.dart';
 import 'package:task_manager/API/AdminDataModel/companyDataModel3.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class CompanyPermission extends StatefulWidget {
   final String id;
@@ -21,6 +21,7 @@ TextEditingController nameController =
 String id = "";
 String per = "";
 int dataCount = 0;
+
 class _CompanyPermissionState extends State<CompanyPermission> {
   late TableSource _source; // Declare _source here
 
@@ -57,7 +58,6 @@ class _CompanyPermissionState extends State<CompanyPermission> {
 
   List<CompanyDataModel2> clientType = [];
   void getUser() async {
-    print("id :- $id");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.companyPermission}',
       params: {
@@ -67,12 +67,8 @@ class _CompanyPermissionState extends State<CompanyPermission> {
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-
       final companyData = CompanyDataModel2.fromJson(data);
       per = companyData.company!.employeeId.toString();
-
-      print("per :- $per");
-
       setState(() {});
     }
   }
@@ -398,8 +394,8 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel3> {
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
       final List<dynamic> employeeList = dynamicData['employee'];
-       int count = dataModel.data.length ?? 0;
-       dataCount = count;
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
       return RemoteDataSourceDetails(
         dataModel.count ?? 0,
         employeeList

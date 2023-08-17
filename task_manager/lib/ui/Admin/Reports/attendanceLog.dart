@@ -8,8 +8,8 @@ import 'package:task_manager/API/AdminDataModel/attendanceLogDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Reports/attendanceLogAdd.dart';
 import 'package:task_manager/ui/Admin/Reports/attendanceLogEdit.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class AttendanceLog extends StatefulWidget {
   const AttendanceLog({super.key});
@@ -134,7 +134,7 @@ class _AttendanceLogState extends State<AttendanceLog> {
       children: [
         OutlinedButton(
           onPressed: () {
-           Get.to(AttendanceLogAdd());
+            Get.to(AttendanceLogAdd());
           },
           child: Text(
             "Add New",
@@ -369,12 +369,10 @@ class TableSource extends AdvancedDataTableSource<AttendanceLogDataModel> {
         int.parse(dataList.inTime ?? '0') * 1000);
     final formattedDate = DateFormat('HH:mm').format(parsedDate);
 
-    
     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.outTime ?? '0') * 1000);
     final formattedDate1 = DateFormat('HH:mm').format(parsedDate1);
- 
-   
+
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
@@ -382,7 +380,6 @@ class TableSource extends AdvancedDataTableSource<AttendanceLogDataModel> {
         DataCell(Text(formattedDate)),
         DataCell(Text(formattedDate1)),
         DataCell(Text(dataList.createdOn ?? '')),
-
         DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
@@ -390,7 +387,7 @@ class TableSource extends AdvancedDataTableSource<AttendanceLogDataModel> {
               children: [
                 RawMaterialButton(
                   onPressed: () {
-                      Get.to(AttendanceLogEdit(userId: dataList.id!));
+                    Get.to(AttendanceLogEdit(id: dataList.id!));
                   },
                   child: Icon(Icons.edit),
                   constraints: BoxConstraints.tight(Size(24, 24)),

@@ -90,7 +90,6 @@ class _profile2State extends State<profile2> {
                   "Contact Number", Urls.profileContactNumber, false),
               buildTextField("First Name", Urls.profileFirstName, false),
               buildTextField("Last Name", Urls.profileLastName, false),
-             
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

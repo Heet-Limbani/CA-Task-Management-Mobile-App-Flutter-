@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AddClientForm extends StatefulWidget {
@@ -16,9 +16,6 @@ class AddClientForm extends StatefulWidget {
 class _AddClientFormState extends State<AddClientForm> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AddClientFormKey = GlobalKey<FormState>();
   TextEditingController userName = TextEditingController();
   TextEditingController firstName = TextEditingController();
@@ -26,8 +23,6 @@ class _AddClientFormState extends State<AddClientForm> {
   TextEditingController birthDateController = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
-  //TextEditingController contact2 = TextEditingController();
-
   bool isActive = true;
   bool checkSMS = true;
   bool checkEmail = true;
@@ -67,7 +62,7 @@ class _AddClientFormState extends State<AddClientForm> {
           'lname': lastName.text,
           'email': email.text,
           'num': contact.text,
-         // 'par_num': contact2.text,
+          // 'par_num': contact2.text,
           'sendemail': checkEmailValue,
           'sendsms': checkSMSValue,
           'active': isActiveValue,
@@ -295,7 +290,8 @@ class _AddClientFormState extends State<AddClientForm> {
 
               if (selectedDate != null) {
                 // Format the selected date as 'dd-MM-yyyy'
-                    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate);
+                String formattedDate =
+                    DateFormat('yyyy-MM-dd').format(selectedDate);
 
                 setState(() {
                   birthDateController.text = formattedDate;
@@ -380,39 +376,6 @@ class _AddClientFormState extends State<AddClientForm> {
               return null;
             },
           ),
-          // SizedBox(
-          //   height: deviceHeight * 0.02,
-          // ),
-          //  TextFormField(
-          //   controller: contact2,
-          //   keyboardType: TextInputType.number,
-          //   textInputAction: TextInputAction.done,
-          //   decoration: InputDecoration(
-          //     labelText: 'Parent Number',
-          //     suffixIcon: Icon(Icons.contact_phone),
-          //     contentPadding:
-          //         EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.grey),
-          //       gapPadding: 10,
-          //     ),
-          //     focusedBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.circular(28),
-          //       borderSide: BorderSide(color: AppTheme.colors.lightBlue),
-          //       gapPadding: 10,
-          //     ),
-          //   ),
-          //   validator: (value) {
-          //     if (value!.isNotEmpty) {
-          //       final numberRegex = r'^[0-9]+$';
-          //       if (!RegExp(numberRegex).hasMatch(value)) {
-          //         return 'Please Enter a Valid Number';
-          //       }
-          //     }
-          //     return null;
-          //   },
-          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -492,7 +455,7 @@ class _AddClientFormState extends State<AddClientForm> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -503,7 +466,6 @@ class _AddClientFormState extends State<AddClientForm> {
               if (_AddClientFormKey.currentState!.validate()) {
                 clientAdd();
                 clearField();
-               
               }
             },
             child: Text(
@@ -522,6 +484,3 @@ class _AddClientFormState extends State<AddClientForm> {
     );
   }
 }
-
-// Table heading
-

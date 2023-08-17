@@ -6,8 +6,8 @@ import 'package:task_manager/API/AdminDataModel/companyCommentDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Company/addCompanyComment.dart';
 import 'package:task_manager/ui/Admin/Company/editCompanyComment.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class CompanyManageComments extends StatefulWidget {
   const CompanyManageComments({super.key});

@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/editFileDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AddFile extends StatefulWidget {
-
-
-  const AddFile({ Key? key}) : super(key: key);
+  const AddFile({Key? key}) : super(key: key);
 
   @override
   State<AddFile> createState() => _AddFileState();
@@ -18,22 +16,16 @@ class AddFile extends StatefulWidget {
 class _AddFileState extends State<AddFile> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AddFileKey = GlobalKey<FormState>();
   TextEditingController fileName = TextEditingController();
   TextEditingController fileNumber = TextEditingController();
   TextEditingController companyName = TextEditingController();
   TextEditingController locationName = TextEditingController();
-
- 
   String? selectedClientId1;
-    String? selectedLocationId1;
+  String? selectedLocationId1;
 
   @override
   void dispose() {
-  
     fileName.dispose();
     fileNumber.dispose();
     companyName.dispose();
@@ -44,7 +36,6 @@ class _AddFileState extends State<AddFile> {
   @override
   void initState() {
     super.initState();
-     // Store widget.userId in a local variable
     getUser();
   }
 
@@ -57,7 +48,6 @@ class _AddFileState extends State<AddFile> {
 
   List<EditFileDataModel> clientType = [];
   void getUser() async {
-    
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editFile}',
       params: {
@@ -80,9 +70,9 @@ class _AddFileState extends State<AddFile> {
         params: {
           "btnSave": "Save",
           "Client": selectedClientId1.toString(),
-          "txtfilename":fileName.text,
-          "txtlocation_num":fileNumber.text,
-          "location":selectedLocationId1.toString(),
+          "txtfilename": fileName.text,
+          "txtlocation_num": fileNumber.text,
+          "location": selectedLocationId1.toString(),
         },
       );
       if (genmodel != null) {
@@ -234,7 +224,7 @@ class _AddFileState extends State<AddFile> {
               if (value!.isEmpty) {
                 return 'Please Enter File Number';
               }
-             
+
               return null; // Return null if the input is valid
             },
           ),
@@ -278,7 +268,7 @@ class _AddFileState extends State<AddFile> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(
             value: selectedLocationId1,
             decoration: const InputDecoration(
               labelText: 'Location',
@@ -300,7 +290,8 @@ class _AddFileState extends State<AddFile> {
                       ?.map<DropdownMenuItem<String>>((Location location) {
                     return DropdownMenuItem<String>(
                       value: location.id ?? '',
-                      child: Text('${location.location} - ${location.cnt} / ${location.maxLimit} :- ( ${location.maxLimit} - ${location.minLimit} )'),
+                      child: Text(
+                          '${location.location} - ${location.cnt} / ${location.maxLimit} :- ( ${location.maxLimit} - ${location.minLimit} )'),
                     );
                   }).toList() ??
                   [];
@@ -320,7 +311,7 @@ class _AddFileState extends State<AddFile> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -348,5 +339,3 @@ class _AddFileState extends State<AddFile> {
     );
   }
 }
-
-

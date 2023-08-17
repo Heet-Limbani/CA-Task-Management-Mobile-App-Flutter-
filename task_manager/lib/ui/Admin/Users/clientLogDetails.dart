@@ -7,8 +7,6 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/clientLogDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/AdminDataModel/logModel.dart';
-import 'package:task_manager/ui/Admin/Users/editClientForm.dart';
 import 'package:task_manager/ui/Admin/Users/editLogClient.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
@@ -40,7 +38,6 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
     _source = ClientSource(context); // Initialize _source here
 
     userId = widget.userId; // Store widget.userId in a local variable
-    print("userId :- $userId");
   }
 
   @override
@@ -67,11 +64,7 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
   }
 
   void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
     setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
       _source.startIndex = 0;
       _source.setNextView();
     });
@@ -316,99 +309,6 @@ class _ClientLogDetailsState extends State<ClientLogDetails> {
   }
 }
 
-class ClientDataSource extends DataTableSource {
-  final List<Log> log;
-  final int totalCount;
-  final int startIndex;
-
-  ClientDataSource(this.log, this.totalCount, this.startIndex);
-
-  @override
-  DataRow getRow(int index) {
-    final clientIndex = startIndex + index;
-    if (clientIndex >= log.length) {
-      return DataRow(cells: [
-        DataCell(Text('')),
-        //DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-      ]);
-    }
-    void deleteUser(String? clientId) async {
-      if (clientId != null) {
-        print("clientId :- $clientId");
-        genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.clientViewLogDetailsEdit}',
-          params: {'id': clientId, 'delete': "delete"},
-        );
-
-        if (genmodel != null && genmodel.status == true) {
-          Fluttertoast.showToast(
-            msg: "${genmodel.message.toString()}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
-        }
-      }
-    }
-
-    final client = log[clientIndex];
-
-    return DataRow(cells: [
-      DataCell(Text((clientIndex + 1).toString())),
-      //DataCell(Text(client.client ?? "")),
-      DataCell(Text(client.message ?? "")),
-      DataCell(Text(client.description ?? "")),
-      DataCell(Text(client.onDate.toString())),
-      DataCell(Text(client.createdOn ?? "")),
-      DataCell(
-        IconButton(
-          onPressed: () {
-            Get.to(EditClientForm(userId: client.id!));
-          },
-          icon: Icon(Icons.edit),
-        ),
-      ),
-      DataCell(IconButton(
-        onPressed: () {
-          Get.defaultDialog(
-            title: "Delete",
-            middleText: "Are you sure you want to delete ?",
-            textConfirm: "Yes",
-            textCancel: "No",
-            confirmTextColor: Colors.white,
-            buttonColor: Colors.red,
-            cancelTextColor: Colors.black,
-            onConfirm: () {
-              Get.back();
-              deleteUser(client.id!);
-            },
-            onCancel: () {},
-          );
-        },
-        icon: Icon(Icons.delete),
-      )),
-    ]);
-  }
-
-  @override
-  int get rowCount => totalCount;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-/////////////
-///
-///////
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class ClientSource extends AdvancedDataTableSource<Client> {
@@ -483,108 +383,6 @@ class ClientSource extends AdvancedDataTableSource<Client> {
           IconButton(
             onPressed: () {
               Get.to(EditLogClient(logId: log.id!));
-              // showDialog(
-              //   context: context,
-              //   builder: (BuildContext context) {
-              //     String message = '';
-              //     String dateValue = '';
-              //     String description = ''; // Store the entered new password
-
-              //     ''; // Store the entered confirm password
-              //     return AlertDialog(
-              //       title: Text('Update Log'),
-              //       content: Column(
-              //         mainAxisSize: MainAxisSize.min,
-              //         children: [
-              //           TextField(
-              //             onChanged: (value) {
-              //               message = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Message',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onChanged: (value) {
-              //               description = value;
-              //             },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Description',
-              //             ),
-              //           ),
-              //           TextField(
-              //             onTap: () async {
-              //               DateTime? pickedDate = await showDatePicker(
-              //                 context: context,
-              //                 initialDate: selectedDateTime ?? DateTime.now(),
-              //                 firstDate: DateTime(2000),
-              //                 lastDate: DateTime(3000),
-              //               );
-              //               if (pickedDate != null) {
-              //                 // setState(() {
-              //                   selectedDateTime = DateTime(
-              //                     pickedDate.year,
-              //                     pickedDate.month,
-              //                     pickedDate.day,
-              //                   );
-              //                   date = DateFormat('yyyy-MM-dd')
-              //                       .format(selectedDateTime!);
-              //                   dateValue = date;
-              //                // },);
-              //               }
-              //             },
-              //             onSubmitted: (value) {
-              //               //setState(() {
-              //                 dateValue = value;
-              //               //});
-              //             },
-              //             onChanged: (value) {
-              //              // setState(() {
-              //                 dateValue = value;
-              //               //});
-              //             },
-              //             // onChanged: (value) {
-              //             //   dateValue = value;
-              //             // },
-              //             obscureText: true,
-              //             decoration: InputDecoration(
-              //               hintText: 'Enter Date',
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //       actions: [
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //           },
-              //           child: Text('Cancel'),
-              //         ),
-              //         TextButton(
-              //           onPressed: () {
-              //             Navigator.of(context).pop(); // Close the dialog
-              //             if (message.isNotEmpty &&
-              //                 description.isNotEmpty &&
-              //                 dateValue.isNotEmpty) {
-              //               updateUserPassword(log.id, message, description,
-              //                   dateValue);
-              //             } else {
-              //               Fluttertoast.showToast(
-              //                 msg: "Passwords do not match.",
-              //                 toastLength: Toast.LENGTH_SHORT,
-              //                 gravity: ToastGravity.BOTTOM,
-              //                 timeInSecForIosWeb: 1,
-              //               );
-              //             }
-              //           },
-              //           child: Text('Reset'),
-              //         ),
-              //       ],
-              //     );
-              //   },
-              // );
             },
             icon: Icon(Icons.edit),
           ),

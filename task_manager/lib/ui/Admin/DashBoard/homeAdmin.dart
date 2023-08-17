@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/cardDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/clientDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/countDataModel.dart';
+import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/getUsersDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/holidayDataModel.dart';
 import 'package:task_manager/ui/Admin/DashBoard/UnAssignTask/unAssignTask.dart';
@@ -19,7 +20,6 @@ import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/widgets/task_group.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/clientLogDataModel.dart';
-import '../../../API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/birthDayDataModel.dart';
 
 class HomeAdminScreen extends StatefulWidget {
@@ -56,7 +56,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   void setSort1(int i, bool asc) => setState(() {
         _sortIndex1 = i;
         _sortAsc1 = asc;
-      });
+  });
 
   final _source2 = TableSource2();
   var _sortIndex2 = 0;
@@ -68,17 +68,13 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   void setSort2(int i, bool asc) => setState(() {
         _sortIndex1 = i;
         _sortAsc1 = asc;
-      });
-
-// end here
+  });
 
   List<GetUser> clientType = [];
   List<ClientData> clientsdata = [];
-
   late double deviceWidth;
   late double deviceHeight;
   final GlobalKey<FormState> _formKey = GlobalKey();
-
   TextEditingController clientController = TextEditingController();
   TextEditingController messageController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -100,8 +96,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
   bool showTableTask = false;
   bool showHideAll = false;
   bool showSeeAll = true;
-
   DateTime? selectedDateTime = DateTime.now();
+
   @override
   void dispose() {
     clientController.dispose();
@@ -184,10 +180,7 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
 
   void handlePageChange(int pageIndex, genModel? model) async {
     currentPage = pageIndex ~/ rowsPerPage;
-    //print('currentPage $currentPage');
-
     await fetchData();
-
     if (dataModel != null && dataModel?.data != null) {
       clients = dataModel?.data!
           .map<Client>((item) => Client.fromJson(item as Map<String, dynamic>))
@@ -195,7 +188,6 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
     } else {
       clients = [];
     }
-
     setState(() {});
   }
 
@@ -211,8 +203,8 @@ class _HomeAdminScreenState extends State<HomeAdminScreen> {
         //print('Data: ${genmodel.data}');
 
         final data = genmodel.data;
-         cardData = CardData.fromJson(data);
-       dataCount = CountData.fromJson(data);
+        cardData = CardData.fromJson(data);
+        dataCount = CountData.fromJson(data);
         dataClientList = ClientList.fromJson(data);
         if (dataClientList?.clientdata != null) {
           clientsdata = (data['client'] as List<dynamic>)
@@ -2443,7 +2435,6 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
       final BirthDayList dataList = rows[index];
       final List<Birthday>? birthdays = dataList.birthday;
 
-
       if (birthdays != null && birthdays.isNotEmpty) {
         final Birthday birthday = birthdays.first;
         final parsedDate = DateTime.fromMillisecondsSinceEpoch(
@@ -2511,4 +2502,3 @@ class TableSource2 extends AdvancedDataTableSource<BirthDayList> {
     }
   }
 }
-

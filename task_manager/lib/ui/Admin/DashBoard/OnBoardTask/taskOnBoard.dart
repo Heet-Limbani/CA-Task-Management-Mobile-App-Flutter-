@@ -10,7 +10,7 @@ import 'package:task_manager/ui/Admin/DashBoard/OnBoardTask/detailsEdit.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/Admin/Task/addTask.dart';
-import '../../sidebar/sidebarAdmin.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class TaskOnBoard extends StatefulWidget {
   const TaskOnBoard({Key? key}) : super(key: key);
@@ -22,30 +22,22 @@ class TaskOnBoard extends StatefulWidget {
 class _TaskOnBoardState extends State<TaskOnBoard> {
   late TableSource _source;
   String? stringResponse;
-
-  Map? mapResponse;
-  Map? dataResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
       });
+
   void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
     setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
       _source.startIndex = 0;
       _source.setNextView();
     });
@@ -351,14 +343,12 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
 
   //int startIndex = 0; // Add the startIndex variable
 
-   void delete(id) async {
-    
+  void delete(id) async {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.deleteTask}',
-      params: { 
+      params: {
         'id': id,
-      
-        },
+      },
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -375,15 +365,13 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final OnBoard dataList = lastDetails!.rows[index];
-    //  final Employee dataList1 = lastDetails!.rows[index].employee![index];
     String statusText = '';
     int roundedPercentage = 0;
+
     if (dataList.status == "0") {
       statusText = "Unassigned";
     } else if (dataList.status == "1") {
       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
-      String per = dataList.taskCompletePercentage ?? '';
-      print("percentage2 $per");
       roundedPercentage = percentage.toInt();
       statusText = "Open $roundedPercentage%";
     } else if (dataList.status == "2") {
@@ -409,7 +397,6 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
         DataCell(Text(dataList.ticketId ?? '')),
         DataCell(Text(dataList.clientName ?? '')),
         DataCell(
-          // New column with employee names (first name and last name)
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -475,7 +462,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          Get.to(DetailsEdit( ticketId: dataList.ticketId!));
+                          Get.to(DetailsEdit(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.close),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -489,7 +476,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                   Row(
                     children: [
                       RawMaterialButton(
-                       onPressed: () {
+                        onPressed: () {
                           Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
@@ -497,7 +484,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
+                        onPressed: () {
                           Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
@@ -505,8 +492,8 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
-                          Get.to(DetailsEdit( ticketId: dataList.ticketId!));
+                        onPressed: () {
+                          Get.to(DetailsEdit(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.close),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -543,7 +530,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                       ),
                       RawMaterialButton(
                         onPressed: () {
-                          Get.to(DetailsEdit( ticketId: dataList.ticketId!));
+                          Get.to(DetailsEdit(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.close),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -555,7 +542,7 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                   Row(
                     children: [
                       RawMaterialButton(
-                       onPressed: () {
+                        onPressed: () {
                           Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
                         },
                         child: Icon(Icons.remove_red_eye),
@@ -604,8 +591,8 @@ class TableSource extends AdvancedDataTableSource<OnBoard> {
                 if (dataList.status == "7")
                   RawMaterialButton(
                     onPressed: () {
-                          Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
-                        },
+                      Get.to(ViewTasksTask(ticketId: dataList.ticketId!));
+                    },
                     child: Icon(Icons.remove_red_eye),
                     constraints: BoxConstraints.tight(Size(24, 24)),
                     shape: CircleBorder(),

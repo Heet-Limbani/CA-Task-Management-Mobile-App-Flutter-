@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
-
 class Sent extends StatefulWidget {
   const Sent({super.key});
 
@@ -25,7 +24,7 @@ class _SentState extends State<Sent> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer:  SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

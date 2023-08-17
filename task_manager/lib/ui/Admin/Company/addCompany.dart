@@ -4,10 +4,11 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/getUsersDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/Admin/Users/addClientForm.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+
 class AddCompany extends StatefulWidget {
   const AddCompany({Key? key}) : super(key: key);
 
@@ -158,7 +159,6 @@ class _AddCompanyState extends State<AddCompany> {
         },
       );
       if (genmodel != null) {
-        print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -721,6 +721,3 @@ class _AddCompanyState extends State<AddCompany> {
     );
   }
 }
-
-// Table heading
-

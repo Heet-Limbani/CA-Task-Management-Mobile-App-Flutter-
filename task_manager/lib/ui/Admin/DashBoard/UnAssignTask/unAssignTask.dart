@@ -57,16 +57,11 @@ class _UnAssignTaskState extends State<UnAssignTask> {
         _sortAsc1 = asc;
       });
 
-// end here
-
   List<GetUser> clientType = [];
   List<ClientData> clientsdata = [];
-
   late double deviceWidth;
   late double deviceHeight;
-
   TextEditingController messageController = TextEditingController();
-
   String clientId = "";
   String selectedClientId = "";
   String clientName = '';
@@ -81,12 +76,11 @@ class _UnAssignTaskState extends State<UnAssignTask> {
   bool showTableGroup = false;
   bool showHideAll = false;
   bool showSeeAll = true;
-
   DateTime? selectedDateTime = DateTime.now();
+
   @override
   void dispose() {
     messageController.dispose();
-
     super.dispose();
   }
 
@@ -135,9 +129,7 @@ class _UnAssignTaskState extends State<UnAssignTask> {
         subtaskCount = dynamicList?.length ?? 0;
         subtaskCount1 = dynamicList1?.length ?? 0;
         subtaskCount2 = dynamicList2?.length ?? 0;
-        print("subtaskCount $subtaskCount");
-        print("subtaskCount1 $subtaskCount1");
-        print("subtaskCount2 $subtaskCount2");
+
       } else {
         throw Exception('Invalid dynamicData format');
       }
@@ -199,24 +191,7 @@ class _UnAssignTaskState extends State<UnAssignTask> {
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
-                _admin(),
-
-                // ListView.builder(
-                //   shrinkWrap: true,
-                //   physics: NeverScrollableScrollPhysics(),
-                //   itemCount: clients.length,
-                //   itemBuilder: (context, index) {
-                //     final client = clients[index];
-                //     return ListTile(
-                //       title: Text(client.client ?? ''),
-                //       subtitle: Text(client.message ?? ''),
-                //     );
-                //   },
-                // ),
-
-                //_client(),
-
-                //_employee(),
+                _task(),
               ],
             ),
           ),
@@ -225,7 +200,7 @@ class _UnAssignTaskState extends State<UnAssignTask> {
     );
   }
 
-  Column _admin() {
+  Column _task() {
     return Column(
       children: [
         Row(
@@ -396,7 +371,6 @@ class _UnAssignTaskState extends State<UnAssignTask> {
               mainAxisCellCount: 1,
               child: InkWell(
                 onTap: () {
-                  print("2 :- ${subtaskCount2}");
                   if (subtaskCount2 != 0) {
                     setState(() {
                       showTableGroup =
@@ -752,18 +726,6 @@ class _UnAssignTaskState extends State<UnAssignTask> {
                       },
                     ),
                     SizedBox(height: deviceHeight * 0.02),
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //       minimumSize: const Size.fromHeight(60)),
-                    //   onPressed: () {
-                    //     if (_formKey.currentState!.validate()) {
-                    //       msg1();
-                    //       FocusScope.of(context).unfocus();
-                    //     }
-                    //     clear();
-                    //   },
-                    //   child: const Text("Send"),
-                    // ),
                   ],
                 ),
               ),
@@ -1042,18 +1004,6 @@ class _UnAssignTaskState extends State<UnAssignTask> {
                       },
                     ),
                     SizedBox(height: deviceHeight * 0.02),
-                    // ElevatedButton(
-                    //   style: ElevatedButton.styleFrom(
-                    //       minimumSize: const Size.fromHeight(60)),
-                    //   onPressed: () {
-                    //     if (_formKey.currentState!.validate()) {
-                    //       msg2();
-                    //       FocusScope.of(context).unfocus();
-                    //     }
-                    //     clear();
-                    //   },
-                    //   child: const Text("Submit"),
-                    // ),
                   ],
                 ),
               ),
@@ -1109,32 +1059,7 @@ class _UnAssignTaskState extends State<UnAssignTask> {
               .bodySmall!
               .copyWith(fontWeight: FontWeight.bold),
         ),
-        // for setting custom footer adv dtable
-        actions: [
-          // IconButton(
-          //   icon: const Icon(Icons.table_chart_outlined),
-          //   tooltip: 'Change footer',
-          //   onPressed: () {
-          //     // handle the press
-          //     setState(() {
-          //       _customFooter = !_customFooter;
-          //     });
-          //   },
-          // ),
-        ],
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -1149,7 +1074,6 @@ class _UnAssignTaskState extends State<UnAssignTask> {
   }
 }
 
-///////////////
 typedef SelectedCallBack1 = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<UnAssignTaskDataModel> {

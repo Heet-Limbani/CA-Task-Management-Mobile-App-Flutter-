@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/API/AdminDataModel/cardDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/receiptViewDataModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class ViewReceipt extends StatefulWidget {
   final String id;
@@ -28,26 +28,25 @@ TextEditingController referenceController = TextEditingController();
 TextEditingController descriptionController = TextEditingController();
 TextEditingController _searchController = TextEditingController();
 
-
-
 String id = "";
 
 String? selectedClientId1;
 int dataCount = 0;
+
 class _ViewReceiptState extends State<ViewReceipt> {
   bool isObscurePassword = true;
 
-var _sortIndex = 0;
+  var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
-   late TableSource _source;
+  late TableSource _source;
 
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
       });
-void refreshTable() {
+  void refreshTable() {
     setState(() {
       _source.startIndex = 0;
       _source.setNextView();
@@ -59,7 +58,7 @@ void refreshTable() {
     super.initState();
     id = widget.id; // Store widget.userId in a local variable
     getReceiptDetails();
-      _source = TableSource(context);
+    _source = TableSource(context);
     _source.setNextView();
   }
 
@@ -233,7 +232,6 @@ void refreshTable() {
     );
   }
 
-  
   Widget buildTextField(
       String labelText, String placeholder, bool isPasswordTextField) {
     return Padding(
@@ -394,7 +392,6 @@ void refreshTable() {
               label: const Text('Action'),
               onSort: setSort,
             ),
-           
           ],
           //Optianl override to support custom data row text / translation
           getFooterRowText:
@@ -471,6 +468,7 @@ void refreshTable() {
     );
   }
 }
+
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<ReceiptViewDataModel> {
@@ -556,15 +554,15 @@ class TableSource extends AdvancedDataTableSource<ReceiptViewDataModel> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-       int count = dataModel.data.length ?? 0;
-       dataCount = count;
-      
+      int count = dataModel.data.length ?? 0;
+      dataCount = count;
+
       if (dynamicData is Map<String, dynamic> &&
           dynamicData.containsKey('invoice_payment_id')) {
         final dynamicList = dynamicData['invoice_payment_id'] as List<dynamic>?;
         final List<ReceiptViewDataModel> dataList = dynamicList
-                ?.map<ReceiptViewDataModel>(
-                    (item) => ReceiptViewDataModel(invoicePaymentId: [InvoicePaymentId.fromJson(item)]))
+                ?.map<ReceiptViewDataModel>((item) => ReceiptViewDataModel(
+                    invoicePaymentId: [InvoicePaymentId.fromJson(item)]))
                 .toList() ??
             [];
         int count = dynamicList?.length ?? 0;

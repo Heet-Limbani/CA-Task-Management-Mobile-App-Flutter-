@@ -297,20 +297,16 @@ class _DueReportState extends State<DueReport> {
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<DueReportDataModel> {
-  final BuildContext context; // Add the context parameter
-
+  final BuildContext context;
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
-  int startIndex = 0; // Add the startIndex variable
+  int startIndex = 0;
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final DueReportDataModel dataList = lastDetails!.rows[index];
-
     String ticketValue = dataList.ticket?.toString() ?? '0';
     String invoiceValue = dataList.invoice?.toString() ?? '0';
     String totalValue = dataList.total?.toString() ?? '0';

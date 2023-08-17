@@ -317,13 +317,13 @@ class TableSource extends AdvancedDataTableSource<EmployeeLogDataModel> {
     final formattedDate = DateFormat('yyyy-MM-dd  hh:mm:ss').format(parsedDate);
     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.logoutTime ?? '0') * 1000);
-    final formattedDate1 = DateFormat('yyyy-MM-dd  hh:mm:ss').format(parsedDate1);
-    String dateText="";
-    if(dataList.logoutTime=="0"){
-      dateText="Logged In";
-    }
-    else{
-      dateText=formattedDate1.toString();
+    final formattedDate1 =
+        DateFormat('yyyy-MM-dd  hh:mm:ss').format(parsedDate1);
+    String dateText = "";
+    if (dataList.logoutTime == "0") {
+      dateText = "Logged In";
+    } else {
+      dateText = formattedDate1.toString();
     }
     return DataRow(
       cells: [
@@ -331,7 +331,6 @@ class TableSource extends AdvancedDataTableSource<EmployeeLogDataModel> {
         DataCell(Text(dataList.userName ?? '')),
         DataCell(Text(formattedDate)),
         DataCell(Text(dateText)),
-    
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/companyCommentEditDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class AddCompanyComments extends StatefulWidget {
   const AddCompanyComments({super.key});
@@ -14,59 +14,44 @@ class AddCompanyComments extends StatefulWidget {
 class _AddCompanyCommentsState extends State<AddCompanyComments> {
   late double deviceWidth;
   late double deviceHeight;
-
   Map? dataResponse;
-
   final GlobalKey<FormState> _AddCompanyCommentsKey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
   TextEditingController data = TextEditingController();
-    TextEditingController clientName = TextEditingController();
-
-
+  TextEditingController clientName = TextEditingController();
   String? selectedClientId1;
 
   @override
   void dispose() {
-  
     clientName.dispose();
     title.dispose();
     data.dispose();
-    
-
     super.dispose();
   }
 
   @override
   void initState() {
-    super.initState(); 
+    super.initState();
     getUser();
   }
 
   void clearField() {
     clientName.clear();
-   title.clear();
+    title.clear();
     data.clear();
-    
   }
 
   List<CompanyCommentEditDataModel> clientType = [];
   void getUser() async {
-   
-    genModel? genmodel = await Urls.postApiCall(
-      method: '${Urls.manageCompanyComment}',
-      params: {
-        "id": "1",
-      }
-     
-    );
+    genModel? genmodel =
+        await Urls.postApiCall(method: '${Urls.manageCompanyComment}', params: {
+      "id": "1",
+    });
 
     if (genmodel != null && genmodel.status == true) {
       final dataa = genmodel.data;
-
       final companyData = CompanyCommentEditDataModel.fromJson(dataa);
-
       clientType.add(companyData); // Add the companyData to clientType list
-
       setState(() {});
     }
   }
@@ -79,7 +64,6 @@ class _AddCompanyCommentsState extends State<AddCompanyComments> {
           "company": selectedClientId1.toString(),
           "title": title.text.toString(),
           "data": data.text.toString(),
-        
         },
       );
       if (genmodel != null) {
@@ -211,7 +195,7 @@ class _AddCompanyCommentsState extends State<AddCompanyComments> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-         TextFormField(
+          TextFormField(
             controller: title,
             decoration: const InputDecoration(
               labelText: 'Title',
@@ -247,7 +231,7 @@ class _AddCompanyCommentsState extends State<AddCompanyComments> {
               }
               return null;
             },
-         ),
+          ),
           SizedBox(
             height: deviceHeight * 0.05,
           ),
@@ -285,6 +269,3 @@ class _AddCompanyCommentsState extends State<AddCompanyComments> {
     );
   }
 }
-
-// Table heading
-

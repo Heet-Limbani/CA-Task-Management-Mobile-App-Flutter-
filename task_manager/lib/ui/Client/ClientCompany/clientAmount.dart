@@ -21,9 +21,9 @@ class ClientAmount extends StatefulWidget {
 TextEditingController fileController = TextEditingController();
 File? selectedFile;
 
- TextEditingController title1 = TextEditingController();
-  TextEditingController amount = TextEditingController();
-  TextEditingController description = TextEditingController();
+TextEditingController title1 = TextEditingController();
+TextEditingController amount = TextEditingController();
+TextEditingController description = TextEditingController();
 
 class _ClientAmountState extends State<ClientAmount> {
   late double deviceWidth;
@@ -33,7 +33,6 @@ class _ClientAmountState extends State<ClientAmount> {
   int total = 0;
 
   final GlobalKey<FormState> _ClientAmountKey = GlobalKey<FormState>();
- 
 
   @override
   void dispose() {
@@ -63,7 +62,6 @@ class _ClientAmountState extends State<ClientAmount> {
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       if (data != null && data is Map<String, dynamic>) {
-        print("data: $data");
 
         int invoiceTotal =
             int.parse(data['invoice_data_amount']?['total'] ?? 0);
@@ -71,7 +69,6 @@ class _ClientAmountState extends State<ClientAmount> {
             int.parse(data['payment_data_amount']?['amount'] ?? 0);
         total = invoiceTotal - paymentAmount;
 
-        print("total: $total");
         setState(() {});
       }
     }
@@ -164,10 +161,6 @@ class _ClientAmountState extends State<ClientAmount> {
                 SizedBox(
                   height: deviceHeight * 0.05,
                 ),
-                // _add(),
-                // SizedBox(
-                //   height: deviceHeight * 0.05,
-                // ),
                 _ClientAmount(),
                 SizedBox(
                   height: deviceHeight * 0.02,
@@ -431,6 +424,3 @@ class _ClientAmountState extends State<ClientAmount> {
     );
   }
 }
-
-// Table heading
-

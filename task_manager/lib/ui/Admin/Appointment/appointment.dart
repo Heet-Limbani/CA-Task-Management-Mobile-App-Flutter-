@@ -5,8 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/appointmentDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class Appointment extends StatefulWidget {
   const Appointment({super.key});
@@ -366,8 +366,6 @@ class TableSource extends AdvancedDataTableSource<AppointmentDataModel> {
     }
   }
 
-
-
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
@@ -380,10 +378,10 @@ class TableSource extends AdvancedDataTableSource<AppointmentDataModel> {
     } else {
       statusValue = "Reject";
     }
-     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.date ?? '0') * 1000);
     final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.time ?? '0') * 1000);
     final formattedDate1 = DateFormat('hh:mm:ss').format(parsedDate1.toUtc());
     return DataRow(

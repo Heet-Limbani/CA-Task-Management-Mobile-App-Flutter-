@@ -20,21 +20,19 @@ class ManageLocation extends StatefulWidget {
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 int dataCount = 0;
+
 class _ManageLocationState extends State<ManageLocation> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -150,8 +148,6 @@ class _ManageLocationState extends State<ManageLocation> {
             ),
           ),
         ),
-       
-       
       ],
     );
   }
@@ -380,7 +376,6 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
     }
   }
 
-  
   int countIds(String ids) {
     if (ids.isEmpty) {
       return 0;
@@ -394,7 +389,6 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final ManageLocationDataModel dataList = lastDetails!.rows[index];
-  
 
     return DataRow(
       cells: [
@@ -404,7 +398,7 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
         DataCell(Text(dataList.minLimit ?? '')),
         DataCell(Text(dataList.maxLimit ?? '')),
         DataCell(Text(dataList.cnt ?? '')),
-          DataCell(
+        DataCell(
           Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: Row(
@@ -413,59 +407,9 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
                 if (dataList.default1 == "0")
                   Row(
                     children: [
-                       RawMaterialButton(
-                        onPressed: () {
-                         Get.to(EditLocation(userId: dataList.id ?? ''));
-
-                        },
-                        child: Icon(Icons.edit),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
                       RawMaterialButton(
                         onPressed: () {
-                           if (dataList.id != null) {
-                          Get.defaultDialog(
-                            title: "Delete",
-                            middleText:
-                                "Are you sure you want to delete ?",
-                            textConfirm: "Yes",
-                            textCancel: "No",
-                            confirmTextColor: Colors.white,
-                            buttonColor: Colors.red,
-                            cancelTextColor: Colors.black,
-                            onConfirm: () {
-                              Get.back();
-                              deleteUser(dataList.id!);
-                            },
-                            onCancel: () {},
-                          );
-                        }
-                          
-                        },
-                        child: Icon(Icons.delete),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                        RawMaterialButton(
-                        onPressed: () {
-                          // Handle button pressed
-                          defaultLocation(dataList.id);
-                    
-                        },
-                        child: Icon(Icons.admin_panel_settings_outlined),
-                        constraints: BoxConstraints.tight(Size(24, 24)),
-                        shape: CircleBorder(),
-                      ),
-                    ],
-                  ),
-              
-                if (dataList.default1 == "1")
-                  Row(
-                    children: [
-                      RawMaterialButton(
-                        onPressed: () {
-                            Get.to(EditLocation(userId: dataList.id ?? ''));
+                          Get.to(EditLocation(userId: dataList.id ?? ''));
                         },
                         child: Icon(Icons.edit),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -474,31 +418,73 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
                       RawMaterialButton(
                         onPressed: () {
                           if (dataList.id != null) {
-                          Get.defaultDialog(
-                            title: "Delete",
-                            middleText:
-                                "Are you sure you want to delete ?",
-                            textConfirm: "Yes",
-                            textCancel: "No",
-                            confirmTextColor: Colors.white,
-                            buttonColor: Colors.red,
-                            cancelTextColor: Colors.black,
-                            onConfirm: () {
-                              Get.back();
-                              deleteUser(dataList.id!);
-                            },
-                            onCancel: () {},
-                          );
-                        }
+                            Get.defaultDialog(
+                              title: "Delete",
+                              middleText: "Are you sure you want to delete ?",
+                              textConfirm: "Yes",
+                              textCancel: "No",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.red,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                Get.back();
+                                deleteUser(dataList.id!);
+                              },
+                              onCancel: () {},
+                            );
+                          }
                         },
                         child: Icon(Icons.delete),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),
                       ),
-                       
+                      RawMaterialButton(
+                        onPressed: () {
+                          // Handle button pressed
+                          defaultLocation(dataList.id);
+                        },
+                        child: Icon(Icons.admin_panel_settings_outlined),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
                     ],
                   ),
-               
+                if (dataList.default1 == "1")
+                  Row(
+                    children: [
+                      RawMaterialButton(
+                        onPressed: () {
+                          Get.to(EditLocation(userId: dataList.id ?? ''));
+                        },
+                        child: Icon(Icons.edit),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                      RawMaterialButton(
+                        onPressed: () {
+                          if (dataList.id != null) {
+                            Get.defaultDialog(
+                              title: "Delete",
+                              middleText: "Are you sure you want to delete ?",
+                              textConfirm: "Yes",
+                              textCancel: "No",
+                              confirmTextColor: Colors.white,
+                              buttonColor: Colors.red,
+                              cancelTextColor: Colors.black,
+                              onConfirm: () {
+                                Get.back();
+                                deleteUser(dataList.id!);
+                              },
+                              onCancel: () {},
+                            );
+                          }
+                        },
+                        child: Icon(Icons.delete),
+                        constraints: BoxConstraints.tight(Size(24, 24)),
+                        shape: CircleBorder(),
+                      ),
+                    ],
+                  ),
               ],
             ),
           ),
@@ -553,8 +539,8 @@ class TableSource extends AdvancedDataTableSource<ManageLocationDataModel> {
         //count,
         dynamicData
             .map<ManageLocationDataModel>(
-              (item) =>
-                  ManageLocationDataModel.fromJson(item as Map<String, dynamic>),
+              (item) => ManageLocationDataModel.fromJson(
+                  item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty

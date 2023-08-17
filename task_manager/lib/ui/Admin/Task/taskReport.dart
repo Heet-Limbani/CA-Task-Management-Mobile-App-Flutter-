@@ -9,7 +9,7 @@ import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskEdit.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/Admin/Task/addTask.dart';
-import '../sidebar/sidebarAdmin.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class TaskReport extends StatefulWidget {
   const TaskReport({Key? key}) : super(key: key);
@@ -349,12 +349,11 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
 
   //int startIndex = 0; // Add the startIndex variable
   void delete(id) async {
-  genModel? genmodel = await Urls.postApiCall(
+    genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.deleteTask}',
-      params: { 
+      params: {
         'id': id,
-      
-        },
+      },
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -378,8 +377,6 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
       statusText = "Unassigned";
     } else if (dataList.status == "1") {
       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
-      String per = dataList.taskCompletePercentage ?? '';
-      print("percentage2 $per");
       roundedPercentage = percentage.toInt();
       statusText = "Open $roundedPercentage%";
     } else if (dataList.status == "2") {
@@ -427,7 +424,7 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
+                        onPressed: () {
                           Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
@@ -435,7 +432,7 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                       onPressed: () {
+                        onPressed: () {
                           Get.defaultDialog(
                             title: "Delete",
                             middleText: "Are you sure you want to delete ?",
@@ -481,7 +478,7 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
+                        onPressed: () {
                           Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),
@@ -551,7 +548,7 @@ class TableSource extends AdvancedDataTableSource<LoadTask> {
                         shape: CircleBorder(),
                       ),
                       RawMaterialButton(
-                         onPressed: () {
+                        onPressed: () {
                           Get.to(EditTask(id: dataList.ticketId!));
                         },
                         child: Icon(Icons.edit),

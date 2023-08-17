@@ -18,17 +18,14 @@ class TaskChargeAdd extends StatefulWidget {
 class _TaskChargeAddState extends State<TaskChargeAdd> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _TaskChargeAddKey = GlobalKey<FormState>();
   TextEditingController chargeName = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController description = TextEditingController();
-   List<Expense> clientType = [];
+  List<Expense> clientType = [];
   String userId = "";
   String? selectedClientId1;
- 
+
   @override
   void dispose() {
     chargeName.dispose();
@@ -42,7 +39,6 @@ class _TaskChargeAddState extends State<TaskChargeAdd> {
     super.initState();
     userId = widget.userId; // Store widget.userId in a local variable
     getUser();
-     
   }
 
   void clearField() {
@@ -51,7 +47,8 @@ class _TaskChargeAddState extends State<TaskChargeAdd> {
     description.clear();
     selectedClientId1 = null;
   }
- void getUser() async {
+
+  void getUser() async {
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.expences}',
     );
@@ -59,12 +56,12 @@ class _TaskChargeAddState extends State<TaskChargeAdd> {
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       if (data != null && data is List) {
-        clientType =
-            data.map((item) => Expense.fromJson(item)).toList();
+        clientType = data.map((item) => Expense.fromJson(item)).toList();
       }
       setState(() {});
     }
   }
+
   void fileEdit() async {
     try {
       genModel? genmodel = await Urls.postApiCall(
@@ -95,7 +92,6 @@ class _TaskChargeAddState extends State<TaskChargeAdd> {
     }
     setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -258,7 +254,6 @@ class _TaskChargeAddState extends State<TaskChargeAdd> {
               return null; // Return null if the input is valid
             },
           ),
-        
           SizedBox(
             height: deviceHeight * 0.05,
           ),

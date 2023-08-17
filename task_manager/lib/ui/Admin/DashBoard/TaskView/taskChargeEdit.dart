@@ -18,17 +18,13 @@ class TaskChargeEdit extends StatefulWidget {
 class _TaskChargeEditState extends State<TaskChargeEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _TaskChargeEditKey = GlobalKey<FormState>();
   TextEditingController chargeName = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController description = TextEditingController();
-
   String userId = "";
   String? selectedClientId1;
- 
+
   @override
   void dispose() {
     chargeName.dispose();
@@ -42,7 +38,6 @@ class _TaskChargeEditState extends State<TaskChargeEdit> {
     super.initState();
     userId = widget.userId; // Store widget.userId in a local variable
     getUser();
-     
   }
 
   void clearField() {
@@ -54,7 +49,6 @@ class _TaskChargeEditState extends State<TaskChargeEdit> {
 
   List<TaskChargeEditDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.taskChargeEdit}',
       params: {
@@ -104,7 +98,6 @@ class _TaskChargeEditState extends State<TaskChargeEdit> {
     }
     setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +265,6 @@ class _TaskChargeEditState extends State<TaskChargeEdit> {
               return null; // Return null if the input is valid
             },
           ),
-        
           SizedBox(
             height: deviceHeight * 0.05,
           ),

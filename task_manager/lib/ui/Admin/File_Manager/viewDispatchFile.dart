@@ -22,7 +22,6 @@ int dataCount = 0;
 
 class _ViewDispatchFileState extends State<ViewDispatchFile> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
@@ -30,7 +29,6 @@ class _ViewDispatchFileState extends State<ViewDispatchFile> {
   TextEditingController _searchController = TextEditingController();
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
@@ -421,9 +419,7 @@ typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<ViewDispatchFileDataModel> {
   final BuildContext context;
-
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
   int startIndex = 0;

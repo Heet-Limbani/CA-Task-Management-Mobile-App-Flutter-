@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/companyGroupEditDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class ViewCompanyGroup extends StatefulWidget {
   final String id;
@@ -15,14 +15,11 @@ class ViewCompanyGroup extends StatefulWidget {
 
 late double deviceWidth;
 late double deviceHeight;
-
 TextEditingController groupNameController = TextEditingController();
 TextEditingController messageController = TextEditingController();
 TextEditingController intervalController = TextEditingController();
 TextEditingController startingDate = TextEditingController();
-
 String id = "";
-
 String? selectedClientId1;
 
 class _ViewCompanyGroupState extends State<ViewCompanyGroup> {
@@ -39,7 +36,6 @@ class _ViewCompanyGroupState extends State<ViewCompanyGroup> {
   CompanyGroupEditDataModel? selected;
 
   void getUser() async {
-    print("id :- $id");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.manageCompanyGroup}',
       params: {
@@ -53,9 +49,6 @@ class _ViewCompanyGroupState extends State<ViewCompanyGroup> {
       final companyData = CompanyGroupEditDataModel.fromJson(data);
       clientType.add(CompanyGroupEditDataModel.fromJson(data));
       selected = CompanyGroupEditDataModel.fromJson(data);
-      
-
-      //clientName.text = companyData.company!.name.toString();
       groupNameController.text = companyData.group!.name.toString();
       messageController.text = companyData.group!.message.toString();
 
@@ -201,37 +194,36 @@ class _ViewCompanyGroupState extends State<ViewCompanyGroup> {
     );
   }
 
- Column _table() {
-  return Column(
-    children: <Widget>[
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            DataTable(
-              columns: const [
-                DataColumn(label: Text('Sr. No.'), numeric: true),
-                DataColumn(label: Text('Name')),
-              ],
-              rows: (selected?.selected ?? []).map((selectedd) {
-                final index = selected?.selected?.indexOf(selectedd) ?? -1;
-                final srNo = (index + 1).toString();
-                final title = selectedd.name ?? '';
+  Column _table() {
+    return Column(
+      children: <Widget>[
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              DataTable(
+                columns: const [
+                  DataColumn(label: Text('Sr. No.'), numeric: true),
+                  DataColumn(label: Text('Name')),
+                ],
+                rows: (selected?.selected ?? []).map((selectedd) {
+                  final index = selected?.selected?.indexOf(selectedd) ?? -1;
+                  final srNo = (index + 1).toString();
+                  final title = selectedd.name ?? '';
 
-                return DataRow(cells: [
-                  DataCell(Text(srNo)),
-                  DataCell(Text(title)),
-                ]);
-              }).toList(),
-              dataRowMinHeight: 32.0,
-            ),
-          ],
+                  return DataRow(cells: [
+                    DataCell(Text(srNo)),
+                    DataCell(Text(title)),
+                  ]);
+                }).toList(),
+                dataRowMinHeight: 32.0,
+              ),
+            ],
+          ),
         ),
-      ),
-    ],
-  );
-}
-
+      ],
+    );
+  }
 
   Widget buildTextField(
       String labelText, String placeholder, bool isPasswordTextField) {

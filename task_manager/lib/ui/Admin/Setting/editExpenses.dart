@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/expensesDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-
 
 class EditExpenses extends StatefulWidget {
   final String userId;
@@ -113,8 +112,6 @@ class _EditExpensesState extends State<EditExpenses> {
     }
     expenses();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +252,7 @@ class _EditExpensesState extends State<EditExpenses> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-              
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

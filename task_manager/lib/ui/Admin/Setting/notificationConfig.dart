@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/notificationConficDataModel.dart';
 import 'package:task_manager/ui/Admin/Setting/editNotificationConfig.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class NotificationConfig extends StatefulWidget {
   const NotificationConfig({super.key});
@@ -19,6 +19,7 @@ class NotificationConfig extends StatefulWidget {
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 int dataCount = 0;
+
 class _NotificationConfigState extends State<NotificationConfig> {
   late TableSource _source; // Declare _source here
 
@@ -293,12 +294,9 @@ typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<NotificationConfigDataModel> {
   final BuildContext context; // Add the context parameter
-
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
   int startIndex = 0; // Add the startIndex variable
 
   void deleteUser(String? id) async {

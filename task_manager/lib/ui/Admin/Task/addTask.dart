@@ -6,12 +6,12 @@ import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:task_manager/API/AdminDataModel/fileDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/taskDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/Company/addCompany.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:collection/collection.dart'; // Import the 'collection' package for the 'firstWhereOrNull' method
+import 'package:collection/collection.dart';
 
 class AddTask extends StatefulWidget {
   const AddTask({Key? key}) : super(key: key);
@@ -23,9 +23,6 @@ class AddTask extends StatefulWidget {
 class _AddTaskState extends State<AddTask> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AddTaskKey = GlobalKey<FormState>();
   TextEditingController taskName = TextEditingController();
   TextEditingController client = TextEditingController();
@@ -36,17 +33,12 @@ class _AddTaskState extends State<AddTask> {
   TextEditingController department = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController description = TextEditingController();
-
   String? selectedClientId1;
   String? selectedDepartmentIds;
-  //String? selectedEmployeeId;
-  //TaskDataModel taskDataModel = TaskDataModel();
   List<Employee>? selectedEmployeeId;
   TaskDataModel? taskDataModel;
-
   List<TaskDataModel> companyGroupDataList = [];
   List<String> selectedFileIds = [];
-
   bool autoComplete = true;
   bool autoInvoice = true;
   String autoCompleteValue = "";
@@ -88,8 +80,7 @@ class _AddTaskState extends State<AddTask> {
     getUser2();
   }
 
-  List<TaskDataModel> employeeGroupDataList =
-      []; // Define as List<TaskDataModel>
+  List<TaskDataModel> employeeGroupDataList = [];
   List<TaskDataModel> clientType = [];
   List<TaskDataModel> departmentType = []; // Define as List<TaskDataModel>
 
@@ -176,12 +167,10 @@ class _AddTaskState extends State<AddTask> {
       getUser2();
     }
   }
+
   void taskAdd() async {
     autoCompleteValue = (autoComplete ? "1" : "0");
     autoInvoiceValue = (autoInvoice ? "1" : "0");
-    print("startingdate: ${startingDate.text}");
-    print("deadlineDate: ${deadlineDate.text}");
-    print("description: ${description.text}");
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.addTask}',
@@ -196,11 +185,10 @@ class _AddTaskState extends State<AddTask> {
           "txtComment": description.text,
           "auto_cmplt": autoCompleteValue,
           "auto_inc": autoInvoiceValue,
-          "Save":"Save"
+          "Save": "Save"
         },
       );
       if (genmodel != null) {
-        print('Status: ${genmodel.message}');
         Fluttertoast.showToast(
           msg: genmodel.message.toString(),
           toastLength: Toast.LENGTH_SHORT,
@@ -258,7 +246,6 @@ class _AddTaskState extends State<AddTask> {
                   height: deviceHeight * 0.04,
                 ),
                 _header(),
-               
                 _add(),
                 SizedBox(
                   height: deviceHeight * 0.02,
@@ -464,7 +451,6 @@ class _AddTaskState extends State<AddTask> {
                         .toList()
                         .cast<String>();
                   });
-                  print(selectedFileIds);
                 },
               ),
             ],
@@ -770,7 +756,7 @@ class _AddTaskState extends State<AddTask> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

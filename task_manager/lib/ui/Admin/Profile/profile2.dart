@@ -384,6 +384,7 @@ class _Profile2State extends State<Profile2> {
       ),
     );
   }
+
   Column _detail() {
     return Column(
       children: [

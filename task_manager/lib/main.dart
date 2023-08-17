@@ -9,9 +9,11 @@ import 'package:task_manager/ui/Admin/loginPage/login_screen.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
 
 void main() {
-  runApp(GetMaterialApp(
-    home: MyApp(),
-  ),);
+  runApp(
+    GetMaterialApp(
+      home: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

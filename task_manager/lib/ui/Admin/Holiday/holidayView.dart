@@ -8,8 +8,8 @@ import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/holidayViewDataModel.dart';
 import 'package:task_manager/ui/Admin/Holiday/holidayViewAdd.dart';
 import 'package:task_manager/ui/Admin/Holiday/holidayViewEdit.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class HolidayView extends StatefulWidget {
   const HolidayView({super.key});

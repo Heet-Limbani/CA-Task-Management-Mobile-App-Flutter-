@@ -348,7 +348,7 @@ class TableSource extends AdvancedDataTableSource<ClientTicketDataModel> {
                       RawMaterialButton(
                         onPressed: () {
                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
+                              ticketId: dataList.ticketId.toString()));
                         },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -385,7 +385,7 @@ class TableSource extends AdvancedDataTableSource<ClientTicketDataModel> {
                       RawMaterialButton(
                         onPressed: () {
                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
+                              ticketId: dataList.ticketId.toString()));
                         },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),
@@ -399,7 +399,7 @@ class TableSource extends AdvancedDataTableSource<ClientTicketDataModel> {
                       RawMaterialButton(
                         onPressed: () {
                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
+                              ticketId: dataList.ticketId.toString()));
                         },
                         child: Icon(Icons.remove_red_eye_outlined),
                         constraints: BoxConstraints.tight(Size(24, 24)),

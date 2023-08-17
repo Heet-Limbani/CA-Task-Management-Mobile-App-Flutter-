@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
-
 class Gst_Report extends StatefulWidget {
   const Gst_Report({super.key});
 
@@ -25,7 +24,7 @@ class _Gst_ReportState extends State<Gst_Report> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer:  SideBarAdmin(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );

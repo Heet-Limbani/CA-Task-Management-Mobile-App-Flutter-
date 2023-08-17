@@ -8,9 +8,9 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AttendanceLogEdit extends StatefulWidget {
-  final String userId;
+  final String id;
 
-  const AttendanceLogEdit({required this.userId, Key? key}) : super(key: key);
+  const AttendanceLogEdit({required this.id, Key? key}) : super(key: key);
 
   @override
   State<AttendanceLogEdit> createState() => _AttendanceLogEditState();
@@ -19,15 +19,11 @@ class AttendanceLogEdit extends StatefulWidget {
 class _AttendanceLogEditState extends State<AttendanceLogEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AttendanceLogEditKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController inTime = TextEditingController();
   TextEditingController outTime = TextEditingController();
   TextEditingController date = TextEditingController();
-
   String userId = "";
   String? selectedClientId1;
 
@@ -43,7 +39,7 @@ class _AttendanceLogEditState extends State<AttendanceLogEdit> {
   @override
   void initState() {
     super.initState();
-    userId = widget.userId; // Store widget.userId in a local variable
+    userId = widget.id; // Store widget.userId in a local variable
     getUser();
   }
 
@@ -57,7 +53,6 @@ class _AttendanceLogEditState extends State<AttendanceLogEdit> {
 
   List<AttendanceLogEditDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.attendanceLogEditGetData}',
       params: {
@@ -77,9 +72,9 @@ class _AttendanceLogEditState extends State<AttendanceLogEdit> {
         DateTime.fromMillisecondsSinceEpoch(
             int.parse(fileData.data!.outTime!) * 1000),
       );
-      
+
       date.text = fileData.data!.createdOn!;
-      
+
       selectedClientId1 = fileData.data!.userId.toString();
 
       clientType.add(fileData); // Add the companyData to clientType list
@@ -263,10 +258,7 @@ class _AttendanceLogEditState extends State<AttendanceLogEdit> {
               if (selectedTime != null) {
                 // Format the selected time
                 String formattedTime =
-          '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
-
-
-
+                    '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
 
                 setState(() {
                   inTime.text = formattedTime;
@@ -317,8 +309,7 @@ class _AttendanceLogEditState extends State<AttendanceLogEdit> {
               if (selectedTime != null) {
                 // Format the selected time
                 String formattedTime1 =
-                '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
-
+                    '${selectedTime.hour.toString().padLeft(2, '0')}:${selectedTime.minute.toString().padLeft(2, '0')}';
 
                 setState(() {
                   outTime.text = formattedTime1;

@@ -7,8 +7,6 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AdminLeaveAdd extends StatefulWidget {
-
-
   const AdminLeaveAdd({Key? key}) : super(key: key);
 
   @override
@@ -28,26 +26,22 @@ class _AdminLeaveAddState extends State<AdminLeaveAdd> {
   TextEditingController interval = TextEditingController();
   TextEditingController description = TextEditingController();
 
-  String userId = "";
   String? selectedIntervalId1;
   late int selectedIntervalId;
-  bool isActive = true;
 
-  String isActiveValue = "";
   @override
   void dispose() {
     reason.dispose();
     fromDate.dispose();
     toDate.dispose();
     interval.dispose();
-    description.dispose();   
+    description.dispose();
     super.dispose();
   }
 
   @override
   void initState() {
     super.initState();
-     // Store widget.userId in a local variable
   }
 
   void clearField() {
@@ -56,10 +50,8 @@ class _AdminLeaveAddState extends State<AdminLeaveAdd> {
     toDate.clear();
     interval.clear();
     description.clear();
-    
   }
 
- 
   void fileEdit() async {
     try {
       genModel? genmodel = await Urls.postApiCall(
@@ -69,7 +61,7 @@ class _AdminLeaveAddState extends State<AdminLeaveAdd> {
           "reason": reason.text,
           "fdate": fromDate.text,
           "tdate": toDate.text,
-          "shift":selectedIntervalId.toString(),
+          "shift": selectedIntervalId.toString(),
           "description": description.text,
         },
       );
@@ -326,11 +318,8 @@ class _AdminLeaveAddState extends State<AdminLeaveAdd> {
                 selectedIntervalId = _getItemId(newValue)!;
               });
             },
-            items: <String>[
-              'Shift - 1',
-              'Shift - 2',
-              'Full Day'
-            ].map<DropdownMenuItem<String>>((String value) {
+            items: <String>['Shift - 1', 'Shift - 2', 'Full Day']
+                .map<DropdownMenuItem<String>>((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value, style: TextStyle(fontSize: 16)),

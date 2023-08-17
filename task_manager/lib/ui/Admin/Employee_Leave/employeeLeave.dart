@@ -5,8 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/employeeLeaveDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class EmployeeLeave extends StatefulWidget {
   const EmployeeLeave({super.key});
@@ -26,13 +26,11 @@ class _EmployeeLeaveState extends State<EmployeeLeave> {
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -333,8 +331,6 @@ class TableSource extends AdvancedDataTableSource<EmployeeLeaveDataModel> {
     }
   }
 
-
-
   void rejectEmployeeLeave(String? id) async {
     if (id != null) {
       genModel? genmodel = await Urls.postApiCall(
@@ -452,8 +448,7 @@ class TableSource extends AdvancedDataTableSource<EmployeeLeaveDataModel> {
                   Row(
                     children: [
                       RawMaterialButton(
-                        onPressed: () {
-                        },
+                        onPressed: () {},
                         child: Icon(Icons.mail),
                         constraints: BoxConstraints.tight(Size(24, 24)),
                         shape: CircleBorder(),

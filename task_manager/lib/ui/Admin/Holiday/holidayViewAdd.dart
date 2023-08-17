@@ -7,9 +7,7 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class HolidayViewAdd extends StatefulWidget {
-  
-
-  const HolidayViewAdd({ Key? key}) : super(key: key);
+  const HolidayViewAdd({Key? key}) : super(key: key);
 
   @override
   State<HolidayViewAdd> createState() => _HolidayViewAddState();
@@ -18,17 +16,13 @@ class HolidayViewAdd extends StatefulWidget {
 class _HolidayViewAddState extends State<HolidayViewAdd> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _HolidayViewAddKey = GlobalKey<FormState>();
   TextEditingController title = TextEditingController();
-  TextEditingController description= TextEditingController();
+  TextEditingController description = TextEditingController();
   TextEditingController date = TextEditingController();
-
- 
   bool isActive = true;
   String isActiveValue = "";
+
   @override
   void dispose() {
     title.dispose();
@@ -40,8 +34,7 @@ class _HolidayViewAddState extends State<HolidayViewAdd> {
   @override
   void initState() {
     super.initState();
-  // Store widget.userId in a local variable
-     
+    // Store widget.userId in a local variable
   }
 
   void clearField() {
@@ -50,9 +43,8 @@ class _HolidayViewAddState extends State<HolidayViewAdd> {
     date.clear();
   }
 
-
   void fileEdit() async {
-     isActiveValue = (isActive ? "1" : "0");
+    isActiveValue = (isActive ? "1" : "0");
     try {
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.holidayViewAdd}',
@@ -83,7 +75,6 @@ class _HolidayViewAddState extends State<HolidayViewAdd> {
     setState(() {});
   }
 
- 
   @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -151,9 +142,6 @@ class _HolidayViewAddState extends State<HolidayViewAdd> {
     );
   }
 
-  
- 
-
   Form _HolidayViewAdd() {
     return Form(
       key: _HolidayViewAddKey,
@@ -219,7 +207,6 @@ class _HolidayViewAddState extends State<HolidayViewAdd> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-
           TextFormField(
             controller: date,
             keyboardType: TextInputType.datetime,
@@ -269,7 +256,6 @@ class _HolidayViewAddState extends State<HolidayViewAdd> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-        
           SizedBox(
             height: deviceHeight * 0.02,
           ),

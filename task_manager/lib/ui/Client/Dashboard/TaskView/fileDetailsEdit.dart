@@ -9,7 +9,12 @@ class fileDetailsEdit extends StatefulWidget {
   final String ticketId;
   final String sc;
 
-  const fileDetailsEdit({required this.sc,required this.userId,required this.ticketId, Key? key}) : super(key: key);
+  const fileDetailsEdit(
+      {required this.sc,
+      required this.userId,
+      required this.ticketId,
+      Key? key})
+      : super(key: key);
 
   @override
   State<fileDetailsEdit> createState() => _fileDetailsEditState();
@@ -25,8 +30,8 @@ class _fileDetailsEditState extends State<fileDetailsEdit> {
   String userId = "";
   String ticketId = "";
   String sc = "";
-  bool  isActive = true;
- 
+  bool isActive = true;
+
   String isActiveValue = "";
   @override
   void dispose() {
@@ -36,35 +41,14 @@ class _fileDetailsEditState extends State<fileDetailsEdit> {
   @override
   void initState() {
     super.initState();
-    ticketId  = widget.ticketId;
+    ticketId = widget.ticketId;
     userId = widget.userId;
     sc = widget.sc;
     isActive = (sc == "1" ? true : false);
   }
 
-  // void clearField() {}
-
-  // void getUser() async {
-  //   print("id :- $userId");
-  //   genModel? genmodel = await Urls.postApiCall(
-  //     method: '${Urls.taskViewTaskDetails}',
-  //     params: {
-  //       "sub_tid": userId.toString(),
-  //     },
-  //   );
-
-  //   if (genmodel != null && genmodel.status == true) {
-  //     final data = genmodel.data;
-  //     final fileData = TasksData.fromJson(data);
-  //     print("fileData :- $fileData");
-
-  //     isActive = fileData.virtualFile![0].toString() == "1" ? true : false;
-  //     setState(() {});
-  //   }
-  // }
-
   void editFile() async {
-     isActiveValue = (isActive ? "1" : "0");
+    isActiveValue = (isActive ? "1" : "0");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editFileTask}',
       params: {'id': userId, 'status': isActiveValue, 'ticket_id': ticketId},
@@ -151,7 +135,6 @@ class _fileDetailsEditState extends State<fileDetailsEdit> {
     return Form(
       key: _fileDetailsEditKey,
       child: Column(
-        
         children: <Widget>[
           SizedBox(
             height: deviceHeight * 0.02,

@@ -5,11 +5,11 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class fileDetailsEdit extends StatefulWidget {
- 
   final String ticketId;
   final String sc;
 
-  const fileDetailsEdit({required this.sc,required this.ticketId, Key? key}) : super(key: key);
+  const fileDetailsEdit({required this.sc, required this.ticketId, Key? key})
+      : super(key: key);
 
   @override
   State<fileDetailsEdit> createState() => _fileDetailsEditState();
@@ -18,16 +18,13 @@ class fileDetailsEdit extends StatefulWidget {
 class _fileDetailsEditState extends State<fileDetailsEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
   Map? dataResponse;
-
   final GlobalKey<FormState> _fileDetailsEditKey = GlobalKey<FormState>();
- 
   String ticketId = "";
   String sc = "";
-  bool  isActive = true;
- 
+  bool isActive = true;
   String isActiveValue = "";
+
   @override
   void dispose() {
     super.dispose();
@@ -36,38 +33,21 @@ class _fileDetailsEditState extends State<fileDetailsEdit> {
   @override
   void initState() {
     super.initState();
-    ticketId  = widget.ticketId;
-   
+    ticketId = widget.ticketId;
     sc = widget.sc;
     isActive = (sc == "1" ? true : false);
   }
 
-  // void clearField() {}
-
-  // void getUser() async {
-  //   print("id :- $userId");
-  //   genModel? genmodel = await Urls.postApiCall(
-  //     method: '${Urls.taskViewTaskDetails}',
-  //     params: {
-  //       "sub_tid": userId.toString(),
-  //     },
-  //   );
-
-  //   if (genmodel != null && genmodel.status == true) {
-  //     final data = genmodel.data;
-  //     final fileData = TasksData.fromJson(data);
-  //     print("fileData :- $fileData");
-
-  //     isActive = fileData.virtualFile![0].toString() == "1" ? true : false;
-  //     setState(() {});
-  //   }
-  // }
-
   void editFile() async {
-     isActiveValue = (isActive ? "1" : "0");
+    isActiveValue = (isActive ? "1" : "0");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.companyFileEdit}',
-      params: { 'task':'view_company_log','downloadable': isActiveValue, 'id': ticketId,'submit':'submit'},
+      params: {
+        'task': 'view_company_log',
+        'downloadable': isActiveValue,
+        'id': ticketId,
+        'submit': 'submit'
+      },
     );
 
     if (genmodel != null && genmodel.status == true) {
@@ -151,7 +131,6 @@ class _fileDetailsEditState extends State<fileDetailsEdit> {
     return Form(
       key: _fileDetailsEditKey,
       child: Column(
-        
         children: <Widget>[
           SizedBox(
             height: deviceHeight * 0.02,

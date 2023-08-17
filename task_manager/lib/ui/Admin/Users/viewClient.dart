@@ -7,9 +7,9 @@ import 'package:task_manager/ui/Admin/Users/clientInvoiceDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientLogDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientLoginDetails.dart';
 import 'package:task_manager/ui/Admin/Users/clientTicketDetails.dart';
-import '../../Resources/res/color.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
+import 'package:task_manager/ui/Resources/res/color.dart';
 
 class viewClient1 extends StatefulWidget {
   final String userId;
@@ -30,14 +30,12 @@ TextEditingController userName = TextEditingController();
 TextEditingController email = TextEditingController();
 TextEditingController contact = TextEditingController();
 final GlobalKey<FormState> _formKey = GlobalKey();
-
 String clientId = "";
 String message = "";
 String description = "";
 String date = '';
 DateTime? selectedDateTime = DateTime.now();
 String userId = "";
-
 String? selectedClientId1;
 
 class _viewClient1State extends State<viewClient1> {
@@ -52,7 +50,6 @@ class _viewClient1State extends State<viewClient1> {
 
   List<GetUser> dataList = [];
   void getUser() async {
-    print("User ID: $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.getUsers}',
       params: {
@@ -167,7 +164,7 @@ class _viewClient1State extends State<viewClient1> {
                   height: deviceHeight * 0.01,
                 ),
                 _form(),
-                 SizedBox(
+                SizedBox(
                   height: deviceHeight * 0.1,
                 ),
                 _header1(),
@@ -175,7 +172,6 @@ class _viewClient1State extends State<viewClient1> {
                   height: deviceHeight * 0.01,
                 ),
                 _table(),
-               
                 SizedBox(
                   height: deviceHeight * 0.1,
                 ),
@@ -206,17 +202,6 @@ class _viewClient1State extends State<viewClient1> {
               )
             ],
             shape: BoxShape.circle,
-            //  image: DecorationImage(
-            //    fit: BoxFit.cover,
-            //    image: Urls.profileAvatar == ""
-            //        ? AssetImage(
-            //            "assets/images/heet.png",
-            //          )
-            //        : NetworkImage(Urls.profileAvatar) as ImageProvider,
-            //    // AssetImage(
-            //    //   "assets/images/heet.png",
-            //    // ),
-            //  ),
           ),
         ),
         SizedBox(
@@ -228,26 +213,7 @@ class _viewClient1State extends State<viewClient1> {
         SizedBox(height: 30),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // ElevatedButton(
-            //   onPressed: () {},
-            //   child: Text(
-            //     "Update Settings",
-            //     style: TextStyle(
-            //       fontSize: 20,
-            //       letterSpacing: 2,
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Colors.blue,
-            //     padding: EdgeInsets.symmetric(horizontal: 50, vertical: 14),
-            //     shape: RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(30),
-            //     ),
-            //   ),
-            // ),
-          ],
+          children: [],
         ),
         SizedBox(
           height: 10,
@@ -282,35 +248,6 @@ class _viewClient1State extends State<viewClient1> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          // DropdownButtonFormField<String>(
-          //   value: selectedClientId1,
-          //   decoration: const InputDecoration(
-          //     labelText: 'Client',
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
-          //     ),
-          //     border: OutlineInputBorder(),
-          //   ),
-          //   onChanged: (String? newValue) {
-          //     setState(() {
-          //       selectedClientId1 = newValue;
-          //       clientController.text = selectedClientId1 ?? '';
-          //     });
-          //   },
-          //   items: clientType.map((GetUser user) {
-          //     return DropdownMenuItem<String>(
-          //       value: user.iD ?? '',
-          //       child: Text(user.username ?? ''),
-          //     );
-          //   }).toList(),
-          //   validator: (value) {
-          //     if (value == null || value.isEmpty) {
-          //       return 'Please select a client';
-          //     }
-          //     return null;
-          //   },
-          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -445,7 +382,7 @@ class _viewClient1State extends State<viewClient1> {
     );
   }
 
-Row _header1() {
+  Row _header1() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -465,7 +402,6 @@ Row _header1() {
       ],
     );
   }
-
 
   Row _table() {
     return Row(
@@ -504,7 +440,7 @@ Row _header1() {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                   ClientLoginDetails(userId: userId),
+                    ClientLoginDetails(userId: userId),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(opacity: animation, child: child);
@@ -518,7 +454,7 @@ Row _header1() {
           ),
         ),
         // Add more buttons for additional tables
-         SizedBox(
+        SizedBox(
           width: deviceWidth * 0.05,
         ),
         ElevatedButton(
@@ -530,7 +466,7 @@ Row _header1() {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                   ClientTicketDetails(userId: userId),
+                    ClientTicketDetails(userId: userId),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(opacity: animation, child: child);
@@ -543,7 +479,7 @@ Row _header1() {
             style: TextStyle(color: Colors.black),
           ),
         ),
-         SizedBox(
+        SizedBox(
           width: deviceWidth * 0.05,
         ),
         ElevatedButton(
@@ -555,7 +491,7 @@ Row _header1() {
               context,
               PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) =>
-                   ClientInvoiceDetails(userId: userId),
+                    ClientInvoiceDetails(userId: userId),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                   return FadeTransition(opacity: animation, child: child);
@@ -649,25 +585,3 @@ class TableScreen2 extends StatelessWidget {
     );
   }
 }
-//  @override
-//   Widget build(BuildContext context) {
-//     deviceWidth = MediaQuery.of(context).size.width;
-//     deviceHeight = MediaQuery.of(context).size.height;
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(
-//           "Menu > viewClient1",
-//           style: Theme.of(context)
-//               .textTheme
-//               .bodySmall!
-//               .copyWith(fontWeight: FontWeight.bold),
-//         ),
-//         elevation: 0,
-//         foregroundColor: Colors.grey,
-//         backgroundColor: Colors.transparent,
-//       ),
-//       drawer: SideBarAdmin(),
-//       extendBody: true,
-//       body: _buildBody(),
-//     );
-//   }

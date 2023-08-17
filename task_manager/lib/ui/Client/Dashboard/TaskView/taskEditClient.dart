@@ -18,9 +18,6 @@ class EditTask extends StatefulWidget {
 class _EditTaskState extends State<EditTask> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _EditTaskKey = GlobalKey<FormState>();
   TextEditingController taskName = TextEditingController();
   TextEditingController description = TextEditingController();
@@ -34,7 +31,6 @@ class _EditTaskState extends State<EditTask> {
   String autoCompleteValue = "";
   String autoInvoiceValue = "";
   List<String> selectedFileIds = [];
-
   String userId = "";
   String? selectedClientId1;
 
@@ -82,7 +78,7 @@ class _EditTaskState extends State<EditTask> {
       deadlineDate.text = fileData.data!.deadlineDate!;
       autoComplete = fileData.data!.autoCompleteAndReview == "1" ? true : false;
       autoInvoice = fileData.data!.autoInvoice == "1" ? true : false;
-       selectedFileIds = fileData.data!.fileId!.split(',');
+      selectedFileIds = fileData.data!.fileId!.split(',');
       selectedClientId1 = fileData.data!.clientId.toString();
 
       clientType.add(fileData); // Add the companyData to clientType list

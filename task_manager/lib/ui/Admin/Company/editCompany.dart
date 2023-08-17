@@ -3,14 +3,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/companyDataModel2.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditCompany extends StatefulWidget {
-  final String userId;
+  final String id;
 
-  const EditCompany({required this.userId, Key? key}) : super(key: key);
+  const EditCompany({required this.id, Key? key}) : super(key: key);
 
   @override
   State<EditCompany> createState() => _EditCompanyState();
@@ -37,12 +37,6 @@ class _EditCompanyState extends State<EditCompany> {
   TextEditingController contactNumber = TextEditingController();
   TextEditingController emailId = TextEditingController();
 
-  bool isActive = true;
-  bool checkSMS = true;
-  bool checkEmail = true;
-  String isActiveValue = "";
-  String checkSMSValue = "";
-  String checkEmailValue = "";
   String userId = "";
   String? selectedClientId1;
 
@@ -68,7 +62,7 @@ class _EditCompanyState extends State<EditCompany> {
   @override
   void initState() {
     super.initState();
-    userId = widget.userId; // Store widget.userId in a local variable
+    userId = widget.id; // Store widget.userId in a local variable
     getUser();
   }
 
@@ -90,7 +84,6 @@ class _EditCompanyState extends State<EditCompany> {
 
   List<CompanyDataModel2> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editCompany}',
       params: {
@@ -100,7 +93,6 @@ class _EditCompanyState extends State<EditCompany> {
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
-
 
       final companyData = CompanyDataModel2.fromJson(data);
 
@@ -131,7 +123,6 @@ class _EditCompanyState extends State<EditCompany> {
         method: '${Urls.editCompany}',
         params: {
           "save": "save",
-
           "id": userId.toString(),
           "Employee": selectedClientId1.toString(),
           "name": companyName.text.toString(),
@@ -707,7 +698,7 @@ class _EditCompanyState extends State<EditCompany> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-           
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -735,6 +726,3 @@ class _EditCompanyState extends State<EditCompany> {
     );
   }
 }
-
-// Table heading
-

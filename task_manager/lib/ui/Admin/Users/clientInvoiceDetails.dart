@@ -1,14 +1,10 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/clientInvoiceDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/AdminDataModel/logModel.dart';
-import 'package:task_manager/ui/Admin/Users/editClientForm.dart';
-import '../sidebar/sidebarAdmin.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class ClientInvoiceDetails extends StatefulWidget {
   final String userId;
@@ -39,7 +35,6 @@ class _ClientInvoiceDetailsState extends State<ClientInvoiceDetails> {
     _source = ClientSource(context); // Initialize _source here
 
     userId = widget.userId; // Store widget.userId in a local variable
-    print("userId :- $userId");
   }
 
   @override
@@ -66,11 +61,7 @@ class _ClientInvoiceDetailsState extends State<ClientInvoiceDetails> {
   }
 
   void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
     setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
       _source.startIndex = 0;
       _source.setNextView();
     });
@@ -307,99 +298,6 @@ class _ClientInvoiceDetailsState extends State<ClientInvoiceDetails> {
   }
 }
 
-class ClientDataSource extends DataTableSource {
-  final List<Log> log;
-  final int totalCount;
-  final int startIndex;
-
-  ClientDataSource(this.log, this.totalCount, this.startIndex);
-
-  @override
-  DataRow getRow(int index) {
-    final clientIndex = startIndex + index;
-    if (clientIndex >= log.length) {
-      return DataRow(cells: [
-        DataCell(Text('')),
-        //DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-      ]);
-    }
-    void deleteUser(String? clientId) async {
-      if (clientId != null) {
-        print("clientId :- $clientId");
-        genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.clientViewLogDetailsEdit}',
-          params: {'id': clientId, 'delete': "delete"},
-        );
-
-        if (genmodel != null && genmodel.status == true) {
-          Fluttertoast.showToast(
-            msg: "${genmodel.message.toString()}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
-        }
-      }
-    }
-
-    final client = log[clientIndex];
-
-    return DataRow(cells: [
-      DataCell(Text((clientIndex + 1).toString())),
-      //DataCell(Text(client.client ?? "")),
-      DataCell(Text(client.message ?? "")),
-      DataCell(Text(client.description ?? "")),
-      DataCell(Text(client.onDate.toString())),
-      DataCell(Text(client.createdOn ?? "")),
-      DataCell(
-        IconButton(
-          onPressed: () {
-            Get.to(EditClientForm(userId: client.id!));
-          },
-          icon: Icon(Icons.edit),
-        ),
-      ),
-      DataCell(IconButton(
-        onPressed: () {
-          Get.defaultDialog(
-            title: "Delete",
-            middleText: "Are you sure you want to delete ?",
-            textConfirm: "Yes",
-            textCancel: "No",
-            confirmTextColor: Colors.white,
-            buttonColor: Colors.red,
-            cancelTextColor: Colors.black,
-            onConfirm: () {
-              Get.back();
-              deleteUser(client.id!);
-            },
-            onCancel: () {},
-          );
-        },
-        icon: Icon(Icons.delete),
-      )),
-    ]);
-  }
-
-  @override
-  int get rowCount => totalCount;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-/////////////
-///
-///////
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class ClientSource extends AdvancedDataTableSource<Invoice> {
@@ -550,60 +448,3 @@ class ClientSource extends AdvancedDataTableSource<Invoice> {
     }
   }
 }
-
-/*
-if($r->status==0){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'> <span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>
-    <a href=". base_url()."Task/Delete_Task/".$r->ticket_id." title='Delete Data' class='btn btn-danger btn-sm'> <span class='glyphicon glyphicon-trash'/></a>";
-    if($r->deadline_date < $today){
-        //$status="Overdue - ".number_format($r->task_complete_percentage,0)."%";
-        $action .="<input type='hidden' value='overdue'>";
-    }
-    $status="Un-assigned";
-    // $status="Open";
-}elseif($r->status==1){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>";
-    if($r->deadline_date < $today){
-        //$status="Overdue - ".number_format($r->task_complete_percentage,0)."%";
-        $action .="<input type='hidden' value='overdue'>";
-    }
-    // $status="Completed - ".number_format($r->task_complete_percentage,0)."%";
-    $status="Open - ".number_format($r->task_complete_percentage,0)."%";
-    // $status="Assigned - ".number_format($r->task_complete_percentage,0)."%";
-}elseif($r->status==2){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>";
-    if($r->deadline_date < $today){
-        $action .="<input type='hidden' value='overdue'>";
-        //$status="Overdue - ".number_format($r->task_complete_percentage,0)."%";
-    }
-    $status="In-progress - ".number_format($r->task_complete_percentage,0)."%";
-}elseif($r->status==3){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>";
-    $status="Query Raised";
-}elseif($r->status==4){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>
-    <a href=". base_url()."Task/reviewtask/".$r->ticket_id." title='Task Reviewed' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-ok'/></a>";
-    // $status="Completed";
-    $status="Closed";
-}elseif($r->status==5){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Task/Edit_Task/".$r->ticket_id." title='Edit Data' class='btn btn-success btn-sm'> <span class='glyphicon glyphicon-pencil'/></a>
-    <a href=". base_url()."Task/invoice_raised/".$r->ticket_id." title='Raise Invoice' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-list-alt'/></a>";
-    $status="Completed & Reviewed";
-}elseif($r->status==6){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>
-    <a href=". base_url()."Payment/task_payment/".$r->ticket_id." title='Task Payment' class='btn btn-primary btn-sm'> <span class='glyphicon glyphicon-paste'/></a>";
-    $status="Invoice-Raised";
-}elseif($r->status==7){
-    $action="<a href=".base_url()."Task/View_task/".$r->ticket_id." title='View' class='btn btn-info btn-sm'><span class='glyphicon glyphicon-eye-open'/></a>";
-    $status="Paid";
-}else{
-    $action = " ";
-    $status = " ";
-}
-*/

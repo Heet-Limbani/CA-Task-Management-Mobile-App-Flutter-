@@ -24,6 +24,7 @@ TextEditingController nameController =
 
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
+
 class _FileManagerState extends State<FileManager> {
   late TableSource _source; // Declare _source here
 
@@ -57,8 +58,6 @@ class _FileManagerState extends State<FileManager> {
       _source.setNextView();
     });
   }
-
- 
 
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
@@ -133,7 +132,7 @@ class _FileManagerState extends State<FileManager> {
     );
   }
 
-   Row _add() {
+  Row _add() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -205,6 +204,7 @@ class _FileManagerState extends State<FileManager> {
       ],
     );
   }
+
   Column _table() {
     return Column(
       children: <Widget>[
@@ -288,23 +288,22 @@ class _FileManagerState extends State<FileManager> {
               label: const Text('Client Name'),
               onSort: setSort,
             ),
-              DataColumn(
+            DataColumn(
               label: const Text('Location'),
               onSort: setSort,
             ),
-              DataColumn(
+            DataColumn(
               label: const Text('File Number'),
               onSort: setSort,
             ),
-              DataColumn(
+            DataColumn(
               label: const Text('Inward Date'),
               onSort: setSort,
             ),
-              DataColumn(
+            DataColumn(
               label: const Text('Action'),
               onSort: setSort,
-            ),  
-
+            ),
           ],
           //Optianl override to support custom data row text / translation
           getFooterRowText:
@@ -394,8 +393,6 @@ class TableSource extends AdvancedDataTableSource<FileGetDataModel> {
 
   int startIndex = 0; // Add the startIndex variable
 
-
-  
   int countIds(String ids) {
     if (ids.isEmpty) {
       return 0;
@@ -429,7 +426,7 @@ class TableSource extends AdvancedDataTableSource<FileGetDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                         Get.to(EditFile(userId: dataList.id!) );
+                          Get.to(EditFile(userId: dataList.id!));
                         }
                       },
                       child: Icon(Icons.edit),
@@ -439,7 +436,7 @@ class TableSource extends AdvancedDataTableSource<FileGetDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
-                         Get.to(DispatchFile(userId: dataList.id!) );
+                          Get.to(DispatchFile(id: dataList.id!));
                         }
                       },
                       child: Icon(Icons.ios_share),
@@ -502,15 +499,14 @@ class TableSource extends AdvancedDataTableSource<FileGetDataModel> {
         count,
         dynamicData
             .map<FileGetDataModel>(
-              (item) =>
-                  FileGetDataModel.fromJson(item as Map<String, dynamic>),
+              (item) => FileGetDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
                 .map<FileGetDataModel>(
-                  (item) => FileGetDataModel.fromJson(
-                      item as Map<String, dynamic>),
+                  (item) =>
+                      FileGetDataModel.fromJson(item as Map<String, dynamic>),
                 )
                 .length
             : null,

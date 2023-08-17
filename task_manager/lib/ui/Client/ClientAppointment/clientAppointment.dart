@@ -21,7 +21,6 @@ int dataCount = 0;
 
 class _AppointmentState extends State<Appointment> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
@@ -362,8 +361,6 @@ class TableSource extends AdvancedDataTableSource<AppointmentDataModel> {
     }
   }
 
-
-
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
@@ -376,10 +373,10 @@ class TableSource extends AdvancedDataTableSource<AppointmentDataModel> {
     } else {
       statusValue = "Reject";
     }
-     final parsedDate = DateTime.fromMillisecondsSinceEpoch(
+    final parsedDate = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.date ?? '0') * 1000);
     final formattedDate = DateFormat('yyyy-MM-dd').format(parsedDate);
-     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
+    final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.time ?? '0') * 1000);
     final formattedDate1 = DateFormat('hh:mm:ss').format(parsedDate1.toUtc());
     return DataRow(

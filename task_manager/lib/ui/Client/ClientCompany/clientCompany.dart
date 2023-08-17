@@ -21,20 +21,17 @@ TextEditingController nameController =
 int dataCount = 0;
 
 class _ClientCompanyState extends State<ClientCompany> {
-  late TableSource _source; // Declare _source here
-
+  late TableSource _source;
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -333,7 +330,7 @@ class TableSource extends AdvancedDataTableSource<ClientCompanyDataModel> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                       Get.to(ClientDocument(userId: dataList.id.toString()));
+                        Get.to(ClientDocument(userId: dataList.id.toString()));
                       },
                       child: Icon(Icons.download),
                       constraints: BoxConstraints.tight(Size(24, 24)),
@@ -341,7 +338,8 @@ class TableSource extends AdvancedDataTableSource<ClientCompanyDataModel> {
                     ),
                     RawMaterialButton(
                       onPressed: () {
-                        Get.to(ClientPassbook(ticketId: dataList.id.toString()));
+                        Get.to(
+                            ClientPassbook(ticketId: dataList.id.toString()));
                       },
                       child: Icon(Icons.content_paste_search_outlined),
                       constraints: BoxConstraints.tight(Size(24, 24)),

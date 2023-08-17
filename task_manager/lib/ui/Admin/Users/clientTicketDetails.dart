@@ -1,14 +1,10 @@
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/clientTicketDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
-import 'package:task_manager/API/AdminDataModel/logModel.dart';
-import 'package:task_manager/ui/Admin/Users/editClientForm.dart';
-import '../sidebar/sidebarAdmin.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class ClientTicketDetails extends StatefulWidget {
   final String userId;
@@ -38,7 +34,6 @@ class _ClientTicketDetailsState extends State<ClientTicketDetails> {
     _source = ClientSource(context); // Initialize _source here
 
     userId = widget.userId; // Store widget.userId in a local variable
-    print("userId :- $userId");
   }
 
   @override
@@ -65,11 +60,7 @@ class _ClientTicketDetailsState extends State<ClientTicketDetails> {
   }
 
   void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
     setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
       _source.startIndex = 0;
       _source.setNextView();
     });
@@ -310,99 +301,6 @@ class _ClientTicketDetailsState extends State<ClientTicketDetails> {
   }
 }
 
-class ClientDataSource extends DataTableSource {
-  final List<Log> log;
-  final int totalCount;
-  final int startIndex;
-
-  ClientDataSource(this.log, this.totalCount, this.startIndex);
-
-  @override
-  DataRow getRow(int index) {
-    final clientIndex = startIndex + index;
-    if (clientIndex >= log.length) {
-      return DataRow(cells: [
-        DataCell(Text('')),
-        //DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-        DataCell(Text('')),
-      ]);
-    }
-    void deleteUser(String? clientId) async {
-      if (clientId != null) {
-        print("clientId :- $clientId");
-        genModel? genmodel = await Urls.postApiCall(
-          method: '${Urls.clientViewLogDetailsEdit}',
-          params: {'id': clientId, 'delete': "delete"},
-        );
-
-        if (genmodel != null && genmodel.status == true) {
-          Fluttertoast.showToast(
-            msg: "${genmodel.message.toString()}",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-          );
-        }
-      }
-    }
-
-    final client = log[clientIndex];
-
-    return DataRow(cells: [
-      DataCell(Text((clientIndex + 1).toString())),
-      //DataCell(Text(client.client ?? "")),
-      DataCell(Text(client.message ?? "")),
-      DataCell(Text(client.description ?? "")),
-      DataCell(Text(client.onDate.toString())),
-      DataCell(Text(client.createdOn ?? "")),
-      DataCell(
-        IconButton(
-          onPressed: () {
-            Get.to(EditClientForm(userId: client.id!));
-          },
-          icon: Icon(Icons.edit),
-        ),
-      ),
-      DataCell(IconButton(
-        onPressed: () {
-          Get.defaultDialog(
-            title: "Delete",
-            middleText: "Are you sure you want to delete ?",
-            textConfirm: "Yes",
-            textCancel: "No",
-            confirmTextColor: Colors.white,
-            buttonColor: Colors.red,
-            cancelTextColor: Colors.black,
-            onConfirm: () {
-              Get.back();
-              deleteUser(client.id!);
-            },
-            onCancel: () {},
-          );
-        },
-        icon: Icon(Icons.delete),
-      )),
-    ]);
-  }
-
-  @override
-  int get rowCount => totalCount;
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-/////////////
-///
-///////
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class ClientSource extends AdvancedDataTableSource<Ticket> {

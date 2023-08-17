@@ -18,7 +18,6 @@ class ClientDocument extends StatefulWidget {
 
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
-
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
 String userId = "";
@@ -334,13 +333,6 @@ class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
                     if (file.downloadable == "0")
                       Row(
                         children: [
-                          // RawMaterialButton(
-                          //   onPressed: () {
-                          //   },
-                          //   child: Icon(Icons.remove_red_eye_outlined),
-                          //   constraints: BoxConstraints.tight(Size(24, 24)),
-                          //   shape: CircleBorder(),
-                          // ),
                           GestureDetector(
                             child: Container(
                               padding: EdgeInsets.symmetric(
@@ -363,13 +355,6 @@ class TableSource extends AdvancedDataTableSource<ClientDocumentDataModel> {
                     if (file.downloadable == "1")
                       Row(
                         children: [
-                          // RawMaterialButton(
-                          //   onPressed: () {
-                          //   },
-                          //   child: Icon(Icons.remove_red_eye_outlined),
-                          //   constraints: BoxConstraints.tight(Size(24, 24)),
-                          //   shape: CircleBorder(),
-                          // ),
                           GestureDetector(
                             child: Container(
                               padding: EdgeInsets.symmetric(

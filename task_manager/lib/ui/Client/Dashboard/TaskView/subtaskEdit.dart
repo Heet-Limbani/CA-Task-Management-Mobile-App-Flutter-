@@ -19,25 +19,20 @@ class SubtaskEdit extends StatefulWidget {
 class _SubtaskEditState extends State<SubtaskEdit> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _SubtaskEditKey = GlobalKey<FormState>();
   TextEditingController subTaskName = TextEditingController();
-   TextEditingController activity = TextEditingController();
+  TextEditingController activity = TextEditingController();
   TextEditingController startingDate = TextEditingController();
   TextEditingController deadlineDate = TextEditingController();
-   TextEditingController description = TextEditingController();
+  TextEditingController description = TextEditingController();
   TextEditingController tpAmount = TextEditingController();
   TextEditingController tpDate = TextEditingController();
   TextEditingController companyName = TextEditingController();
-  
-
   String userId = "";
   String? selectedClientId1;
   String? selectedIntervalId1;
   late int selectedIntervalId;
- 
+
   @override
   void dispose() {
     subTaskName.dispose();
@@ -55,7 +50,6 @@ class _SubtaskEditState extends State<SubtaskEdit> {
     super.initState();
     userId = widget.userId; // Store widget.userId in a local variable
     getUser();
-     
   }
 
   void clearField() {
@@ -72,27 +66,22 @@ class _SubtaskEditState extends State<SubtaskEdit> {
   List<SubtaskEditDataModel> clientType = [];
 
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.subtaskEdit}',
       params: {
-         "sub_tid": userId.toString(),
+        "sub_tid": userId.toString(),
       },
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       final fileData = SubtaskEditDataModel.fromJson(data);
-      print("fileData :- $fileData");
-             
-      subTaskName.text =fileData.data![0].title.toString();
+      subTaskName.text = fileData.data![0].title.toString();
       startingDate.text = fileData.data![0].startingDate.toString();
       deadlineDate.text = fileData.data![0].deadlineDate.toString();
       description.text = fileData.data![0].description.toString();
       tpAmount.text = fileData.data![0].taxPayable.toString();
       tpDate.text = fileData.data![0].taxPayableTillDate.toString();
-
-
       selectedClientId1 = fileData.data![0].empId.toString();
       String intervalValue = '';
       if (fileData.data![0].priority.toString() == "0") {
@@ -101,7 +90,7 @@ class _SubtaskEditState extends State<SubtaskEdit> {
         intervalValue = "Normal";
       } else if (fileData.data![0].priority.toString() == "2") {
         intervalValue = "Low";
-      } 
+      }
       selectedIntervalId = _getItemId(intervalValue)!;
       activity.text = intervalValue;
       selectedIntervalId1 = intervalValue;
@@ -112,7 +101,6 @@ class _SubtaskEditState extends State<SubtaskEdit> {
 
   void fileEdit() async {
     try {
-      print("startingDate :- ${startingDate.text}");
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.subtaskEdit}',
         params: {
@@ -263,7 +251,6 @@ class _SubtaskEditState extends State<SubtaskEdit> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          
           DropdownButtonFormField<String>(
             value: selectedClientId1,
             decoration: const InputDecoration(
@@ -301,7 +288,7 @@ class _SubtaskEditState extends State<SubtaskEdit> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(
             value: selectedIntervalId1,
             decoration: const InputDecoration(
               labelText: 'Activity',
@@ -441,7 +428,6 @@ class _SubtaskEditState extends State<SubtaskEdit> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-
           TextFormField(
             controller: tpAmount,
             keyboardType: TextInputType.number,

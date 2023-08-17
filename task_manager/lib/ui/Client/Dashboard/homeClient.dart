@@ -25,8 +25,6 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
   int queryRaised = 0;
   int invoiceRaised = 0;
   int clientCompany = 0;
-  //double amount = 0;
-
   List<Client> clients = [];
   late double deviceWidth;
   late double deviceHeight;
@@ -71,18 +69,6 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
               .copyWith(fontWeight: FontWeight.bold),
         ),
         elevation: 0,
-        // actions: [
-        //   Padding(
-        //     padding: const EdgeInsets.symmetric(horizontal: 20),
-        //     child: CircleGradientIcon(
-        //       onTap: () {},
-        //       icon: Icons.calendar_month,
-        //       color: Colors.purple,
-        //       iconSize: 24,
-        //       size: 40,
-        //     ),
-        //   )
-        // ],
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
@@ -146,162 +132,153 @@ class _HomeClientScreenState extends State<HomeClientScreen> {
           height: deviceHeight * 0.05,
         ),
         StaggeredGrid.count(
-            crossAxisCount: 2,
-            mainAxisSpacing: 15,
-            crossAxisSpacing: 15,
-            children: [
-              StaggeredGridTile.count(
-                crossAxisCellCount: 2,
-                mainAxisCellCount: 1.1,
-                child: InkWell(
-                  onTap: () {
-                    if ((onGoingTask) != 0) {
-                      Get.to(OnGoingTask());
-                    } else {
-                      final snackBar = SnackBar(
-                        content: Text(
-                          "No Tasks Found",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        backgroundColor: Colors.blue,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        action: SnackBarAction(
-                          label: 'Dismiss',
-                          textColor: Colors.white,
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                  child: TaskGroupContainer(
-                    color: Colors.blue,
-                    icon: Icons.work_history_outlined,
-                    taskCount: onGoingTask,
-                    taskGroup: "On Going Jobs",
-                  ),
+          crossAxisCount: 2,
+          mainAxisSpacing: 15,
+          crossAxisSpacing: 15,
+          children: [
+            StaggeredGridTile.count(
+              crossAxisCellCount: 2,
+              mainAxisCellCount: 1.1,
+              child: InkWell(
+                onTap: () {
+                  if ((onGoingTask) != 0) {
+                    Get.to(OnGoingTask());
+                  } else {
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.blue,
+                  icon: Icons.work_history_outlined,
+                  taskCount: onGoingTask,
+                  taskGroup: "On Going Jobs",
                 ),
               ),
-              // StaggeredGridTile.count(
-              //   crossAxisCellCount: 2,
-              //   mainAxisCellCount: 1.1,
-              //   child: TaskGroupContainer(
-              //     color: Colors.blue,
-              //     icon: Icons.work_history_outlined,
-              //     taskCount: onGoingTask,
-              //     taskGroup: "On Going Jobs",
-              //   ),
-              // ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1,
-                child: InkWell(
-                  onTap: () {
-                    if ((queryRaised) != 0) {
-                      Get.to(QueryRaised());
-                    } else {
-                      final snackBar = SnackBar(
-                        content: Text(
-                          "No Tasks Found",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        backgroundColor: Colors.blue,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        action: SnackBarAction(
-                          label: 'Dismiss',
-                          textColor: Colors.white,
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                  child: TaskGroupContainer(
-                    color: Colors.green,
-                    isSmall: true,
-                    icon: Icons.live_help_rounded,
-                    taskCount: queryRaised,
-                    taskGroup: "Query Raised",
-                  ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1,
+              child: InkWell(
+                onTap: () {
+                  if ((queryRaised) != 0) {
+                    Get.to(QueryRaised());
+                  } else {
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.green,
+                  isSmall: true,
+                  icon: Icons.live_help_rounded,
+                  taskCount: queryRaised,
+                  taskGroup: "Query Raised",
                 ),
               ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1.2,
-                child: InkWell(
-                  onTap: () {
-                    if ((invoiceRaised) != 0) {
-                      Get.to(ClientInvoice());
-                    } else {
-                      final snackBar = SnackBar(
-                        content: Text(
-                          "No Tasks Found",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        backgroundColor: Colors.blue,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        action: SnackBarAction(
-                          label: 'Dismiss',
-                          textColor: Colors.white,
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                  child: TaskGroupContainer(
-                    color: Colors.orange,
-                    icon: Icons.pending_actions,
-                    taskCount: invoiceRaised,
-                    taskGroup: "Inoice Raised",
-                  ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1.2,
+              child: InkWell(
+                onTap: () {
+                  if ((invoiceRaised) != 0) {
+                    Get.to(ClientInvoice());
+                  } else {
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer(
+                  color: Colors.orange,
+                  icon: Icons.pending_actions,
+                  taskCount: invoiceRaised,
+                  taskGroup: "Inoice Raised",
                 ),
               ),
-              StaggeredGridTile.count(
-                crossAxisCellCount: 1,
-                mainAxisCellCount: 1.2,
-                child: InkWell(
-                  onTap: () {
-                    if ((clientCompany) != 0) {
-                      Get.to(ClientCompany());
-                    } else {
-                      final snackBar = SnackBar(
-                        content: Text(
-                          "No Tasks Found",
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        backgroundColor: Colors.blue,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        action: SnackBarAction(
-                          label: 'Dismiss',
-                          textColor: Colors.white,
-                          onPressed: () {},
-                        ),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                    }
-                  },
-                  child: TaskGroupContainer2(
-                    color: Colors.blue,
-                    icon: Icons.attach_money,
-                    taskCount: amount,
-                    taskGroup: "Amount",
-                  ),
+            ),
+            StaggeredGridTile.count(
+              crossAxisCellCount: 1,
+              mainAxisCellCount: 1.2,
+              child: InkWell(
+                onTap: () {
+                  if ((clientCompany) != 0) {
+                    Get.to(ClientCompany());
+                  } else {
+                    final snackBar = SnackBar(
+                      content: Text(
+                        "No Tasks Found",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      backgroundColor: Colors.blue,
+                      behavior: SnackBarBehavior.floating,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Dismiss',
+                        textColor: Colors.white,
+                        onPressed: () {},
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                },
+                child: TaskGroupContainer2(
+                  color: Colors.blue,
+                  icon: Icons.attach_money,
+                  taskCount: amount,
+                  taskGroup: "Amount",
                 ),
               ),
-            ])
+            ),
+          ],
+        )
       ],
     );
   }

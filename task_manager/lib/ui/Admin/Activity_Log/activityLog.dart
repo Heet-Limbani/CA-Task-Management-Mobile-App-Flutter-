@@ -18,6 +18,7 @@ TextEditingController nameController =
 
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
+
 class _ActivityLogState extends State<ActivityLog> {
   late TableSource _source; // Declare _source here
 
@@ -120,8 +121,6 @@ class _ActivityLogState extends State<ActivityLog> {
       ],
     );
   }
-
-  
 
   Column _table() {
     return Column(

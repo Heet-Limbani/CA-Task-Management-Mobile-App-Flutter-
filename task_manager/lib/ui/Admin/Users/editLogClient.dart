@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/logModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
-import '../sidebar/sidebarAdmin.dart';
 
 class EditLogClient extends StatefulWidget {
   final String logId;
@@ -185,35 +185,6 @@ class _EditLogClientState extends State<EditLogClient> {
       key: _formKey,
       child: Column(
         children: <Widget>[
-          // DropdownButtonFormField<String>(
-          //   value: selectedClientId1,
-          //   decoration: const InputDecoration(
-          //     labelText: 'Client',
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
-          //     ),
-          //     border: OutlineInputBorder(),
-          //   ),
-          //   onChanged: (String? newValue) {
-          //     setState(() {
-          //       selectedClientId1 = newValue;
-          //       clientController.text = selectedClientId1 ?? '';
-          //     });
-          //   },
-          //   items: clientType.map((GetUser user) {
-          //     return DropdownMenuItem<String>(
-          //       value: user.iD ?? '',
-          //       child: Text(user.username ?? ''),
-          //     );
-          //   }).toList(),
-          //   validator: (value) {
-          //     if (value == null || value.isEmpty) {
-          //       return 'Please select a client';
-          //     }
-          //     return null;
-          //   },
-          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),

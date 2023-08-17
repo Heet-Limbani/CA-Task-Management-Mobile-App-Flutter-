@@ -21,20 +21,17 @@ TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
 
 class _EmployeeLogState extends State<EmployeeLog> {
-  late TableSource _source; // Declare _source here
-
+  late TableSource _source;
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -107,7 +104,6 @@ class _EmployeeLogState extends State<EmployeeLog> {
     );
   }
 
-  // Table heading
   Row _header() {
     return Row(
       children: [
@@ -317,13 +313,13 @@ class TableSource extends AdvancedDataTableSource<EmployeeLogDataModel> {
     final formattedDate = DateFormat('yyyy-MM-dd  hh:mm:ss').format(parsedDate);
     final parsedDate1 = DateTime.fromMillisecondsSinceEpoch(
         int.parse(dataList.logoutTime ?? '0') * 1000);
-    final formattedDate1 = DateFormat('yyyy-MM-dd   hh:mm:ss').format(parsedDate1);
-    String dateText="";
-    if(dataList.logoutTime=="0"){
-      dateText="Logged In";
-    }
-    else{
-      dateText=formattedDate1.toString();
+    final formattedDate1 =
+        DateFormat('yyyy-MM-dd   hh:mm:ss').format(parsedDate1);
+    String dateText = "";
+    if (dataList.logoutTime == "0") {
+      dateText = "Logged In";
+    } else {
+      dateText = formattedDate1.toString();
     }
     return DataRow(
       cells: [
@@ -331,7 +327,6 @@ class TableSource extends AdvancedDataTableSource<EmployeeLogDataModel> {
         DataCell(Text(dataList.userName ?? '')),
         DataCell(Text(formattedDate)),
         DataCell(Text(dateText)),
-    
       ],
       // selected: selectedIds.contains(dataList.id),
       // onSelectChanged: (value) {

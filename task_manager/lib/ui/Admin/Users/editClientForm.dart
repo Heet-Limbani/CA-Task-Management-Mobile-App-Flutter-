@@ -3,8 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/AdminDataModel/getUsersDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class EditClientForm extends StatefulWidget {
@@ -29,7 +29,7 @@ class _EditClientFormState extends State<EditClientForm> {
   TextEditingController birthDateController = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController contact = TextEditingController();
- // TextEditingController contact2 = TextEditingController();
+  // TextEditingController contact2 = TextEditingController();
 
   bool isActive = true;
   bool checkSMS = true;
@@ -62,7 +62,7 @@ class _EditClientFormState extends State<EditClientForm> {
     birthDateController.clear();
     email.clear();
     contact.clear();
-   // contact2.clear();
+    // contact2.clear();
   }
 
   List<GetUser> clientType = [];
@@ -115,7 +115,7 @@ class _EditClientFormState extends State<EditClientForm> {
     isActiveValue = (isActive ? "1" : "0");
     checkSMSValue = (checkSMS ? "1" : "0");
     checkEmailValue = (checkEmail ? "1" : "0");
-   // print("Contact2 : ${contact2.text}");
+    // print("Contact2 : ${contact2.text}");
 
     try {
       genModel? genmodel = await Urls.postApiCall(
@@ -128,7 +128,7 @@ class _EditClientFormState extends State<EditClientForm> {
           'lname': lastName.text,
           'email': email.text,
           'num': contact.text,
-         // 'par_num': contact2.text,
+          // 'par_num': contact2.text,
           'sendemail': checkEmailValue,
           'sendsms': checkSMSValue,
           'active': isActiveValue,
@@ -556,7 +556,7 @@ class _EditClientFormState extends State<EditClientForm> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius

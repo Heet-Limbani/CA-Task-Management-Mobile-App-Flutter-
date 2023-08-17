@@ -21,21 +21,19 @@ TextEditingController nameController =
 
 TextEditingController nameController1 = TextEditingController();
 int dataCount = 0;
+
 class _InvoiceState extends State<Invoice> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -332,19 +330,14 @@ typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<InvoiceDataModel> {
   final BuildContext context; // Add the context parameter
-
   TableSource(this.context);
-
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
   int startIndex = 0; // Add the startIndex variable
-
   int countIds(String ids) {
     if (ids.isEmpty) {
       return 0;
     }
-
     List<String> idList = ids.split(',');
     return idList.length;
   }

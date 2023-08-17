@@ -20,14 +20,12 @@ TextEditingController nameController =
 int dataCount = 0;
 
 class _OnGoingTaskState extends State<OnGoingTask> {
-  late TableSource _source; // Declare _source here
-
+  late TableSource _source;
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
@@ -120,6 +118,7 @@ class _OnGoingTaskState extends State<OnGoingTask> {
       ],
     );
   }
+
   Column _table() {
     return Column(
       children: <Widget>[
@@ -332,10 +331,8 @@ class TableSource extends AdvancedDataTableSource<OnGoingJobsDataModel> {
                     RawMaterialButton(
                       onPressed: () {
                         if (dataList.ticketId != null) {
-
-                           Get.to(() => ViewTasksTaskClient(
-                                ticketId: dataList.ticketId.toString()));
-                         
+                          Get.to(() => ViewTasksTaskClient(
+                              ticketId: dataList.ticketId.toString()));
                         }
                       },
                       child: Icon(Icons.remove_red_eye_outlined),
@@ -399,14 +396,15 @@ class TableSource extends AdvancedDataTableSource<OnGoingJobsDataModel> {
         //count,
         dynamicData
             .map<OnGoingJobsDataModel>(
-              (item) => OnGoingJobsDataModel.fromJson(item as Map<String, dynamic>),
+              (item) =>
+                  OnGoingJobsDataModel.fromJson(item as Map<String, dynamic>),
             )
             .toList(),
         filteredRows: lastSearchTerm.isNotEmpty
             ? dynamicData
                 .map<OnGoingJobsDataModel>(
-                  (item) =>
-                      OnGoingJobsDataModel.fromJson(item as Map<String, dynamic>),
+                  (item) => OnGoingJobsDataModel.fromJson(
+                      item as Map<String, dynamic>),
                 )
                 .length
             : null,

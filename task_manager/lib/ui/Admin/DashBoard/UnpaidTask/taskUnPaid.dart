@@ -7,7 +7,7 @@ import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/API/AdminDataModel/unPaidTaskDataModel.dart';
 import 'package:task_manager/ui/Admin/DashBoard/TaskView/taskView.dart';
 import 'package:task_manager/ui/Admin/DashBoard/UnpaidTask/taskPayment.dart';
-import '../../sidebar/sidebarAdmin.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class TaskUnPaid extends StatefulWidget {
   const TaskUnPaid({Key? key}) : super(key: key);
@@ -15,18 +15,18 @@ class TaskUnPaid extends StatefulWidget {
   @override
   State<TaskUnPaid> createState() => _TaskUnPaidState();
 }
+
 int dataCount = 0;
+
 class _TaskUnPaidState extends State<TaskUnPaid> {
   late TableSource _source;
   String? stringResponse;
-
   Map? mapResponse;
   Map? dataResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
@@ -37,12 +37,9 @@ class _TaskUnPaidState extends State<TaskUnPaid> {
         _sortIndex = i;
         _sortAsc = asc;
       });
+
   void refreshTable() {
-    // Perform the refresh operation here
-    // For example, you can update the table data or reset the search/filter criteria
     setState(() {
-      // Update the necessary variables or perform any other actions to refresh the table
-      // For example, you can reset the startIndex and call setNextView() again
       _source.startIndex = 0;
       _source.setNextView();
     });
@@ -330,6 +327,7 @@ class _TaskUnPaidState extends State<TaskUnPaid> {
     );
   }
 }
+
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
 class TableSource extends AdvancedDataTableSource<UnPaid> {
@@ -353,8 +351,6 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
       statusText = "Unassigned";
     } else if (dataList.status == "1") {
       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
-      String per = dataList.taskCompletePercentage ?? '';
-      print("percentage2 $per");
       roundedPercentage = percentage.toInt();
       statusText = "Open $roundedPercentage%";
     } else if (dataList.status == "2") {
@@ -392,7 +388,8 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
                   children: [
                     RawMaterialButton(
                       onPressed: () {
-                       Get.to(ViewTasksTask(ticketId: dataList.ticketId ?? ''));
+                        Get.to(
+                            ViewTasksTask(ticketId: dataList.ticketId ?? ''));
                       },
                       child: Icon(Icons.remove_red_eye),
                       constraints: BoxConstraints.tight(Size(24, 24)),
@@ -400,13 +397,12 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
                     ),
                     RawMaterialButton(
                       onPressed: () {
-                       Get.to(TaskPayment(userId: dataList.ticketId ?? ''));  
+                        Get.to(TaskPayment(userId: dataList.ticketId ?? ''));
                       },
                       child: Icon(Icons.currency_rupee),
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
-                   
                   ],
                 ),
               ],
@@ -456,7 +452,7 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
 
     if (dataModel != null && dataModel.status == true) {
       final dynamicData = dataModel.data;
-       int count = dataModel.data.length ?? 0;
+      int count = dataModel.data.length ?? 0;
       dataCount = count;
 
       return RemoteDataSourceDetails(
@@ -479,152 +475,3 @@ class TableSource extends AdvancedDataTableSource<UnPaid> {
     }
   }
 }
-
-// typedef SelectedCallBack = Function(String id, bool newSelectState);
-
-// class TableSource extends AdvancedDataTableSource<UnPaid> {
-//   int startIndex; // Add the startIndex variable
-
-//   TableSource({required this.startIndex}); // Update the constructor
-
-//   List<String> selectedIds = [];
-//   String lastSearchTerm = '';
-
-//   //int startIndex = 0; // Add the startIndex variable
-
-//   @override
-//   DataRow? getRow(int index) {
-//     final srNo = (startIndex + index + 1).toString();
-//     final UnPaid dataList = lastDetails!.rows[index];
-//     //  final Employee dataList1 = lastDetails!.rows[index].employee![index];
-//     String statusText = '';
-//     int roundedPercentage = 0;
-//     if (dataList.status == "0") {
-//       statusText = "Unassigned";
-//     } else if (dataList.status == "1") {
-//       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
-//       String per = dataList.taskCompletePercentage ?? '';
-//       print("percentage2 $per");
-//       roundedPercentage = percentage.toInt();
-//       statusText = "Open $roundedPercentage%";
-//     } else if (dataList.status == "2") {
-//       double percentage = double.parse(dataList.taskCompletePercentage ?? '0');
-//       roundedPercentage = percentage.toInt();
-//       statusText = "In Progress $roundedPercentage%";
-//     } else if (dataList.status == "3") {
-//       statusText = "Query Raised";
-//     } else if (dataList.status == "4") {
-//       statusText = "Closed";
-//     } else if (dataList.status == "5") {
-//       statusText = "Completed & Reviewed";
-//     } else if (dataList.status == "6") {
-//       statusText = "Invoice Raised";
-//     } else if (dataList.status == "7") {
-//       statusText = "Paid";
-//     }
-
-//     return DataRow(
-//       cells: [
-//         DataCell(Text(srNo)),
-//         DataCell(Text(dataList.title ?? '')),
-//         DataCell(Text(dataList.ticketId ?? '')),
-//         DataCell(Text(dataList.clientName ?? '')),
-//         DataCell(Text(dataList.departmentName ?? '')),
-//         DataCell(Text(dataList.deadlineDate ?? '')),
-//         DataCell(Text(statusText)),
-//         DataCell(
-//           Container(
-//             margin: EdgeInsets.symmetric(horizontal: 10),
-//             child: Row(
-//               mainAxisAlignment: MainAxisAlignment.start,
-//               children: [
-//                 Row(
-//                   children: [
-//                     RawMaterialButton(
-//                       onPressed: () {
-//                         // Handle button pressed
-//                       },
-//                       child: Icon(Icons.remove_red_eye),
-//                       constraints: BoxConstraints.tight(Size(24, 24)),
-//                       shape: CircleBorder(),
-//                     ),
-//                     RawMaterialButton(
-//                       onPressed: () {
-//                         // Handle button pressed
-//                       },
-//                       child: Icon(Icons.currency_rupee),
-//                       constraints: BoxConstraints.tight(Size(24, 24)),
-//                       shape: CircleBorder(),
-//                     ),
-                   
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ],
-//       selected: selectedIds.contains(dataList.ticketId),
-//       onSelectChanged: (value) {
-//         selectedRow(dataList.ticketId.toString(), value ?? false);
-//       },
-//     );
-//   }
-
-//   @override
-//   int get selectedRowCount => selectedIds.length;
-
-//   void selectedRow(String id, bool newSelectState) {
-//     if (selectedIds.contains(id)) {
-//       selectedIds.remove(id);
-//     } else {
-//       selectedIds.add(id);
-//     }
-//     notifyListeners();
-//   }
-
-//   void filterServerSide(String filterQuery) {
-//     lastSearchTerm = filterQuery.toLowerCase().trim();
-//     setNextView();
-//   }
-
-//   @override
-//   Future<RemoteDataSourceDetails<UnPaid>> getNextPage(
-//     NextPageRequest pageRequest,
-//   ) async {
-//     startIndex = pageRequest.offset;
-//     final queryParameter = <String, dynamic>{
-//       'offset': pageRequest.offset.toString(),
-//       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-//       'limit': pageRequest.pageSize.toString(),
-//     };
-
-//     genModel? dataModel = await Urls.postApiCall(
-//       method: '${Urls.loadTaskUnPaid}',
-//       params: queryParameter,
-//     );
-
-//     if (dataModel != null && dataModel.status == true) {
-//       final dynamicData = dataModel.data;
-//       print("dynamicData $dynamicData");
-
-//       return RemoteDataSourceDetails(
-//         dataModel.count ?? 0,
-//         dynamicData
-//             .map<UnPaid>(
-//               (item) => UnPaid.fromJson(item as Map<String, dynamic>),
-//             )
-//             .toList(),
-//         filteredRows: lastSearchTerm.isNotEmpty
-//             ? dynamicData
-//                 .map<UnPaid>(
-//                   (item) => UnPaid.fromJson(item as Map<String, dynamic>),
-//                 )
-//                 .length
-//             : null,
-//       );
-//     } else {
-//       throw Exception('Unable to query remote server');
-//     }
-//   }
-// }

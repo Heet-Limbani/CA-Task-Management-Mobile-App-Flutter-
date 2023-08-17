@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/companyListDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/ui/Theme/app_theme.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class AddInvoice extends StatefulWidget {
@@ -16,18 +16,13 @@ class AddInvoice extends StatefulWidget {
 class _AddInvoiceState extends State<AddInvoice> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _AddInvoiceKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
   TextEditingController particular = TextEditingController();
   TextEditingController amount = TextEditingController();
   List<String> particulars = [];
   List<double> amounts = [];
-
   double? totalAmount;
-
   String? selectedClientId1;
   String? selectedLocationId1;
 
@@ -58,8 +53,6 @@ class _AddInvoiceState extends State<AddInvoice> {
   void addRow() {
     setState(() {
       particulars.add(particular.text);
-
-      // Safely parse the user input for the amount
       try {
         amounts.add(double.parse(amount.text));
       } catch (e) {
@@ -72,7 +65,6 @@ class _AddInvoiceState extends State<AddInvoice> {
           fontSize: 16.0,
         );
       }
-
       particular.clear();
       amount.clear();
     });
@@ -183,8 +175,6 @@ class _AddInvoiceState extends State<AddInvoice> {
 
   void fileEdit() async {
     try {
-      String test = amounts.toString();
-      print("amounts $test");
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.addInvoice}',
         params: {
@@ -415,8 +405,8 @@ class _AddInvoiceState extends State<AddInvoice> {
                 children: [
                   buildRow(index),
                   SizedBox(
-                      height: deviceHeight * 0.02
-                  ), // Set the spacing you desire between items
+                      height: deviceHeight *
+                          0.02), // Set the spacing you desire between items
                 ],
               );
             },

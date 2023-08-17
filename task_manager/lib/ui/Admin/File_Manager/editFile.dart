@@ -18,22 +18,17 @@ class EditFile extends StatefulWidget {
 class _EditFileState extends State<EditFile> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _EditFileKey = GlobalKey<FormState>();
   TextEditingController fileName = TextEditingController();
   TextEditingController fileNumber = TextEditingController();
   TextEditingController companyName = TextEditingController();
   TextEditingController locationName = TextEditingController();
-
   String userId = "";
   String? selectedClientId1;
-    String? selectedLocationId1;
+  String? selectedLocationId1;
 
   @override
   void dispose() {
-  
     fileName.dispose();
     fileNumber.dispose();
     companyName.dispose();
@@ -57,7 +52,6 @@ class _EditFileState extends State<EditFile> {
 
   List<EditFileDataModel> clientType = [];
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.editFile}',
       params: {
@@ -85,9 +79,9 @@ class _EditFileState extends State<EditFile> {
           "btnSave": "Save",
           "id": userId.toString(),
           "client_id": selectedClientId1.toString(),
-          "txtfilename":fileName.text,
-          "txtlocation_num":fileNumber.text,
-          "location":selectedLocationId1.toString(),
+          "txtfilename": fileName.text,
+          "txtlocation_num": fileNumber.text,
+          "location": selectedLocationId1.toString(),
         },
       );
       if (genmodel != null) {
@@ -285,7 +279,7 @@ class _EditFileState extends State<EditFile> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(
             value: selectedLocationId1,
             decoration: const InputDecoration(
               labelText: 'Location',
@@ -307,7 +301,8 @@ class _EditFileState extends State<EditFile> {
                       ?.map<DropdownMenuItem<String>>((Location location) {
                     return DropdownMenuItem<String>(
                       value: location.id ?? '',
-                      child: Text('${location.location} - ${location.cnt} / ${location.maxLimit} :- ( ${location.maxLimit} - ${location.minLimit} )'),
+                      child: Text(
+                          '${location.location} - ${location.cnt} / ${location.maxLimit} :- ( ${location.maxLimit} - ${location.minLimit} )'),
                     );
                   }).toList() ??
                   [];
@@ -327,7 +322,7 @@ class _EditFileState extends State<EditFile> {
               elevation: 8,
               minimumSize: Size.fromHeight(60),
               backgroundColor: Colors.blue, // Set the background color
-             
+
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(30), // Set the border radius
@@ -355,5 +350,3 @@ class _EditFileState extends State<EditFile> {
     );
   }
 }
-
-

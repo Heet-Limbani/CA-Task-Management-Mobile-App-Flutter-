@@ -24,7 +24,6 @@ int dataCount = 0;
 
 class _ReceiptState extends State<Receipt> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
@@ -32,7 +31,6 @@ class _ReceiptState extends State<Receipt> {
   TextEditingController _searchController = TextEditingController();
   final startDateController = TextEditingController();
   final endDateController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;

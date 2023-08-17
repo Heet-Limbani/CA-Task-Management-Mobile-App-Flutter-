@@ -16,6 +16,7 @@ class ClientManualPayment extends StatefulWidget {
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 int dataCount = 0;
+
 class _ClientManualPaymentState extends State<ClientManualPayment> {
   late TableSource _source; // Declare _source here
 
@@ -302,10 +303,8 @@ class TableSource
 
   TableSource(this.context); // Add the context parameter
 
- 
   double get deviceWidth => MediaQuery.of(context).size.width;
   double get deviceHeight => MediaQuery.of(context).size.height;
-
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
@@ -319,7 +318,8 @@ class TableSource
     List<String> idList = ids.split(',');
     return idList.length;
   }
- void showImage(String imageUrl) {
+
+  void showImage(String imageUrl) {
     showDialog(
       context: context,
       builder: (context) => Dialog(
@@ -327,19 +327,18 @@ class TableSource
       ),
     );
   }
+
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
     final ClientManualPaymentDataModel dataList = lastDetails!.rows[index];
     String img = Urls.baseUrlMain + Urls.manualPayment + dataList.image!;
-    print("img: $img");
-    //output :-img: https://task.mysyva.net/backend/assets/client_receipt/Screenshot_from_2023-04-27_16-52-07.png
     return DataRow(
       cells: [
         DataCell(Text(srNo)),
         DataCell(Text(dataList.clientFirstName ?? '')),
         DataCell(Text(dataList.title ?? '')),
-         DataCell(
+        DataCell(
           GestureDetector(
             onTap: () => showImage(img), // Show the image on tap
             child: Image.network(

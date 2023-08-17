@@ -18,9 +18,6 @@ class TaskPayment extends StatefulWidget {
 class _TaskPaymentState extends State<TaskPayment> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _TaskPaymentKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
   TextEditingController invoiceName = TextEditingController();
@@ -28,12 +25,11 @@ class _TaskPaymentState extends State<TaskPayment> {
   TextEditingController amount = TextEditingController();
   TextEditingController reference = TextEditingController();
   TextEditingController description = TextEditingController();
-
   String userId = "";
   String? selectedClientId1;
   String? selectedinvoiceId1;
   String? selectedpaymentId1;
- 
+
   @override
   void dispose() {
     companyName.dispose();
@@ -67,21 +63,20 @@ class _TaskPaymentState extends State<TaskPayment> {
   List<TaskPaymentDataModel> clientType = [];
 
   void getUser() async {
-    print("id :- $userId");
     genModel? genmodel = await Urls.postApiCall(
       method: '${Urls.taskPayment}',
       params: {
-         "id": userId.toString(),
+        "id": userId.toString(),
       },
     );
 
     if (genmodel != null && genmodel.status == true) {
       final data = genmodel.data;
       final fileData = TaskPaymentDataModel.fromJson(data);
-      print("fileData :- $fileData");
-      
+
       companyName.text = fileData.invoiceData!.name.toString();
-      invoiceName.text = " Invoice Number ${fileData.invoiceData!.id.toString()}  ${fileData.invoiceData!.otherDetails.toString()}";
+      invoiceName.text =
+          " Invoice Number ${fileData.invoiceData!.id.toString()}  ${fileData.invoiceData!.otherDetails.toString()}";
       amount.text = fileData.invoiceData!.total.toString();
       selectedClientId1 = fileData.invoiceData!.clientId.toString();
       selectedinvoiceId1 = fileData.invoiceData!.id.toString();
@@ -93,7 +88,6 @@ class _TaskPaymentState extends State<TaskPayment> {
 
   void fileEdit() async {
     try {
-    
       genModel? genmodel = await Urls.postApiCall(
         method: '${Urls.taskPayment}',
         params: {
@@ -105,7 +99,6 @@ class _TaskPaymentState extends State<TaskPayment> {
           "amt": amount.text.toString(),
           "refer": reference.text.toString(),
           "desc": description.text.toString(),
-         
         },
       );
       if (genmodel != null) {
@@ -262,7 +255,6 @@ class _TaskPaymentState extends State<TaskPayment> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-          
           DropdownButtonFormField<String>(
             value: selectedpaymentId1,
             decoration: const InputDecoration(
@@ -300,7 +292,7 @@ class _TaskPaymentState extends State<TaskPayment> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           TextFormField(
+          TextFormField(
             controller: amount,
             keyboardType: TextInputType.number,
             textInputAction: TextInputAction.next,
@@ -331,7 +323,7 @@ class _TaskPaymentState extends State<TaskPayment> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-           TextFormField(
+          TextFormField(
             controller: reference,
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
@@ -357,7 +349,7 @@ class _TaskPaymentState extends State<TaskPayment> {
               }
               return null; // Return null if the input is valid
             },
-           ),
+          ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),

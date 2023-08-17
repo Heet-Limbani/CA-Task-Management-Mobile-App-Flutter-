@@ -14,7 +14,7 @@ import 'package:task_manager/ui/Theme/app_theme.dart';
 import 'package:task_manager/ui/Resources/res/color.dart';
 import 'package:task_manager/ui/Admin/Company/addCompany.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:collection/collection.dart'; // Import the 'collection' package for the 'firstWhereOrNull' method
+import 'package:collection/collection.dart';
 import 'package:advanced_datatable/datatable.dart';
 import 'package:advanced_datatable/advanced_datatable_source.dart';
 
@@ -33,11 +33,7 @@ int dataCount = 0;
 class _EditTaskState extends State<EditTask> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   TextEditingController _searchController = TextEditingController();
-
   late TableSource _source;
   var _sortIndex = 0;
   var _sortAsc = true;
@@ -59,13 +55,11 @@ class _EditTaskState extends State<EditTask> {
   TextEditingController department = TextEditingController();
   TextEditingController amount = TextEditingController();
   TextEditingController description = TextEditingController();
-
   String? selectedClientId1;
   String? selectedDepartmentIds;
   EditTaskDataModel? taskDataModel;
   List<EditTaskDataModel> companyGroupDataList = [];
   List<String> selectedFileIds = [];
-
   bool autoComplete = true;
   bool autoInvoice = true;
   String autoCompleteValue = "";
@@ -148,7 +142,6 @@ class _EditTaskState extends State<EditTask> {
 
         selectedDepartmentIds = taskData.data!.depId!;
         selectedFileIds = taskData.data!.fileId!.split(',');
-        print("selectedFileIds: $selectedFileIds");
         taskName.text = taskData.data!.title!;
         client.text = taskData.data!.clientId!;
         startingDate.text = taskData.data!.startingDate!;
@@ -538,7 +531,6 @@ class _EditTaskState extends State<EditTask> {
                         .toList()
                         .cast<String>();
                   });
-                  print(selectedFileIds);
                 },
               ),
             ],
@@ -671,7 +663,6 @@ class _EditTaskState extends State<EditTask> {
           SizedBox(
             height: deviceHeight * 0.02,
           ),
-
           DropdownButtonFormField<String>(
             value: departmentType
                     .expand((dataModel) => dataModel.department ?? [])
@@ -721,58 +712,6 @@ class _EditTaskState extends State<EditTask> {
               return null;
             },
           ),
-
-          // DropdownButtonFormField<String>(
-          //   value: departmentType
-          //           .expand((dataModel) => dataModel.department ?? [])
-          //           .any((department) => department.id == selectedDepartmentIds)
-          //       ? selectedDepartmentIds
-          //       : null, // Set value to null if selected department is not found
-          //   decoration: const InputDecoration(
-          //     labelText: 'Department',
-          //     enabledBorder: OutlineInputBorder(
-          //       borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          //       borderSide: BorderSide(color: Colors.grey, width: 0.0),
-          //     ),
-          //     border: OutlineInputBorder(),
-          //   ),
-          //   onChanged: (String? newValue) {
-          //     setState(() {
-          //       selectedDepartmentIds = newValue;
-          //       client.text = selectedDepartmentIds ?? '';
-          //       getUser2();
-
-          //       // Find the selected client in the clientType list
-          //       final selectedDepartment = departmentType
-          //           .expand((dataModel) => dataModel.department ?? [])
-          //           .firstWhereOrNull(
-          //               (department) => department.id == selectedDepartmentIds);
-
-          //       if (selectedDepartment != null) {
-          //         // Handle selected client
-          //       } else {
-          //         // Handle when no client is selected
-          //       }
-          //     });
-          //   },
-          //   items: departmentType.isNotEmpty
-          //       ? departmentType
-          //           .expand((dataModel) => dataModel.department ?? [])
-          //           .map<DropdownMenuItem<String>>((dynamic item) {
-          //           final company = item as Department; // Cast item to Company
-          //           return DropdownMenuItem<String>(
-          //             value: company.id ?? '',
-          //             child: Text('${company.name}'),
-          //           );
-          //         }).toList()
-          //       : [],
-          //   validator: (value) {
-          //     if (value == null || value.isEmpty) {
-          //       return 'Please select a client';
-          //     }
-          //     return null;
-          //   },
-          // ),
           SizedBox(
             height: deviceHeight * 0.02,
           ),
@@ -935,7 +874,7 @@ class _EditTaskState extends State<EditTask> {
       children: [
         OutlinedButton(
           onPressed: () {
-            Get.to(() => SubtaskAdd(userId: ticketId));
+            Get.to(() => SubtaskAdd(id: ticketId));
           },
           child: Text(
             "Add Subtask",

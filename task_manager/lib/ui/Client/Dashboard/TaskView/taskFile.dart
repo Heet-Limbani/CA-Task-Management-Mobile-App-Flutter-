@@ -683,7 +683,7 @@ class TableSource2 extends AdvancedDataTableSource<TasksData> {
                       children: [
                         RawMaterialButton(
                           onPressed: () {
-                           Get.to(fileDetailsEdit(userId: file.id!, ticketId: ticketId, sc: file.showToClient! ));
+                           Get.to(fileDetailsEdit(id: file.id!, ticketId: ticketId, sc: file.showToClient! ));
                           },
                           child: Icon(Icons.edit),
                           constraints: BoxConstraints.tight(Size(24, 24)),

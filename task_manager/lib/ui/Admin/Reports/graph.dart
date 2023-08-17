@@ -3,7 +3,6 @@ import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
-
 class Graph extends StatefulWidget {
   final String userId;
   const Graph({required this.userId, super.key});
@@ -28,20 +27,18 @@ class _GraphState extends State<Graph> {
     // Initialize _source here
   }
 
-
   void getCount() async {
-  genModel? genmodel = await Urls.postApiCall(
-    method: '${Urls.graph}',
-    params: {
-      'id': userId,
-    },
-  );
-  if (genmodel != null && genmodel.status == true) {
-    final data = genmodel.data;
-    print("data :- $data");
-
+    genModel? genmodel = await Urls.postApiCall(
+      method: '${Urls.graph}',
+      params: {
+        'id': userId,
+      },
+    );
+    if (genmodel != null && genmodel.status == true) {
+      final data = genmodel.data;
+      print("data :- $data");
+    }
   }
-}
 
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;

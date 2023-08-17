@@ -16,9 +16,6 @@ class VaultAdd extends StatefulWidget {
 class _VaultAddState extends State<VaultAdd> {
   late double deviceWidth;
   late double deviceHeight;
-
-  Map? dataResponse;
-
   final GlobalKey<FormState> _VaultAddKey = GlobalKey<FormState>();
   TextEditingController companyName = TextEditingController();
   TextEditingController name = TextEditingController();
@@ -28,7 +25,6 @@ class _VaultAddState extends State<VaultAdd> {
   TextEditingController pass = TextEditingController();
   TextEditingController rpass = TextEditingController();
   TextEditingController note = TextEditingController();
-
   String? selectedClientId1;
 
   @override

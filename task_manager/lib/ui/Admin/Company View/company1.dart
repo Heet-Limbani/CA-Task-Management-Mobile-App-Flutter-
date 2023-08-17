@@ -6,8 +6,8 @@ import 'package:get/get.dart';
 import 'package:task_manager/API/AdminDataModel/companyDataModel.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
 import 'package:task_manager/ui/Admin/Company/viewCompany.dart';
-import '../sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 
 class Company1 extends StatefulWidget {
   const Company1({super.key});
@@ -19,21 +19,19 @@ class Company1 extends StatefulWidget {
 TextEditingController nameController =
     TextEditingController(); // Define the TextEditingController
 int dataCount = 0;
+
 class _Company1State extends State<Company1> {
   late TableSource _source; // Declare _source here
-
   String? stringResponse;
   late double deviceWidth;
   late double deviceHeight;
   TextEditingController searchLogController = TextEditingController();
   TextEditingController _searchController = TextEditingController();
-
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
 
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
@@ -120,8 +118,6 @@ class _Company1State extends State<Company1> {
       ],
     );
   }
-
-  
 
   Column _table() {
     return Column(
@@ -350,8 +346,7 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
               children: [
                 Row(
                   children: [
-                   
-                     RawMaterialButton(
+                    RawMaterialButton(
                       onPressed: () {
                         if (dataList.id != null) {
                           Get.to(ViewCompany(id: dataList.id!));
@@ -361,7 +356,6 @@ class TableSource extends AdvancedDataTableSource<CompanyDataModel> {
                       constraints: BoxConstraints.tight(Size(24, 24)),
                       shape: CircleBorder(),
                     ),
-                    
                   ],
                 ),
               ],

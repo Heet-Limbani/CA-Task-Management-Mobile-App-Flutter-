@@ -7,14 +7,11 @@ import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
 
 class ClientPasswordAdd extends StatefulWidget {
-  
-  const ClientPasswordAdd({ Key? key}) : super(key: key);
+  const ClientPasswordAdd({Key? key}) : super(key: key);
 
   @override
   State<ClientPasswordAdd> createState() => _ClientPasswordAddState();
 }
-
-
 
 class _ClientPasswordAddState extends State<ClientPasswordAdd> {
   late double deviceWidth;
@@ -46,7 +43,7 @@ class _ClientPasswordAddState extends State<ClientPasswordAdd> {
   @override
   void initState() {
     super.initState();
-  
+
     getUser();
   }
 
@@ -180,7 +177,7 @@ class _ClientPasswordAddState extends State<ClientPasswordAdd> {
       key: _ClientPasswordAddKey,
       child: Column(
         children: <Widget>[
-         DropdownButtonFormField<String>(
+          DropdownButtonFormField<String>(
             value: selectedClientId1,
             decoration: const InputDecoration(
               labelText: 'Client',
@@ -250,7 +247,7 @@ class _ClientPasswordAddState extends State<ClientPasswordAdd> {
             obscureText: obscurePassword1,
             decoration: InputDecoration(
               labelText: 'GST Password',
-               suffix: GestureDetector(
+              suffix: GestureDetector(
                 child: Icon(
                     obscurePassword1 ? Icons.visibility : Icons.visibility_off),
                 onTap: () {
