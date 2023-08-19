@@ -167,6 +167,9 @@ class Urls {
   static String companyFileDelete = "${Urls.baseUrlMain}DeleteVirtualFile";
   static String graph = "${Urls.baseUrlMain}Reports/view_employee_report";
 
+  /////Client
+  static String employeeDashboard = "${Urls.baseUrlMain}EmployeeDashboard";
+
   static String profileEmail = "";
   static String profileUserName = "";
   static String profileType = "";

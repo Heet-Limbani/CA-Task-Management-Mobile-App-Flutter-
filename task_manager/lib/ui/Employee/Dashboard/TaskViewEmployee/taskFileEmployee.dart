@@ -1,48 +1,58 @@
-import 'package:advanced_datatable/advanced_datatable_source.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:advanced_datatable/datatable.dart';
+import 'package:advanced_datatable/advanced_datatable_source.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:task_manager/API/ClientDataModel/onJobsDataModel.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_manager/API/AdminDataModel/genModel.dart';
+import 'package:task_manager/API/AdminDataModel/viewTasksDataModel.dart';
+import 'package:task_manager/ui/Admin/sidebar/sidebarAdmin.dart';
 import 'package:task_manager/API/Urls.dart';
-import 'package:task_manager/ui/Client/Dashboard/TaskView/taskViewClient.dart';
-import 'package:task_manager/ui/Client/Sidebar/sidebarClient.dart';
 
-class QueryRaised extends StatefulWidget {
-  const QueryRaised({super.key});
+class TodaysTaskFileEmployee extends StatefulWidget {
+  final String ticketId;
+  const TodaysTaskFileEmployee({required this.ticketId, Key? key}) : super(key: key);
 
   @override
-  State<QueryRaised> createState() => _QueryRaisedState();
+  State<TodaysTaskFileEmployee> createState() => _TodaysTaskFileEmployeeState();
 }
 
-TextEditingController nameController =
-    TextEditingController(); // Define the TextEditingController
+late double deviceWidth;
+late double deviceHeight;
+
+// Declare _source here
+bool isObscurePassword = true;
+String ticketId = "";
 int dataCount = 0;
+int dataCount2 = 0;
+String? selectedClientId1;
 
-class _QueryRaisedState extends State<QueryRaised> {
-  late TableSource _source; // Declare _source here
-  String? stringResponse;
-  late double deviceWidth;
-  late double deviceHeight;
-  TextEditingController searchLogController = TextEditingController();
-
-  
+class _TodaysTaskFileEmployeeState extends State<TodaysTaskFileEmployee> {
+  TextEditingController fileController = TextEditingController();
+  File? selectedFile;
   TextEditingController _searchController = TextEditingController();
+  late TableSource _source;
   var _sortIndex = 0;
   var _sortAsc = true;
   var _customFooter = false;
   var _rowsPerPage = AdvancedPaginatedDataTable.defaultRowsPerPage;
-
-  // ignore: avoid_positional_boolean_parameters
   void setSort(int i, bool asc) => setState(() {
         _sortIndex = i;
         _sortAsc = asc;
       });
 
+
   @override
   void initState() {
     super.initState();
-    _source = TableSource(context); // Initialize _source here
+    ticketId = widget.ticketId; // Store widget.userId in a local variable
+    // getUser();
+    _source = TableSource(context);
+    _source.setNextView();
+
+   
   }
 
   void refreshTable() {
@@ -52,13 +62,66 @@ class _QueryRaisedState extends State<QueryRaised> {
     });
   }
 
+  List<File1> fileList = [];
+
+  void uploadFile(File selectedFile) async {
+    try {
+      Map<String, String> headers = await Urls.getXTokenHeader();
+      String csrfToken = headers['Xtoken'] ?? ''; // Get the Xtoken value
+
+      var request = http.MultipartRequest(
+        'POST',
+        Uri.parse(
+            '${Urls.fileUpload}/${ticketId}'), // Replace with your API endpoint URL
+      );
+
+      request.headers['Xtoken'] = csrfToken;
+      request.files.add(
+        http.MultipartFile(
+          'userImage',
+          selectedFile.readAsBytes().asStream(),
+          selectedFile.lengthSync(),
+          filename:
+              selectedFile.path.split('/').last, // Use the selected file's name
+        ),
+      );
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        // Successful response
+        var responseBody = await response.stream.bytesToString();
+        var genmodel = genModel.fromJson(json.decode(responseBody));
+        Fluttertoast.showToast(
+          msg: genmodel.message.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+
+        if (genmodel.status == true) {
+          setState(() {});
+        }
+      } else {
+        // Handle error response
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Handle exceptions
+      print('Exception: $e');
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     deviceWidth = MediaQuery.of(context).size.width;
     deviceHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Dashboard > Query Raised",
+          "Dashboard > Tasks > Files",
           style: Theme.of(context)
               .textTheme
               .bodySmall!
@@ -68,7 +131,7 @@ class _QueryRaisedState extends State<QueryRaised> {
         foregroundColor: Colors.grey,
         backgroundColor: Colors.transparent,
       ),
-      drawer: SideBarClient(),
+      drawer: SideBarAdmin(),
       extendBody: true,
       body: _buildBody(),
     );
@@ -87,7 +150,7 @@ class _QueryRaisedState extends State<QueryRaised> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: deviceHeight * 0.04,
+                  height: deviceHeight * 0.02,
                 ),
                 _header(),
                 SizedBox(
@@ -95,8 +158,9 @@ class _QueryRaisedState extends State<QueryRaised> {
                 ),
                 _table(),
                 SizedBox(
-                  height: deviceHeight * 0.1,
+                  height: deviceHeight * 0.12,
                 ),
+                
               ],
             ),
           ),
@@ -105,18 +169,86 @@ class _QueryRaisedState extends State<QueryRaised> {
     );
   }
 
-  // Table heading
+ 
+
+  Widget buildFileInput(
+    String labelText,
+    TextEditingController controller,
+    void Function(File?)? onPressed,
+  ) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: 30.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              controller: controller,
+              readOnly: true,
+              decoration: InputDecoration(
+                labelText: labelText,
+                labelStyle: TextStyle(
+                  fontSize: 16,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              FilePickerResult? result = await FilePicker.platform.pickFiles();
+              if (result != null) {
+                File file = File(result.files.single.path!);
+                controller.text = file.path;
+                onPressed?.call(file);
+              }
+            },
+            icon: Icon(Icons.attach_file),
+          ),
+          IconButton(
+            onPressed: () {
+              if (controller.text.isNotEmpty) {
+                uploadFile(selectedFile!);
+                controller.clear();
+              } else {
+                Fluttertoast.showToast(
+                  msg: "Please Select File",
+                  toastLength: Toast.LENGTH_SHORT,
+                  gravity: ToastGravity.BOTTOM,
+                  timeInSecForIosWeb: 1,
+                  // backgroundColor: AppColors.primaryColor,
+                  textColor: Colors.white,
+                  fontSize: 16.0,
+                );
+              }
+            },
+            icon: Icon(Icons.upload),
+          ),
+          IconButton(
+            onPressed: () {
+              controller.clear();
+              onPressed?.call(null);
+            },
+            icon: Icon(Icons.clear),
+          ),
+        ],
+      ),
+    );
+  }
+
   Row _header() {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          "Task List",
+          "File Details",
           style: TextStyle(
             color: Colors.blueGrey[900],
             fontWeight: FontWeight.w700,
             fontSize: 22,
           ),
         ),
+        const Spacer(),
       ],
     );
   }
@@ -197,27 +329,11 @@ class _QueryRaisedState extends State<QueryRaised> {
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Ticket ID'),
+              label: const Text('File Name'),
               onSort: setSort,
             ),
             DataColumn(
-              label: const Text('Task Name'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Deadline'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Description'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Amount'),
-              onSort: setSort,
-            ),
-            DataColumn(
-              label: const Text('Action'),
+              label: const Text('Location'),
               onSort: setSort,
             ),
           ],
@@ -295,77 +411,46 @@ class _QueryRaisedState extends State<QueryRaised> {
       ],
     );
   }
+
+ 
 }
 
 typedef SelectedCallBack = Function(String id, bool newSelectState);
 
-class TableSource extends AdvancedDataTableSource<OnGoingJobsDataModel> {
-  final BuildContext context; // Add the context parameter
+class TableSource extends AdvancedDataTableSource<TasksData> {
+  final BuildContext context;
 
   TableSource(this.context);
 
   List<String> selectedIds = [];
   String lastSearchTerm = '';
-
-  int startIndex = 0; // Add the startIndex variable
+  int startIndex = 0;
+  RemoteDataSourceDetails<TasksData>? lastDetails;
 
   @override
   DataRow? getRow(int index) {
     final srNo = (startIndex + index + 1).toString();
-    final OnGoingJobsDataModel dataList = lastDetails!.rows[index];
+    final List<TasksData> rows = lastDetails!.rows;
+    if (index >= 0 && index < rows.length) {
+      final TasksData dataList = rows[index];
+      final List<File1>? files = dataList.file;
 
-    return DataRow(
-      cells: [
-        DataCell(Text(srNo)),
-        DataCell(Text(dataList.ticketId ?? '')),
-        DataCell(Text(dataList.title ?? '')),
-        DataCell(Text(dataList.deadlineDate ?? '')),
-        DataCell(Text(dataList.description ?? '')),
-        DataCell(Text(dataList.amount ?? '')),
-        DataCell(
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    RawMaterialButton(
-                      onPressed: () {
-                        if (dataList.ticketId != null) {
-                          Get.to(() => ViewTasksTaskClient(
-                              ticketId: dataList.ticketId.toString()));
-                        }
-                      },
-                      child: Icon(Icons.remove_red_eye_outlined),
-                      constraints: BoxConstraints.tight(Size(24, 24)),
-                      shape: CircleBorder(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-      // selected: selectedIds.contains(dataList.id),
-      // onSelectChanged: (value) {
-      //   selectedRow(dataList.id.toString(), value ?? false);
-      // },
-    );
+      if (files != null && files.isNotEmpty) {
+        final File1 file = files.first;
+        return DataRow(
+          cells: [
+            DataCell(Text(srNo)),
+            DataCell(Text(file.name ?? '')),
+            DataCell(Text("File Location - ${file.locationNum ?? ''}")),
+          ],
+        );
+      }
+    }
+    return null;
   }
 
   @override
   int get selectedRowCount => selectedIds.length;
-
-  // void selectedRow(String id, bool newSelectState) {
-  //   if (selectedIds.contains(id)) {
-  //     selectedIds.remove(id);
-  //   } else {
-  //     selectedIds.add(id);
-  //   }
-  //   notifyListeners();
-  // }
 
   void filterServerSide(String filterQuery) {
     lastSearchTerm = filterQuery.toLowerCase().trim();
@@ -373,44 +458,49 @@ class TableSource extends AdvancedDataTableSource<OnGoingJobsDataModel> {
   }
 
   @override
-  Future<RemoteDataSourceDetails<OnGoingJobsDataModel>> getNextPage(
+  Future<RemoteDataSourceDetails<TasksData>> getNextPage(
     NextPageRequest pageRequest,
   ) async {
     startIndex = pageRequest.offset;
     final queryParameter = <String, dynamic>{
       'offset': pageRequest.offset.toString(),
       if (lastSearchTerm.isNotEmpty) 'search': lastSearchTerm,
-      'limit': pageRequest.pageSize.toString()
+      'limit': pageRequest.pageSize.toString(),
+      'id': ticketId.toString(),
     };
 
     genModel? dataModel = await Urls.postApiCall(
-      method: '${Urls.queryRaised}',
+      method: '${Urls.taskViewTaskDetails}',
       params: queryParameter,
     );
 
     if (dataModel != null && dataModel.status == true) {
-      int count = dataModel.data.length ?? 0;
       final dynamicData = dataModel.data;
-      dataCount = count;
 
-      return RemoteDataSourceDetails(
-        dataModel.count ?? 0,
-        //count,
-        dynamicData
-            .map<OnGoingJobsDataModel>(
-              (item) =>
-                  OnGoingJobsDataModel.fromJson(item as Map<String, dynamic>),
-            )
-            .toList(),
-        filteredRows: lastSearchTerm.isNotEmpty
-            ? dynamicData
-                .map<OnGoingJobsDataModel>(
-                  (item) => OnGoingJobsDataModel.fromJson(
-                      item as Map<String, dynamic>),
-                )
-                .length
-            : null,
-      );
+      int fileCount = 0;
+
+      if (dynamicData is Map<String, dynamic> &&
+          dynamicData.containsKey('file')) {
+        final dynamicList = dynamicData['file'] as List<dynamic>?;
+        fileCount = dynamicList?.length ?? 0;
+        dataCount = fileCount;
+        final List<TasksData> dataList = dynamicList
+                ?.map<TasksData>(
+                    (item) => TasksData(file: [File1.fromJson(item)]))
+                .toList() ??
+            [];
+
+        lastDetails = RemoteDataSourceDetails<TasksData>(
+          //dataModel.count ?? 0,
+          fileCount,
+          dataList,
+          filteredRows: lastSearchTerm.isNotEmpty ? dataList.length : null,
+        );
+      } else {
+        throw Exception('Invalid dynamicData format');
+      }
+
+      return lastDetails!;
     } else {
       throw Exception('Unable to query remote server');
     }

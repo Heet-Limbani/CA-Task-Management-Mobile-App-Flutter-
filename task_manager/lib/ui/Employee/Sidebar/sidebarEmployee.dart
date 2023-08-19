@@ -1,10 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manager/API/Urls.dart';
 import 'package:task_manager/main.dart';
+import 'package:task_manager/ui/Employee/Profile/profile3.dart';
 
-class SideBarEmployee extends StatelessWidget {
+class SideBarEmployee extends StatefulWidget {
   const SideBarEmployee({super.key});
+
+  @override
+  State<SideBarEmployee> createState() => _SideBarEmployeeState();
+}
+
+class _SideBarEmployeeState extends State<SideBarEmployee> {
+  @override
+  void initState() {
+    super.initState();
+    getUser();
+  }
+
+  String email = "";
+  String img = "";
+  String userName = "";
+  bool loading = true;
+  bool errorOccurred = false;
+
+  void getUser() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      setState(() {
+        img = Urls.baseUrlMain + Urls.profile + prefs.getString('avatar')!;
+        email = prefs.getString('email')!;
+        userName = prefs.getString('username')!;
+        loading = false; // Set loading to false after data retrieval
+      });
+    } catch (e) {
+      setState(() {
+        loading = false; // Set loading to false even in case of error
+        errorOccurred = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,28 +61,36 @@ class SideBarEmployee extends StatelessWidget {
               ],
             )),
             accountName: Text(
-              "Admin",
+              userName,
               style: TextStyle(color: Colors.black),
             ),
             accountEmail: Text(
-              "admin@admin.com",
+              email,
               style: TextStyle(color: Colors.black),
             ),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Color.fromARGB(255, 255, 255, 255),
               child: ClipOval(
-                  child: Image(
-                image: AssetImage(
-                  'assets/images/task_manager.png',
-                ),
-                fit: BoxFit.cover,
-              )),
+                child: loading
+                    ? CircularProgressIndicator() // Show loading indicator
+                    : errorOccurred
+                        ? Icon(Icons.error) // Show error icon
+                        : Image(
+                            image: NetworkImage(img),
+                            fit: BoxFit.cover,
+                          ),
+              ),
             ),
           ),
-          // Various options
-
           ListTile(
             title: Text('Employee'),
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Profile'),
+            onTap: () {
+              Get.to(Profile3());
+            },
           ),
           ListTile(
             leading: Icon(Icons.task),
